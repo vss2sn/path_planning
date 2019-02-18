@@ -15,7 +15,7 @@ if(NOT WIN32)
 endif()
 
 set( CXX_FLAGS "-w" )
-set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -std=c++11 -pthread" )
+set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -std=c++11 -pthread -fpermissive" )
 
 include_directories( ${CMAKE_SOURCE_DIR}/inc )
 
