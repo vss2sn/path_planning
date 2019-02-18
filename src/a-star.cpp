@@ -145,7 +145,6 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
   while(!points_list.empty()){
     Node current = points_list.top();
     current.id = current.x * n + current.y;
-    //current.print_status();
     points_list.pop();
     if(current == goal){
       return path;
@@ -193,7 +192,7 @@ int main(){
   std::cout << "Grid (Obstcacles set as 1):" << std::endl;
   print_grid(grid, n);
 
-  //Make sure start and goal not obstacles
+  //Make sure start and goal not obstacles and their ids are correctly assigned.
   Node start(0,1,0,0,0,0);
   start.id = start.x * n + start.y;
   Node goal(n-1,n-1,0,0,0,0);
@@ -210,29 +209,26 @@ int main(){
 
   std::map<Node, Node, compare_id>::iterator it;
   std::map<Node, Node, compare_id>::iterator it2;
-  std::cout << std::endl << "Path:" << std::endl;
   for(it = path.begin(); it!=path.end(); it++){
       if(it->first.x == goal.x && it->first.y == goal.y) break;
   }
   while(true){
-    it->first.print_status();
+    // it->first.print_status();
+    // it->second.print_status();
     //sleep(1);
     grid[it->first.x][it->first.y] = 3;
-//    it = path.find(it->second);
+    // it = path.find(it->second);
+
     // Set up map to allow seeing which points were actually opened
     // as well as the order in which they were opened.
     // While pid gives the parent id, the map shows which was the parent point
     // after which th current point was opened. It is useful for debugging and
     // can be modified so that the map updates if and only if the point isn't
-    // already in the map. 
+    // already in the map.
 
     for(it2 = path.begin(); it2!=path.end(); it2++){
-      std::cout << "ID pairs: " << it->first.pid << " , " << it2->first.id << std::endl;
         if(it->first.pid == it2->first.id){
-          it->first.print_status();
-          it2->first.print_status();
           it = it2;
-          it->first.print_status();
           break;
         }
     }
