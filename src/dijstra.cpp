@@ -89,7 +89,8 @@ void make_grid(void *grid, int n){
 
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
-      (*p_grid)[i][j] = 0;//distr(eng)/(n-1);
+      (*p_grid)[i][j] = distr(eng)/(n-1);
+      //(*p_grid)[i][j] = 0;
     }
   }
 }
@@ -198,7 +199,7 @@ int main(){
   c=a;
   c.print_status();
 */
-  int n = 3;
+  int n = 5;
   int num_points = n*n;
 //  point sptSet[num_points];
   int grid[n][n];
