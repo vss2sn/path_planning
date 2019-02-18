@@ -140,11 +140,12 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
   std::vector<Node> motion = get_motion(n);
   std::priority_queue<Node, std::vector<Node>, compare_cost> points_list;
   points_list.push(start);
+
   path[start] = reached_start;
   while(!points_list.empty()){
     Node current = points_list.top();
     current.id = current.x * n + current.y;
-    current.print_status();
+    //current.print_status();
     points_list.pop();
     if(current == goal){
       return path;
@@ -180,10 +181,10 @@ int main(){
 
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 1 , 0 , 0 , 0 , 1, 0 },
-                     { 1 , 0 , 0 , 0 , 1, 0 },
-                     { 1 , 0 , 1 , 1 , 1, 0 },
+                     { 0 , 1 , 0 , 0 , 0, 0 },
+                     { 0 , 1 , 0 , 0 , 1, 0 },
+                     { 0 , 1 , 0 , 0 , 1, 0 },
+                     { 0 , 1 , 1 , 1 , 1, 0 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
 
@@ -193,8 +194,10 @@ int main(){
   print_grid(grid, n);
 
   //Make sure start and goal not obstacles
-  Node start(0,0,0,0,0,0);
+  Node start(0,1,0,0,0,0);
+  start.id = start.x * n + start.y;
   Node goal(n-1,n-1,0,0,0,0);
+  goal.id = goal.x * n + goal.y;
 
   grid[start.x][start.y] = 0;
   grid[goal.x][goal.y] = 0;
@@ -206,13 +209,33 @@ int main(){
   }
 
   std::map<Node, Node, compare_id>::iterator it;
+  std::map<Node, Node, compare_id>::iterator it2;
   std::cout << std::endl << "Path:" << std::endl;
   for(it = path.begin(); it!=path.end(); it++){
       if(it->first.x == goal.x && it->first.y == goal.y) break;
   }
   while(true){
+    it->first.print_status();
+    //sleep(1);
     grid[it->first.x][it->first.y] = 3;
-    it = path.find(it->second);
+//    it = path.find(it->second);
+    // Set up map to allow seeing which points were actually opened
+    // as well as the order in which they were opened.
+    // While pid gives the parent id, the map shows which was the parent point
+    // after which th current point was opened. It is useful for debugging and
+    // can be modified so that the map updates if and only if the point isn't
+    // already in the map. 
+
+    for(it2 = path.begin(); it2!=path.end(); it2++){
+      std::cout << "ID pairs: " << it->first.pid << " , " << it2->first.id << std::endl;
+        if(it->first.pid == it2->first.id){
+          it->first.print_status();
+          it2->first.print_status();
+          it = it2;
+          it->first.print_status();
+          break;
+        }
+    }
     if(it->first == start) {
       grid[it->first.x][it->first.y] = 3;
       std::cout << "Grid: " << std::endl;
