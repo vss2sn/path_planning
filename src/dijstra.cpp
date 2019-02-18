@@ -25,7 +25,7 @@ public:
   }
   void print_status(){
     std::cout << "--------------" << std::endl
-              << "Node:" << std::endl
+              << "Node:"          << std::endl
               << "x   : " << x    << std::endl
               << "y   : " << y    << std::endl
               << "cost: " << cost << std::endl
