@@ -130,11 +130,12 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
   path[start] = reached_start;
   while(!points_list.empty()){
     Node current = points_list.top();
-    //std::cout<< "New current point:" << std::endl;
-    //current.print_status();
+    std::cout<< "New current point:" << std::endl;
+    current.print_status();
     current.id = current.x * n + current.y;
     points_list.pop();
     if(current == goal){
+      std::cout << "Returning" << std::endl;
       //std::cout << "Path length before return is: " << path.size() << std::endl;
       return path;
     }
@@ -196,14 +197,22 @@ int main(){
   c=a;
   c.print_status();
 */
-  int n = 5;
+  int n = 6;
   int num_points = n*n;
 //  point sptSet[num_points];
-  int grid[n][n];
-  make_grid(grid, n);
+int grid[n][n] = {
+                   { 0 , 0 , 0 , 0 , 1, 1 },
+                   { 0 , 1 , 1 , 0 , 0, 0 },
+                   { 1 , 0 , 0 , 1 , 0, 0 },
+                   { 1 , 0 , 0 , 0 , 1, 0 },
+                   { 1 , 0 , 1 , 0 , 0, 0 },
+                   { 0 , 0 , 1 , 0 , 0, 0 }
+                 } ;
+
+  //make_grid(grid, n);
   print_grid(grid, n);
   Node start(0,0,0,0,0);
-  Node goal(n-1,n-1,0,0,0);
+  Node goal(n-1,0,0,0,0);
   std::map<Node, Node, compare_id> path;
   path = dijkstra(grid, n, start, goal);
   if(path.begin()->first.id == -1){
@@ -221,8 +230,7 @@ int main(){
     std::cout << "To point:" << std::endl;
     it->second.print_status();
   }*/
-  it = path.begin();
-  it->first.print_status();
+  it = path.find(goal);
   //it->second.print_status();
   int a = 0;
   /*
@@ -250,10 +258,18 @@ int main(){
   }*/
 
 
+//KEEP
+  for(it = path.begin(); it!=path.end(); it++){
+      if(it->first.x == goal.x && it->first.y == goal.y){
+        //std::cout << "First.x =  " << it->first.x << std::endl << "First.y = " <<it->first.y << std::endl;
+        //std::cout << "Goal found" << std::endl;
+        break;
+    }
+  }
   while(true){
     a++;
     grid[it->first.x][it->first.y] = 2;
-    std::cout << "First.x =  " << it->first.x << std::endl << "First.y = " <<it->first.y << std::endl;
+    //std::cout << "First.x =  " << it->first.x << std::endl << "First.y = " <<it->first.y << std::endl;
     print_grid(grid, n);
     it = path.find(it->second);
     it->first.print_status();
@@ -264,14 +280,25 @@ int main(){
     }
 
     //std::cout << "Not in if " << std::endl;
-    if(a>2*n){
+    if(a>5*n){
       std::cout << "Ouch." << std::endl;
       break;
     }
 
   }
-
-
+/*
+  for(it = path.begin(); it!=path.end(); ++it){
+      if(it->first.x == goal.x && it->first.y == goal.y){
+        std::cout << "Goal found" << std::endl;
+      }
+  }
+  for(it = path.begin(); it!=path.end(); ++it){
+    std::cout<< "First:" <<std::endl;
+    it->first.print_status();
+    std::cout<< "Second:" <<std::endl;
+    it->second.print_status();
+  }
+*/
 
   return 0;
 }
