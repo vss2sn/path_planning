@@ -1,4 +1,6 @@
 Path Planning
 
 This repository will contain various path planning algorithms.
-It currently includes an implementation of Dijkstra's algorithm for grid based search.
+It currently includes an implementation of 
+1. Dijkstra's algorithm for grid based search.
+2. A-star algorithm for grid based search.

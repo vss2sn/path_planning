@@ -14,24 +14,26 @@ class Node{
 //private:
 public:
 
-  int x, y, cost, id, pid;
+  int x, y, cost, h_cost, id, pid;
 
-  Node(int x = 0, int y = 0, int cost = 0, int id = 0, int pid = 0){
+  Node(int x = 0, int y = 0, int cost = 0, int h_cost = 0, int id = 0, int pid = 0){
     this->x = x;
     this->y = y;
     this->cost = cost;
+    this->h_cost = h_cost;
     this->id = id;
     this->pid = pid;
   }
   void print_status(){
-    std::cout << "--------------" << std::endl
-              << "Node:"          << std::endl
-              << "x   : " << x    << std::endl
-              << "y   : " << y    << std::endl
-              << "cost: " << cost << std::endl
-              << "id  : " << id   << std::endl
-              << "pid : " << pid  << std::endl
-              << "--------------" << std::endl;
+    std::cout << "--------------"             << std::endl
+              << "Node          :"            << std::endl
+              << "x             : " << x      << std::endl
+              << "y             : " << y      << std::endl
+              << "cost          : " << cost   << std::endl
+              << "Heuristic cost: " << h_cost << std::endl
+              << "id            : " << id     << std::endl
+              << "pid           : " << pid    << std::endl
+              << "--------------"             << std::endl;
   }
   Node operator+(Node p){
     Node tmp;
@@ -44,6 +46,7 @@ public:
     this->x = p.x;
     this->y = p.y;
     this->cost = p.cost;
+    this->h_cost = p.h_cost;
     this->id = p.id;
     this->pid = p.pid;
   }
@@ -59,7 +62,10 @@ public:
 
 struct compare_cost{
   bool operator()(Node& p1, Node& p2){
-    if(p1.cost>p2.cost) return true;
+    if(p1.cost + p1.h_cost >= p2.cost + p2.h_cost) return true;
+    // Playing with using heuristic to break tie
+    //if(p1.cost +p1.h_cost == p2.cost + p2.h_cost && p1.h_cost > p2.h_cost) return true;
+    //if(p1.h_cost > p2.h_cost) return true;
     return false;
   }
 };
@@ -115,10 +121,10 @@ void print_grid(void *grid, int n){
 }
 
 std::vector<Node> get_motion(int n){
-  Node down(0,1,1,0,0);
-  Node up(0,-1,1,0,0);
-  Node left(-1,0,1,0,0);
-  Node right(1,0,1,0,0);
+  Node down(0,1,1,0,0,0);
+  Node up(0,-1,1,0,0,0);
+  Node left(-1,0,1,0,0,0);
+  Node right(1,0,1,0,0,0);
   std::vector<Node> v;
   v.push_back(down);
   v.push_back(up);
@@ -129,7 +135,7 @@ std::vector<Node> get_motion(int n){
 
 std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node goal){
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
-  Node reached_start(0,0,0,0,0);
+  Node reached_start(0,0,0,0,0,0);
   std::map<Node, Node, compare_id> path;
   std::vector<Node> motion = get_motion(n);
   std::priority_queue<Node, std::vector<Node>, compare_cost> points_list;
@@ -138,6 +144,7 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
   while(!points_list.empty()){
     Node current = points_list.top();
     current.id = current.x * n + current.y;
+    current.print_status();
     points_list.pop();
     if(current == goal){
       return path;
@@ -153,6 +160,7 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
       if(new_point.x < 0 || new_point.y < 0 || new_point.x >= n || new_point.y >= n) continue;
       if((*p_grid)[new_point.x][new_point.y]==0){//=1 && (*p_grid)[new_point.x][new_point.y]!=2){
         new_point.pid = current.id;
+        new_point.h_cost = abs(new_point.x - goal.x) + abs(new_point.y - goal.y);
         new_point.id = new_point.x * n + new_point.y;
         points_list.push(new_point);
         path[new_point]=current;
@@ -160,7 +168,7 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
     }
   }
   path.clear();
-  Node no_path_node(-1,-1,-1,-1,-1);
+  Node no_path_node(-1,-1,-1,-1,-1,-1);
   path[no_path_node] = no_path_node;
   return path;
 }
@@ -169,24 +177,24 @@ int main(){
   int n = 6;
   int num_points = n*n;
 
-/*
+
   int grid[n][n] = {
-                     { 0 , 0 , 0 , 0 , 1, 0 },
-                     { 0 , 1 , 1 , 0 , 0, 0 },
-                     { 1 , 0 , 0 , 1 , 0, 0 },
+                     { 0 , 0 , 0 , 0 , 0, 0 },
+                     { 0 , 0 , 0 , 0 , 0, 0 },
                      { 1 , 0 , 0 , 0 , 1, 0 },
-                     { 1 , 0 , 1 , 0 , 0, 0 },
-                     { 0 , 0 , 1 , 0 , 0, 0 }
+                     { 1 , 0 , 0 , 0 , 1, 0 },
+                     { 1 , 0 , 1 , 1 , 1, 0 },
+                     { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
-*/
-  int grid[n][n];
-  make_grid(grid, n);
+
+  //int grid[n][n];
+  //make_grid(grid, n);
   std::cout << "Grid (Obstcacles set as 1):" << std::endl;
   print_grid(grid, n);
 
   //Make sure start and goal not obstacles
-  Node start(0,0,0,0,0);
-  Node goal(n-1,n-1,0,0,0);
+  Node start(0,0,0,0,0,0);
+  Node goal(n-1,n-1,0,0,0,0);
 
   grid[start.x][start.y] = 0;
   grid[goal.x][goal.y] = 0;
