@@ -150,10 +150,8 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
       cost_grid[i][j] = n*n;
     }
   }
-  //print_grid(cost_grid, n);
 
   std::map<Node, Node, compare_id> path;
-  std::map<Node, int, compare_id> cost_map;
   std::vector<Node> motion = get_motion(n);
   std::priority_queue<Node, std::vector<Node>, compare_cost> points_list;
   points_list.push(start);
@@ -163,7 +161,6 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
   while(!points_list.empty()){
     Node current = points_list.top();
     current.id = current.x * n + current.y;
-    //current.print_status();
     points_list.pop();
     if(current == goal){
       return path;
@@ -180,6 +177,7 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
       if(new_point.x < 0 || new_point.y < 0 || new_point.x >= n || new_point.y >= n) continue;
       if(cost_grid[new_point.x][new_point.y] > new_point.cost + new_point.h_cost){//=1 && (*p_grid)[new_point.x][new_point.y]!=2){
 
+        /*
         print_grid((*p_grid), n);
         try{
           std::cout << "Current cost" << cost_grid[new_point.x][new_point.y]<< std::endl;
@@ -188,20 +186,18 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
         catch(...) {
           std::cout << "0" << std::endl;
         }
-
+        */
         new_point.pid = current.id;
         new_point.id = new_point.x * n + new_point.y;
         points_list.push(new_point);
-        std::cout<< "Path map before update " << std::endl;
-        path[new_point].print_status();
+        //std::cout<< "Path map before update " << std::endl;
+        //path[new_point].print_status();
         path[new_point] = current;
-        std::cout<< "Path map after update " << std::endl;
-        path[new_point].print_status();
-
-        cost_map[new_point] = new_point.cost + new_point.h_cost;
+        //std::cout<< "Path map after update " << std::endl;
+        //path[new_point].print_status();
         cost_grid[new_point.x][new_point.y] = new_point.cost + new_point.h_cost;
-        new_point.print_status();
-        print_grid(cost_grid, n);
+        //new_point.print_status();
+        //print_grid(cost_grid, n);
 
       }
     }
@@ -216,19 +212,19 @@ int main(){
   int n = 3;
   int num_points = n*n;
 
-/*
+
   n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 1 , 0 , 0 , 0, 0 },
+                     { 1 , 1 , 0 , 0 , 0, 0 },
+                     { 0 , 0 , 0 , 0 , 1, 0 },
                      { 0 , 1 , 0 , 0 , 1, 0 },
-                     { 0 , 1 , 0 , 0 , 1, 0 },
-                     { 0 , 1 , 1 , 1 , 1, 0 },
+                     { 0 , 1 , 0 , 1 , 1, 0 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
-*/
-  int grid[n][n];
-  make_grid(grid, n);
+
+  //int grid[n][n];
+  //make_grid(grid, n);
   std::cout << "Grid (Obstcacles set as 1):" << std::endl;
   print_grid(grid, n);
 
@@ -256,7 +252,7 @@ int main(){
       if(it->first.x == goal.x && it->first.y == goal.y) break;
   }
   it->first.print_status();
-  //it->second.print_status();
+  it->second.print_status();
   int a =0;
   while(true){
     a++;
@@ -264,7 +260,7 @@ int main(){
     //sleep(1);
     grid[it->first.x][it->first.y] = 3;
     grid[it->second.x][it->second.y] = 3;
-//    it = path.find(it->second);
+    // it = path.find(it->second);
     // Set up map to allow seeing which points were actually opened
     // as well as the order in which they were opened.
     // While pid gives the parent id, the map shows which was the parent point
@@ -274,13 +270,14 @@ int main(){
 
     for(it2 = path.begin(); it2!=path.end(); it2++){
       //std::cout << "ID pairs: " << it->first.pid << " , " << it2->first.id << std::endl;
+      // The second arguement of the map is constantly updated,
+      //while the first's id and pid are not, which is why this method is used.
         if(it->second.pid == it2->first.id){
-          std::cout << "Current:" << std::endl;
+          //std::cout << "Current:" << std::endl;
           it->second.print_status();
-          std::cout << "Parent:" << std::endl;
+          //std::cout << "Parent:" << std::endl;
           it2->first.print_status();
           it = it2;
-          //it->first.print_status();
           break;
         }
     }
