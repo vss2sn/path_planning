@@ -232,25 +232,16 @@ int main(){
   for(it = path.begin(); it!=path.end(); it++){
       if(it->first.x == goal.x && it->first.y == goal.y) break;
   }
-  int a =0;
+
   while(true){
-    a++;
-    if(a>10) break;
-    //sleep(1);
     grid[it->first.x][it->first.y] = 3;
     grid[it->second.x][it->second.y] = 3;
-    // it = path.find(it->second);
-    // Set up map to allow seeing which points were actually opened
-    // as well as the order in which they were opened.
-    // While pid gives the parent id, the map shows which was the parent point
-    // after which th current point was opened. It is useful for debugging and
-    // can be modified so that the map updates if and only if the point isn't
-    // already in the map.
 
     for(it2 = path.begin(); it2!=path.end(); it2++){
       // std::cout << "ID pairs: " << it->first.pid << " , " << it2->first.id << std::endl;
       // The second arguement of the map is constantly updated,
       // while the first's id and pid are not, which is why this method is used.
+      // The first one cannot be updated as it is a read only object
       // The mapping is the equivalent of creating a sparse matrix
         if(it->second.pid == it2->first.id){
           it = it2;
