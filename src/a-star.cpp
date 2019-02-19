@@ -14,9 +14,10 @@ class Node{
 //private:
 public:
 
-  int x, y, cost, h_cost, id, pid;
+  int x, y, id, pid;
+  double cost, h_cost;
 
-  Node(int x = 0, int y = 0, int cost = 0, int h_cost = 0, int id = 0, int pid = 0){
+  Node(int x = 0, int y = 0, double cost = 0, double h_cost = 0, int id = 0, int pid = 0){
     this->x = x;
     this->y = y;
     this->cost = cost;
@@ -125,23 +126,38 @@ std::vector<Node> get_motion(int n){
   Node up(0,-1,1,0,0,0);
   Node left(-1,0,1,0,0,0);
   Node right(1,0,1,0,0,0);
+  Node dr(1,1,2,0,0,0);
+  Node dl(1,-1,2,0,0,0);
+  Node ur(-1,1,2,0,0,0);
+  Node ul(-1,-1,2,0,0,0);
   std::vector<Node> v;
   v.push_back(down);
   v.push_back(up);
   v.push_back(left);
   v.push_back(right);
+  v.push_back(dr);
+  v.push_back(dl);
+  v.push_back(ur);
+  v.push_back(ul);
   return v;
 }
 
 std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node goal){
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
-  Node reached_start(0,0,0,0,0,0);
+  double cost_grid[n][n];
+  for (int i = 0; i < n; i++){
+    for (int j = 0; j < n; j++){
+      cost_grid[i][j] = n*n;
+    }
+  }
+
   std::map<Node, Node, compare_id> path;
   std::vector<Node> motion = get_motion(n);
   std::priority_queue<Node, std::vector<Node>, compare_cost> points_list;
   points_list.push(start);
 
-  path[start] = reached_start;
+  path[start] = start;
+  cost_grid[start.x][start.y] = 0;
   while(!points_list.empty()){
     Node current = points_list.top();
     current.id = current.x * n + current.y;
@@ -157,13 +173,32 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
     for(auto it = motion.begin(); it!=motion.end(); ++it){
       Node new_point;
       new_point = current + *it;
+      new_point.h_cost = abs(new_point.x - goal.x) + abs(new_point.y - goal.y);
       if(new_point.x < 0 || new_point.y < 0 || new_point.x >= n || new_point.y >= n) continue;
-      if((*p_grid)[new_point.x][new_point.y]==0){//=1 && (*p_grid)[new_point.x][new_point.y]!=2){
+      if(cost_grid[new_point.x][new_point.y] > new_point.cost + new_point.h_cost){//=1 && (*p_grid)[new_point.x][new_point.y]!=2){
+
+        /*
+        print_grid((*p_grid), n);
+        try{
+          std::cout << "Current cost" << cost_grid[new_point.x][new_point.y]<< std::endl;
+          std::cout << "Updated cost" << new_point.cost+new_point.h_cost<< std::endl;
+        }
+        catch(...) {
+          std::cout << "0" << std::endl;
+        }
+        */
         new_point.pid = current.id;
-        new_point.h_cost = abs(new_point.x - goal.x) + abs(new_point.y - goal.y);
         new_point.id = new_point.x * n + new_point.y;
         points_list.push(new_point);
-        path[new_point]=current;
+        //std::cout<< "Path map before update " << std::endl;
+        //path[new_point].print_status();
+        path[new_point] = current;
+        //std::cout<< "Path map after update " << std::endl;
+        //path[new_point].print_status();
+        cost_grid[new_point.x][new_point.y] = new_point.cost + new_point.h_cost;
+        //new_point.print_status();
+        //print_grid(cost_grid, n);
+
       }
     }
   }
@@ -174,16 +209,17 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
 }
 
 int main(){
-  int n = 6;
+  int n = 3;
   int num_points = n*n;
 
 
+  n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 1 , 0 , 0 , 0, 0 },
+                     { 1 , 1 , 0 , 0 , 0, 0 },
+                     { 0 , 0 , 0 , 0 , 1, 0 },
                      { 0 , 1 , 0 , 0 , 1, 0 },
-                     { 0 , 1 , 0 , 0 , 1, 0 },
-                     { 0 , 1 , 1 , 1 , 1, 0 },
+                     { 0 , 1 , 0 , 1 , 1, 0 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
 
@@ -195,8 +231,10 @@ int main(){
   //Make sure start and goal not obstacles and their ids are correctly assigned.
   Node start(0,1,0,0,0,0);
   start.id = start.x * n + start.y;
+  start.pid = start.x * n + start.y;
   Node goal(n-1,n-1,0,0,0,0);
   goal.id = goal.x * n + goal.y;
+  start.h_cost = abs(goal.x - start.x) + abs(goal.y - start.y);
 
   grid[start.x][start.y] = 0;
   grid[goal.x][goal.y] = 0;
@@ -212,13 +250,16 @@ int main(){
   for(it = path.begin(); it!=path.end(); it++){
       if(it->first.x == goal.x && it->first.y == goal.y) break;
   }
+  //it->first.print_status();
+  //it->second.print_status();
+  int a =0;
   while(true){
-    // it->first.print_status();
-    // it->second.print_status();
+    a++;
+    if(a>10) break;
     //sleep(1);
     grid[it->first.x][it->first.y] = 3;
+    grid[it->second.x][it->second.y] = 3;
     // it = path.find(it->second);
-
     // Set up map to allow seeing which points were actually opened
     // as well as the order in which they were opened.
     // While pid gives the parent id, the map shows which was the parent point
@@ -227,7 +268,14 @@ int main(){
     // already in the map.
 
     for(it2 = path.begin(); it2!=path.end(); it2++){
-        if(it->first.pid == it2->first.id){
+      //std::cout << "ID pairs: " << it->first.pid << " , " << it2->first.id << std::endl;
+      // The second arguement of the map is constantly updated,
+      //while the first's id and pid are not, which is why this method is used.
+        if(it->second.pid == it2->first.id){
+          //std::cout << "Current:" << std::endl;
+          // it->second.print_status();
+          //std::cout << "Parent:" << std::endl;
+          // it2->first.print_status();
           it = it2;
           break;
         }
