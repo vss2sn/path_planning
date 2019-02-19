@@ -11,7 +11,6 @@ Dijstra grid based planning
 #include <map>
 
 class Node{
-//private:
 public:
 
   int x, y, id, pid;
@@ -64,9 +63,6 @@ public:
 struct compare_cost{
   bool operator()(Node& p1, Node& p2){
     if(p1.cost + p1.h_cost >= p2.cost + p2.h_cost) return true;
-    // Playing with using heuristic to break tie
-    //if(p1.cost +p1.h_cost == p2.cost + p2.h_cost && p1.h_cost > p2.h_cost) return true;
-    //if(p1.h_cost > p2.h_cost) return true;
     return false;
   }
 };
@@ -150,7 +146,7 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
       cost_grid[i][j] = n*n;
     }
   }
-  int a = 0;
+
   std::map<Node, Node, compare_id> path;
   std::vector<Node> motion = get_motion(n);
   std::priority_queue<Node, std::vector<Node>, compare_cost> points_list;
@@ -163,7 +159,6 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
     current.id = current.x * n + current.y;
     points_list.pop();
     if(current == goal){
-      std::cout << "Iterations: " << a << std::endl;
       return path;
     }
     if((*p_grid)[current.x][current.y]!=0){
@@ -181,28 +176,11 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
       if(cost_grid[new_point.x][new_point.y] > new_point.cost + new_point.h_cost){//=1 && (*p_grid)[new_point.x][new_point.y]!=2){
         // TODO: check if this is required, does not seem to make a difference:
         // (*p_grid)[new_point.x][new_point.y]!=2
-        /*
-        print_grid((*p_grid), n);
-        try{
-          std::cout << "Current cost" << cost_grid[new_point.x][new_point.y]<< std::endl;
-          std::cout << "Updated cost" << new_point.cost+new_point.h_cost<< std::endl;
-        }
-        catch(...) {
-          std::cout << "0" << std::endl;
-        }
-        */
         new_point.pid = current.id;
         new_point.id = new_point.x * n + new_point.y;
         points_list.push(new_point);
-        //std::cout<< "Path map before update " << std::endl;
-        //path[new_point].print_status();
         path[new_point] = current;
-        //std::cout<< "Path map after update " << std::endl;
-        //path[new_point].print_status();
         cost_grid[new_point.x][new_point.y] = new_point.cost + new_point.h_cost;
-        //new_point.print_status();
-        //print_grid(cost_grid, n);
-        a++;
       }
     }
   }
@@ -254,8 +232,6 @@ int main(){
   for(it = path.begin(); it!=path.end(); it++){
       if(it->first.x == goal.x && it->first.y == goal.y) break;
   }
-  //it->first.print_status();
-  //it->second.print_status();
   int a =0;
   while(true){
     a++;
@@ -277,10 +253,6 @@ int main(){
       // while the first's id and pid are not, which is why this method is used.
       // The mapping is the equivalent of creating a sparse matrix
         if(it->second.pid == it2->first.id){
-          //std::cout << "Current:" << std::endl;
-          // it->second.print_status();
-          //std::cout << "Parent:" << std::endl;
-          // it2->first.print_status();
           it = it2;
           break;
         }
