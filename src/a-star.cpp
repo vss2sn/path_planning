@@ -126,10 +126,10 @@ std::vector<Node> get_motion(int n){
   Node up(0,-1,1,0,0,0);
   Node left(-1,0,1,0,0,0);
   Node right(1,0,1,0,0,0);
-  Node dr(1,1,1.4,0,0,0);
-  Node dl(1,-1,1.4,0,0,0);
-  Node ur(-1,1,1.4,0,0,0);
-  Node ul(-1,-1,1.4,0,0,0);
+  Node dr(1,1,2,0,0,0);
+  Node dl(1,-1,2,0,0,0);
+  Node ur(-1,1,2,0,0,0);
+  Node ul(-1,-1,2,0,0,0);
   std::vector<Node> v;
   v.push_back(down);
   v.push_back(up);
@@ -213,10 +213,11 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
 }
 
 int main(){
-  int n = 6;
+  int n = 3;
   int num_points = n*n;
 
-
+/*
+  n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 1 , 0 , 0 , 0, 0 },
@@ -225,14 +226,14 @@ int main(){
                      { 0 , 1 , 1 , 1 , 1, 0 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
-
-  //int grid[n][n];
-  //make_grid(grid, n);
+*/
+  int grid[n][n];
+  make_grid(grid, n);
   std::cout << "Grid (Obstcacles set as 1):" << std::endl;
   print_grid(grid, n);
 
   //Make sure start and goal not obstacles
-  Node start(0,1,0,0,0,0);
+  Node start(0,0,0,0,0,0);
   start.id = start.x * n + start.y;
   start.pid = start.x * n + start.y;
   Node goal(n-1,n-1,0,0,0,0);
