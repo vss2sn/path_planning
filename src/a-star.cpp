@@ -126,10 +126,10 @@ std::vector<Node> get_motion(int n){
   Node up(0,-1,1,0,0,0);
   Node left(-1,0,1,0,0,0);
   Node right(1,0,1,0,0,0);
-  Node dr(1,1,2,0,0,0);
-  Node dl(1,-1,2,0,0,0);
-  Node ur(-1,1,2,0,0,0);
-  Node ul(-1,-1,2,0,0,0);
+  Node dr(1,1,5,0,0,0);
+  Node dl(1,-1,5,0,0,0);
+  Node ur(-1,1,5,0,0,0);
+  Node ul(-1,-1,5,0,0,0);
   std::vector<Node> v;
   v.push_back(down);
   v.push_back(up);
@@ -150,7 +150,7 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
       cost_grid[i][j] = n*n;
     }
   }
-
+  int a = 0;
   std::map<Node, Node, compare_id> path;
   std::vector<Node> motion = get_motion(n);
   std::priority_queue<Node, std::vector<Node>, compare_cost> points_list;
@@ -163,20 +163,24 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
     current.id = current.x * n + current.y;
     points_list.pop();
     if(current == goal){
+      std::cout << "Iterations: " << a << std::endl;
       return path;
     }
     if((*p_grid)[current.x][current.y]!=0){
-      continue;
+      continue; // Point already opened and
+                // points around it added to points list
     }
-    (*p_grid)[current.x][current.y] = 2;
+    (*p_grid)[current.x][current.y] = 2; // Point opened
     int current_cost = current.cost;
     for(auto it = motion.begin(); it!=motion.end(); ++it){
       Node new_point;
       new_point = current + *it;
       new_point.h_cost = abs(new_point.x - goal.x) + abs(new_point.y - goal.y);
-      if(new_point.x < 0 || new_point.y < 0 || new_point.x >= n || new_point.y >= n) continue;
+      if(new_point.x < 0 || new_point.y < 0
+          || new_point.x >= n || new_point.y >= n) continue; // Check boundaries
       if(cost_grid[new_point.x][new_point.y] > new_point.cost + new_point.h_cost){//=1 && (*p_grid)[new_point.x][new_point.y]!=2){
-
+        // TODO: check if this is required, does not seem to make a difference:
+        // (*p_grid)[new_point.x][new_point.y]!=2
         /*
         print_grid((*p_grid), n);
         try{
@@ -198,7 +202,7 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
         cost_grid[new_point.x][new_point.y] = new_point.cost + new_point.h_cost;
         //new_point.print_status();
         //print_grid(cost_grid, n);
-
+        a++;
       }
     }
   }
@@ -216,10 +220,10 @@ int main(){
   n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 1 , 1 , 0 , 0 , 0, 0 },
-                     { 0 , 0 , 0 , 0 , 1, 0 },
+                     { 0 , 1 , 0 , 0 , 0, 0 },
                      { 0 , 1 , 0 , 0 , 1, 0 },
-                     { 0 , 1 , 0 , 1 , 1, 0 },
+                     { 0 , 1 , 0 , 0 , 1, 0 },
+                     { 0 , 1 , 1 , 1 , 1, 0 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
 
@@ -268,9 +272,10 @@ int main(){
     // already in the map.
 
     for(it2 = path.begin(); it2!=path.end(); it2++){
-      //std::cout << "ID pairs: " << it->first.pid << " , " << it2->first.id << std::endl;
+      // std::cout << "ID pairs: " << it->first.pid << " , " << it2->first.id << std::endl;
       // The second arguement of the map is constantly updated,
-      //while the first's id and pid are not, which is why this method is used.
+      // while the first's id and pid are not, which is why this method is used.
+      // The mapping is the equivalent of creating a sparse matrix
         if(it->second.pid == it2->first.id){
           //std::cout << "Current:" << std::endl;
           // it->second.print_status();
