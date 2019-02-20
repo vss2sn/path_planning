@@ -135,16 +135,13 @@ std::vector<Node> get_motion(int n){
   return v;
 }
 
-std::vector<Node> visited_points;
-
-std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node goal){
+std::vector<Node> dijkstra(void *grid, int n, Node start, Node goal){
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
 
-  std::map<Node, Node, compare_id> path;
   std::vector<Node> motion = get_motion(n);
   std::priority_queue<Node, std::vector<Node>, compare_cost> points_list;
   points_list.push(start);
-  path[start] = start;
+  std::vector<Node> path_vector;
 
   int cost_grid[n][n];
   for (int i = 0; i < n; i++){
@@ -156,13 +153,13 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
 
   cost_grid[start.x][start.y] = 0;
 
-  visited_points.push_back(start);
+  path_vector.push_back(start);
   while(!points_list.empty()){
     Node current = points_list.top();
     current.id = current.x * n + current.y;
     points_list.pop();
     if(current == goal){
-      return path;
+      return path_vector;
     }
     if((*p_grid)[current.x][current.y]!=0){
       continue; // Point already opened and
@@ -180,43 +177,74 @@ std::map<Node, Node, compare_id> dijkstra(void *grid, int n, Node start, Node go
         new_point.pid = current.id;
         new_point.id = new_point.x * n + new_point.y;
         points_list.push(new_point);
-        path[new_point] = current;
         cost_grid[new_point.x][new_point.y] = new_point.cost;
-        new_point.print_status();
         std::vector<Node>::iterator it_v;
-        it_v = find (visited_points.begin(), visited_points.end(), new_point);
-        if (it_v != visited_points.end())
+        it_v = find (path_vector.begin(), path_vector.end(), new_point);
+        if (it_v != path_vector.end())
            *it_v = new_point;
         else
-          visited_points.push_back(new_point);
-        print_grid((*p_grid), n);
-        print_grid(cost_grid, n);
+          path_vector.push_back(new_point);
       }
     }
   }
-  path.clear();
+  path_vector.clear();
   Node no_path_node(-1,-1,-1,-1,-1);
-  path[no_path_node] = no_path_node;
-  return path;
+  path_vector.push_back(no_path_node);
+  return path_vector;
+}
+
+print_path(std::vector<Node> path_vector, Node start, Node goal, void *grid, int n){
+  //NOTE: Using a void pointer isnt the best option
+  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
+  if(path_vector[0].id == -1){
+    std::cout << "No path exists" << std::endl;
+    return 0;
+  }
+
+  std::cout << "Path (goal to start):" << std::endl;
+  int i = 0;
+  for(int j = 0; j < path_vector.size(); j++){
+    if(goal == path_vector[j]){
+      i=j;
+      break;
+    }
+  }
+  path_vector[i].print_status();
+  (*p_grid)[path_vector[i].x][path_vector[i].y] = 3;
+  while(path_vector[i].pid!=path_vector[i].id){
+    for(int j = 0; j < path_vector.size(); j++){
+      if(path_vector[i].pid == path_vector[j].id){
+        i=j;
+        path_vector[j].print_status();
+        (*p_grid)[path_vector[j].x][path_vector[j].y] = 3;
+      }
+    }
+  }
+  std::cout << "Grid: " << std::endl;
+  std::cout << "1. Points not considered ---> 0" << std::endl;
+  std::cout << "2. Obstacles             ---> 1" << std::endl;
+  std::cout << "3. Points considered     ---> 2" << std::endl;
+  std::cout << "4. Points in final path  ---> 3" << std::endl;
+  print_grid((*p_grid), n);
 }
 
 int main(){
   int n = 3;
   int num_points = n*n;
 
-/*
+
   n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 1 , 0 , 0 , 0, 0 },
+                     { 0 , 1 , 1 , 0 , 0, 0 },
                      { 0 , 1 , 0 , 0 , 1, 0 },
                      { 0 , 1 , 0 , 0 , 1, 0 },
                      { 0 , 1 , 1 , 1 , 1, 0 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
-*/
-  int grid[n][n];
-  make_grid(grid, n);
+
+  //int grid[n][n];
+  //make_grid(grid, n);
   std::cout << "Grid (Obstcacles set as 1):" << std::endl;
   print_grid(grid, n);
 
@@ -229,62 +257,9 @@ int main(){
 
   grid[start.x][start.y] = 0;
   grid[goal.x][goal.y] = 0;
-  std::map<Node, Node, compare_id> path;
-  path = dijkstra(grid, n, start, goal);
-  if(path.begin()->first.id == -1){
-    std::cout << "No path exists" << std::endl;
-    return 0;
-  }
+  std::vector<Node> path_vector = dijkstra(grid, n, start, goal);
 
-  std::map<Node, Node, compare_id>::iterator it;
-  std::map<Node, Node, compare_id>::iterator it2;
-  for(it = path.begin(); it!=path.end(); it++){
-      if(it->first.x == goal.x && it->first.y == goal.y) break;
-  }
+  print_path(path_vector, start, goal, grid, n);
 
-  while(true){
-    grid[it->first.x][it->first.y] = 3;
-    grid[it->second.x][it->second.y] = 3;
-
-    for(it2 = path.begin(); it2!=path.end(); it2++){
-      // std::cout << "ID pairs: " << it->first.pid << " , " << it2->first.id << std::endl;
-      // The second arguement of the map is constantly updated,
-      // while the first's id and pid are not, which is why this method is used.
-      // The first one cannot be updated as it is a read only object
-      // The mapping is the equivalent of creating a sparse matrix
-        if(it->second.pid == it2->first.id){
-          it = it2;
-          break;
-        }
-    }
-    if(it->first == start) {
-      grid[it->first.x][it->first.y] = 3;
-      std::cout << "Grid: " << std::endl;
-       std::cout << "1. Points not considered ---> 0" << std::endl;
-       std::cout << "2. Obstacles             ---> 1" << std::endl;
-       std::cout << "3. Points considered     ---> 2" << std::endl;
-       std::cout << "4. Points in final path  ---> 3" << std::endl;
-      print_grid(grid, n);
-      break;
-    }
-  }
-  int i = 0;
-  std::std::vector<Node> it_v;
-  it_v = find (visited_points.begin(), visited_points.end(), goal);
-  for(int j = 0; j < visited_points.size(); j++){
-    if(goal == visited_points[j]){
-      i=j;
-      break;
-    }
-  }
-  visited_points[i].print_status();
-  while(visited_points[i].pid!=visited_points[i].id){
-    for(int j = 0; j < visited_points.size(); j++){
-      if(visited_points[i].pid == visited_points[j].id){
-        i=j;
-        visited_points[j].print_status();
-      }
-    }
-  }
   return 0;
 }
