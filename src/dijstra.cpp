@@ -5,10 +5,6 @@ Dijstra grid based planning
 */
 
 #include "main.h"
-#include <iomanip>
-#include <queue>
-#include <list>
-#include <map>
 
 class Node{
 //private:
@@ -84,11 +80,11 @@ void make_grid(void *grid, int n){
 
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
-  std::uniform_int_distribution<int> distr(0,4); // define the range
+  std::uniform_int_distribution<int> distr(0,n); // define the range
 
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
-      (*p_grid)[i][j] = distr(eng)/(n-1);
+      (*p_grid)[i][j] = distr(eng)/(n-1); // probability of obstacle is 1/n
       (*p_grid)[i][j] = 0; // For no obstacles
     }
   }
@@ -176,10 +172,8 @@ std::vector<Node> dijkstra(void *grid, int n, Node start, Node goal){
         cost_grid[new_point.x][new_point.y] = new_point.cost;
         std::vector<Node>::iterator it_v;
         it_v = find (path_vector.begin(), path_vector.end(), new_point);
-        if (it_v != path_vector.end())
-           *it_v = new_point;
-        else
-          path_vector.push_back(new_point);
+        if (it_v != path_vector.end()) *it_v = new_point;
+        else path_vector.push_back(new_point);
       }
     }
   }
