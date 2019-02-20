@@ -137,12 +137,6 @@ std::vector<Node> get_motion(int n){
 
 std::vector<Node> dijkstra(void *grid, int n, Node start, Node goal){
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
-
-  std::vector<Node> motion = get_motion(n);
-  std::priority_queue<Node, std::vector<Node>, compare_cost> points_list;
-  points_list.push(start);
-  std::vector<Node> path_vector;
-
   int cost_grid[n][n];
   for (int i = 0; i < n; i++){
     for (int j = 0; j < n; j++){
@@ -150,10 +144,13 @@ std::vector<Node> dijkstra(void *grid, int n, Node start, Node goal){
     }
   }
 
+  std::vector<Node> motion = get_motion(n);
+  std::priority_queue<Node, std::vector<Node>, compare_cost> points_list;
+  points_list.push(start);
+  std::vector<Node> path_vector;
+  path_vector.push_back(start);
 
   cost_grid[start.x][start.y] = 0;
-
-  path_vector.push_back(start);
   while(!points_list.empty()){
     Node current = points_list.top();
     current.id = current.x * n + current.y;
@@ -164,7 +161,6 @@ std::vector<Node> dijkstra(void *grid, int n, Node start, Node goal){
     if((*p_grid)[current.x][current.y]!=0){
       continue; // Point already opened and
                 // points around it added to points list
-
     }
     (*p_grid)[current.x][current.y] = 2; // Point opened
     int current_cost = current.cost;
@@ -237,15 +233,21 @@ int main(){
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 1 , 1 , 0 , 0, 0 },
-                     { 0 , 1 , 0 , 0 , 1, 0 },
-                     { 0 , 1 , 0 , 0 , 1, 0 },
+                     { 1 , 1 , 0 , 0 , 1, 0 },
+                     { 1 , 0 , 0 , 1 , 1, 1 },
                      { 0 , 1 , 1 , 1 , 1, 0 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
 
   //int grid[n][n];
   //make_grid(grid, n);
-  std::cout << "Grid (Obstcacles set as 1):" << std::endl;
+
+  //NOTE:
+  // x = row index, y = column index.
+
+  std::cout << "Grid:" << std::endl;
+  std::cout << "1. Points not considered ---> 0" << std::endl;
+  std::cout << "2. Obstacles             ---> 1" << std::endl;
   print_grid(grid, n);
 
   //Make sure start and goal not obstacles and their ids are correctly assigned.
