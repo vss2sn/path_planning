@@ -193,13 +193,22 @@ public:
     return new_node;
   }
 
-  std::vector<Node> rrt(void *grid, int n, Node start, Node goal){
+
+  std::vector<Node> rrt(void *grid, int n, Node start, Node goal, int max_iter = 500){
     std::cout << "RRT->rrt function called" << std::endl;
     int (*p_grid)[n][n] = (int (*)[n][n]) grid;
     //start.print_status();
     point_list.push_back(start);
     (*p_grid)[start.x][start.y]=2;
+    int iter = 0;
     while(true){
+      iter++;
+      if(iter > max_iter){
+        Node no_path_node(-1,-1,-1,-1,-1);
+        point_list.clear();
+        point_list.push_back(no_path_node);
+        return point_list;
+      }
       Node new_node = generate_random_node(n);
       std::cout << "RRT->generate_random_node called" << std::endl;
       if ((*p_grid)[new_node.x][new_node.y]!=0){
@@ -291,7 +300,7 @@ int main(){
                      { 0 , 1 , 1 , 0 , 0, 0 },
                      { 1 , 1 , 0 , 0 , 1, 0 },
                      { 1 , 0 , 0 , 1 , 1, 0 },
-                     { 0 , 1 , 1 , 1 , 1, 0 },
+                     { 0 , 1 , 1 , 1 , 1, 1 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
 
@@ -320,7 +329,7 @@ int main(){
   new_rrt.create_obstacle_list(grid, n);
   print_grid(grid, n);
 
-  std::vector<Node> path_vector = new_rrt.rrt(grid, n, start, goal);
+  std::vector<Node> path_vector = new_rrt.rrt(grid, n, start, goal, 500);
   print_path(path_vector, start, goal, grid, n);
 
   return 0;
