@@ -188,9 +188,8 @@ public:
   }
 
 
-  std::vector<Node> rrt(void *grid, int n, Node start, Node goal, int max_iter = 500){
-    max_iter = 5000 * n * n;
-
+  std::vector<Node> rrt(void *grid, int n, Node start, Node goal, int max_iter_x_factor = 500){
+    int max_iter = max_iter_x_factor * n * n;
     int (*p_grid)[n][n] = (int (*)[n][n]) grid;
     point_list.push_back(start);
     (*p_grid)[start.x][start.y]=2;
@@ -297,7 +296,7 @@ int main(){
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 1 , 0 , 0 , 0, 0 },
-                     { 1 , 0 , 1 , 1 , 1, 0 },
+                     { 1 , 1 , 1 , 1 , 1, 0 },
                      { 1 , 0 , 1 , 0 , 1, 0 },
                      { 0 , 0 , 1 , 1 , 1, 1 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
@@ -327,7 +326,7 @@ int main(){
   RRT new_rrt;
   new_rrt.create_obstacle_list(grid, n);
 
-  std::vector<Node> path_vector = new_rrt.rrt(grid, n, start, goal, 500);
+  std::vector<Node> path_vector = new_rrt.rrt(grid, n, start, goal, 5000);
   print_path(path_vector, start, goal, grid, n);
 
   return 0;
