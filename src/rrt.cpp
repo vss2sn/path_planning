@@ -120,15 +120,17 @@ public:
   std::vector<Node> obstacle_list;
   int n;
 
-  Node find_nearest_point(Node& new_node){
+  Node find_nearest_point(Node& new_node, int n){
     Node nearest_node(-1,-1,-1,-1,-1);
     std::vector<Node>::iterator it_v;
     std::vector<Node>::iterator it_v_store;
-    int dist = n*n;
-    int new_dist = n*n;
+    float dist = (float)(n*n);
+    float new_dist = (float)(n*n);
     for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
-      new_dist = sqrt((it_v->x-new_node.x)*(it_v->x-new_node.x) + (it_v->y-new_node.y)*(it_v->y-new_node.y));
-      if(new_dist > 2) continue;
+      new_dist = (float)sqrt((it_v->x-new_node.x)*(it_v->x-new_node.x) + (it_v->y-new_node.y)*(it_v->y-new_node.y));
+      //std::cout << "NEW_DISTANCE " << new_dist << std::endl;
+      //std::cout << "DISTANCE " << dist << std::endl;
+      // if(new_dist > 2) continue;
       if(new_dist < dist){
         if(check_obstacle(*it_v, new_node)) continue;
         if(*it_v==new_node) continue;
@@ -195,6 +197,8 @@ public:
 
 
   std::vector<Node> rrt(void *grid, int n, Node start, Node goal, int max_iter = 500){
+    max_iter = 100 * n * n;
+
     std::cout << "RRT->rrt function called" << std::endl;
     int (*p_grid)[n][n] = (int (*)[n][n]) grid;
     //start.print_status();
@@ -216,7 +220,7 @@ public:
         continue;
       }
       //std::cout << "RRT->check_obstacle function called" << std::endl;
-      Node nearest_node = find_nearest_point(new_node);
+      Node nearest_node = find_nearest_point(new_node, n);
       std::cout << "RRT->rrt find_nearest_point called" << std::endl;
       if(nearest_node.id == -1) continue;
       std::cout << "Nearest node id = " << nearest_node.id <<std::endl;
@@ -291,7 +295,7 @@ print_path(std::vector<Node> path_vector, Node start, Node goal, void *grid, int
 }
 
 int main(){
-  int n = 3;
+  int n = 10;
   int num_points = n*n;
 
   n = 6;
