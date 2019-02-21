@@ -205,7 +205,22 @@ public:
     point_list.push_back(start);
     (*p_grid)[start.x][start.y]=2;
     int iter = 0;
+    Node new_node = start;
+    if(!check_obstacle(new_node, goal)){
+      std::cout << "No obstacle between here and goal" << std::endl;
+
+      //new_node.print_status();
+      //goal.print_status();
+
+      goal.pid=new_node.id;
+      point_list.push_back(goal);
+      std::vector<Node>::iterator it_v;
+      //for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v) it_v->print_status();
+      return this->point_list;
+    }
+
     while(true){
+
       iter++;
       if(iter > max_iter){
         Node no_path_node(-1,-1,-1,-1,-1);
@@ -213,7 +228,7 @@ public:
         point_list.push_back(no_path_node);
         return point_list;
       }
-      Node new_node = generate_random_node(n);
+      new_node = generate_random_node(n);
       std::cout << "RRT->generate_random_node called" << std::endl;
       if ((*p_grid)[new_node.x][new_node.y]!=0){
         std::cout << "already seen" << std::endl;
@@ -224,11 +239,12 @@ public:
       std::cout << "RRT->rrt find_nearest_point called" << std::endl;
       if(nearest_node.id == -1) continue;
       std::cout << "Nearest node id = " << nearest_node.id <<std::endl;
+      (*p_grid)[new_node.x][new_node.y]=2;
       point_list.push_back(new_node);
       new_node.print_status();
       if(!check_obstacle(new_node, goal)){
         std::cout << "No obstacle between here and goal" << std::endl;
-        (*p_grid)[new_node.x][new_node.y]=2;
+
         //new_node.print_status();
         //goal.print_status();
 
@@ -298,15 +314,17 @@ int main(){
   int n = 10;
   int num_points = n*n;
 
+
   n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 1 , 1 , 0 , 0, 0 },
                      { 1 , 1 , 0 , 0 , 1, 0 },
                      { 1 , 0 , 0 , 1 , 1, 0 },
-                     { 0 , 1 , 1 , 1 , 1, 1 },
+                     { 1 , 1 , 1 , 1 , 1, 1 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
+
 
   //int grid[n][n];
   //make_grid(grid, n);
