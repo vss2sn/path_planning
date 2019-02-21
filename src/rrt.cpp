@@ -148,17 +148,12 @@ public:
       }
     }
     else {
-      std::cout << "New call-----------------------------------------------------" << std::endl;
-      n_1.print_status();
-      n_2.print_status();
       float slope = (float)(n_2.x - n_1.x)/(float)(n_2.y - n_1.y);
       std::vector<Node>::iterator it_v;
       float c = (float)n_2.x - slope * (float)n_2.y;
       for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
         if(!(((n_1.y>=it_v->y) && (it_v->y>= n_2.y)) || ((n_1.y<=it_v->y) && (it_v->y<= n_2.y)))) continue;
         float arr[4];
-        std::cout << "New obstacle:" << std::endl;
-        it_v->print_status();
         arr[0] = (float)it_v->x+0.5 - slope*((float)it_v->y+0.5) - c;
         arr[1] = (float)it_v->x+0.5 - slope*((float)it_v->y-0.5) - c;
         arr[2] = (float)it_v->x-0.5 - slope*((float)it_v->y+0.5) - c;
@@ -166,23 +161,14 @@ public:
         int count = 0;
         int j = 0;
         for (int i=0;i<4;i++){
-          std::cout << "Value:" << arr[i] << std::endl;
           if(fabs(arr[i]) <= 0.000001){
-            std::cout << "tolerance for not an obstacle" <<std::endl;
-            std::cout << count << std::endl;
             count +=1;
             if(j==0 && i==0)j=1;
-            if(count > 1) {
-              std::cout << "Obstacle!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-              return true;
-            }
+            if(count > 1) return true;
             continue;
           }
           arr[i] = arr[i]/fabs(arr[i]);
-          if ((arr[j]-arr[i]) != 0 ){
-            std::cout << "Obstacle!!!!!!!!!!!!!!" << std::endl;
-            return true;
-          }
+          if ((arr[j]-arr[i]) != 0 )return true;
         }
 
 
@@ -226,23 +212,6 @@ public:
         return point_list;
       }
       new_node = generate_random_node(n);
-      if(new_node.x == 2 && new_node.y == 1){
-        print_grid((*p_grid), n);
-        std::this_thread::sleep_for (std::chrono::seconds(5));
-        if ((*p_grid)[new_node.x][new_node.y]!=0){
-          std::cout << "1" << std::endl;
-          std::this_thread::sleep_for (std::chrono::seconds(1));
-          continue;
-        }
-        Node nearest_node = find_nearest_point(new_node, n);
-        if(nearest_node.id == -1){
-          std::cout << "2" << std::endl;
-          std::this_thread::sleep_for (std::chrono::seconds(5));
-          continue;
-        }
-      }
-      //Node my_node(1,1,0,n+1,0);
-      //new_node = my_node;
       if ((*p_grid)[new_node.x][new_node.y]!=0){
         continue;
       }
