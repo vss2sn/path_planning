@@ -141,19 +141,51 @@ public:
   }
 
   bool check_obstacle(Node& n_1, Node& n_2){
-    if (n_2.x - n_1.x == 0){
-      float c = n_2.x;
+    if (n_2.y - n_1.y == 0){
+      float c = n_2.y;
       for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
-        if ((float)it_v->x == c) return true;
+        if ((float)it_v->y == c) return true;
       }
     }
     else {
-      float slope = (float)(n_2.y - n_1.y)/(float)(n_2.x - n_1.x);
-
+      std::cout << "New call-----------------------------------------------------" << std::endl;
+      n_1.print_status();
+      n_2.print_status();
+      float slope = (float)(n_2.x - n_1.x)/(float)(n_2.y - n_1.y);
       std::vector<Node>::iterator it_v;
-      float c = (float)n_2.y - slope * (float)n_2.x;
+      float c = (float)n_2.x - slope * (float)n_2.y;
       for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
-        if (fabs((float)it_v->y - slope*((float)it_v->x) - c) < 1) return true;
+        if(!(((n_1.y>=it_v->y) && (it_v->y>= n_2.y)) || ((n_1.y<=it_v->y) && (it_v->y<= n_2.y)))) continue;
+        float arr[4];
+        std::cout << "New obstacle:" << std::endl;
+        it_v->print_status();
+        arr[0] = (float)it_v->x+0.5 - slope*((float)it_v->y+0.5) - c;
+        arr[1] = (float)it_v->x+0.5 - slope*((float)it_v->y-0.5) - c;
+        arr[2] = (float)it_v->x-0.5 - slope*((float)it_v->y+0.5) - c;
+        arr[3] = (float)it_v->x-0.5 - slope*((float)it_v->y-0.5) - c;
+        int count = 0;
+        int j = 0;
+        for (int i=0;i<4;i++){
+          std::cout << "Value:" << arr[i] << std::endl;
+          if(fabs(arr[i]) <= 0.000001){
+            std::cout << "tolerance for not an obstacle" <<std::endl;
+            std::cout << count << std::endl;
+            count +=1;
+            if(j==0 && i==0)j=1;
+            if(count > 1) {
+              std::cout << "Obstacle!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+              return true;
+            }
+            continue;
+          }
+          arr[i] = arr[i]/fabs(arr[i]);
+          if ((arr[j]-arr[i]) != 0 ){
+            std::cout << "Obstacle!!!!!!!!!!!!!!" << std::endl;
+            return true;
+          }
+        }
+
+
       }
     }
     return false;
@@ -171,7 +203,7 @@ public:
 
 
   std::vector<Node> rrt(void *grid, int n, Node start, Node goal, int max_iter = 500){
-    max_iter = 100 * n * n;
+    max_iter = 5000 * n * n;
 
     int (*p_grid)[n][n] = (int (*)[n][n]) grid;
     point_list.push_back(start);
@@ -186,6 +218,7 @@ public:
 
     while(true){
       iter++;
+
       if(iter > max_iter){
         Node no_path_node(-1,-1,-1,-1,-1);
         point_list.clear();
@@ -193,11 +226,30 @@ public:
         return point_list;
       }
       new_node = generate_random_node(n);
+      if(new_node.x == 2 && new_node.y == 1){
+        print_grid((*p_grid), n);
+        std::this_thread::sleep_for (std::chrono::seconds(5));
+        if ((*p_grid)[new_node.x][new_node.y]!=0){
+          std::cout << "1" << std::endl;
+          std::this_thread::sleep_for (std::chrono::seconds(1));
+          continue;
+        }
+        Node nearest_node = find_nearest_point(new_node, n);
+        if(nearest_node.id == -1){
+          std::cout << "2" << std::endl;
+          std::this_thread::sleep_for (std::chrono::seconds(5));
+          continue;
+        }
+      }
+      //Node my_node(1,1,0,n+1,0);
+      //new_node = my_node;
       if ((*p_grid)[new_node.x][new_node.y]!=0){
         continue;
       }
       Node nearest_node = find_nearest_point(new_node, n);
-      if(nearest_node.id == -1) continue;
+      if(nearest_node.id == -1){
+        continue;
+      }
       (*p_grid)[new_node.x][new_node.y]=2;
       point_list.push_back(new_node);
       if(!check_obstacle(new_node, goal)){
@@ -205,6 +257,7 @@ public:
         point_list.push_back(goal);
         return this->point_list;
       }
+      //break;
     }
   }
 
@@ -227,6 +280,7 @@ print_path(std::vector<Node> path_vector, Node start, Node goal, void *grid, int
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   if(path_vector[0].id == -1){
     std::cout << "No path exists" << std::endl;
+    print_grid(*p_grid, n);
     return 0;
   }
 
@@ -259,17 +313,24 @@ print_path(std::vector<Node> path_vector, Node start, Node goal, void *grid, int
 }
 
 int main(){
-  int n = 10;
+  int n = 3;
   int num_points = n*n;
 
+  /*
+  int grid[n][n] = {
+                     { 0 , 1 , 1 },
+                     { 1 , 0 , 1 },
+                     { 1 , 1 , 0 }
+                   };
+  */
 
   n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 1 , 1 , 0 , 0, 0 },
-                     { 1 , 1 , 0 , 0 , 1, 0 },
-                     { 1 , 0 , 0 , 1 , 1, 0 },
-                     { 1 , 0 , 1 , 1 , 1, 1 },
+                     { 0 , 1 , 0 , 0 , 0, 0 },
+                     { 1 , 0 , 1 , 1 , 1, 0 },
+                     { 1 , 0 , 1 , 0 , 1, 0 },
+                     { 0 , 0 , 1 , 1 , 1, 1 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
 
@@ -286,7 +347,7 @@ int main(){
   print_grid(grid, n);
 
   //Make sure start and goal not obstacles and their ids are correctly assigned.
-  Node start(0,1,0,0,0);
+  Node start(0,0,0,0,0);
   start.id = start.x * n + start.y;
   start.pid = start.x * n + start.y;
   Node goal(n-1,n-1,0,0,0);
