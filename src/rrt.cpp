@@ -5,9 +5,6 @@ Dijstra grid based planning
 */
 
 #include "main.h"
-#include <cmath>
-#include <chrono>
-#include <thread>
 
 class Node{
 
@@ -128,57 +125,37 @@ public:
     float new_dist = (float)(n*n);
     for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
       new_dist = (float)sqrt((it_v->x-new_node.x)*(it_v->x-new_node.x) + (it_v->y-new_node.y)*(it_v->y-new_node.y));
-      //std::cout << "NEW_DISTANCE " << new_dist << std::endl;
-      //std::cout << "DISTANCE " << dist << std::endl;
-      // if(new_dist > 2) continue;
       if(new_dist < dist){
         if(check_obstacle(*it_v, new_node)) continue;
         if(*it_v==new_node) continue;
         if(it_v->pid==new_node.id) continue;
         dist = new_dist;
         it_v_store = it_v;
-        std::cout <<"New_node should have updated" << std::endl;
       }
     }
     if(dist!=n*n){
       nearest_node = *it_v_store;
       new_node.pid = nearest_node.id;
     }
-    std::cout <<"Nearest neighbour" << std::endl;
-    nearest_node.print_status();
-    std::cout <<"Updated new_node:" << std::endl;
-    new_node.print_status();
     return nearest_node;
   }
 
   bool check_obstacle(Node& n_1, Node& n_2){
-    //std::cout << "In check_obstacle function" << std::endl;
     if (n_2.x - n_1.x == 0){
-      //std::cout << "In check_obstacle function if" << std::endl;
       float c = n_2.x;
-      //it_v=obstacle_list.end();
-      //std::cout << "c created" << std::endl;
-      //it_v = obstacle_list.begin();
       for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
-        //std::cout << "in loop" << std::endl;
         if ((float)it_v->x == c) return true;
       }
     }
     else {
-      //std::cout << "In check_obstacle function else" << std::endl;
       float slope = (float)(n_2.y - n_1.y)/(float)(n_2.x - n_1.x);
-      //std::cout << "slope = " << slope << std::endl;
 
       std::vector<Node>::iterator it_v;
       float c = (float)n_2.y - slope * (float)n_2.x;
-      //std::cout << "c = " << c << std::endl;
       for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
-        //std::cout << "in loop" << std::endl;
-        //std::cout << "Difference: " << fabs((float)it_v->y - slope*((float)it_v->x) - c) << std::endl;
         if (fabs((float)it_v->y - slope*((float)it_v->x) - c) < 1) return true;
       }
     }
-    //std::cout << "OUT" << std::endl;
     return false;
   }
 
@@ -188,10 +165,7 @@ public:
     std::uniform_int_distribution<int> distr(0,n-1); // define the range
     int x = distr(eng);
     int y = distr(eng);
-    // Node new_node(0, 0, 0, 0, 0);
     Node new_node(x, y, 0, n*x+y, 0);
-    std::cout << "New node" << std::endl;
-    //new_node.print_status();
     return new_node;
   }
 
@@ -199,28 +173,18 @@ public:
   std::vector<Node> rrt(void *grid, int n, Node start, Node goal, int max_iter = 500){
     max_iter = 100 * n * n;
 
-    std::cout << "RRT->rrt function called" << std::endl;
     int (*p_grid)[n][n] = (int (*)[n][n]) grid;
-    //start.print_status();
     point_list.push_back(start);
     (*p_grid)[start.x][start.y]=2;
     int iter = 0;
     Node new_node = start;
     if(!check_obstacle(new_node, goal)){
-      std::cout << "No obstacle between here and goal" << std::endl;
-
-      //new_node.print_status();
-      //goal.print_status();
-
       goal.pid=new_node.id;
       point_list.push_back(goal);
-      std::vector<Node>::iterator it_v;
-      //for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v) it_v->print_status();
       return this->point_list;
     }
 
     while(true){
-
       iter++;
       if(iter > max_iter){
         Node no_path_node(-1,-1,-1,-1,-1);
@@ -229,29 +193,16 @@ public:
         return point_list;
       }
       new_node = generate_random_node(n);
-      std::cout << "RRT->generate_random_node called" << std::endl;
       if ((*p_grid)[new_node.x][new_node.y]!=0){
-        std::cout << "already seen" << std::endl;
         continue;
       }
-      //std::cout << "RRT->check_obstacle function called" << std::endl;
       Node nearest_node = find_nearest_point(new_node, n);
-      std::cout << "RRT->rrt find_nearest_point called" << std::endl;
       if(nearest_node.id == -1) continue;
-      std::cout << "Nearest node id = " << nearest_node.id <<std::endl;
       (*p_grid)[new_node.x][new_node.y]=2;
       point_list.push_back(new_node);
-      new_node.print_status();
       if(!check_obstacle(new_node, goal)){
-        std::cout << "No obstacle between here and goal" << std::endl;
-
-        //new_node.print_status();
-        //goal.print_status();
-
         goal.pid=new_node.id;
         point_list.push_back(goal);
-        std::vector<Node>::iterator it_v;
-        //for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v) it_v->print_status();
         return this->point_list;
       }
     }
@@ -261,10 +212,8 @@ public:
     int (*p_grid)[n][n] = (int (*)[n][n]) grid;
     for(int i=0; i < n; i++){
       for(int j=0;j < n; j++){
-//        std::cout << "Hello" << std::endl;
         if((*p_grid)[i][j]==1){
           Node obs(i,j,0,i*n+j,0);
-          //obs.print_status();
           obstacle_list.push_back(obs);
         }
       }
@@ -292,7 +241,6 @@ print_path(std::vector<Node> path_vector, Node start, Node goal, void *grid, int
   path_vector[i].print_status();
   (*p_grid)[path_vector[i].x][path_vector[i].y] = 3;
   while(path_vector[i].id!=start.id){
-    //std::this_thread::sleep_for(std::chrono::milliseconds(500));
     for(int j = 0; j < path_vector.size(); j++){
       if(path_vector[i].pid == path_vector[j].id){
         i=j;
@@ -321,7 +269,7 @@ int main(){
                      { 0 , 1 , 1 , 0 , 0, 0 },
                      { 1 , 1 , 0 , 0 , 1, 0 },
                      { 1 , 0 , 0 , 1 , 1, 0 },
-                     { 1 , 1 , 1 , 1 , 1, 1 },
+                     { 1 , 0 , 1 , 1 , 1, 1 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
 
@@ -347,9 +295,7 @@ int main(){
   grid[start.x][start.y] = 0;
   grid[goal.x][goal.y] = 0;
   RRT new_rrt;
-  std::cout << "RRT initialised." << std::endl;
   new_rrt.create_obstacle_list(grid, n);
-  print_grid(grid, n);
 
   std::vector<Node> path_vector = new_rrt.rrt(grid, n, start, goal, 500);
   print_path(path_vector, start, goal, grid, n);
