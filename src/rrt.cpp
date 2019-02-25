@@ -10,9 +10,10 @@ class Node{
 
 public:
 
-  int x, y, cost, id, pid;
+  int x, y, id, pid;
+  double cost;
 
-  Node(int x = 0, int y = 0, int cost = 0, int id = 0, int pid = 0){
+  Node(int x = 0, int y = 0, double cost = 0, int id = 0, int pid = 0){
     this->x = x;
     this->y = y;
     this->cost = cost;
@@ -136,6 +137,7 @@ public:
     if(dist!=n*n){
       nearest_node = *it_v_store;
       new_node.pid = nearest_node.id;
+      new_node.cost = nearest_node.cost + dist;
     }
     return nearest_node;
   }
@@ -296,7 +298,7 @@ int main(){
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 1 , 0 , 0 , 0, 0 },
-                     { 1 , 1 , 1 , 1 , 1, 0 },
+                     { 1 , 0 , 1 , 1 , 1, 0 },
                      { 1 , 0 , 1 , 0 , 1, 0 },
                      { 0 , 0 , 1 , 1 , 1, 1 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
