@@ -166,7 +166,6 @@ public:
   }
 
   bool check_obstacle(Node& n_1, Node& n_2){
-    return false;
     if (n_2.y - n_1.y == 0){
       double c = n_2.y;
       for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
@@ -414,20 +413,20 @@ int main(){
                      { 0 , 0 , 0 , 0 }
                    };
 */
-  /*
+
   n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 1 , 0 , 0 , 0, 0 },
-                     { 1 , 0 , 1 , 1 , 1, 0 },
+                     { 1 , 0 , 0 , 1 , 1, 0 },
                      { 1 , 0 , 1 , 0 , 1, 0 },
                      { 0 , 0 , 1 , 1 , 1, 1 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
- */
 
-  int grid[n][n];
-  make_grid(grid, n);
+
+  // int grid[n][n];
+  // make_grid(grid, n);
 
   //NOTE:
   // x = row index, y = column index.
@@ -449,7 +448,7 @@ int main(){
   RRT_STAR new_rrt_star;
   new_rrt_star.create_obstacle_list(grid, n);
 
-  std::vector<Node> path_vector = new_rrt_star.rrt_star(grid, n, start, goal, 20, 1.5);
+  std::vector<Node> path_vector = new_rrt_star.rrt_star(grid, n, start, goal, 20, 2);
   print_path(path_vector, start, goal, grid, n);
 
   return 0;
