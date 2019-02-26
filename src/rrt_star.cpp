@@ -131,29 +131,17 @@ public:
     double dist = (double)(n*n);
     double new_dist = (double)(n*n);
     for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
-      // if(new_node == goal) std::cout << "Node 1:" << std::endl;
-      // if(new_node == goal) new_node.print_status();
-      // if(new_node == goal) std::cout << "Node 2:" << std::endl;
-      // if(new_node == goal) it_v->print_status();
       new_dist = (double)sqrt(((double)(it_v->x-new_node.x)*(double)(it_v->x-new_node.x))
                   + ((double)(it_v->y-new_node.y)*(double)(it_v->y-new_node.y)));
       if(new_dist > threshold) continue;
-      // if(new_node == goal) std::cout << "new dist before update :  " <<new_dist << std::endl;
       new_dist += it_v->cost;
-      // if(new_node == goal) std::cout << "new dist after update :  " <<new_dist << std::endl;
-      // if(new_node == goal) std::cout << "dist    :    " << dist     << std::endl;
-      // if(new_node == goal) std::cout << "new_dist:    " << new_dist << std::endl;
 
-      if(check_obstacle(*it_v, new_node)){
-        // if(new_node == goal) std::cout << "Obstacle" << std::endl;
-        continue;
-      }
+      if(check_obstacle(*it_v, new_node)) continue;
       if(it_v->id==new_node.id) continue;
       near_nodes.push_back(*it_v);
       near_nodes_dist.push_back(new_dist);
       if(it_v->pid==new_node.id) continue;
       if(new_dist >= dist) continue;
-      // if(new_node == goal)  std::cout <<"Distance updated"<< std::endl;
       dist = new_dist;
       it_v_store = it_v;
     }
@@ -192,19 +180,11 @@ public:
           if(fabs(arr[i]) <= 0.000001){
             count +=1;
             if(j==0 && i==0)j=1;
-            if(count > 1){
-              // std::cout << "THis obs" << std::endl;
-              // it_v->print_status();
-             return true;
-            }
+            if(count > 1) return true;
             continue;
           }
           arr[i] = arr[i]/fabs(arr[i]);
-          if ((arr[j]-arr[i]) != 0 ){
-            // std::cout << "THis obs" << std::endl;
-            // it_v->print_status();
-           return true;
-          }
+          if ((arr[j]-arr[i]) != 0 ) return true;
         }
       }
     }
@@ -247,18 +227,15 @@ public:
     (*p_grid)[start.x][start.y]=2;
     int iter = 0;
     Node new_node = start;
-    if(check_goal_visible(new_node)) found_goal = true;//return point_list;
-
+    if(check_goal_visible(new_node)) found_goal = true;
     while(true){
       iter++;
-      //std::cout << "ITER ------------------------->>>>>>>>>>>>>>>>> " <<iter<< std::endl;
       if(iter > max_iter){
         if(!found_goal){
           Node no_path_node(-1,-1,-1,-1,-1);
           point_list.clear();
           point_list.push_back(no_path_node);
         }
-        //print_cost((*p_grid),n);
         return point_list;
       }
       new_node = generate_random_node(n);
@@ -270,7 +247,6 @@ public:
         continue;
       }
       (*p_grid)[new_node.x][new_node.y]=2;
-      //new_node.print_status();
       std::vector<Node>::iterator it_v;
 
       for( it_v = point_list.begin(); it_v!=point_list.end(); ++it_v){
@@ -283,15 +259,8 @@ public:
         }
       }
       if(it_v==point_list.end()) point_list.push_back(new_node);
-
-      // std::cout << "-------------------New node is--------------------" << std::endl;
-      if(check_goal_visible(new_node)) found_goal = true;//return point_list;
-      // new_node.print_status();
+      if(check_goal_visible(new_node)) found_goal = true;
       rewire(new_node);
-      //print_grid((*p_grid), n);
-      //std::cout << "COST:"<< std::endl;
-      //print_cost((*p_grid), n);
-      //break;
     }
   }
 
@@ -314,7 +283,6 @@ public:
           }
         }
         if(it_v==point_list.end()) point_list.push_back(goal);
-        //point_list.push_back(goal);
         return true;
       }
     }
@@ -350,14 +318,6 @@ public:
         std::cout << std::setw(10) << "  , ";
       }
       std::cout << std::endl << std::endl;
-    }
-    for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
-      if( it_v->x == it_v->y){
-          if((*p_grid)[it_v->x][it_v->y] != 3){
-            //std::cout << "Alert!!!!!!!!!!!"<< std::endl;
-            break;
-          }
-      }
     }
   }
 };
@@ -413,7 +373,7 @@ int main(){
                      { 0 , 0 , 0 , 0 }
                    };
 */
-
+  /*
   n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
@@ -423,10 +383,10 @@ int main(){
                      { 0 , 0 , 1 , 1 , 1, 1 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
+                   */
 
-
-  // int grid[n][n];
-  // make_grid(grid, n);
+   int grid[n][n];
+   make_grid(grid, n);
 
   //NOTE:
   // x = row index, y = column index.
