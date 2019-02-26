@@ -153,6 +153,7 @@ public:
   Node start, goal;
   double threshold = 1;
   int n;
+  bool found_goal = false;
 
   std::vector<Edge>::iterator find_edge(Node child_in){
     //std::cout <<"Looking for"<< std::endl;
@@ -191,9 +192,9 @@ public:
         continue;
       }
       if(*it_v==new_node) continue;
-      if(it_v->pid==new_node.id) continue;
       near_nodes.push_back(*it_v);
       near_nodes_dist.push_back(new_dist);
+      if(it_v->pid==new_node.id) continue;
       if(new_dist >= dist) continue;
       std::cout <<"Distance updated"<< std::endl;
       dist = new_dist;
@@ -277,6 +278,14 @@ public:
   }
 
   void rewire(Node new_node){
+    std::cout << "In rewire--------------------------------------" << std::endl;
+    std::cout << "--------------------------------------" << std::endl;
+    std::cout << "--------------------------------------" << std::endl;
+    std::cout << "--------------------------------------" << std::endl;
+    std::cout << "--------------------------------------" << std::endl;
+    std::cout << "--------------------------------------" << std::endl;
+    std::cout << "--------------------------------------" << std::endl;
+
     std::cout << "New node:" << std::endl;
     new_node.print_status();
     double new_cost = get_cost(new_node);
@@ -294,6 +303,14 @@ public:
         it_e->update_parent(new_node);
         it_e->parent.print_status();
         std::cout << "Rewire triggered--------------------------------------" << std::endl;
+        std::cout << "--------------------------------------" << std::endl;
+        std::cout << "--------------------------------------" << std::endl;
+        std::cout << "--------------------------------------" << std::endl;
+        std::cout << "--------------------------------------" << std::endl;
+        std::cout << "--------------------------------------" << std::endl;
+        std::cout << "--------------------------------------" << std::endl;
+
+
         for(it_v = point_list.begin(); it_v!=point_list.end();++it_v){
           if(*it_v==near_nodes[i]) break;
         }
@@ -316,18 +333,7 @@ public:
     (*p_grid)[start.x][start.y]=2;
     int iter = 0;
     Node new_node = start;
-    if(!check_obstacle(new_node, goal)){
-      double new_dist = (float)sqrt((goal.x-new_node.x)*(goal.x-new_node.x)
-                  + (goal.y-new_node.y)*(goal.y-new_node.y));
-      if(new_dist <=threshold){
-        new_dist+=get_cost(new_node);
-        goal.pid = new_node.id;
-        goal.cost = new_dist;
-        edge_list.push_back(Edge(goal,new_node));
-        point_list.push_back(goal);
-        return this->point_list;
-      }
-    }
+    if(check_goal_visible(new_node)) return point_list;
 
     while(true){
       iter++;
@@ -350,22 +356,26 @@ public:
       point_list.push_back(new_node);
       std::cout << "-------------------New node is--------------------" << std::endl;
       new_node.print_status();
-
-      if(!check_obstacle(new_node, goal)){
-        double new_dist = (float)sqrt((goal.x-new_node.x)*(goal.x-new_node.x)
-                    + (goal.y-new_node.y)*(goal.y-new_node.y));
-        if(new_dist <=threshold){
-          new_dist+=get_cost(new_node);
-          goal.pid = new_node.id;
-          goal.cost = new_dist;
-          edge_list.push_back(Edge(goal,new_node));
-          point_list.push_back(goal);
-          return this->point_list;
-        }
-      }
+      if(check_goal_visible(new_node)) return point_list;
       rewire(new_node);
       //break;
     }
+  }
+
+  bool check_goal_visible(Node new_node){
+    if(!check_obstacle(new_node, goal)){
+      double new_dist = (float)sqrt((goal.x-new_node.x)*(goal.x-new_node.x)
+                  + (goal.y-new_node.y)*(goal.y-new_node.y));
+      if(new_dist <=threshold){
+        new_dist+=get_cost(new_node);
+        goal.pid = new_node.id;
+        goal.cost = new_dist;
+        edge_list.push_back(Edge(goal,new_node));
+        point_list.push_back(goal);
+        return true;
+      }
+    }
+    return false;
   }
 
   void create_obstacle_list(void *grid, int n){
@@ -420,17 +430,18 @@ print_path(std::vector<Node> path_vector, Node start, Node goal, void *grid, int
 }
 
 int main(){
-  int n = 10;
+  int n = 4;
   int num_points = n*n;
 
-/*
+  /*
   int grid[n][n] = {
-                     { 0 , 0 , 0 },
-                     { 1 , 1 , 0 },
-                     { 1 , 1 , 0 }
+                     { 0 , 0 , 0 , 0 },
+                     { 0 , 0 , 0 , 0 },
+                     { 0 , 1 , 1 , 0 },
+                     { 0 , 0 , 0 , 0 }
                    };
 */
-/*
+
   n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
@@ -440,10 +451,10 @@ int main(){
                      { 0 , 0 , 1 , 1 , 1, 1 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
-*/
 
-  int grid[n][n];
-  make_grid(grid, n);
+
+  //int grid[n][n];
+  //make_grid(grid, n);
 
   //NOTE:
   // x = row index, y = column index.
