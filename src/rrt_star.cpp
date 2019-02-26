@@ -86,7 +86,7 @@ void make_grid(void *grid, int n){
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
       (*p_grid)[i][j] = distr(eng)/(n-1); // probability of obstacle is 1/n
-      (*p_grid)[i][j] = 0; // For no obstacles
+      //(*p_grid)[i][j] = 0; // For no obstacles
     }
   }
 }
@@ -111,36 +111,99 @@ void print_grid(void *grid, int n){
   std::cout << std::endl;
 }
 
-class RRT{
+class Edge{
+public:
+  Node child;
+  Node parent;
+  double dist = 0;
+
+  Edge(Node child, Node parent){
+    this->child = child;
+    this->parent = parent;
+    update_dist();
+  }
+
+  void update_dist(){
+    dist = sqrt((child.x-parent.x) * (child.x-parent.x) +
+                (child.y-parent.y) * (child.y-parent.y));
+  }
+
+  void update_parent(Node parent){
+    this->parent = parent;
+  }
+  void reverse_edge(){
+    Node temp = parent;
+    parent = child;
+    child = temp;
+    child.pid = parent.id;
+  }
+};
+
+
+
+
+class RRT_STAR{
 public:
 
   std::vector<Node> point_list;
   std::vector<Node> obstacle_list;
+  std::vector<Edge> edge_list;
+  std::vector<Node> near_nodes;
+  std::vector<double> near_nodes_dist;
   Node start, goal;
   double threshold = 1;
   int n;
+
+  std::vector<Edge>::iterator find_edge(Node child_in){
+    //std::cout <<"Looking for"<< std::endl;
+    //child_in.print_status();
+    std::vector<Edge>::iterator it;
+    for(it = edge_list.begin(); it!=edge_list.end(); ++it){
+      if(it->child == child_in) break;
+    }
+    //std::cout <<"found"<< std::endl;
+    //it->child.print_status();
+    //std::cout <<"returning"<< std::endl;
+    return it;
+  }
 
   Node find_nearest_point(Node& new_node, int n){
     Node nearest_node(-1,-1,-1,-1,-1);
     std::vector<Node>::iterator it_v;
     std::vector<Node>::iterator it_v_store;
+    //use total cost not just distance
     float dist = (float)(n*n);
     float new_dist = (float)(n*n);
     for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
-      new_dist = (float)sqrt((it_v->x-new_node.x)*(it_v->x-new_node.x) + (it_v->y-new_node.y)*(it_v->y-new_node.y));
-      if(new_dist < dist){
-        if(check_obstacle(*it_v, new_node)) continue;
-        if(*it_v==new_node) continue;
-        if(it_v->pid==new_node.id) continue;
-        if(new_dist > threshold) continue;
-        dist = new_dist;
-        it_v_store = it_v;
+      std::cout << "Node 1:" << std::endl;
+      new_node.print_status();
+      std::cout << "Node 2:" << std::endl;
+      it_v->print_status();
+      new_dist = (float)sqrt((it_v->x-new_node.x)*(it_v->x-new_node.x)
+                  + (it_v->y-new_node.y)*(it_v->y-new_node.y));
+      if(new_dist > threshold) continue;
+      new_dist += get_cost(*it_v);
+      std::cout << "dist    :    " << dist     << std::endl;
+      std::cout << "new_dist:    " << new_dist << std::endl;
+
+      if(check_obstacle(*it_v, new_node)){
+        std::cout << "Obstacle" << std::endl;
+        continue;
       }
+      if(*it_v==new_node) continue;
+      if(it_v->pid==new_node.id) continue;
+      near_nodes.push_back(*it_v);
+      near_nodes_dist.push_back(new_dist);
+      if(new_dist >= dist) continue;
+      std::cout <<"Distance updated"<< std::endl;
+      dist = new_dist;
+      it_v_store = it_v;
     }
     if(dist!=n*n){
       nearest_node = *it_v_store;
       new_node.pid = nearest_node.id;
-      new_node.cost = nearest_node.cost + dist;
+      new_node.cost = dist;
+      edge_list.push_back(Edge(new_node, nearest_node));
     }
     return nearest_node;
   }
@@ -167,18 +230,25 @@ public:
         arr[3] = (float)it_v->x-0.5 - slope*((float)it_v->y-0.5) - c;
         int count = 0;
         int j = 0;
+
         for (int i=0;i<4;i++){
           if(fabs(arr[i]) <= 0.000001){
             count +=1;
             if(j==0 && i==0)j=1;
-            if(count > 1) return true;
+            if(count > 1){
+              std::cout << "THis obs" << std::endl;
+              it_v->print_status();
+             return true;
+            }
             continue;
           }
           arr[i] = arr[i]/fabs(arr[i]);
-          if ((arr[j]-arr[i]) != 0 )return true;
+          if ((arr[j]-arr[i]) != 0 ){
+            std::cout << "THis obs" << std::endl;
+            it_v->print_status();
+           return true;
+          }
         }
-
-
       }
     }
     return false;
@@ -194,10 +264,51 @@ public:
     return new_node;
   }
 
+  double get_cost(Node my_node){
+    double cost = 0;
+    std::vector<Edge>::iterator it_e;
+    while(my_node!=start){
+      std::cout << my_node.id << std::endl;
+      it_e = find_edge(my_node);
+      cost+=it_e->dist;
+      my_node = it_e->parent;
+    }
+    return cost;
+  }
 
-  std::vector<Node> rrt(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity()){
-    goal = goal_in;
+  void rewire(Node new_node){
+    std::cout << "New node:" << std::endl;
+    new_node.print_status();
+    double new_cost = get_cost(new_node);
+    std::vector<Edge>::iterator it_e;
+    std::vector<Node>::iterator it_v;
+    for(int i=0;i<near_nodes.size(); i++){
+      double current_cost = get_cost(near_nodes[i]);
+      if (current_cost > near_nodes_dist[i] + new_cost){
+        std::cout << "Node causing rewire:" << std::endl;
+        new_node.print_status();
+        it_e = find_edge(near_nodes[i]);
+        std::cout << "Node under consideration for rewire:" << std::endl;
+        it_e->child.print_status();
+        it_e->parent.print_status();
+        it_e->update_parent(new_node);
+        it_e->parent.print_status();
+        std::cout << "Rewire triggered--------------------------------------" << std::endl;
+        for(it_v = point_list.begin(); it_v!=point_list.end();++it_v){
+          if(*it_v==near_nodes[i]) break;
+        }
+        it_v->pid = new_node.id;
+        it_v->cost = near_nodes_dist[i] + new_cost;
+      }
+    }
+    near_nodes.clear();
+    near_nodes_dist.clear();
+  }
+
+
+  std::vector<Node> rrt_star(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity()){
     start = start_in;
+    goal = goal_in;
     threshold = threshold_in;
     int max_iter = max_iter_x_factor * n * n;
     int (*p_grid)[n][n] = (int (*)[n][n]) grid;
@@ -206,14 +317,18 @@ public:
     int iter = 0;
     Node new_node = start;
     if(!check_obstacle(new_node, goal)){
-      double new_dist = (float)sqrt((goal.x-new_node.x)*(goal.x-new_node.x) + (goal.y-new_node.y)*(goal.y-new_node.y));
-      if(new_dist <= threshold){
-        goal.pid=new_node.id;
-        goal.cost = new_dist + new_node.cost;
+      double new_dist = (float)sqrt((goal.x-new_node.x)*(goal.x-new_node.x)
+                  + (goal.y-new_node.y)*(goal.y-new_node.y));
+      if(new_dist <=threshold){
+        new_dist+=get_cost(new_node);
+        goal.pid = new_node.id;
+        goal.cost = new_dist;
+        edge_list.push_back(Edge(goal,new_node));
         point_list.push_back(goal);
         return this->point_list;
       }
     }
+
     while(true){
       iter++;
 
@@ -233,15 +348,22 @@ public:
       }
       (*p_grid)[new_node.x][new_node.y]=2;
       point_list.push_back(new_node);
+      std::cout << "-------------------New node is--------------------" << std::endl;
+      new_node.print_status();
+
       if(!check_obstacle(new_node, goal)){
-        double new_dist = (float)sqrt((goal.x-new_node.x)*(goal.x-new_node.x) + (goal.y-new_node.y)*(goal.y-new_node.y));
-        if(new_dist <= threshold){
-          goal.pid=new_node.id;
-          goal.cost = new_dist + new_node.cost;
+        double new_dist = (float)sqrt((goal.x-new_node.x)*(goal.x-new_node.x)
+                    + (goal.y-new_node.y)*(goal.y-new_node.y));
+        if(new_dist <=threshold){
+          new_dist+=get_cost(new_node);
+          goal.pid = new_node.id;
+          goal.cost = new_dist;
+          edge_list.push_back(Edge(goal,new_node));
           point_list.push_back(goal);
           return this->point_list;
         }
       }
+      rewire(new_node);
       //break;
     }
   }
@@ -298,17 +420,17 @@ print_path(std::vector<Node> path_vector, Node start, Node goal, void *grid, int
 }
 
 int main(){
-  int n = 3;
+  int n = 10;
   int num_points = n*n;
 
-  /*
+/*
   int grid[n][n] = {
-                     { 0 , 1 , 1 },
-                     { 1 , 0 , 1 },
+                     { 0 , 0 , 0 },
+                     { 1 , 1 , 0 },
                      { 1 , 1 , 0 }
                    };
-  */
-
+*/
+/*
   n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
@@ -318,10 +440,10 @@ int main(){
                      { 0 , 0 , 1 , 1 , 1, 1 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
+*/
 
-
-  //int grid[n][n];
-  //make_grid(grid, n);
+  int grid[n][n];
+  make_grid(grid, n);
 
   //NOTE:
   // x = row index, y = column index.
@@ -340,10 +462,10 @@ int main(){
 
   grid[start.x][start.y] = 0;
   grid[goal.x][goal.y] = 0;
-  RRT new_rrt;
-  new_rrt.create_obstacle_list(grid, n);
+  RRT_STAR new_rrt_star;
+  new_rrt_star.create_obstacle_list(grid, n);
 
-  std::vector<Node> path_vector = new_rrt.rrt(grid, n, start, goal, 5000, 3);
+  std::vector<Node> path_vector = new_rrt_star.rrt_star(grid, n, start, goal, 5000, 3);
   print_path(path_vector, start, goal, grid, n);
 
   return 0;
