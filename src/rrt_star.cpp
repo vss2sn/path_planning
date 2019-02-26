@@ -139,9 +139,6 @@ public:
   }
 };
 
-
-
-
 class RRT_STAR{
 public:
 
@@ -155,15 +152,10 @@ public:
   int n;
 
   std::vector<Edge>::iterator find_edge(Node child_in){
-    //std::cout <<"Looking for"<< std::endl;
-    //child_in.print_status();
     std::vector<Edge>::iterator it;
     for(it = edge_list.begin(); it!=edge_list.end(); ++it){
       if(it->child == child_in) break;
     }
-    //std::cout <<"found"<< std::endl;
-    //it->child.print_status();
-    //std::cout <<"returning"<< std::endl;
     return it;
   }
 
@@ -175,27 +167,16 @@ public:
     float dist = (float)(n*n);
     float new_dist = (float)(n*n);
     for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
-      std::cout << "Node 1:" << std::endl;
-      new_node.print_status();
-      std::cout << "Node 2:" << std::endl;
-      it_v->print_status();
       new_dist = (float)sqrt((it_v->x-new_node.x)*(it_v->x-new_node.x)
                   + (it_v->y-new_node.y)*(it_v->y-new_node.y));
       if(new_dist > threshold) continue;
       new_dist += get_cost(*it_v);
-      std::cout << "dist    :    " << dist     << std::endl;
-      std::cout << "new_dist:    " << new_dist << std::endl;
-
-      if(check_obstacle(*it_v, new_node)){
-        std::cout << "Obstacle" << std::endl;
-        continue;
-      }
+      if(check_obstacle(*it_v, new_node)) continue;
       if(*it_v==new_node) continue;
       if(it_v->pid==new_node.id) continue;
       near_nodes.push_back(*it_v);
       near_nodes_dist.push_back(new_dist);
       if(new_dist >= dist) continue;
-      std::cout <<"Distance updated"<< std::endl;
       dist = new_dist;
       it_v_store = it_v;
     }
@@ -235,19 +216,11 @@ public:
           if(fabs(arr[i]) <= 0.000001){
             count +=1;
             if(j==0 && i==0)j=1;
-            if(count > 1){
-              std::cout << "THis obs" << std::endl;
-              it_v->print_status();
-             return true;
-            }
+            if(count > 1) return true;
             continue;
           }
           arr[i] = arr[i]/fabs(arr[i]);
-          if ((arr[j]-arr[i]) != 0 ){
-            std::cout << "THis obs" << std::endl;
-            it_v->print_status();
-           return true;
-          }
+          if ((arr[j]-arr[i]) != 0 ) return true;
         }
       }
     }
@@ -277,23 +250,14 @@ public:
   }
 
   void rewire(Node new_node){
-    std::cout << "New node:" << std::endl;
-    new_node.print_status();
     double new_cost = get_cost(new_node);
     std::vector<Edge>::iterator it_e;
     std::vector<Node>::iterator it_v;
     for(int i=0;i<near_nodes.size(); i++){
       double current_cost = get_cost(near_nodes[i]);
       if (current_cost > near_nodes_dist[i] + new_cost){
-        std::cout << "Node causing rewire:" << std::endl;
-        new_node.print_status();
         it_e = find_edge(near_nodes[i]);
-        std::cout << "Node under consideration for rewire:" << std::endl;
-        it_e->child.print_status();
-        it_e->parent.print_status();
         it_e->update_parent(new_node);
-        it_e->parent.print_status();
-        std::cout << "Rewire triggered--------------------------------------" << std::endl;
         for(it_v = point_list.begin(); it_v!=point_list.end();++it_v){
           if(*it_v==near_nodes[i]) break;
         }
@@ -348,9 +312,6 @@ public:
       }
       (*p_grid)[new_node.x][new_node.y]=2;
       point_list.push_back(new_node);
-      std::cout << "-------------------New node is--------------------" << std::endl;
-      new_node.print_status();
-
       if(!check_obstacle(new_node, goal)){
         double new_dist = (float)sqrt((goal.x-new_node.x)*(goal.x-new_node.x)
                     + (goal.y-new_node.y)*(goal.y-new_node.y));
@@ -364,7 +325,6 @@ public:
         }
       }
       rewire(new_node);
-      //break;
     }
   }
 
