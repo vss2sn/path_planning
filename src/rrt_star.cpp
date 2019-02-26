@@ -111,64 +111,17 @@ void print_grid(void *grid, int n){
   std::cout << std::endl;
 }
 
-class Edge{
-public:
-  Node child;
-  Node parent;
-  double dist = 0;
-
-  Edge(Node child, Node parent){
-    this->child = child;
-    this->parent = parent;
-    update_dist();
-  }
-
-  void update_dist(){
-    dist = (double)sqrt((double)((double)(child.x-parent.x) * (double)(child.x-parent.x) +
-                (double)(child.y-parent.y) * (double)(child.y-parent.y)));
-  }
-
-  void update_parent(Node parent){
-    this->parent = parent;
-    child.pid = parent.id;
-    update_dist();
-  }
-  void reverse_edge(){
-    Node temp = parent;
-    parent = child;
-    child = temp;
-    child.pid = parent.id;
-  }
-};
-
-
-
-
 class RRT_STAR{
 public:
 
   std::vector<Node> point_list;
   std::vector<Node> obstacle_list;
-  std::vector<Edge> edge_list;
   std::vector<Node> near_nodes;
   std::vector<double> near_nodes_dist;
   Node start, goal;
   double threshold = 1;
   int n;
   bool found_goal = false;
-
-  std::vector<Edge>::iterator find_edge(Node child_in){
-    //std::cout <<"Looking for"<< std::endl;
-    //child_in.print_status();
-    std::vector<Edge>::iterator it;
-    for(it = edge_list.begin(); it!=edge_list.end(); ++it){
-      if(it->child == child_in) break;
-    }
-    //std::cout <<"found"<< std::endl;
-    //it->child.print_status();
-    //std::cout <<"returning"<< std::endl;
-    return it;
-  }
 
   Node find_nearest_point(Node& new_node, int n){
     Node nearest_node(-1,-1,-1,-1,-1);
@@ -178,22 +131,21 @@ public:
     double dist = (double)(n*n);
     double new_dist = (double)(n*n);
     for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
-      if(new_node == goal) std::cout << "Node 1:" << std::endl;
-      if(new_node == goal) new_node.print_status();
-      if(new_node == goal) std::cout << "Node 2:" << std::endl;
-      if(new_node == goal) it_v->print_status();
+      // if(new_node == goal) std::cout << "Node 1:" << std::endl;
+      // if(new_node == goal) new_node.print_status();
+      // if(new_node == goal) std::cout << "Node 2:" << std::endl;
+      // if(new_node == goal) it_v->print_status();
       new_dist = (double)sqrt(((double)(it_v->x-new_node.x)*(double)(it_v->x-new_node.x))
                   + ((double)(it_v->y-new_node.y)*(double)(it_v->y-new_node.y)));
       if(new_dist > threshold) continue;
-      if(new_node == goal) std::cout << "new dist before update :  " <<new_dist << std::endl;
-      //new_dist += get_cost(*it_v);
+      // if(new_node == goal) std::cout << "new dist before update :  " <<new_dist << std::endl;
       new_dist += it_v->cost;
-      if(new_node == goal) std::cout << "new dist after update :  " <<new_dist << std::endl;
-      if(new_node == goal) std::cout << "dist    :    " << dist     << std::endl;
-      if(new_node == goal) std::cout << "new_dist:    " << new_dist << std::endl;
+      // if(new_node == goal) std::cout << "new dist after update :  " <<new_dist << std::endl;
+      // if(new_node == goal) std::cout << "dist    :    " << dist     << std::endl;
+      // if(new_node == goal) std::cout << "new_dist:    " << new_dist << std::endl;
 
       if(check_obstacle(*it_v, new_node)){
-        if(new_node == goal) std::cout << "Obstacle" << std::endl;
+        // if(new_node == goal) std::cout << "Obstacle" << std::endl;
         continue;
       }
       if(it_v->id==new_node.id) continue;
@@ -201,7 +153,7 @@ public:
       near_nodes_dist.push_back(new_dist);
       if(it_v->pid==new_node.id) continue;
       if(new_dist >= dist) continue;
-      if(new_node == goal)  std::cout <<"Distance updated"<< std::endl;
+      // if(new_node == goal)  std::cout <<"Distance updated"<< std::endl;
       dist = new_dist;
       it_v_store = it_v;
     }
@@ -209,7 +161,6 @@ public:
       nearest_node = *it_v_store;
       new_node.pid = nearest_node.id;
       new_node.cost = dist;
-      edge_list.push_back(Edge(new_node, nearest_node));
     }
     return nearest_node;
   }
@@ -271,58 +222,15 @@ public:
     return new_node;
   }
 
-  double get_cost(Node my_node){
-    double cost = 0;
-    std::vector<Edge>::iterator it_e;
-    while(my_node!=start){
-      if(my_node.x == 3 && my_node.y ==3) std::cout << my_node.id <<",";
-      it_e = find_edge(my_node);
-      cost+=it_e->dist;
-      my_node = it_e->parent;
-    }
-     if(my_node.x == 3 && my_node.y ==3) std::cout << std::endl;
-    return cost;
-  }
-
   void rewire(Node new_node){
-    // std::cout << "In rewire--------------------------------------" << std::endl;
-    // std::cout << "--------------------------------------" << std::endl;
-    // std::cout << "--------------------------------------" << std::endl;
-    // std::cout << "--------------------------------------" << std::endl;
-    // std::cout << "--------------------------------------" << std::endl;
-    // std::cout << "--------------------------------------" << std::endl;
-    // std::cout << "--------------------------------------" << std::endl;
-    //
-    // std::cout << "New node:" << std::endl;
-    // new_node.print_status();
-    double new_cost = get_cost(new_node);
-    std::vector<Edge>::iterator it_e;
     std::vector<Node>::iterator it_v;
     for(int i=0;i<near_nodes.size(); i++){
-      double current_cost = get_cost(near_nodes[i]);
-      if (current_cost > near_nodes_dist[i] + new_cost){
-         std::cout << "Node causing rewire:" << std::endl;
-         new_node.print_status();
-        it_e = find_edge(near_nodes[i]);
-        std::cout << "Node under consideration for rewire:" << std::endl;
-         it_e->child.print_status();
-        // it_e->parent.print_status();
-        it_e->update_parent(new_node);
-        // it_e->parent.print_status();
-        // std::cout << "Rewire triggered--------------------------------------" << std::endl;
-        // std::cout << "--------------------------------------" << std::endl;
-        // std::cout << "--------------------------------------" << std::endl;
-        // std::cout << "--------------------------------------" << std::endl;
-        // std::cout << "--------------------------------------" << std::endl;
-        // std::cout << "--------------------------------------" << std::endl;
-        // std::cout << "--------------------------------------" << std::endl;
-
-
+      if (near_nodes[i].cost > near_nodes_dist[i] + new_node.cost){
         for(it_v = point_list.begin(); it_v!=point_list.end();++it_v){
           if(*it_v==near_nodes[i]) break;
         }
         it_v->pid = new_node.id;
-        it_v->cost = near_nodes_dist[i] + new_cost;
+        it_v->cost = near_nodes_dist[i] + new_node.cost;
       }
     }
     near_nodes.clear();
@@ -344,14 +252,14 @@ public:
 
     while(true){
       iter++;
-      std::cout << "ITER ------------------------->>>>>>>>>>>>>>>>> " <<iter<< std::endl;
+      //std::cout << "ITER ------------------------->>>>>>>>>>>>>>>>> " <<iter<< std::endl;
       if(iter > max_iter){
         if(!found_goal){
           Node no_path_node(-1,-1,-1,-1,-1);
           point_list.clear();
           point_list.push_back(no_path_node);
         }
-        print_cost((*p_grid),n);
+        //print_cost((*p_grid),n);
         return point_list;
       }
       new_node = generate_random_node(n);
@@ -363,8 +271,9 @@ public:
         continue;
       }
       (*p_grid)[new_node.x][new_node.y]=2;
-      new_node.print_status();
+      //new_node.print_status();
       std::vector<Node>::iterator it_v;
+
       for( it_v = point_list.begin(); it_v!=point_list.end(); ++it_v){
         if(new_node.x == it_v->x && new_node.y == it_v->y){
           if(new_node.cost < it_v->cost){
@@ -380,9 +289,9 @@ public:
       if(check_goal_visible(new_node)) found_goal = true;//return point_list;
       // new_node.print_status();
       rewire(new_node);
-      print_grid((*p_grid), n);
-      std::cout << "COST:"<< std::endl;
-      print_cost((*p_grid), n);
+      //print_grid((*p_grid), n);
+      //std::cout << "COST:"<< std::endl;
+      //print_cost((*p_grid), n);
       //break;
     }
   }
@@ -392,10 +301,9 @@ public:
       double new_dist = (double)sqrt((double)(goal.x-new_node.x)*(double)(goal.x-new_node.x)
                   + (double)(goal.y-new_node.y)*(double)(goal.y-new_node.y));
       if(new_dist <=threshold){
-        new_dist+=get_cost(new_node);
+        new_dist+=new_node.cost;
         goal.pid = new_node.id;
         goal.cost = new_dist;
-        edge_list.push_back(Edge(goal,new_node));
         std::vector<Node>::iterator it_v;
         for( it_v = point_list.begin(); it_v!=point_list.end(); ++it_v){
           if(goal.x == it_v->x && goal.y == it_v->y){
@@ -447,7 +355,7 @@ public:
     for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
       if( it_v->x == it_v->y){
           if((*p_grid)[it_v->x][it_v->y] != 3){
-            std::cout << "OIIIIII!!!!!!!!!!!"<< std::endl;
+            //std::cout << "Alert!!!!!!!!!!!"<< std::endl;
             break;
           }
       }
