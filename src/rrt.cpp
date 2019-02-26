@@ -116,6 +116,8 @@ public:
 
   std::vector<Node> point_list;
   std::vector<Node> obstacle_list;
+  Node start, goal;
+  double threshold = 1;
   int n;
 
   Node find_nearest_point(Node& new_node, int n){
@@ -130,6 +132,7 @@ public:
         if(check_obstacle(*it_v, new_node)) continue;
         if(*it_v==new_node) continue;
         if(it_v->pid==new_node.id) continue;
+        if(new_dist > threshold) continue;
         dist = new_dist;
         it_v_store = it_v;
       }
@@ -146,6 +149,7 @@ public:
     if (n_2.y - n_1.y == 0){
       float c = n_2.y;
       for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
+        if(!(((n_1.x>=it_v->x) && (it_v->x>= n_2.x)) || ((n_1.x<=it_v->x) && (it_v->x<= n_2.x)))) continue;
         if ((float)it_v->y == c) return true;
       }
     }
@@ -155,6 +159,7 @@ public:
       float c = (float)n_2.x - slope * (float)n_2.y;
       for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
         if(!(((n_1.y>=it_v->y) && (it_v->y>= n_2.y)) || ((n_1.y<=it_v->y) && (it_v->y<= n_2.y)))) continue;
+        if(!(((n_1.x>=it_v->x) && (it_v->x>= n_2.x)) || ((n_1.x<=it_v->x) && (it_v->x<= n_2.x)))) continue;
         float arr[4];
         arr[0] = (float)it_v->x+0.5 - slope*((float)it_v->y+0.5) - c;
         arr[1] = (float)it_v->x+0.5 - slope*((float)it_v->y-0.5) - c;
@@ -190,7 +195,10 @@ public:
   }
 
 
-  std::vector<Node> rrt(void *grid, int n, Node start, Node goal, int max_iter_x_factor = 500){
+  std::vector<Node> rrt(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity()){
+    goal = goal_in;
+    start = start_in;
+    threshold = threshold_in;
     int max_iter = max_iter_x_factor * n * n;
     int (*p_grid)[n][n] = (int (*)[n][n]) grid;
     point_list.push_back(start);
@@ -198,11 +206,14 @@ public:
     int iter = 0;
     Node new_node = start;
     if(!check_obstacle(new_node, goal)){
-      goal.pid=new_node.id;
-      point_list.push_back(goal);
-      return this->point_list;
+      double new_dist = (float)sqrt((goal.x-new_node.x)*(goal.x-new_node.x) + (goal.y-new_node.y)*(goal.y-new_node.y));
+      if(new_dist <= threshold){
+        goal.pid=new_node.id;
+        goal.cost = new_dist + new_node.cost;
+        point_list.push_back(goal);
+        return this->point_list;
+      }
     }
-
     while(true){
       iter++;
 
@@ -223,9 +234,13 @@ public:
       (*p_grid)[new_node.x][new_node.y]=2;
       point_list.push_back(new_node);
       if(!check_obstacle(new_node, goal)){
-        goal.pid=new_node.id;
-        point_list.push_back(goal);
-        return this->point_list;
+        double new_dist = (float)sqrt((goal.x-new_node.x)*(goal.x-new_node.x) + (goal.y-new_node.y)*(goal.y-new_node.y));
+        if(new_dist <= threshold){
+          goal.pid=new_node.id;
+          goal.cost = new_dist + new_node.cost;
+          point_list.push_back(goal);
+          return this->point_list;
+        }
       }
       //break;
     }
@@ -328,7 +343,7 @@ int main(){
   RRT new_rrt;
   new_rrt.create_obstacle_list(grid, n);
 
-  std::vector<Node> path_vector = new_rrt.rrt(grid, n, start, goal, 5000);
+  std::vector<Node> path_vector = new_rrt.rrt(grid, n, start, goal, 5000, 3);
   print_path(path_vector, start, goal, grid, n);
 
   return 0;

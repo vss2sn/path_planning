@@ -142,7 +142,7 @@ public:
 
 
 
-class RRT{
+class RRT_STAR{
 public:
 
   std::vector<Node> point_list;
@@ -213,7 +213,7 @@ public:
       float c = n_2.y;
       for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
         if(!(((n_1.x>=it_v->x) && (it_v->x>= n_2.x)) || ((n_1.x<=it_v->x) && (it_v->x<= n_2.x)))) continue;
-        if ((float)it_v->y == c ) return true;
+        if ((float)it_v->y == c) return true;
       }
     }
     else {
@@ -306,7 +306,7 @@ public:
   }
 
 
-  std::vector<Node> rrt(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = 1){
+  std::vector<Node> rrt_star(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity()){
     start = start_in;
     goal = goal_in;
     threshold = threshold_in;
@@ -462,10 +462,10 @@ int main(){
 
   grid[start.x][start.y] = 0;
   grid[goal.x][goal.y] = 0;
-  RRT new_rrt;
-  new_rrt.create_obstacle_list(grid, n);
+  RRT_STAR new_rrt_star;
+  new_rrt_star.create_obstacle_list(grid, n);
 
-  std::vector<Node> path_vector = new_rrt.rrt(grid, n, start, goal, 5000, 3);
+  std::vector<Node> path_vector = new_rrt_star.rrt_star(grid, n, start, goal, 5000, 3);
   print_path(path_vector, start, goal, grid, n);
 
   return 0;
