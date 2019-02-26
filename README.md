@@ -1,4 +1,4 @@
-*** Path Planning ***
+**Path Planning**
 
 This repository will contain various path planning algorithms in C++.
 It currently includes an implementation of:
