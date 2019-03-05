@@ -34,7 +34,7 @@ set(file_list ${LIB_SOURCES})
 if(BUILD_INDIVIDUAL)
 
   add_definitions(-DBUILD_INDIVIDUAL)
-  list(REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
+  list(REMOVE_ITEM file_list ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
   message("${Green}Individual files being built")
   foreach(test_source_file ${file_list})
     string( REPLACE ".cpp" "" test_output_file ${test_source_file} )
