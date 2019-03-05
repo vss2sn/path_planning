@@ -24,6 +24,8 @@ int main(){
                      { 0 , 0 , 1 , 1 , 1, 1 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
+  int main_grid[n][n];
+  memcpy(main_grid, grid, n*n*sizeof(int));
 
   //int grid[n][n];
   //make_grid(grid, n);
@@ -46,20 +48,26 @@ int main(){
   grid[start.x][start.y] = 0;
   grid[goal.x][goal.y] = 0;
 
+  std::vector<Node> path_vector;
+
+  memcpy(grid, main_grid, n*n*sizeof(int));
   DIJKSTRA new_dijkstra;
-  std::vector<Node> path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
+  path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
   print_path(path_vector, start, goal, grid, n);
 
-  A_STAR new_a_star
-  std::vector<Node> path_vector = new_a_star.a_star(grid, n, start, goal);
+  memcpy(grid, main_grid, n*n*sizeof(int));
+  A_STAR new_a_star;
+  path_vector = new_a_star.a_star(grid, n, start, goal);
   print_path(path_vector, start, goal, grid, n);
 
+  memcpy(grid, main_grid, n*n*sizeof(int));
   RRT new_rrt;
-  std::vector<Node> path_vector = new_rrt.rrt(grid, n, start, goal, 5000, 3);
+  path_vector = new_rrt.rrt(grid, n, start, goal, 5000, 3);
   print_path(path_vector, start, goal, grid, n);
 
+  memcpy(grid, main_grid, n*n*sizeof(int));
   RRT_STAR new_rrt_star;
-  std::vector<Node> path_vector = new_rrt_star.rrt_star(grid, n, start, goal, 5000, 3);
+  path_vector = new_rrt_star.rrt_star(grid, n, start, goal, 5000, 3);
   print_path(path_vector, start, goal, grid, n);
 
   return 0;
