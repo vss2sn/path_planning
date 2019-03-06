@@ -62,12 +62,12 @@ int main(){
 
   memcpy(grid, main_grid, n*n*sizeof(int));
   RRT new_rrt;
-  path_vector = new_rrt.rrt(grid, n, start, goal, 5000, 3);
+  path_vector = new_rrt.rrt(grid, n, start, goal, 20, 3);
   print_path(path_vector, start, goal, grid, n);
 
   memcpy(grid, main_grid, n*n*sizeof(int));
   RRT_STAR new_rrt_star;
-  path_vector = new_rrt_star.rrt_star(grid, n, start, goal, 5000, 3);
+  path_vector = new_rrt_star.rrt_star(grid, n, start, goal, 20, 3);
   print_path(path_vector, start, goal, grid, n);
 
   return 0;

@@ -3,7 +3,7 @@
 RRT* grid based planning
 
 */
-//#include "main.h"
+
 #include "rrt_star.h"
 
 Node RRT_STAR::find_nearest_point(Node& new_node, int n){
@@ -21,6 +21,8 @@ Node RRT_STAR::find_nearest_point(Node& new_node, int n){
 
     if(check_obstacle(*it_v, new_node)) continue;
     if(it_v->id==new_node.id) continue;
+    // The nearest nodes are stored while searching for the nearest node to
+    // speed up th rewire process
     near_nodes.push_back(*it_v);
     near_nodes_dist.push_back(new_dist);
     if(it_v->pid==new_node.id) continue;
