@@ -14,7 +14,8 @@ Node RRT::find_nearest_point(Node& new_node, int n){
   double dist = (double)(n*n);
   double new_dist = (double)(n*n);
   for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
-    new_dist = (double)sqrt((double)(it_v->x-new_node.x)*(double)(it_v->x-new_node.x));
+    new_dist = (double)sqrt((double)(it_v->x-new_node.x)*(double)(it_v->x-new_node.x)+
+                            (double)(it_v->y-new_node.y)*(double)(it_v->y-new_node.y));
     if(new_dist > threshold) continue;
     if(check_obstacle(*it_v, new_node)) continue;
     if(it_v->id==new_node.id) continue;
@@ -92,7 +93,7 @@ std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int m
   int iter = 0;
   Node new_node = start;
   if(!check_obstacle(new_node, goal)){
-    double new_dist = (double)sqrt((goal.x-new_node.x)*(goal.x-new_node.x) + (goal.y-new_node.y)*(goal.y-new_node.y));
+    double new_dist = (double)sqrt((double)(goal.x-new_node.x)*(double)(goal.x-new_node.x) + (double)(goal.y-new_node.y)*(double)(goal.y-new_node.y));
     if(new_dist <= threshold){
       goal.pid=new_node.id;
       goal.cost = new_dist + new_node.cost;
@@ -120,7 +121,8 @@ std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int m
     (*p_grid)[new_node.x][new_node.y]=2;
     point_list.push_back(new_node);
     if(!check_obstacle(new_node, goal)){
-      double new_dist = (double)sqrt((goal.x-new_node.x)*(goal.x-new_node.x) + (goal.y-new_node.y)*(goal.y-new_node.y));
+      double new_dist = (double)sqrt((double)(goal.x-new_node.x)*(double)(goal.x-new_node.x) + (double)(goal.y-new_node.y)*(double)(goal.y-new_node.y));
+      std::cout << new_dist << "," << threshold << std::endl;
       if(new_dist <= threshold){
         goal.pid=new_node.id;
         goal.cost = new_dist + new_node.cost;
