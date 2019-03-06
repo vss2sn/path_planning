@@ -14,7 +14,7 @@ Node RRT::find_nearest_point(Node& new_node, int n){
   double dist = (double)(n*n);
   double new_dist = (double)(n*n);
   for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
-    new_dist = (double)sqrt(((double)(it_v->x-new_node.x)*(double)(it_v->x-new_node.x))
+    new_dist = (double)sqrt((double)(it_v->x-new_node.x)*(double)(it_v->x-new_node.x));
     if(new_dist > threshold) continue;
     if(check_obstacle(*it_v, new_node)) continue;
     if(it_v->id==new_node.id) continue;
