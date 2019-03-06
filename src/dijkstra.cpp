@@ -1,14 +1,14 @@
 /*
 
-A* grid based planning
+Dijstra grid based planning
 
 */
 
-#include "a_star.h"
+#include "dijkstra.h"
 
-std::vector<Node> A_STAR::a_star(void *grid, int n, Node start, Node goal){
+std::vector<Node> DIJKSTRA::dijkstra(void *grid, int n, Node start, Node goal){
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
-  double cost_grid[n][n];
+  int cost_grid[n][n];
   for (int i = 0; i < n; i++){
     for (int j = 0; j < n; j++){
       cost_grid[i][j] = n*n;
@@ -38,23 +38,22 @@ std::vector<Node> A_STAR::a_star(void *grid, int n, Node start, Node goal){
     for(auto it = motion.begin(); it!=motion.end(); ++it){
       Node new_point;
       new_point = current + *it;
-      new_point.h_cost = abs(new_point.x - goal.x) + abs(new_point.y - goal.y);
       if(new_point.x < 0 || new_point.y < 0
-          || new_point.x >= n || new_point.y >= n) continue; // Check boundaries
-      if(cost_grid[new_point.x][new_point.y] > new_point.cost + new_point.h_cost){//=1 && (*p_grid)[new_point.x][new_point.y]!=2){
+        || new_point.x >= n || new_point.y >= n) continue; // Check boundaries
+      if((*p_grid)[new_point.x][new_point.y]==0 && cost_grid[new_point.x][new_point.y] > new_point.cost){//=1 && (*p_grid)[new_point.x][new_point.y]!=2){
         new_point.pid = current.id;
         new_point.id = new_point.x * n + new_point.y;
         points_list.push(new_point);
+        cost_grid[new_point.x][new_point.y] = new_point.cost;
         std::vector<Node>::iterator it_v;
         it_v = find (path_vector.begin(), path_vector.end(), new_point);
         if (it_v != path_vector.end()) *it_v = new_point;
         else path_vector.push_back(new_point);
-        cost_grid[new_point.x][new_point.y] = new_point.cost + new_point.h_cost;
       }
     }
   }
   path_vector.clear();
-  Node no_path_node(-1,-1,-1,-1,-1,-1);
+  Node no_path_node(-1,-1,-1,-1,-1);
   path_vector.push_back(no_path_node);
   return path_vector;
 }
@@ -68,9 +67,9 @@ int main(){
   n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 1 , 0 , 0 , 0, 0 },
-                     { 0 , 1 , 0 , 0 , 1, 0 },
-                     { 0 , 1 , 0 , 0 , 1, 0 },
+                     { 0 , 1 , 1 , 0 , 0, 0 },
+                     { 1 , 1 , 0 , 0 , 1, 0 },
+                     { 1 , 0 , 0 , 1 , 1, 1 },
                      { 0 , 1 , 1 , 1 , 1, 0 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
@@ -87,18 +86,16 @@ int main(){
   print_grid(grid, n);
 
   //Make sure start and goal not obstacles and their ids are correctly assigned.
-  Node start(0,1,0,0,0,0);
+  Node start(0,0,0,0,0);
   start.id = start.x * n + start.y;
   start.pid = start.x * n + start.y;
-  Node goal(n-1,n-1,0,0,0,0);
+  Node goal(n-1,n-1,0,0,0);
   goal.id = goal.x * n + goal.y;
-  start.h_cost = abs(goal.x - start.x) + abs(goal.y - start.y);
 
   grid[start.x][start.y] = 0;
   grid[goal.x][goal.y] = 0;
-  std::map<Node, Node, compare_id> path;
-  A_STAR new_a_star;
-  std::vector<Node> path_vector = new_a_star.a_star(grid, n, start, goal);
+  DIJKSTRA new_dijkstra;
+  std::vector<Node> path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
 
   print_path(path_vector, start, goal, grid, n);
 
