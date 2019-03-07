@@ -64,7 +64,6 @@ int main(){
   int n = 3;
   int num_points = n*n;
 
-
   n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
@@ -100,7 +99,6 @@ int main(){
   DIJKSTRA new_dijkstra;
   std::vector<Node> path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
-
 
   return 0;
 }

@@ -190,7 +190,6 @@ int main(){
   std::vector<Node> path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);
 
-
   return 0;
 }
 #endif

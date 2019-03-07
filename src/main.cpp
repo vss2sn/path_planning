@@ -25,7 +25,8 @@ int main(){
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
   int main_grid[n][n];
-  memcpy(main_grid, grid, n*n*sizeof(int));
+  int grid_space = n*n*sizeof(int);
+  memcpy(main_grid, grid, grid_space);
 
   //int grid[n][n];
   //MakeGrid(grid, n);
@@ -69,7 +70,7 @@ int main(){
   path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);
 
-  memcpy(grid, main_grid, grid_space);  
+  memcpy(grid, main_grid, grid_space);
   RRT_STAR new_rrt_star;
   path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);

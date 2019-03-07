@@ -65,7 +65,6 @@ int main(){
   int n = 3;
   int num_points = n*n;
 
-
   n = 6;
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 , 0, 0 },
@@ -101,7 +100,6 @@ int main(){
   A_STAR new_a_star;
   std::vector<Node> path_vector = new_a_star.a_star(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
-
 
   return 0;
 }

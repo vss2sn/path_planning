@@ -210,18 +210,17 @@ void RRT_STAR::PrintCost(void *grid, int n){
 
 #ifdef BUILD_INDIVIDUAL
 int main(){
+
   int n = 8;
   int num_points = n*n;
-
-
-/*
+  /*
   int grid[n][n] = {
                      { 0 , 0 , 0 , 0 },
                      { 0 , 0 , 0 , 0 },
                      { 0 , 0 , 1 , 0 },
                      { 0 , 0 , 0 , 0 }
                    };
-*/
+  */
   /*
   n = 6;
   int grid[n][n] = {
