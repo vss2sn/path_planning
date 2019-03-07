@@ -15,10 +15,10 @@ public:
   void PrintCost(void *grid, int n);
 
 private:
-  std::vector<Node> point_list;
-  std::vector<Node> obstacle_list;
-  std::vector<Node> near_nodes;
-  std::vector<double> near_nodes_dist;
+  std::vector<Node> point_list_;
+  std::vector<Node> obstacle_list_;
+  std::vector<Node> near_nodes_;
+  std::vector<double> near_nodes_dist_;
   Node start, goal;
   double threshold = 1;
   int n;

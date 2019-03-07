@@ -13,7 +13,7 @@ Node RRT::FindNearestPoint(Node& new_node, int n){
   //use just distance not total cost
   double dist = (double)(n*n);
   double new_dist = dist;
-  for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
+  for(it_v = point_list_.begin(); it_v != point_list_.end(); ++it_v){
     new_dist = (double)sqrt((double)(it_v->x_-new_node.x_)*(double)(it_v->x_-new_node.x_)+
                             (double)(it_v->y_-new_node.y_)*(double)(it_v->y_-new_node.y_));
     if(new_dist > threshold) continue;
@@ -36,7 +36,7 @@ bool RRT::CheckObstacle(Node& n_1, Node& n_2){
   // As this planner is for grid maps, the obstacles are square.
   if (n_2.y_ - n_1.y_ == 0){
     double c = n_2.y_;
-    for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
+    for(auto it_v = obstacle_list_.begin(); it_v!=obstacle_list_.end(); ++it_v){
       if(!(((n_1.x_>=it_v->x_) && (it_v->x_>= n_2.x_)) || ((n_1.x_<=it_v->x_) && (it_v->x_<= n_2.x_)))) continue;
       if ((double)it_v->y_ == c) return true;
     }
@@ -45,7 +45,7 @@ bool RRT::CheckObstacle(Node& n_1, Node& n_2){
     double slope = (double)(n_2.x_ - n_1.x_)/(double)(n_2.y_ - n_1.y_);
     std::vector<Node>::iterator it_v;
     double c = (double)n_2.x_ - slope * (double)n_2.y_;
-    for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
+    for(auto it_v = obstacle_list_.begin(); it_v!=obstacle_list_.end(); ++it_v){
       if(!(((n_1.y_>=it_v->y_) && (it_v->y_>= n_2.y_)) || ((n_1.y_<=it_v->y_) && (it_v->y_<= n_2.y_)))) continue;
       if(!(((n_1.x_>=it_v->x_) && (it_v->x_>= n_2.x_)) || ((n_1.x_<=it_v->x_) && (it_v->x_<= n_2.x_)))) continue;
       double arr[4];
@@ -88,10 +88,10 @@ std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int m
   int max_iter = max_iter_x_factor * n * n;
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   CreateObstacleList(*p_grid, n);
-  point_list.push_back(start);
+  point_list_.push_back(start);
   Node new_node = start;
   (*p_grid)[start.x_][start.y_]=2;
-  if (CheckGoalVisible(new_node)) return this->point_list;
+  if (CheckGoalVisible(new_node)) return this->point_list_;
   int iter = 0;
   while(iter <= max_iter){
     iter++;
@@ -104,13 +104,13 @@ std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int m
       continue;
     }
     (*p_grid)[new_node.x_][new_node.y_]=2;
-    point_list.push_back(new_node);
-    if (CheckGoalVisible(new_node)) return this->point_list;
+    point_list_.push_back(new_node);
+    if (CheckGoalVisible(new_node)) return this->point_list_;
   }
   Node no_path_node(-1,-1,-1,-1,-1,-1);
-  point_list.clear();
-  point_list.push_back(no_path_node);
-  return point_list;
+  point_list_.clear();
+  point_list_.push_back(no_path_node);
+  return point_list_;
 }
 
 bool RRT::CheckGoalVisible(Node new_node){
@@ -119,7 +119,7 @@ bool RRT::CheckGoalVisible(Node new_node){
     if(new_dist <= threshold){
       goal.pid_ = new_node.id_;
       goal.cost_ = new_dist + new_node.cost_;
-      point_list.push_back(goal);
+      point_list_.push_back(goal);
       return true;
     }
   }
@@ -132,7 +132,7 @@ void RRT::CreateObstacleList(void *grid, int n){
     for(int j=0;j < n; j++){
       if((*p_grid)[i][j]==1){
         Node obs(i,j,0,i*n+j,0);
-        obstacle_list.push_back(obs);
+        obstacle_list_.push_back(obs);
       }
     }
   }

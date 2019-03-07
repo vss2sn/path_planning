@@ -16,15 +16,15 @@ std::vector<Node> DIJKSTRA::dijkstra(void *grid, int n, Node start, Node goal){
   }
 
   std::vector<Node> motion = get_motion(n);
-  point_list.push(start);
+  point_list_.push(start);
   std::vector<Node> path_vector;
   path_vector.push_back(start);
 
   cost_grid[start.x_][start.y_] = 0;
-  while(!point_list.empty()){
-    Node current = point_list.top();
+  while(!point_list_.empty()){
+    Node current = point_list_.top();
     current.id_ = current.x_ * n + current.y_;
-    point_list.pop();
+    point_list_.pop();
     if(current == goal){
       return path_vector;
     }
@@ -42,7 +42,7 @@ std::vector<Node> DIJKSTRA::dijkstra(void *grid, int n, Node start, Node goal){
       if((*p_grid)[new_point.x_][new_point.y_]==0 && cost_grid[new_point.x_][new_point.y_] > new_point.cost_){//=1 && (*p_grid)[new_point.x_][new_point.y_]!=2){
         new_point.pid_ = current.id_;
         new_point.id_ = new_point.x_ * n + new_point.y_;
-        point_list.push(new_point);
+        point_list_.push(new_point);
         cost_grid[new_point.x_][new_point.y_] = new_point.cost_;
         std::vector<Node>::iterator it_v;
         it_v = find (path_vector.begin(), path_vector.end(), new_point);

@@ -14,8 +14,8 @@ public:
   void PrintCost(void *grid, int n);
 
 private:
-  std::vector<Node> point_list;
-  std::vector<Node> obstacle_list;
+  std::vector<Node> point_list_;
+  std::vector<Node> obstacle_list_;
   Node start, goal;
   double threshold = 1;
   int n;

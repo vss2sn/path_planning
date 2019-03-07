@@ -13,7 +13,7 @@ Node RRT_STAR::FindNearestPoint(Node& new_node, int n){
   //use total cost not just distance
   double dist = (double)(n*n);
   double new_dist = (double)(n*n);
-  for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
+  for(it_v = point_list_.begin(); it_v != point_list_.end(); ++it_v){
     new_dist = (double)sqrt(((double)(it_v->x_-new_node.x_)*(double)(it_v->x_-new_node.x_))
                 + ((double)(it_v->y_-new_node.y_)*(double)(it_v->y_-new_node.y_)));
     if(new_dist > threshold) continue;
@@ -23,8 +23,8 @@ Node RRT_STAR::FindNearestPoint(Node& new_node, int n){
     if(it_v->id_==new_node.id_) continue;
     // The nearest nodes are stored while searching for the nearest node to
     // speed up th rewire process
-    near_nodes.push_back(*it_v);
-    near_nodes_dist.push_back(new_dist);
+    near_nodes_.push_back(*it_v);
+    near_nodes_dist_.push_back(new_dist);
     if(it_v->pid_==new_node.id_) continue;
     if(new_dist >= dist) continue;
     dist = new_dist;
@@ -42,7 +42,7 @@ bool RRT_STAR::CheckObstacle(Node& n_1, Node& n_2){
   // As this planner is for grid maps, the obstacles are square.
   if (n_2.y_ - n_1.y_ == 0){
     double c = n_2.y_;
-    for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
+    for(auto it_v = obstacle_list_.begin(); it_v!=obstacle_list_.end(); ++it_v){
       if(!(((n_1.x_>=it_v->x_) && (it_v->x_>= n_2.x_)) || ((n_1.x_<=it_v->x_) && (it_v->x_<= n_2.x_)))) continue;
       if ((double)it_v->y_ == c) return true;
     }
@@ -51,7 +51,7 @@ bool RRT_STAR::CheckObstacle(Node& n_1, Node& n_2){
     double slope = (double)(n_2.x_ - n_1.x_)/(double)(n_2.y_ - n_1.y_);
     std::vector<Node>::iterator it_v;
     double c = (double)n_2.x_ - slope * (double)n_2.y_;
-    for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
+    for(auto it_v = obstacle_list_.begin(); it_v!=obstacle_list_.end(); ++it_v){
       if(!(((n_1.y_>=it_v->y_) && (it_v->y_>= n_2.y_)) || ((n_1.y_<=it_v->y_) && (it_v->y_<= n_2.y_)))) continue;
       if(!(((n_1.x_>=it_v->x_) && (it_v->x_>= n_2.x_)) || ((n_1.x_<=it_v->x_) && (it_v->x_<= n_2.x_)))) continue;
       double arr[4];
@@ -89,17 +89,17 @@ Node RRT_STAR::GenerateRandomNode(int n){
 
 void RRT_STAR::Rewire(Node new_node){
   std::vector<Node>::iterator it_v;
-  for(int i=0;i<near_nodes.size(); i++){
-    if (near_nodes[i].cost_ > near_nodes_dist[i] + new_node.cost_){
-      for(it_v = point_list.begin(); it_v!=point_list.end();++it_v){
-        if(*it_v==near_nodes[i]) break;
+  for(int i=0;i<near_nodes_.size(); i++){
+    if (near_nodes_[i].cost_ > near_nodes_dist_[i] + new_node.cost_){
+      for(it_v = point_list_.begin(); it_v!=point_list_.end();++it_v){
+        if(*it_v==near_nodes_[i]) break;
       }
       it_v->pid_ = new_node.id_;
-      it_v->cost_ = near_nodes_dist[i] + new_node.cost_;
+      it_v->cost_ = near_nodes_dist_[i] + new_node.cost_;
     }
   }
-  near_nodes.clear();
-  near_nodes_dist.clear();
+  near_nodes_.clear();
+  near_nodes_dist_.clear();
 }
 
 
@@ -110,7 +110,7 @@ std::vector<Node> RRT_STAR::rrt_star(void *grid, int n, Node start_in, Node goal
   int max_iter = max_iter_x_factor * n * n;
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   CreateObstacleList(*p_grid, n);
-  point_list.push_back(start);
+  point_list_.push_back(start);
   (*p_grid)[start.x_][start.y_]=2;
   int iter = 0;
   Node new_node = start;
@@ -120,10 +120,10 @@ std::vector<Node> RRT_STAR::rrt_star(void *grid, int n, Node start_in, Node goal
     if(iter > max_iter){
       if(!found_goal){
         Node no_path_node(-1,-1,-1,-1,-1,-1);
-        point_list.clear();
-        point_list.push_back(no_path_node);
+        point_list_.clear();
+        point_list_.push_back(no_path_node);
       }
-      return point_list;
+      return point_list_;
     }
     new_node = GenerateRandomNode(n);
     if ((*p_grid)[new_node.x_][new_node.y_]==1){
@@ -136,16 +136,16 @@ std::vector<Node> RRT_STAR::rrt_star(void *grid, int n, Node start_in, Node goal
     (*p_grid)[new_node.x_][new_node.y_]=2;
     std::vector<Node>::iterator it_v;
 
-    for( it_v = point_list.begin(); it_v!=point_list.end(); ++it_v){
+    for( it_v = point_list_.begin(); it_v!=point_list_.end(); ++it_v){
       if(new_node.x_ == it_v->x_ && new_node.y_ == it_v->y_){
         if(new_node.cost_ < it_v->cost_){
-          point_list.erase(it_v);
-          point_list.push_back(new_node);
+          point_list_.erase(it_v);
+          point_list_.push_back(new_node);
         }
         break;
       }
     }
-    if(it_v==point_list.end()) point_list.push_back(new_node);
+    if(it_v==point_list_.end()) point_list_.push_back(new_node);
     if(CheckGoalVisible(new_node)) found_goal = true;
     Rewire(new_node);
   }
@@ -160,16 +160,16 @@ bool RRT_STAR::CheckGoalVisible(Node new_node){
       goal.pid_ = new_node.id_;
       goal.cost_ = new_dist;
       std::vector<Node>::iterator it_v;
-      for( it_v = point_list.begin(); it_v!=point_list.end(); ++it_v){
+      for( it_v = point_list_.begin(); it_v!=point_list_.end(); ++it_v){
         if(goal.x_ == it_v->x_ && goal.y_ == it_v->y_){
           if(goal.cost_ < it_v->cost_){
-            point_list.erase(it_v);
-            point_list.push_back(goal);
+            point_list_.erase(it_v);
+            point_list_.push_back(goal);
           }
           break;
         }
       }
-      if(it_v==point_list.end()) point_list.push_back(goal);
+      if(it_v==point_list_.end()) point_list_.push_back(goal);
       return true;
     }
   }
@@ -182,7 +182,7 @@ void RRT_STAR::CreateObstacleList(void *grid, int n){
     for(int j=0;j < n; j++){
       if((*p_grid)[i][j]==1){
         Node obs(i,j,0,i*n+j,0);
-        obstacle_list.push_back(obs);
+        obstacle_list_.push_back(obs);
       }
     }
   }
@@ -190,18 +190,18 @@ void RRT_STAR::CreateObstacleList(void *grid, int n){
 
 void RRT_STAR::PrintCost(void *grid, int n){
   //NOTE: Using a void pointer isnt the best option
-  //std::cout << "POINT LIST SIZE:" << point_list.size() <<std::endl;
+  //std::cout << "POINT LIST SIZE:" << point_list_.size() <<std::endl;
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   std::vector<Node>::iterator it_v;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
-      for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
+      for(it_v = point_list_.begin(); it_v != point_list_.end(); ++it_v){
         if(i == it_v->x_ && j== it_v->y_){
           std::cout << std::setw(10) <<it_v->cost_ << " , ";
           break;
         }
       }
-      if(it_v == point_list.end())
+      if(it_v == point_list_.end())
       std::cout << std::setw(10) << "  , ";
     }
     std::cout << std::endl << std::endl;
