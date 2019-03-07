@@ -5,9 +5,11 @@
 
 class DIJKSTRA{
 public:
-  std::vector<Node> dijkstra(void *grid, int n, Node start, Node goal);
+  std::vector<Node> dijkstra(void *grid, int n, Node start_, Node goal_);
 private:
   std::priority_queue<Node, std::vector<Node>, compare_cost> point_list_;
+  Node start_, goal_;
+  int n;
 };
 
 #endif DIJKSTRA_H

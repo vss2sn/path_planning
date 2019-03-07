@@ -6,7 +6,9 @@ A* grid based planning
 
 #include "a_star.h"
 
-std::vector<Node> A_STAR::a_star(void *grid, int n, Node start, Node goal){
+std::vector<Node> A_STAR::a_star(void *grid, int n, Node start_in, Node goal_in){
+  start_ = start_in;
+  goal_ = goal_in;
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   double cost_grid[n][n];
   for (int i = 0; i < n; i++){
@@ -15,17 +17,17 @@ std::vector<Node> A_STAR::a_star(void *grid, int n, Node start, Node goal){
     }
   }
 
-  std::vector<Node> motion = get_motion(n);
-  point_list_.push(start);
+  std::vector<Node> motion = GetMotion(n);
+  point_list_.push(start_);
   std::vector<Node> path_vector;
-  path_vector.push_back(start);
+  path_vector.push_back(start_);
 
-  cost_grid[start.x_][start.y_] = 0;
+  cost_grid[start_.x_][start_.y_] = 0;
   while(!point_list_.empty()){
     Node current = point_list_.top();
     current.id_ = current.x_ * n + current.y_;
     point_list_.pop();
-    if(current == goal){
+    if(current == goal_){
       return path_vector;
     }
     if((*p_grid)[current.x_][current.y_]!=0){
@@ -37,7 +39,7 @@ std::vector<Node> A_STAR::a_star(void *grid, int n, Node start, Node goal){
     for(auto it = motion.begin(); it!=motion.end(); ++it){
       Node new_point;
       new_point = current + *it;
-      new_point.h_cost_ = abs(new_point.x_ - goal.x_) + abs(new_point.y_ - goal.y_);
+      new_point.h_cost_ = abs(new_point.x_ - goal_.x_) + abs(new_point.y_ - goal_.y_);
       if(new_point.x_ < 0 || new_point.y_ < 0
           || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
       if(cost_grid[new_point.x_][new_point.y_] > new_point.cost_ + new_point.h_cost_){//=1 && (*p_grid)[new_point.x_][new_point.y_]!=2){
@@ -75,7 +77,7 @@ int main(){
                    } ;
 
   //int grid[n][n];
-  //make_grid(grid, n);
+  //MakeGrid(grid, n);
 
   //NOTE:
   // x = row index, y = column index.
@@ -85,21 +87,21 @@ int main(){
   std::cout << "2. Obstacles             ---> 1" << std::endl;
   PrintGrid(grid, n);
 
-  //Make sure start and goal not obstacles and their ids are correctly assigned.
+  //Make sure start and goal are not obstacles and their ids are correctly assigned.
   Node start(0,1,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
   Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
-  start.h_cost_ = abs(goal.x_ - start.x_) + abs(goal.y_ - start.y_);
+  start.h_cost_ = abs(start.x_ - start.x_) + abs(start.y_ - start.y_);
 
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
-  std::map<Node, Node, compare_id> path;
+
   A_STAR new_a_star;
   std::vector<Node> path_vector = new_a_star.a_star(grid, n, start, goal);
+  PrintPath(path_vector, start, goal, grid, n);
 
-  print_path(path_vector, start, goal, grid, n);
 
   return 0;
 }

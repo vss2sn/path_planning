@@ -6,7 +6,9 @@ Dijstra grid based planning
 
 #include "dijkstra.h"
 
-std::vector<Node> DIJKSTRA::dijkstra(void *grid, int n, Node start, Node goal){
+std::vector<Node> DIJKSTRA::dijkstra(void *grid, int n, Node start_in, Node goal_in){
+  start_ = start_in;
+  goal_ = goal_in;
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   int cost_grid[n][n];
   for (int i = 0; i < n; i++){
@@ -15,17 +17,17 @@ std::vector<Node> DIJKSTRA::dijkstra(void *grid, int n, Node start, Node goal){
     }
   }
 
-  std::vector<Node> motion = get_motion(n);
-  point_list_.push(start);
+  std::vector<Node> motion = GetMotion(n);
+  point_list_.push(start_);
   std::vector<Node> path_vector;
-  path_vector.push_back(start);
+  path_vector.push_back(start_);
 
-  cost_grid[start.x_][start.y_] = 0;
+  cost_grid[start_.x_][start_.y_] = 0;
   while(!point_list_.empty()){
     Node current = point_list_.top();
     current.id_ = current.x_ * n + current.y_;
     point_list_.pop();
-    if(current == goal){
+    if(current == goal_){
       return path_vector;
     }
     if((*p_grid)[current.x_][current.y_]!=0){
@@ -74,7 +76,7 @@ int main(){
                    } ;
 
   //int grid[n][n];
-  //make_grid(grid, n);
+  //MakeGrid(grid, n);
 
   //NOTE:
   // x = row index, y = column index.
@@ -84,19 +86,21 @@ int main(){
   std::cout << "2. Obstacles             ---> 1" << std::endl;
   PrintGrid(grid, n);
 
-  //Make sure start and goal not obstacles and their ids are correctly assigned.
-  Node start(0,0,0,0,0);
+  //Make sure start and goal are not obstacles and their ids are correctly assigned.
+  Node start(0,1,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(n-1,n-1,0,0,0);
+  Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
+  start.h_cost_ = abs(start.x_ - start.x_) + abs(start.y_ - start.y_);
 
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+
   DIJKSTRA new_dijkstra;
   std::vector<Node> path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
+  PrintPath(path_vector, start, goal, grid, n);
 
-  print_path(path_vector, start, goal, grid, n);
 
   return 0;
 }

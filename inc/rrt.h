@@ -9,14 +9,14 @@ public:
   bool CheckObstacle(Node& n_1, Node& n_2);
   Node GenerateRandomNode(int n);
   std::vector<Node> rrt(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity());
-  bool CheckGoalVisible(Node new_node);
+  bool Checkgoal_Visible(Node new_node);
   void CreateObstacleList(void *grid, int n);
   void PrintCost(void *grid, int n);
 
 private:
   std::vector<Node> point_list_;
   std::vector<Node> obstacle_list_;
-  Node start, goal;
+  Node start_, goal_;
   double threshold = 1;
   int n;
 };

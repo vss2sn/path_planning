@@ -60,15 +60,15 @@ bool compare_id::operator()(const Node p1, const Node p2){
 }
 
 
-std::vector<Node> get_motion(int n){
+std::vector<Node> GetMotion(int n){
   Node down(0,1,1,0,0,0);
   Node up(0,-1,1,0,0,0);
   Node left(-1,0,1,0,0,0);
   Node right(1,0,1,0,0,0);
-  Node dr(1,1,1,0,0,0);
-  Node dl(1,-1,1,0,0,0);
-  Node ur(-1,1,1,0,0,0);
-  Node ul(-1,-1,1,0,0,0);
+  Node dr(1,1,1.4,0,0,0);
+  Node dl(1,-1,1.4,0,0,0);
+  Node ur(-1,1,1.4,0,0,0);
+  Node ul(-1,-1,1.4,0,0,0);
   std::vector<Node> v;
   v.push_back(down);
   v.push_back(up);
@@ -81,7 +81,7 @@ std::vector<Node> get_motion(int n){
   return v;
 }
 
-void make_grid(void *grid, int n){
+void MakeGrid(void *grid, int n){
   //NOTE: Using a void pointer isnt the best option
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
 
@@ -120,7 +120,7 @@ void PrintGrid(void *grid, int n){
   std::cout << std::endl;
 }
 
-void print_path(std::vector<Node> path_vector, Node start, Node goal, void *grid, int n){
+void PrintPath(std::vector<Node> path_vector, Node start, Node goal, void *grid, int n){
   //NOTE: Using a void pointer isnt the best option
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   if(path_vector[0].id_ == -1){
