@@ -9,7 +9,6 @@ public:
 private:
   std::priority_queue<Node, std::vector<Node>, compare_cost> point_list_;
   Node start_, goal_;
-  int n;
 };
 
 #endif DIJKSTRA_H

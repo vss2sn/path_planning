@@ -20,8 +20,7 @@ private:
   std::vector<Node> near_nodes_;
   std::vector<double> near_nodes_dist_;
   Node start_, goal_;
-  double threshold = 1;
-  int n;
+  double threshold_ = 1;
   bool found_goal_ = false;
 };
 

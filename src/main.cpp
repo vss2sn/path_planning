@@ -51,6 +51,8 @@ int main(){
 
   std::vector<Node> path_vector;
 
+  double threshold = 5;
+  int max_iter_x_factor = 20;
   int grid_space = n*n*sizeof(int);
   memcpy(grid, main_grid, grid_space);
   DIJKSTRA new_dijkstra;
@@ -64,12 +66,12 @@ int main(){
 
   memcpy(grid, main_grid, grid_space);
   RRT new_rrt;
-  path_vector = new_rrt.rrt(grid, n, start, goal, 20, 3);
+  path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);
 
-  memcpy(grid, main_grid, grid_space);
+  memcpy(grid, main_grid, grid_space);  
   RRT_STAR new_rrt_star;
-  path_vector = new_rrt_star.rrt_star(grid, n, start, goal, 20, 3);
+  path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);
 
   return 0;

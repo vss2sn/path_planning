@@ -16,7 +16,7 @@ Node RRT_STAR::FindNearestPoint(Node& new_node, int n){
   for(it_v = point_list_.begin(); it_v != point_list_.end(); ++it_v){
     new_dist = (double)sqrt(((double)(it_v->x_-new_node.x_)*(double)(it_v->x_-new_node.x_))
                 + ((double)(it_v->y_-new_node.y_)*(double)(it_v->y_-new_node.y_)));
-    if(new_dist > threshold) continue;
+    if(new_dist > threshold_) continue;
     new_dist += it_v->cost_;
 
     if(CheckObstacle(*it_v, new_node)) continue;
@@ -106,7 +106,7 @@ void RRT_STAR::Rewire(Node new_node){
 std::vector<Node> RRT_STAR::rrt_star(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity()){
   start_ = start_in;
   goal_ = goal_in;
-  threshold = threshold_in;
+  threshold_ = threshold_in;
   int max_iter = max_iter_x_factor * n * n;
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   CreateObstacleList(*p_grid, n);
@@ -155,7 +155,7 @@ bool RRT_STAR::Checkgoal_Visible(Node new_node){
   if(!CheckObstacle(new_node, goal_)){
     double new_dist = (double)sqrt((double)(goal_.x_-new_node.x_)*(double)(goal_.x_-new_node.x_)
                 + (double)(goal_.y_-new_node.y_)*(double)(goal_.y_-new_node.y_));
-    if(new_dist <=threshold){
+    if(new_dist <=threshold_){
       new_dist+=new_node.cost_;
       goal_.pid_ = new_node.id_;
       goal_.cost_ = new_dist;
@@ -257,7 +257,9 @@ int main(){
   grid[goal.x_][goal.y_] = 0;
 
   RRT_STAR new_rrt_star;
-  std::vector<Node> path_vector = new_rrt_star.rrt_star(grid, n, start, goal, 20, 2);
+  double threshold = 5;
+  int max_iter_x_factor = 20;
+  std::vector<Node> path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);
 
   return 0;

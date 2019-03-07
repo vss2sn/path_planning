@@ -17,8 +17,7 @@ private:
   std::vector<Node> point_list_;
   std::vector<Node> obstacle_list_;
   Node start_, goal_;
-  double threshold = 1;
-  int n;
+  double threshold_ = 1;
 };
 
 #endif RRT_H
