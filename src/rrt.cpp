@@ -83,33 +83,17 @@ Node RRT::generate_random_node(int n){
 std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity()){
   start = start_in;
   goal = goal_in;
-
   threshold = threshold_in;
   int max_iter = max_iter_x_factor * n * n;
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   create_obstacle_list(*p_grid, n);
   point_list.push_back(start);
-  (*p_grid)[start.x][start.y]=2;
-  int iter = 0;
   Node new_node = start;
-  if(!check_obstacle(new_node, goal)){
-    double new_dist = (double)sqrt((double)(goal.x-new_node.x)*(double)(goal.x-new_node.x) + (double)(goal.y-new_node.y)*(double)(goal.y-new_node.y));
-    if(new_dist <= threshold){
-      goal.pid=new_node.id;
-      goal.cost = new_dist + new_node.cost;
-      point_list.push_back(goal);
-      return this->point_list;
-    }
-  }
-  while(true){
+  (*p_grid)[start.x][start.y]=2;
+  if (check_goal_visible(new_node)) return this->point_list;
+  int iter = 0;
+  while(iter <= max_iter){
     iter++;
-
-    if(iter > max_iter){
-      Node no_path_node(-1,-1,-1,-1,-1,-1);
-      point_list.clear();
-      point_list.push_back(no_path_node);
-      return point_list;
-    }
     new_node = generate_random_node(n);
     if ((*p_grid)[new_node.x][new_node.y]!=0){
       continue;
@@ -120,18 +104,25 @@ std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int m
     }
     (*p_grid)[new_node.x][new_node.y]=2;
     point_list.push_back(new_node);
-    if(!check_obstacle(new_node, goal)){
-      double new_dist = (double)sqrt((double)(goal.x-new_node.x)*(double)(goal.x-new_node.x) + (double)(goal.y-new_node.y)*(double)(goal.y-new_node.y));
-      std::cout << new_dist << "," << threshold << std::endl;
-      if(new_dist <= threshold){
-        goal.pid=new_node.id;
-        goal.cost = new_dist + new_node.cost;
-        point_list.push_back(goal);
-        return this->point_list;
-      }
-    }
-    //break;
+    if (check_goal_visible(new_node)) return this->point_list;
   }
+  Node no_path_node(-1,-1,-1,-1,-1,-1);
+  point_list.clear();
+  point_list.push_back(no_path_node);
+  return point_list;
+}
+
+bool RRT::check_goal_visible(Node new_node){
+  if(!check_obstacle(new_node, goal)){
+    double new_dist = (double)sqrt((double)(goal.x-new_node.x)*(double)(goal.x-new_node.x) + (double)(goal.y-new_node.y)*(double)(goal.y-new_node.y));
+    if(new_dist <= threshold){
+      goal.pid = new_node.id;
+      goal.cost = new_dist + new_node.cost;
+      point_list.push_back(goal);
+      return true;
+    }
+  }
+  return false;
 }
 
 void RRT::create_obstacle_list(void *grid, int n){
