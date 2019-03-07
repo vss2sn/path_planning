@@ -4,16 +4,6 @@
 #include "utils.h"
 
 class RRT_STAR{
-private:
-  std::vector<Node> point_list;
-  std::vector<Node> obstacle_list;
-  std::vector<Node> near_nodes;
-  std::vector<double> near_nodes_dist;
-  Node start, goal;
-  double threshold = 1;
-  int n;
-  bool found_goal = false;
-
 public:
   Node find_nearest_point(Node& new_node, int n);
   bool check_obstacle(Node& n_1, Node& n_2);
@@ -23,6 +13,16 @@ public:
   bool check_goal_visible(Node new_node);
   void create_obstacle_list(void *grid, int n);
   void print_cost(void *grid, int n);
+  
+private:
+  std::vector<Node> point_list;
+  std::vector<Node> obstacle_list;
+  std::vector<Node> near_nodes;
+  std::vector<double> near_nodes_dist;
+  Node start, goal;
+  double threshold = 1;
+  int n;
+  bool found_goal = false;
 };
 
 #endif RRT_STAR_H

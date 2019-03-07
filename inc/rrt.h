@@ -4,13 +4,6 @@
 #include "utils.h"
 
 class RRT{
-private:
-  std::vector<Node> point_list;
-  std::vector<Node> obstacle_list;
-  Node start, goal;
-  double threshold = 1;
-  int n;
-
 public:
   Node find_nearest_point(Node& new_node, int n);
   bool check_obstacle(Node& n_1, Node& n_2);
@@ -19,6 +12,13 @@ public:
   bool check_goal_visible(Node new_node);
   void create_obstacle_list(void *grid, int n);
   void print_cost(void *grid, int n);
+
+private:
+  std::vector<Node> point_list;
+  std::vector<Node> obstacle_list;
+  Node start, goal;
+  double threshold = 1;
+  int n;
 };
 
 #endif RRT_H
