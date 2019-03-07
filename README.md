@@ -18,3 +18,4 @@
 1. Next algorithms to be implemented include D\* lite and a Voronoi  cell based planner
 2. Move to Google style of code.
 3. Include test section for testing different conditions.
+4. Alterations for moving node variables into private namespace
