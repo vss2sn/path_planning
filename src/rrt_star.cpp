@@ -39,6 +39,7 @@ Node RRT_STAR::find_nearest_point(Node& new_node, int n){
 }
 
 bool RRT_STAR::check_obstacle(Node& n_1, Node& n_2){
+  // As this planner is for grid maps, the obstacles are square.
   if (n_2.y - n_1.y == 0){
     double c = n_2.y;
     for(auto it_v = obstacle_list.begin(); it_v!=obstacle_list.end(); ++it_v){
