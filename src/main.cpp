@@ -36,17 +36,17 @@ int main(){
   std::cout << "Grid:" << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
   std::cout << "2. Obstacles             ---> 1" << std::endl;
-  print_grid(grid, n);
+  PrintGrid(grid, n);
 
   //Make sure start and goal not obstacles and their ids are correctly assigned.
   Node start(0,0,0,0,0,0);
-  start.id = start.x * n + start.y;
-  start.pid = start.x * n + start.y;
+  start.id_ = start.x_ * n + start.y_;
+  start.pid_ = start.x_ * n + start.y_;
   Node goal(n-1,n-1,0,0,0,0);
-  goal.id = goal.x * n + goal.y;
+  goal.id_ = goal.x_ * n + goal.y_;
 
-  grid[start.x][start.y] = 0;
-  grid[goal.x][goal.y] = 0;
+  grid[start.x_][start.y_] = 0;
+  grid[goal.x_][goal.y_] = 0;
 
   std::vector<Node> path_vector;
 

@@ -5,10 +5,10 @@
 
 class Node{
 public:
-  int x, y, id, pid;
-  double cost, h_cost;
+  int x_, y_, id_, pid_;
+  double cost_, h_cost_;
   Node(int x = 0, int y = 0, double cost = 0, double h_cost = 0, int id = 0, int pid = 0);
-  void print_status();
+  void PrintStatus();
   Node operator+(Node p);
   Node operator=(Node p);
   bool operator==(Node p);
@@ -29,7 +29,7 @@ struct compare_id{
 
 std::vector<Node> get_motion(int n);
 void make_grid(void *grid, int n);
-void print_grid(void *grid, int n);
+void PrintGrid(void *grid, int n);
 void print_path(std::vector<Node> path_vector, Node start, Node goal, void *grid, int n);
 
 #endif UTILS_H
