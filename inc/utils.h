@@ -1,3 +1,6 @@
+#ifndef UTILS_H
+#define UTILS_H
+
 #include "main.h"
 
 class Node{
@@ -28,3 +31,5 @@ std::vector<Node> get_motion(int n);
 void make_grid(void *grid, int n);
 void print_grid(void *grid, int n);
 void print_path(std::vector<Node> path_vector, Node start, Node goal, void *grid, int n);
+
+#endif UTILS_H

@@ -1,7 +1,7 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef RRT_H
+#define RRT_H
+
 #include "utils.h"
-#endif UTILS_H
 
 class RRT{
 private:
@@ -20,3 +20,5 @@ public:
   void create_obstacle_list(void *grid, int n);
   void print_cost(void *grid, int n);
 };
+
+#endif RRT_H
