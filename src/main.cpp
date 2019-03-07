@@ -51,22 +51,23 @@ int main(){
 
   std::vector<Node> path_vector;
 
-  memcpy(grid, main_grid, n*n*sizeof(int));
+  int grid_space = n*n*sizeof(int);
+  memcpy(grid, main_grid, grid_space);
   DIJKSTRA new_dijkstra;
   path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
 
-  memcpy(grid, main_grid, n*n*sizeof(int));
+  memcpy(grid, main_grid, grid_space);
   A_STAR new_a_star;
   path_vector = new_a_star.a_star(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
 
-  memcpy(grid, main_grid, n*n*sizeof(int));
+  memcpy(grid, main_grid, grid_space);
   RRT new_rrt;
   path_vector = new_rrt.rrt(grid, n, start, goal, 20, 3);
   PrintPath(path_vector, start, goal, grid, n);
 
-  memcpy(grid, main_grid, n*n*sizeof(int));
+  memcpy(grid, main_grid, grid_space);
   RRT_STAR new_rrt_star;
   path_vector = new_rrt_star.rrt_star(grid, n, start, goal, 20, 3);
   PrintPath(path_vector, start, goal, grid, n);
