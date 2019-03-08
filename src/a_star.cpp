@@ -92,7 +92,7 @@ int main(){
   start.pid_ = start.x_ * n + start.y_;
   Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
-  start.h_cost_ = abs(start.x_ - start.x_) + abs(start.y_ - start.y_);
+  start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
 
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
