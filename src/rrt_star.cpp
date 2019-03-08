@@ -59,19 +59,12 @@ bool RRT_STAR::CheckObstacle(Node& n_1, Node& n_2){
       arr[1] = (double)it_v->x_+0.5 - slope*((double)it_v->y_-0.5) - c;
       arr[2] = (double)it_v->x_-0.5 - slope*((double)it_v->y_+0.5) - c;
       arr[3] = (double)it_v->x_-0.5 - slope*((double)it_v->y_-0.5) - c;
-      int count = 0;
-      int j = 0;
-
+      double count = 0;
       for (int i=0;i<4;i++){
-        if(fabs(arr[i]) <= 0.000001){
-          count +=1;
-          if(j==0 && i==0)j=1;
-          if(count > 1) return true;
-          continue;
-        }
-        arr[i] = arr[i]/fabs(arr[i]);
-        if ((arr[j]-arr[i]) != 0 ) return true;
+        if(fabs(arr[i]) <= 0.000001) arr[i] = 0;
+        else count +=arr[i]/fabs(arr[i]);
       }
+      if(abs(count) < 3) return true;
     }
   }
   return false;
@@ -114,7 +107,7 @@ std::vector<Node> RRT_STAR::rrt_star(void *grid, int n, Node start_in, Node goal
   (*p_grid)[start_.x_][start_.y_]=2;
   int iter = 0;
   Node new_node = start_;
-  if(Checkgoal_Visible(new_node)) found_goal_ = true;
+  if(CheckGoalVisible(new_node)) found_goal_ = true;
   while(true){
     iter++;
     if(iter > max_iter){
@@ -146,12 +139,12 @@ std::vector<Node> RRT_STAR::rrt_star(void *grid, int n, Node start_in, Node goal
       }
     }
     if(it_v==point_list_.end()) point_list_.push_back(new_node);
-    if(Checkgoal_Visible(new_node)) found_goal_ = true;
+    if(CheckGoalVisible(new_node)) found_goal_ = true;
     Rewire(new_node);
   }
 }
 
-bool RRT_STAR::Checkgoal_Visible(Node new_node){
+bool RRT_STAR::CheckGoalVisible(Node new_node){
   if(!CheckObstacle(new_node, goal_)){
     double new_dist = (double)sqrt((double)(goal_.x_-new_node.x_)*(double)(goal_.x_-new_node.x_)
                 + (double)(goal_.y_-new_node.y_)*(double)(goal_.y_-new_node.y_));
@@ -213,28 +206,39 @@ int main(){
 
   int n = 8;
   int num_points = n*n;
-  /*
-  int grid[n][n] = {
-                     { 0 , 0 , 0 , 0 },
-                     { 0 , 0 , 0 , 0 },
-                     { 0 , 0 , 1 , 0 },
-                     { 0 , 0 , 0 , 0 }
-                   };
-  */
-  /*
-  n = 6;
-  int grid[n][n] = {
-                     { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 1 , 0 , 0 , 0, 0 },
-                     { 1 , 0 , 0 , 1 , 1, 0 },
-                     { 1 , 0 , 1 , 0 , 1, 0 },
-                     { 0 , 0 , 1 , 1 , 1, 1 },
-                     { 0 , 0 , 0 , 0 , 0, 0 }
-                   } ;
-                   */
 
-   int grid[n][n];
-   MakeGrid(grid, n);
+  n=5;
+  int grid[n][n] = {
+                     { 0 , 1 , 1 , 1 , 0},
+                     { 0 , 0 , 0 , 0 , 0},
+                     { 0 , 1 , 1 , 1 , 0},
+                     { 0 , 0 , 1 , 0 , 0},
+                     { 0 , 0 , 1 , 0 , 0}
+                   };
+
+
+  // n = 6;
+  // int grid[n][n] = {
+  //                    { 0 , 0 , 0 , 0 , 0, 0 },
+  //                    { 0 , 1 , 0 , 0 , 0, 0 },
+  //                    { 1 , 0 , 0 , 1 , 1, 0 },
+  //                    { 1 , 0 , 1 , 0 , 1, 0 },
+  //                    { 0 , 0 , 1 , 1 , 1, 1 },
+  //                    { 0 , 0 , 0 , 0 , 0, 0 }
+  //                  } ;
+  //
+  // int grid[n][n] = {
+  //                     { 0 , 0 , 1 , 0 , 1 , 0 , 0 , 0  },
+  //                     { 0 , 0 , 0 , 0 , 1 , 1 , 1 , 0  },
+  //                     { 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0  },
+  //                     { 1 , 0 , 0 , 0 , 0 , 0 , 0 , 1  },
+  //                     { 0 , 1 , 0 , 0 , 0 , 0 , 1 , 1  },
+  //                     { 1 , 1 , 0 , 1 , 1 , 0 , 1 , 1  },
+  //                     { 1 , 1 , 0 , 1 , 0 , 0 , 0 , 0  },
+  //                     { 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0  }
+  //                   };
+   // int grid[n][n];
+   // MakeGrid(grid, n);
 
   //NOTE:
   // x = row index, y = column index.
@@ -245,7 +249,7 @@ int main(){
   PrintGrid(grid, n);
 
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
-  Node start(0,1,0,0,0,0);
+  Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
   Node goal(n-1,n-1,0,0,0,0);
@@ -256,7 +260,7 @@ int main(){
   grid[goal.x_][goal.y_] = 0;
 
   RRT_STAR new_rrt_star;
-  double threshold = 5;
+  double threshold = 2;
   int max_iter_x_factor = 20;
   std::vector<Node> path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);

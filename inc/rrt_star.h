@@ -10,7 +10,7 @@ public:
   Node GenerateRandomNode(int n);
   void Rewire(Node new_node);
   std::vector<Node> rrt_star(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity());
-  bool Checkgoal_Visible(Node new_node);
+  bool CheckGoalVisible(Node new_node);
   void CreateObstacleList(void *grid, int n);
   void PrintCost(void *grid, int n);
 
