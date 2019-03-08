@@ -53,18 +53,12 @@ bool RRT::CheckObstacle(Node& n_1, Node& n_2){
       arr[1] = (double)it_v->x_+0.5 - slope*((double)it_v->y_-0.5) - c;
       arr[2] = (double)it_v->x_-0.5 - slope*((double)it_v->y_+0.5) - c;
       arr[3] = (double)it_v->x_-0.5 - slope*((double)it_v->y_-0.5) - c;
-      int count = 0;
-      int j = 0;
+      double count = 0;
       for (int i=0;i<4;i++){
-        if(fabs(arr[i]) <= 0.000001){
-          count +=1;
-          if(j==0 && i==0)j=1;
-          if(count > 1) return true;
-          continue;
-        }
-        arr[i] = arr[i]/fabs(arr[i]);
-        if ((arr[j]-arr[i]) != 0 ) return true;
+        if(fabs(arr[i]) <= 0.000001) arr[i] = 0;
+        else count +=arr[i]/fabs(arr[i]);
       }
+      if(abs(count) < 3) return true;
     }
   }
   return false;
@@ -91,7 +85,7 @@ std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int m
   point_list_.push_back(start_);
   Node new_node = start_;
   (*p_grid)[start_.x_][start_.y_]=2;
-  if (Checkgoal_Visible(new_node)) return this->point_list_;
+  if (CheckGoalVisible(new_node)) return this->point_list_;
   int iter = 0;
   while(iter <= max_iter){
     iter++;
@@ -105,7 +99,7 @@ std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int m
     }
     (*p_grid)[new_node.x_][new_node.y_]=2;
     point_list_.push_back(new_node);
-    if (Checkgoal_Visible(new_node)) return this->point_list_;
+    if (CheckGoalVisible(new_node)) return this->point_list_;
   }
   Node no_path_node(-1,-1,-1,-1,-1,-1);
   point_list_.clear();
@@ -113,7 +107,7 @@ std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int m
   return point_list_;
 }
 
-bool RRT::Checkgoal_Visible(Node new_node){
+bool RRT::CheckGoalVisible(Node new_node){
   if(!CheckObstacle(new_node, goal_)){
     double new_dist = (double)sqrt((double)(goal_.x_-new_node.x_)*(double)(goal_.x_-new_node.x_) + (double)(goal_.y_-new_node.y_)*(double)(goal_.y_-new_node.y_));
     if(new_dist <= threshold_){
