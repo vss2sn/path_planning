@@ -40,7 +40,7 @@ int main(){
   PrintGrid(grid, n);
 
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
-  Node start(0,1,0,0,0,0);
+  Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
   Node goal(n-1,n-1,0,0,0,0);
@@ -52,9 +52,9 @@ int main(){
 
   std::vector<Node> path_vector;
 
-  double threshold = 5;
+  double threshold = 2;
   int max_iter_x_factor = 20;
-  int grid_space = n*n*sizeof(int);
+
   memcpy(grid, main_grid, grid_space);
   DIJKSTRA new_dijkstra;
   path_vector = new_dijkstra.dijkstra(grid, n, start, goal);

@@ -125,7 +125,7 @@ void RRT::CreateObstacleList(void *grid, int n){
   for(int i=0; i < n; i++){
     for(int j=0;j < n; j++){
       if((*p_grid)[i][j]==1){
-        Node obs(i,j,0,i*n+j,0);
+        Node obs(i,j,0,0,i*n+j,0);
         obstacle_list_.push_back(obs);
       }
     }
