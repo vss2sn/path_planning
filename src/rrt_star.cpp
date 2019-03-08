@@ -84,11 +84,11 @@ void RRT_STAR::Rewire(Node new_node){
   std::vector<Node>::iterator it_v;
   for(int i=0;i<near_nodes_.size(); i++){
     if (near_nodes_[i].cost_ > near_nodes_dist_[i] + new_node.cost_){
-      for(it_v = point_list_.begin(); it_v!=point_list_.end();++it_v){
-        if(*it_v==near_nodes_[i]) break;
+      it_v = find (point_list_.begin(), point_list_.end(), near_nodes_[i]);
+      if (it_v != point_list_.end()){
+        it_v->pid_ = new_node.id_;
+        it_v->cost_ = near_nodes_dist_[i] + new_node.cost_;
       }
-      it_v->pid_ = new_node.id_;
-      it_v->cost_ = near_nodes_dist_[i] + new_node.cost_;
     }
   }
   near_nodes_.clear();
@@ -129,16 +129,12 @@ std::vector<Node> RRT_STAR::rrt_star(void *grid, int n, Node start_in, Node goal
     (*p_grid)[new_node.x_][new_node.y_]=2;
     std::vector<Node>::iterator it_v;
 
-    for( it_v = point_list_.begin(); it_v!=point_list_.end(); ++it_v){
-      if(new_node.x_ == it_v->x_ && new_node.y_ == it_v->y_){
-        if(new_node.cost_ < it_v->cost_){
-          point_list_.erase(it_v);
-          point_list_.push_back(new_node);
-        }
-        break;
-      }
+    it_v = find (point_list_.begin(), point_list_.end(), new_node);
+    if (it_v != point_list_.end() && new_node.cost_ < it_v->cost_){
+      point_list_.erase(it_v);
+      point_list_.push_back(new_node);
     }
-    if(it_v==point_list_.end()) point_list_.push_back(new_node);
+    else if(it_v==point_list_.end()) point_list_.push_back(new_node);
     if(CheckGoalVisible(new_node)) found_goal_ = true;
     Rewire(new_node);
   }
@@ -153,16 +149,12 @@ bool RRT_STAR::CheckGoalVisible(Node new_node){
       goal_.pid_ = new_node.id_;
       goal_.cost_ = new_dist;
       std::vector<Node>::iterator it_v;
-      for( it_v = point_list_.begin(); it_v!=point_list_.end(); ++it_v){
-        if(goal_.x_ == it_v->x_ && goal_.y_ == it_v->y_){
-          if(goal_.cost_ < it_v->cost_){
-            point_list_.erase(it_v);
-            point_list_.push_back(goal_);
-          }
-          break;
-        }
+      it_v = find (point_list_.begin(), point_list_.end(), goal_);
+      if(it_v!=point_list_.end() && goal_.cost_ < it_v->cost_){
+        point_list_.erase(it_v);
+        point_list_.push_back(goal_);
       }
-      if(it_v==point_list_.end()) point_list_.push_back(goal_);
+      else if(it_v==point_list_.end()) point_list_.push_back(goal_);
       return true;
     }
   }
@@ -207,14 +199,14 @@ int main(){
   int n = 8;
   int num_points = n*n;
 
-  n=5;
-  int grid[n][n] = {
-                     { 0 , 1 , 1 , 1 , 0},
-                     { 0 , 0 , 0 , 0 , 0},
-                     { 0 , 1 , 1 , 1 , 0},
-                     { 0 , 0 , 1 , 0 , 0},
-                     { 0 , 0 , 1 , 0 , 0}
-                   };
+  // n=5;
+  // int grid[n][n] = {
+  //                    { 0 , 1 , 1 , 1 , 0},
+  //                    { 0 , 0 , 0 , 0 , 0},
+  //                    { 0 , 1 , 1 , 1 , 0},
+  //                    { 0 , 0 , 1 , 0 , 0},
+  //                    { 0 , 0 , 1 , 0 , 0}
+  //                  };
 
 
   // n = 6;
@@ -237,8 +229,8 @@ int main(){
   //                     { 1 , 1 , 0 , 1 , 0 , 0 , 0 , 0  },
   //                     { 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0  }
   //                   };
-   // int grid[n][n];
-   // MakeGrid(grid, n);
+   int grid[n][n];
+   MakeGrid(grid, n);
 
   //NOTE:
   // x = row index, y = column index.

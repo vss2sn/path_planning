@@ -162,9 +162,6 @@ int main(){
   //NOTE:
   // x = row index, y = column index.
 
-  std::cout << "Grid:" << std::endl;
-  std::cout << "1. Points not considered ---> 0" << std::endl;
-  std::cout << "2. Obstacles             ---> 1" << std::endl;
   PrintGrid(grid, n);
 
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
