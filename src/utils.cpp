@@ -1,6 +1,6 @@
 #include "utils.h"
 
-Node::Node(int x = 0, int y = 0, double cost = 0, double h_cost = 0, int id = 0, int pid = 0){
+Node::Node(int x, int y, double cost, double h_cost, int id, int pid){
   this->x_ = x;
   this->y_ = y;
   this->cost_ = cost;
@@ -46,6 +46,7 @@ bool Node::operator!=(Node p){
 
 bool compare_cost::operator()(Node& p1, Node& p2){
   if(p1.cost_ + p1.h_cost_ >= p2.cost_ + p2.h_cost_) return true;
+  // Can modify this to allow tie breaks based on heuristic cost if required
   return false;
 }
 
@@ -69,19 +70,13 @@ std::vector<Node> GetMotion(int n){
   Node up(0,-1,1,0,0,0);
   Node left(-1,0,1,0,0,0);
   Node right(1,0,1,0,0,0);
-  Node dr(1,1,1.4,0,0,0);
-  Node dl(1,-1,1.4,0,0,0);
-  Node ur(-1,1,1.4,0,0,0);
-  Node ul(-1,-1,1.4,0,0,0);
   std::vector<Node> v;
   v.push_back(down);
   v.push_back(up);
   v.push_back(left);
   v.push_back(right);
-  v.push_back(dr);
-  v.push_back(dl);
-  v.push_back(ur);
-  v.push_back(ul);
+  // NOTE: Do not use the diagonals for A* as the heuristic used
+  // does not cover that motion
   return v;
 }
 
@@ -135,7 +130,7 @@ void PrintPath(std::vector<Node> path_vector, Node start, Node goal, void *grid,
   if(path_vector[0].id_ == -1){
     std::cout << "No path exists" << std::endl;
     PrintGrid(*p_grid, n);
-    return 0;
+    return;
   }
   std::cout << "Path (goal to start):" << std::endl;
   int i = 0;

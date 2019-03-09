@@ -88,7 +88,7 @@ Node RRT::GenerateRandomNode(int n){
 }
 
 
-std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity()){
+std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
   start_ = start_in;
   goal_ = goal_in;
   threshold_ = threshold_in;
