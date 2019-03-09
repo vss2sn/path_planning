@@ -1,6 +1,6 @@
 # Path Planning #
 
-#### This repository contains various path planning algorithms in C++. ####
+#### This repository contains path planning algorithms in C++. ####
 ##### It currently includes an implementation of: #####
 1. Dijkstra's algorithm for grid based search
 2. A* (A star) algorithm for grid based search
@@ -19,6 +19,7 @@
 1. Next algorithms to be implemented include Lifelong A*, D\* lite and a Voronoi cell based planner
 2. Include unit test section for testing different conditions/grids
 3. Alterations for moving node variables into private namespace
+4. Prune merged branches
 
 ##### Consider: #####
 1. Adding namespace to each header file
