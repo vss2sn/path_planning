@@ -3,7 +3,7 @@
 
 #include "utils.h"
 
-class RRT_STAR{
+class RRT_Star{
 public:
   Node FindNearestPoint(Node& new_node, int n);
   bool CheckObstacle(Node& n_1, Node& n_2);

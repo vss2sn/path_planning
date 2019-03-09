@@ -6,7 +6,7 @@ RRT* grid based planning
 
 #include "rrt_star.h"
 
-Node RRT_STAR::FindNearestPoint(Node& new_node, int n){
+Node RRT_Star::FindNearestPoint(Node& new_node, int n){
   Node nearest_node(-1,-1,-1,-1,-1,-1);
   std::vector<Node>::iterator it_v;
   std::vector<Node>::iterator it_v_store;
@@ -38,7 +38,7 @@ Node RRT_STAR::FindNearestPoint(Node& new_node, int n){
   return nearest_node;
 }
 
-bool RRT_STAR::CheckObstacle(Node& n_1, Node& n_2){
+bool RRT_Star::CheckObstacle(Node& n_1, Node& n_2){
   // As this planner is for grid maps, the obstacles are square.
   if (n_2.y_ - n_1.y_ == 0){
     double c = n_2.y_;
@@ -83,7 +83,7 @@ bool RRT_STAR::CheckObstacle(Node& n_1, Node& n_2){
   return false;
 }
 
-Node RRT_STAR::GenerateRandomNode(int n){
+Node RRT_Star::GenerateRandomNode(int n){
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -94,7 +94,7 @@ Node RRT_STAR::GenerateRandomNode(int n){
 }
 
 // Rewire the tree
-void RRT_STAR::Rewire(Node new_node){
+void RRT_Star::Rewire(Node new_node){
   std::vector<Node>::iterator it_v;
   for(int i=0;i<near_nodes_.size(); i++){
     if (near_nodes_[i].cost_ > near_nodes_dist_[i] + new_node.cost_){
@@ -110,7 +110,7 @@ void RRT_STAR::Rewire(Node new_node){
 }
 
 
-std::vector<Node> RRT_STAR::rrt_star(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
+std::vector<Node> RRT_Star::rrt_star(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
   start_ = start_in;
   goal_ = goal_in;
   threshold_ = threshold_in;
@@ -153,7 +153,7 @@ std::vector<Node> RRT_STAR::rrt_star(void *grid, int n, Node start_in, Node goal
   }
 }
 
-bool RRT_STAR::CheckGoalVisible(Node new_node){
+bool RRT_Star::CheckGoalVisible(Node new_node){
   if(!CheckObstacle(new_node, goal_)){
     double new_dist = (double)sqrt((double)((goal_.x_-new_node.x_)*(goal_.x_-new_node.x_))
                       + (double)((goal_.y_-new_node.y_)*(goal_.y_-new_node.y_)));
@@ -173,7 +173,7 @@ bool RRT_STAR::CheckGoalVisible(Node new_node){
   return false;
 }
 
-void RRT_STAR::CreateObstacleList(void *grid, int n){
+void RRT_Star::CreateObstacleList(void *grid, int n){
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   for(int i=0; i < n; i++){
     for(int j=0;j < n; j++){
@@ -203,7 +203,7 @@ int main(){
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
 
-  RRT_STAR new_rrt_star;
+  RRT_Star new_rrt_star;
   double threshold = 2;
   int max_iter_x_factor = 20;
   std::vector<Node> path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);

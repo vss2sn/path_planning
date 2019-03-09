@@ -3,7 +3,7 @@
 
 #include "utils.h"
 
-class A_STAR{
+class AStar{
 public:
   std::vector<Node> a_star(void *grid, int n, Node start_, Node goal_);
 private:

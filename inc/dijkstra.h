@@ -3,7 +3,7 @@
 
 #include "utils.h"
 
-class DIJKSTRA{
+class Dijkstra{
 public:
   std::vector<Node> dijkstra(void *grid, int n, Node start_, Node goal_);
 private:

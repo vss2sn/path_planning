@@ -10,7 +10,7 @@ int main(){
   int main_grid[n][n];
   int grid_space = n*n*sizeof(int);
   int grid[n][n];
-  memcpy(main_grid, grid, grid_space);
+
   MakeGrid(grid, n);
   PrintGrid(grid, n);
 
@@ -26,7 +26,7 @@ int main(){
 
   // Store points after algorithm has run
   std::vector<Node> path_vector;
-
+  memcpy(main_grid, grid, grid_space);
   double threshold = 2;
   int max_iter_x_factor = 20;
 
@@ -35,23 +35,27 @@ int main(){
   // Run algorithm
   // Print the final grid using the path_vector
 
+  std::cout << "--------------------- ALGORITH: DIJKSTRA ---------------------" << std::endl;
   memcpy(grid, main_grid, grid_space);
-  DIJKSTRA new_dijkstra;
+  Dijkstra new_dijkstra;
   path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
 
+  std::cout << "--------------------- ALGORITH: A* ---------------------" << std::endl;
   memcpy(grid, main_grid, grid_space);
-  A_STAR new_a_star;
+  AStar new_a_star;
   path_vector = new_a_star.a_star(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
 
+  std::cout << "--------------------- ALGORITH: RRT ---------------------" << std::endl;
   memcpy(grid, main_grid, grid_space);
   RRT new_rrt;
   path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);
 
+  std::cout << "--------------------- ALGORITH: RRT* ---------------------" << std::endl;
   memcpy(grid, main_grid, grid_space);
-  RRT_STAR new_rrt_star;
+  RRT_Star new_rrt_star;
   path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);
 

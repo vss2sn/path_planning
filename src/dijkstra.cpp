@@ -6,7 +6,7 @@ Dijstra grid based planning
 
 #include "dijkstra.h"
 
-std::vector<Node> DIJKSTRA::dijkstra(void *grid, int n, Node start_in, Node goal_in){
+std::vector<Node> Dijkstra::dijkstra(void *grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
@@ -76,7 +76,7 @@ int main(){
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
 
-  DIJKSTRA new_dijkstra;
+  Dijkstra new_dijkstra;
   std::vector<Node> path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
 
