@@ -44,6 +44,9 @@ std::vector<Node> A_STAR::a_star(void *grid, int n, Node start_in, Node goal_in)
           || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
 
       if(cost_grid[new_point.x_][new_point.y_] > new_point.cost_ + new_point.h_cost_){
+        new_point.PrintStatus();
+        std::cout << new_point.cost_ << std::endl;
+        std::cout << new_point.h_cost_ << std::endl;
         new_point.pid_ = current.id_;
         new_point.id_ = new_point.x_ * n + new_point.y_;
         point_list_.push(new_point);
@@ -52,6 +55,7 @@ std::vector<Node> A_STAR::a_star(void *grid, int n, Node start_in, Node goal_in)
         else path_vector.push_back(new_point); // add new point to list
         cost_grid[new_point.x_][new_point.y_] = new_point.cost_ + new_point.h_cost_;
       }
+      PrintGrid(*p_grid, n);
     }
   }
   path_vector.clear();
@@ -81,7 +85,7 @@ int main(){
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(n-1,n-1,0,0,0,0);
+  Node goal(n-2,n-2,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
