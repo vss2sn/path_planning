@@ -1,6 +1,6 @@
 #include "utils.h"
 
-Node::Node(int x = 0, int y = 0, double cost = 0, double h_cost = 0, int id = 0, int pid = 0){
+Node::Node(int x, int y, double cost, double h_cost, int id, int pid){
   this->x_ = x;
   this->y_ = y;
   this->cost_ = cost;
@@ -46,6 +46,7 @@ bool Node::operator!=(Node p){
 
 bool compare_cost::operator()(Node& p1, Node& p2){
   if(p1.cost_ + p1.h_cost_ >= p2.cost_ + p2.h_cost_) return true;
+  // Can modify this to allow tie breaks based on heuristic cost if required
   return false;
 }
 
@@ -59,28 +60,27 @@ bool compare_id::operator()(const Node p1, const Node p2){
   return false;
 }
 
+// Possible motions for dijkstra, A*, and similar algorithms.
+// Not using this for RRT & RRT* to allow random direction movements.
+// TODO: Consider adding option for motion restriction in RRT and RRT* by
+//       replacing new node with nearest node that satisfies motion constraints
 
 std::vector<Node> GetMotion(int n){
   Node down(0,1,1,0,0,0);
   Node up(0,-1,1,0,0,0);
   Node left(-1,0,1,0,0,0);
   Node right(1,0,1,0,0,0);
-  Node dr(1,1,1.4,0,0,0);
-  Node dl(1,-1,1.4,0,0,0);
-  Node ur(-1,1,1.4,0,0,0);
-  Node ul(-1,-1,1.4,0,0,0);
   std::vector<Node> v;
   v.push_back(down);
   v.push_back(up);
   v.push_back(left);
   v.push_back(right);
-  v.push_back(dr);
-  v.push_back(dl);
-  v.push_back(ur);
-  v.push_back(ul);
+  // NOTE: Do not use the diagonals for A* as the heuristic used
+  // does not cover that motion
   return v;
 }
 
+// Create the random grid
 void MakeGrid(void *grid, int n){
   //NOTE: Using a void pointer isnt the best option
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
@@ -97,8 +97,14 @@ void MakeGrid(void *grid, int n){
   }
 }
 
+// Print out the grid
 void PrintGrid(void *grid, int n){
   //NOTE: Using a void pointer isnt the best option
+  std::cout << "Grid: " << std::endl;
+  std::cout << "1. Points not considered ---> 0" << std::endl;
+  std::cout << "2. Obstacles             ---> 1" << std::endl;
+  std::cout << "3. Points considered     ---> 2" << std::endl;
+  std::cout << "4. Points in final path  ---> 3" << std::endl;
 
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   for(int j=0;j<n;j++){
@@ -114,28 +120,22 @@ void PrintGrid(void *grid, int n){
     }
     std::cout << std::endl << std::endl;
   }
-  for(int j=0;j<n;j++){
-    std::cout <<  "---";
-  }
+  for(int j=0;j<n;j++) std::cout <<  "---";
   std::cout << std::endl;
 }
 
 void PrintPath(std::vector<Node> path_vector, Node start, Node goal, void *grid, int n){
-  //NOTE: Using a void pointer isnt the best option
+  //NOTE: Using a void pointer isn't the best option
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   if(path_vector[0].id_ == -1){
     std::cout << "No path exists" << std::endl;
     PrintGrid(*p_grid, n);
-    return 0;
+    return;
   }
-
   std::cout << "Path (goal to start):" << std::endl;
   int i = 0;
-  for(int j = 0; j < path_vector.size(); j++){
-    if(goal == path_vector[j]){
-      i=j;
-      break;
-    }
+  for(i = 0; i < path_vector.size(); i++){
+    if(goal == path_vector[i]) break;
   }
   path_vector[i].PrintStatus();
   (*p_grid)[path_vector[i].x_][path_vector[i].y_] = 3;
@@ -150,10 +150,25 @@ void PrintPath(std::vector<Node> path_vector, Node start, Node goal, void *grid,
     }
   }
   (*p_grid)[start.x_][start.y_] = 3;
-  std::cout << "Grid: " << std::endl;
-  std::cout << "1. Points not considered ---> 0" << std::endl;
-  std::cout << "2. Obstacles             ---> 1" << std::endl;
-  std::cout << "3. Points considered     ---> 2" << std::endl;
-  std::cout << "4. Points in final path  ---> 3" << std::endl;
   PrintGrid((*p_grid), n);
+}
+
+// Prints out the cost for reaching points on the grid in the grid shape
+void PrintCost(void *grid, int n, std::vector<Node> point_list){
+  //NOTE: Using a void pointer isnt the best option
+  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
+  std::vector<Node>::iterator it_v;
+  for(int i=0;i<n;i++){
+    for(int j=0;j<n;j++){
+      for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
+        if(i == it_v->x_ && j== it_v->y_){
+          std::cout << std::setw(10) <<it_v->cost_ << " , ";
+          break;
+        }
+      }
+      if(it_v == point_list.end())
+      std::cout << std::setw(10) << "  , ";
+    }
+    std::cout << std::endl << std::endl;
+  }
 }

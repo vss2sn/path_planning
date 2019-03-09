@@ -31,5 +31,6 @@ std::vector<Node> GetMotion(int n);
 void MakeGrid(void *grid, int n);
 void PrintGrid(void *grid, int n);
 void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, void *grid, int n);
+void PrintCost(void *grid, int n, std::vector<Node> point_list);
 
 #endif UTILS_H

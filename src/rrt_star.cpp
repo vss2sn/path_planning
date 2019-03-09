@@ -10,7 +10,7 @@ Node RRT_STAR::FindNearestPoint(Node& new_node, int n){
   Node nearest_node(-1,-1,-1,-1,-1,-1);
   std::vector<Node>::iterator it_v;
   std::vector<Node>::iterator it_v_store;
-  //use total cost not just distance
+  //Note: Use total cost not just distance
   double dist = (double)(n*n);
   double new_dist = (double)(n*n);
   for(it_v = point_list_.begin(); it_v != point_list_.end(); ++it_v){
@@ -55,6 +55,19 @@ bool RRT_STAR::CheckObstacle(Node& n_1, Node& n_2){
       if(!(((n_1.y_>=it_v->y_) && (it_v->y_>= n_2.y_)) || ((n_1.y_<=it_v->y_) && (it_v->y_<= n_2.y_)))) continue;
       if(!(((n_1.x_>=it_v->x_) && (it_v->x_>= n_2.x_)) || ((n_1.x_<=it_v->x_) && (it_v->x_<= n_2.x_)))) continue;
       double arr[4];
+      // Using properties of a point and a line here.
+      // If the obtacle lies on one side of a line, substituting its edge points
+      // (all obstacles are grid sqaures in this example) into the equation of
+      // the line passing through the coordinated of the two nodes under
+      // consideration will lead to all four resulting values having the same
+      // sign. Hence if their sum of the value/abs(value) is 4 the obstacle is
+      // not in the way. If a single point is touched ie the substitution leads
+      // ot a value under 10^-7, it is set to 0. Hence the obstacle has
+      // 1 point on side 1, 3 points on side 2, the sum is 2 (-1+3)
+      // 2 point on side 1, 2 points on side 2, the sum is 0 (-2+2)
+      // 0 point on side 1, 3 points on side 2, (1 point on the line, ie,
+      // grazes the obstacle) the sum is 3 (0+3)
+      // Hence the condition < 3
       arr[0] = (double)it_v->x_+0.5 - slope*((double)it_v->y_+0.5) - c;
       arr[1] = (double)it_v->x_+0.5 - slope*((double)it_v->y_-0.5) - c;
       arr[2] = (double)it_v->x_-0.5 - slope*((double)it_v->y_+0.5) - c;
@@ -80,15 +93,16 @@ Node RRT_STAR::GenerateRandomNode(int n){
   return new_node;
 }
 
+// Rewire the tree
 void RRT_STAR::Rewire(Node new_node){
   std::vector<Node>::iterator it_v;
   for(int i=0;i<near_nodes_.size(); i++){
     if (near_nodes_[i].cost_ > near_nodes_dist_[i] + new_node.cost_){
-      for(it_v = point_list_.begin(); it_v!=point_list_.end();++it_v){
-        if(*it_v==near_nodes_[i]) break;
+      it_v = find (point_list_.begin(), point_list_.end(), near_nodes_[i]);
+      if (it_v != point_list_.end()){
+        it_v->pid_ = new_node.id_;
+        it_v->cost_ = near_nodes_dist_[i] + new_node.cost_;
       }
-      it_v->pid_ = new_node.id_;
-      it_v->cost_ = near_nodes_dist_[i] + new_node.cost_;
     }
   }
   near_nodes_.clear();
@@ -96,7 +110,7 @@ void RRT_STAR::Rewire(Node new_node){
 }
 
 
-std::vector<Node> RRT_STAR::rrt_star(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity()){
+std::vector<Node> RRT_STAR::rrt_star(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
   start_ = start_in;
   goal_ = goal_in;
   threshold_ = threshold_in;
@@ -119,52 +133,42 @@ std::vector<Node> RRT_STAR::rrt_star(void *grid, int n, Node start_in, Node goal
       return point_list_;
     }
     new_node = GenerateRandomNode(n);
-    if ((*p_grid)[new_node.x_][new_node.y_]==1){
-      continue;
-    }
+    if ((*p_grid)[new_node.x_][new_node.y_]==1) continue;
+    // Go back to beginning of loop if point is an obstacle
     Node nearest_node = FindNearestPoint(new_node, n);
-    if(nearest_node.id_ == -1){
-      continue;
-    }
+    if(nearest_node.id_ == -1) continue;
+    // Go back to beginning of loop if no near neighbour
     (*p_grid)[new_node.x_][new_node.y_]=2;
-    std::vector<Node>::iterator it_v;
+    // Setting to 2 implies visited/considered
 
-    for( it_v = point_list_.begin(); it_v!=point_list_.end(); ++it_v){
-      if(new_node.x_ == it_v->x_ && new_node.y_ == it_v->y_){
-        if(new_node.cost_ < it_v->cost_){
-          point_list_.erase(it_v);
-          point_list_.push_back(new_node);
-        }
-        break;
-      }
+    std::vector<Node>::iterator it_v = find (point_list_.begin(), point_list_.end(), new_node);
+    if (it_v != point_list_.end() && new_node.cost_ < it_v->cost_){
+      point_list_.erase(it_v);
+      point_list_.push_back(new_node);
     }
-    if(it_v==point_list_.end()) point_list_.push_back(new_node);
+    else if(it_v==point_list_.end()) point_list_.push_back(new_node);
+    Rewire(new_node); // Rewire
     if(CheckGoalVisible(new_node)) found_goal_ = true;
-    Rewire(new_node);
+    // Check if goal is visible
   }
 }
 
 bool RRT_STAR::CheckGoalVisible(Node new_node){
   if(!CheckObstacle(new_node, goal_)){
-    double new_dist = (double)sqrt((double)(goal_.x_-new_node.x_)*(double)(goal_.x_-new_node.x_)
-                + (double)(goal_.y_-new_node.y_)*(double)(goal_.y_-new_node.y_));
-    if(new_dist <=threshold_){
-      new_dist+=new_node.cost_;
-      goal_.pid_ = new_node.id_;
-      goal_.cost_ = new_dist;
-      std::vector<Node>::iterator it_v;
-      for( it_v = point_list_.begin(); it_v!=point_list_.end(); ++it_v){
-        if(goal_.x_ == it_v->x_ && goal_.y_ == it_v->y_){
-          if(goal_.cost_ < it_v->cost_){
-            point_list_.erase(it_v);
-            point_list_.push_back(goal_);
-          }
-          break;
-        }
-      }
-      if(it_v==point_list_.end()) point_list_.push_back(goal_);
-      return true;
+    double new_dist = (double)sqrt((double)((goal_.x_-new_node.x_)*(goal_.x_-new_node.x_))
+                      + (double)((goal_.y_-new_node.y_)*(goal_.y_-new_node.y_)));
+    if(new_dist > threshold_) return false;
+    new_dist+=new_node.cost_;
+    goal_.pid_ = new_node.id_;
+    goal_.cost_ = new_dist;
+    std::vector<Node>::iterator it_v;
+    it_v = find (point_list_.begin(), point_list_.end(), goal_);
+    if(it_v!=point_list_.end() && goal_.cost_ < it_v->cost_){
+      point_list_.erase(it_v);
+      point_list_.push_back(goal_);
     }
+    else if(it_v==point_list_.end()) point_list_.push_back(goal_);
+    return true;
   }
   return false;
 }
@@ -181,80 +185,21 @@ void RRT_STAR::CreateObstacleList(void *grid, int n){
   }
 }
 
-void RRT_STAR::PrintCost(void *grid, int n){
-  //NOTE: Using a void pointer isnt the best option
-  //std::cout << "POINT LIST SIZE:" << point_list_.size() <<std::endl;
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
-  std::vector<Node>::iterator it_v;
-  for(int i=0;i<n;i++){
-    for(int j=0;j<n;j++){
-      for(it_v = point_list_.begin(); it_v != point_list_.end(); ++it_v){
-        if(i == it_v->x_ && j== it_v->y_){
-          std::cout << std::setw(10) <<it_v->cost_ << " , ";
-          break;
-        }
-      }
-      if(it_v == point_list_.end())
-      std::cout << std::setw(10) << "  , ";
-    }
-    std::cout << std::endl << std::endl;
-  }
-}
-
 #ifdef BUILD_INDIVIDUAL
 int main(){
 
   int n = 8;
   int num_points = n*n;
-
-  n=5;
-  int grid[n][n] = {
-                     { 0 , 1 , 1 , 1 , 0},
-                     { 0 , 0 , 0 , 0 , 0},
-                     { 0 , 1 , 1 , 1 , 0},
-                     { 0 , 0 , 1 , 0 , 0},
-                     { 0 , 0 , 1 , 0 , 0}
-                   };
-
-
-  // n = 6;
-  // int grid[n][n] = {
-  //                    { 0 , 0 , 0 , 0 , 0, 0 },
-  //                    { 0 , 1 , 0 , 0 , 0, 0 },
-  //                    { 1 , 0 , 0 , 1 , 1, 0 },
-  //                    { 1 , 0 , 1 , 0 , 1, 0 },
-  //                    { 0 , 0 , 1 , 1 , 1, 1 },
-  //                    { 0 , 0 , 0 , 0 , 0, 0 }
-  //                  } ;
-  //
-  // int grid[n][n] = {
-  //                     { 0 , 0 , 1 , 0 , 1 , 0 , 0 , 0  },
-  //                     { 0 , 0 , 0 , 0 , 1 , 1 , 1 , 0  },
-  //                     { 1 , 0 , 1 , 0 , 1 , 0 , 1 , 0  },
-  //                     { 1 , 0 , 0 , 0 , 0 , 0 , 0 , 1  },
-  //                     { 0 , 1 , 0 , 0 , 0 , 0 , 1 , 1  },
-  //                     { 1 , 1 , 0 , 1 , 1 , 0 , 1 , 1  },
-  //                     { 1 , 1 , 0 , 1 , 0 , 0 , 0 , 0  },
-  //                     { 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0  }
-  //                   };
-   // int grid[n][n];
-   // MakeGrid(grid, n);
-
-  //NOTE:
-  // x = row index, y = column index.
-
-  std::cout << "Grid:" << std::endl;
-  std::cout << "1. Points not considered ---> 0" << std::endl;
-  std::cout << "2. Obstacles             ---> 1" << std::endl;
+  int grid[n][n];
+  MakeGrid(grid, n);
   PrintGrid(grid, n);
 
-  //Make sure start and goal are not obstacles and their ids are correctly assigned.
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
   Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
-
+  //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
 

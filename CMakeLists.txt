@@ -15,7 +15,7 @@ if(NOT WIN32)
 endif()
 
 set( CXX_FLAGS "-w" )
-set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -std=c++11 -pthread -fpermissive" )
+set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -std=c++11 -pthread" )
 
 include_directories( ${CMAKE_SOURCE_DIR}/inc )
 
@@ -29,7 +29,7 @@ list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp )
 # If building each file with it's own output, set to ON
 # If buiding single file (main.cpp) to test any/all protocols, set to OFF
 
-option( BUILD_INDIVIDUAL "BUILD_INDIVIDUAL" OFF)
+option( BUILD_INDIVIDUAL "BUILD_INDIVIDUAL" ON)
 set(file_list ${LIB_SOURCES})
 if(BUILD_INDIVIDUAL)
 
