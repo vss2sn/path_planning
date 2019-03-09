@@ -61,34 +61,18 @@ std::vector<Node> DIJKSTRA::dijkstra(void *grid, int n, Node start_in, Node goal
 
 #ifdef BUILD_INDIVIDUAL
 int main(){
-  int n = 3;
+  int n = 8;
   int num_points = n*n;
-
-  n = 6;
-  int grid[n][n] = {
-                     { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 1 , 1 , 0 , 0, 0 },
-                     { 1 , 1 , 0 , 0 , 1, 0 },
-                     { 1 , 0 , 0 , 1 , 1, 1 },
-                     { 0 , 1 , 1 , 1 , 1, 0 },
-                     { 0 , 0 , 0 , 0 , 0, 0 }
-                   } ;
-
-  //int grid[n][n];
-  //MakeGrid(grid, n);
-
-  //NOTE:
-  // x = row index, y = column index.
-
+  int grid[n][n];
+  MakeGrid(grid, n);
   PrintGrid(grid, n);
 
-  //Make sure start and goal are not obstacles and their ids are correctly assigned.
-  Node start(0,1,0,0,0,0);
+  Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
   Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
-
+  //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
 

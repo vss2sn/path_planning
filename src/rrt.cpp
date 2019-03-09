@@ -49,6 +49,19 @@ bool RRT::CheckObstacle(Node& n_1, Node& n_2){
       if(!(((n_1.y_>=it_v->y_) && (it_v->y_>= n_2.y_)) || ((n_1.y_<=it_v->y_) && (it_v->y_<= n_2.y_)))) continue;
       if(!(((n_1.x_>=it_v->x_) && (it_v->x_>= n_2.x_)) || ((n_1.x_<=it_v->x_) && (it_v->x_<= n_2.x_)))) continue;
       double arr[4];
+      // Using properties of a point and a line here.
+      // If the obtacle lies on one side of a line, substituting its edge points
+      // (all obstacles are grid sqaures in this example) into the equation of
+      // the line passing through the coordinated of the two nodes under
+      // consideration will lead to all four resulting values having the same
+      // sign. Hence if their sum of the value/abs(value) is 4 the obstacle is
+      // not in the way. If a single point is touched ie the substitution leads
+      // ot a value under 10^-7, it is set to 0. Hence the obstacle has
+      // 1 point on side 1, 3 points on side 2, the sum is 2 (-1+3)
+      // 2 point on side 1, 2 points on side 2, the sum is 0 (-2+2)
+      // 0 point on side 1, 3 points on side 2, (1 point on the line, ie,
+      // grazes the obstacle) the sum is 3 (0+3)
+      // Hence the condition < 3
       arr[0] = (double)it_v->x_+0.5 - slope*((double)it_v->y_+0.5) - c;
       arr[1] = (double)it_v->x_+0.5 - slope*((double)it_v->y_-0.5) - c;
       arr[2] = (double)it_v->x_-0.5 - slope*((double)it_v->y_+0.5) - c;
@@ -90,14 +103,15 @@ std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int m
   while(iter <= max_iter){
     iter++;
     new_node = GenerateRandomNode(n);
-    if ((*p_grid)[new_node.x_][new_node.y_]!=0){
-      continue;
-    }
+    if ((*p_grid)[new_node.x_][new_node.y_]!=0) continue;
+    // Go back to beginning of loop if point is an obstacle
+    // or has been considered already
     Node nearest_node = FindNearestPoint(new_node, n);
-    if(nearest_node.id_ == -1){
-      continue;
-    }
+    if(nearest_node.id_ == -1) continue;
+    // Go back to beginning of loop if no near neighbour
     (*p_grid)[new_node.x_][new_node.y_]=2;
+    // Setting to 2 implies visited/considered
+
     point_list_.push_back(new_node);
     if (CheckGoalVisible(new_node)) return this->point_list_;
   }
@@ -134,40 +148,17 @@ void RRT::CreateObstacleList(void *grid, int n){
 
 #ifdef BUILD_INDIVIDUAL
 int main(){
-  int n = 3;
+  int n = 8;
   int num_points = n*n;
 
-  /*
-  int grid[n][n] = {
-                     { 0 , 1 , 1 },
-                     { 1 , 0 , 1 },
-                     { 1 , 1 , 0 }
-                   };
-  */
-
-  n = 6;
-  int grid[n][n] = {
-                     { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 1 , 0 , 0 , 0, 0 },
-                     { 1 , 0 , 1 , 1 , 1, 0 },
-                     { 1 , 0 , 1 , 0 , 1, 0 },
-                     { 0 , 0 , 1 , 1 , 1, 1 },
-                     { 0 , 0 , 0 , 0 , 0, 0 }
-                   } ;
-
-
-  //int grid[n][n];
-  //MakeGrid(grid, n);
-
-  //NOTE:
-  // x = row index, y = column index.
-
+  int grid[n][n];
+  MakeGrid(grid, n);
   PrintGrid(grid, n);
 
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
-  Node start(0,1,0,0,0,0);
+  Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
-  start.pid_ = start.x_ * n + start.y_;
+  start.pid_ = start.id_;
   Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
 
