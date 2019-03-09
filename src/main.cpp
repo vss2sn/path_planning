@@ -34,26 +34,34 @@ int main(){
   // Create object for the algorithm
   // Run algorithm
   // Print the final grid using the path_vector
-
+  std::cout << "--------------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: DIJKSTRA ---------------------" << std::endl;
+  std::cout << "--------------------------------------------------------------" << std::endl;
   memcpy(grid, main_grid, grid_space);
   Dijkstra new_dijkstra;
   path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
 
+  std::cout << "--------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: A* ---------------------" << std::endl;
+  std::cout << "--------------------------------------------------------" << std::endl;
   memcpy(grid, main_grid, grid_space);
   AStar new_a_star;
   path_vector = new_a_star.a_star(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
 
+  std::cout << "---------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: RRT ---------------------" << std::endl;
+  std::cout << "---------------------------------------------------------" << std::endl;
+
   memcpy(grid, main_grid, grid_space);
   RRT new_rrt;
   path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);
 
+  std::cout << "----------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: RRT* ---------------------" << std::endl;
+  std::cout << "----------------------------------------------------------" << std::endl;
   memcpy(grid, main_grid, grid_space);
   RRT_Star new_rrt_star;
   path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
