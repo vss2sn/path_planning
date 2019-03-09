@@ -114,9 +114,9 @@ void PrintGrid(void *grid, int n){
   std::cout << std::endl;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
-      if((*p_grid)[i][j]==3) std::cout << "\033[1;32m" << (*p_grid)[i][j] << "\033[1;0m" << " , ";
-      else if((*p_grid)[i][j]==1) std::cout << "\033[1;31m" << (*p_grid)[i][j] << "\033[1;0m" << " , ";
-      else if((*p_grid)[i][j]==2) std::cout << "\033[1;34m" << (*p_grid)[i][j] << "\033[1;0m" << " , ";
+      if((*p_grid)[i][j]==3) std::cout << GREEN << (*p_grid)[i][j] << RESET << " , ";
+      else if((*p_grid)[i][j]==1) std::cout << RED << (*p_grid)[i][j] << RESET << " , ";
+      else if((*p_grid)[i][j]==2) std::cout << BLUE << (*p_grid)[i][j] << RESET << " , ";
       else std::cout << (*p_grid)[i][j] << " , ";
     }
     std::cout << std::endl << std::endl;
