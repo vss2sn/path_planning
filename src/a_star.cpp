@@ -11,7 +11,7 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
   goal_ = goal_in;
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   // Get possible motions
-  std::vector<Node> motion = GetMotion(n);
+  std::vector<Node> motion = GetMotion();
   point_list_.push(start_);
   std::vector<Node> path_vector;
   path_vector.push_back(start_);

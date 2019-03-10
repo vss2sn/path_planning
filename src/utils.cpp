@@ -66,7 +66,7 @@ bool compare_id::operator()(const Node p1, const Node p2){
 // TODO: Consider adding option for motion restriction in RRT and RRT* by
 //       replacing new node with nearest node that satisfies motion constraints
 
-std::vector<Node> GetMotion(int n){
+std::vector<Node> GetMotion(){
   Node down(0,1,1,0,0,0);
   Node up(0,-1,1,0,0,0);
   Node left(-1,0,1,0,0,0);

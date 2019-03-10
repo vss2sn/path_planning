@@ -37,7 +37,7 @@ struct compare_id{
   bool operator()(const Node p1, const Node p2);
 };
 
-std::vector<Node> GetMotion(int n);
+std::vector<Node> GetMotion();
 void MakeGrid(void *grid, int n);
 void PrintGrid(void *grid, int n);
 void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, void *grid, int n);
