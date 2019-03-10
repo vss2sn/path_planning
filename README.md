@@ -10,6 +10,7 @@
 ##### Notes: #####
 1. utils.cpp built as library and used in every separate file.
 2. Setting the CMake option BUILD_INDIVIDUAL allows building of each .cpp separately (except main.cpp), allowing easy testing. Setting it to OFF allows use of all base classes and algorithms in main.cpp.
+3. Unit test framework set up to set algorithms under different conditions. Currently only a sample grid is set up. This uses Google Test. CMake option TEST allows building when set. Currently set to work only when BUILD_INDIVIDUAL is set off.
 
 ##### Notes on implementations: #####
 1. RRT stops as soon as goal is found. It is connects new points to the nearest point, not accounting for total cost to reach that point. In contrast RRT\* chooses to connect to a new node to the node that allows the new node to have the minimum cost. RRT\* also rewires the preexisting nodes to the new node if that path allows for a lower cost for the preexisting node.
@@ -20,6 +21,7 @@
 2. Include unit test section for testing different conditions/grids. Initial framework setup. Create requisite grids to test scenarios and add cost storage to RRT.
 3. Alterations for moving node variables into private namespace
 4. Prune merged branches
+5. Allow TEST to be set when BUILD_INDIVIDUAL is set as well.
 
 ##### Consider: #####
 1. Adding namespace to each header file
