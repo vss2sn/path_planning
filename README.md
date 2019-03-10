@@ -17,7 +17,7 @@
 
 ##### TODOs: #####
 1. Next algorithms to be implemented include Lifelong A*, D\* lite and a Voronoi cell based planner
-2. Include unit test section for testing different conditions/grids
+2. Include unit test section for testing different conditions/grids. Initial framework setup. Create requisite grids to test scenarios and add cost storage to RRT.
 3. Alterations for moving node variables into private namespace
 4. Prune merged branches
 
