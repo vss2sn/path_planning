@@ -53,7 +53,6 @@ int main(){
   std::cout << "---------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: RRT ---------------------" << std::endl;
   std::cout << "---------------------------------------------------------" << std::endl;
-
   memcpy(grid, main_grid, grid_space);
   RRT new_rrt;
   path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
