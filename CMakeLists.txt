@@ -64,12 +64,8 @@ if (TEST)
     target_link_libraries(grid1 ${GTEST_LIBRARIES} pthread utils)
     add_test(Grid1 grid1)
 
-    add_executable(grid2 ${CMAKE_CURRENT_SOURCE_DIR}/tests/grid2.cpp ${file_list} ${LIB_HEADERS})
-    target_link_libraries(grid2 ${GTEST_LIBRARIES} pthread utils)
-    add_test(Grid2 grid2)
-
     add_custom_command(
-     TARGET grid1 grid2
+     TARGET grid1
      POST_BUILD
      COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> -R "^${UNIT_TEST}$" --output-on-failures
     )
