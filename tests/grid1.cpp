@@ -62,7 +62,7 @@ TEST(PathPlanningTest, Hello) {
   ASSERT_EQ(4, run_test(grid, n, "a_star"));
   // NOTE: RRT currently does not store cost. Now becomes a TODO.
   // memcpy(grid, main_grid, grid_space);
-  // ASSERT_EQ(floor(sqrt((double)8)), floor(run_test(grid, n, "rrt")));
+  // ASSERT_EQ(floor(sqrt((double)8 )), floor(run_test(grid, n, "rrt")));
   memcpy(grid, main_grid, grid_space);
   ASSERT_EQ(floor(sqrt((double)(8))), floor(run_test(grid, n, "rrt_star")));
 }
