@@ -9,9 +9,19 @@ int main(){
 
   int main_grid[n][n];
   int grid_space = n*n*sizeof(int);
-  int grid[n][n];
+  //int grid[n][n];
+  int grid[n][n] = {
+                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
+                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+                    { 1 , 0 , 0 , 1 , 0 , 0 , 0 , 0 },
+                    { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
+                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
+                    { 0 , 0 , 1 , 0 , 1 , 0 , 0 , 0 },
+                    { 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 }
+                   };
 
-  MakeGrid(grid, n);
+  //MakeGrid(grid, n);
   PrintGrid(grid, n);
 
   Node start(0,0,0,0,0,0);
