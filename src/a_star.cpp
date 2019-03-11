@@ -10,11 +10,19 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
+  double cost_grid[n][n];
+  for (int i = 0; i < n; i++){
+    for (int j = 0; j < n; j++){
+      cost_grid[i][j] = n*n;
+    }
+  }
+
   // Get possible motions
   std::vector<Node> motion = GetMotion();
   point_list_.push(start_);
   std::vector<Node> path_vector;
   path_vector.push_back(start_);
+  cost_grid[start_.x_][start_.y_] = 0;
 
   // Main loop
   while(!point_list_.empty()){
@@ -35,13 +43,18 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
       new_point.h_cost_ = abs(new_point.x_ - goal_.x_) + abs(new_point.y_ - goal_.y_);
       if(new_point.x_ < 0 || new_point.y_ < 0
           || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
-      if((*p_grid)[new_point.x_][new_point.y_]!= 2){
+      // auto it_v1 = find (path_vector.begin(), path_vector.end(), new_point);
+      // if(it_v1 == path_vector.end()){
+      //if((*p_grid)[new_point.x_][new_point.y_]!= 2){
+      if(cost_grid[new_point.x_][new_point.y_] > new_point.cost_ + new_point.h_cost_){
         new_point.pid_ = current.id_;
         new_point.id_ = new_point.x_ * n + new_point.y_;
         point_list_.push(new_point);
         std::vector<Node>::iterator it_v = find (path_vector.begin(), path_vector.end(), new_point);
         if (it_v != path_vector.end()) *it_v = new_point; //update point in list
         else path_vector.push_back(new_point); // add new point to list
+        cost_grid[new_point.x_][new_point.y_] = new_point.cost_ + new_point.h_cost_;
+
       }
     }
   }
@@ -56,14 +69,23 @@ int main(){
   int n = 8;
   int num_points = n*n;
 
-  int grid[n][n];
-  MakeGrid(grid, n);
+  int grid[n][n] ={
+{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
+{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+{ 1 , 0 , 0 , 1 , 0 , 0 , 0 , 0 },
+{ 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
+{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
+{ 0 , 0 , 1 , 0 , 1 , 0 , 0 , 0 },
+{ 0 , 0 , 0 , 0 , 1 , 0 , 0 , 1 }
+};
+  //MakeGrid(grid, n);
   PrintGrid(grid, n);
 
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(n-1,n-1,0,0,0,0);
+  Node goal(n-2,n-2,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
