@@ -10,7 +10,7 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
-  double cost_grid[n][n];
+  int cost_grid[n][n];
   for (int i = 0; i < n; i++){
     for (int j = 0; j < n; j++){
       cost_grid[i][j] = n*n;
@@ -29,6 +29,7 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
     Node current = point_list_.top();
     current.id_ = current.x_ * n + current.y_;
     point_list_.pop();
+    if(current.x_ == 2 && current.y_ ==2 ) std::cout << "OPENED!!!" << std::endl;
     if(current == goal_) return path_vector;
 
     if((*p_grid)[current.x_][current.y_]!=0){
@@ -54,9 +55,12 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
         if (it_v != path_vector.end()) *it_v = new_point; //update point in list
         else path_vector.push_back(new_point); // add new point to list
         cost_grid[new_point.x_][new_point.y_] = new_point.cost_ + new_point.h_cost_;
+        if(new_point.x_ == 2 && new_point.y_ ==2 ) std::cout << "added!!" << std::endl;
 
+        //PrintGrid(*p_grid, n);
       }
     }
+    PrintGrid(*p_grid, n);
   }
   path_vector.clear();
   Node no_path_node(-1,-1,-1,-1,-1,-1);
