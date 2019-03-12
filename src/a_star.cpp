@@ -5,67 +5,109 @@ A* grid based planning
 */
 
 #include "a_star.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
-  int cost_grid[n][n];
-  for (int i = 0; i < n; i++){
-    for (int j = 0; j < n; j++){
-      cost_grid[i][j] = n*n;
-    }
-  }
 
   // Get possible motions
   std::vector<Node> motion = GetMotion();
-  point_list_.push(start_);
-  std::vector<Node> path_vector;
-  path_vector.push_back(start_);
-  cost_grid[start_.x_][start_.y_] = 0;
+  open_list_.push_back(start_);
 
   // Main loop
-  while(!point_list_.empty()){
-    Node current = point_list_.top();
-    current.id_ = current.x_ * n + current.y_;
-    point_list_.pop();
-    if(current.x_ == 2 && current.y_ ==2 ) std::cout << "OPENED!!!" << std::endl;
-    if(current == goal_) return path_vector;
-
-    if((*p_grid)[current.x_][current.y_]!=0){
-      continue; // Point already opened and
-                // points around it added to points list
+  Node temp;
+  while(!open_list_.empty()){
+    //sorting; minor problem with inbuild sort for vector. To optimise.
+    for(int i=0; i < open_list_.size(); i++){
+      for(int j=0; j < open_list_.size(); j++){
+        if(open_list_[i].cost_ + open_list_[i].h_cost_ <= open_list_[j].cost_ + open_list_[j].h_cost_){
+          temp = open_list_[i];
+          open_list_[i] = open_list_[j];
+          open_list_[j] = temp;
+        }
+      }
     }
+    Node current = *(open_list_.begin());
+    open_list_.erase(open_list_.begin());
+    current.id_ = current.x_ * n + current.y_;
+    if(current.x_ == goal_.x_ && current.y_ == goal_.y_){
+      closed_list_.push_back(current);
+      (*p_grid)[current.x_][current.y_] = 2;
+      std::cout << "DOne with astar func." << std::endl;
+      return closed_list_;
+    }
+
     (*p_grid)[current.x_][current.y_] = 2; // Point opened
+
     int current_cost = current.cost_;
     for(auto it = motion.begin(); it!=motion.end(); ++it){
       Node new_point;
       new_point = current + *it;
+      new_point.id_ = n*new_point.x_+new_point.y_;
+      new_point.pid_ = current.id_;
       new_point.h_cost_ = abs(new_point.x_ - goal_.x_) + abs(new_point.y_ - goal_.y_);
-      if(new_point.x_ < 0 || new_point.y_ < 0
-          || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
-      // auto it_v1 = find (path_vector.begin(), path_vector.end(), new_point);
-      // if(it_v1 == path_vector.end()){
-      //if((*p_grid)[new_point.x_][new_point.y_]!= 2){
-      if(cost_grid[new_point.x_][new_point.y_] > new_point.cost_ + new_point.h_cost_){
-        new_point.pid_ = current.id_;
-        new_point.id_ = new_point.x_ * n + new_point.y_;
-        point_list_.push(new_point);
-        std::vector<Node>::iterator it_v = find (path_vector.begin(), path_vector.end(), new_point);
-        if (it_v != path_vector.end()) *it_v = new_point; //update point in list
-        else path_vector.push_back(new_point); // add new point to list
-        cost_grid[new_point.x_][new_point.y_] = new_point.cost_ + new_point.h_cost_;
-        if(new_point.x_ == 2 && new_point.y_ ==2 ) std::cout << "added!!" << std::endl;
-
-        //PrintGrid(*p_grid, n);
+      if(new_point.id_ == 44){
+        std::cout << "new_point" << std::endl;
+        new_point.PrintStatus();
       }
+      if(current.id_ == 44){
+        std::cout << "current" << std::endl;
+        current.PrintStatus();
+      }
+
+      if(new_point == goal_){
+        open_list_.push_back(new_point);
+        break;
+      }
+      if(new_point.x_ < 0 || new_point.y_ < 0 || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
+      if((*p_grid)[new_point.x_][new_point.y_]==1){
+        if(new_point.id_ == 44){
+          std::cout << "obstacle" << std::endl;
+          new_point.PrintStatus();
+        }
+
+        continue; //obstacle
+      }
+      std::vector<Node>::iterator it_v = find (open_list_.begin(), open_list_.end(), new_point);
+      if(it_v!=open_list_.end() && ((new_point.cost_ + new_point.h_cost_) < (it_v->cost_ + it_v->h_cost_))){
+        if(new_point.id_ == 44){
+          std::cout << "option 1" << std::endl;
+          new_point.PrintStatus();
+        }
+        *it_v = new_point;
+        continue;
+      }
+      it_v = find (closed_list_.begin(), closed_list_.end(), new_point);
+      if(it_v!=closed_list_.end() && ((new_point.cost_ + new_point.h_cost_) > (it_v->cost_ + it_v->h_cost_))){
+        if(new_point.id_ == 44){
+          std::cout << "option 2" << std::endl;
+          new_point.PrintStatus();
+        }
+        continue;
+      }
+      else if(it_v!=closed_list_.end()){
+        if(new_point.id_ == 44){
+          std::cout << "option 3" << std::endl;
+          new_point.PrintStatus();
+        }
+        //closed_list_.erase(it_v);
+      }
+      open_list_.push_back(new_point);
     }
-    PrintGrid(*p_grid, n);
+    //PrintGrid((*p_grid), n);
+    //std::cout << "DOne with print grid." << std::endl;
+    std::cout<< "Putting into closed"<<std::endl;
+    current.PrintStatus();
+    closed_list_.push_back(current);
   }
-  path_vector.clear();
+  closed_list_.clear();
   Node no_path_node(-1,-1,-1,-1,-1,-1);
-  path_vector.push_back(no_path_node);
-  return path_vector;
+  closed_list_.push_back(no_path_node);
+  return closed_list_;
 }
 
 #ifdef BUILD_INDIVIDUAL
@@ -73,23 +115,14 @@ int main(){
   int n = 8;
   int num_points = n*n;
 
-  int grid[n][n] ={
-{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
-{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-{ 1 , 0 , 0 , 1 , 0 , 0 , 0 , 0 },
-{ 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
-{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
-{ 0 , 0 , 1 , 0 , 1 , 0 , 0 , 0 },
-{ 0 , 0 , 0 , 0 , 1 , 0 , 0 , 1 }
-};
-  //MakeGrid(grid, n);
+  int grid[n][n];
+  MakeGrid(grid, n);
   PrintGrid(grid, n);
 
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(n-2,n-2,0,0,0,0);
+  Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
@@ -98,8 +131,10 @@ int main(){
 
   AStar new_a_star;
   std::vector<Node> path_vector = new_a_star.a_star(grid, n, start, goal);
-  PrintPath(path_vector, start, goal, grid, n);
+  //for(auto it_v=path_vector.begin(); it_v != path_vector.end(); ++it_v) it_v->PrintStatus();
+  std::cout<< "Calling print grid"<< std::endl;
 
+  PrintPath(path_vector, start, goal, grid, n);
   return 0;
 }
 #endif

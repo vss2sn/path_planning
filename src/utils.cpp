@@ -45,9 +45,12 @@ bool Node::operator!=(Node p){
 
 
 bool compare_cost::operator()(Node& p1, Node& p2){
-  if(p1.cost_ + p1.h_cost_ > p2.cost_ + p2.h_cost_) return true;
-  if (p1.h_cost_!=0 || p2.h_cost_!=0) if(p1.h_cost_ >= p2.h_cost_) return true;
+  // std::cout << "===================="<< std::endl;
+  // p1.PrintStatus();
+  // p2.PrintStatus();
+  // std::cout << "===================="<< std::endl;
   // Can modify this to allow tie breaks based on heuristic cost if required
+  if (p1.cost_ + p1.h_cost_ >= p2.cost_ + p2.h_cost_) return true;
   return false;
 }
 
@@ -100,6 +103,8 @@ void MakeGrid(void *grid, int n){
 
 // Print out the grid
 void PrintGrid(void *grid, int n){
+  std::cout << "Calling print grid"<< std::endl;
+
   //NOTE: Using a void pointer isnt the best option
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
@@ -127,6 +132,8 @@ void PrintGrid(void *grid, int n){
 
 void PrintPath(std::vector<Node> path_vector, Node start, Node goal, void *grid, int n){
   //NOTE: Using a void pointer isn't the best option
+  std::cout << "In print path"<< std::endl;
+
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   if(path_vector[0].id_ == -1){
     std::cout << "No path exists" << std::endl;
@@ -151,6 +158,7 @@ void PrintPath(std::vector<Node> path_vector, Node start, Node goal, void *grid,
     }
   }
   (*p_grid)[start.x_][start.y_] = 3;
+  //std::cout << "Calling print grid"<< std::endl;
   PrintGrid((*p_grid), n);
 }
 

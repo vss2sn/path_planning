@@ -63,7 +63,17 @@ std::vector<Node> Dijkstra::dijkstra(void *grid, int n, Node start_in, Node goal
 int main(){
   int n = 8;
   int num_points = n*n;
-  int grid[n][n];
+  // int grid[n][n];
+  int grid[n][n] = {
+                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
+                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+                    { 1 , 0 , 0 , 1 , 0 , 0 , 0 , 0 },
+                    { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
+                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
+                    { 0 , 0 , 1 , 0 , 1 , 0 , 0 , 0 },
+                    { 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 }
+                   };
   MakeGrid(grid, n);
   PrintGrid(grid, n);
 

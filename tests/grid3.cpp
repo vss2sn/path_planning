@@ -44,7 +44,7 @@ double run_test(void *grid, int n, std::string algo){
   return path_vector[i].cost_;
 }
 
-TEST(PathPlanningTest, HelloAgainAgain) {
+TEST(PathPlanningTest,Test1) {
   int n = 6;
   int main_grid[n][n];
   int grid[n][n] = {
@@ -56,6 +56,7 @@ TEST(PathPlanningTest, HelloAgainAgain) {
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
   int grid_space = n*n*sizeof(int);
+
   memcpy(main_grid, grid, grid_space);
 
   memcpy(grid, main_grid, grid_space);
@@ -69,7 +70,7 @@ TEST(PathPlanningTest, HelloAgainAgain) {
   ASSERT_EQ(-1, run_test(grid, n, "rrt_star"));
 }
 
-TEST(PathPlanningTest, HelloAgainAgain2) {
+TEST(PathPlanningTest,Test2) {
   int n = 6;
   int main_grid[n][n];
   int grid[n][n] = {
@@ -81,7 +82,11 @@ TEST(PathPlanningTest, HelloAgainAgain2) {
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
   int grid_space = n*n*sizeof(int);
-  memcpy(main_grid, grid, grid_space);
+  int t_grid[n][n];
+  for (int i = 0; i < n; ++i)
+      for (int j = 0; j < n; ++j)
+          t_grid[j][i]= grid[i][j];
+  memcpy(main_grid, t_grid, grid_space);
 
   memcpy(grid, main_grid, grid_space);
   ASSERT_EQ(-1, run_test(grid, n, "dijkstra"));

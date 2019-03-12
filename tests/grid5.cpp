@@ -6,10 +6,10 @@
 
 double run_test(void *grid, int n, std::string algo){
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
-  Node start(0,0,0,0,0,0);
+  Node start(0,n-1,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(n-1,n-1,0,0,0,0);
+  Node goal(n-1,0,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
@@ -46,41 +46,47 @@ double run_test(void *grid, int n, std::string algo){
 }
 
 TEST(PathPlanningTest, Test1) {
-  int n = 6;
+  int n = 8;
   int main_grid[n][n];
   int grid[n][n] = {
-                     { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 1 , 1 , 1 , 1, 1 },
-                     { 1 , 1 , 1 , 0 , 1, 0 },
-                     { 1 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 0 , 0 , 0 , 0, 0 }
+    { 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 },
+    { 1 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 },
+    { 1 , 0 , 0 , 1 , 0 , 0 , 1 , 1 },
+    { 0 , 0 , 0 , 1 , 1 , 0 , 1 , 0 },
+    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 }
                    } ;
+
   int grid_space = n*n*sizeof(int);
   memcpy(main_grid, grid, grid_space);
 
   memcpy(grid, main_grid, grid_space);
-  ASSERT_EQ(-1, run_test(grid, n, "dijkstra"));
+  ASSERT_EQ(14, run_test(grid, n, "dijkstra"));
   memcpy(grid, main_grid, grid_space);
-  ASSERT_EQ(-1, run_test(grid, n, "a_star"));
+  ASSERT_EQ(14, run_test(grid, n, "a_star"));
   // NOTE: RRT currently does not store cost. Now becomes a TODO.
   // memcpy(grid, main_grid, grid_space);
   // ASSERT_EQ(floor(sqrt((double)8 )), floor(run_test(grid, n, "rrt")));
   memcpy(grid, main_grid, grid_space);
-  ASSERT_EQ(-1, run_test(grid, n, "rrt_star"));
+  ASSERT_EQ(4+5*sqrt(2), run_test(grid, n, "rrt_star"));
 }
 
 TEST(PathPlanningTest, Test2) {
-  int n = 6;
+  int n = 8;
   int main_grid[n][n];
   int grid[n][n] = {
-                     { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 1 , 1 , 1 , 1, 1 },
-                     { 1 , 1 , 1 , 0 , 1, 0 },
-                     { 1 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 0 , 0 , 0 , 0, 0 }
+    { 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 },
+    { 1 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 },
+    { 1 , 0 , 0 , 1 , 0 , 0 , 1 , 1 },
+    { 0 , 0 , 0 , 1 , 1 , 0 , 1 , 0 },
+    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 }
                    } ;
+
   int grid_space = n*n*sizeof(int);
   int t_grid[n][n];
   for (int i = 0; i < n; ++i)
@@ -89,16 +95,15 @@ TEST(PathPlanningTest, Test2) {
   memcpy(main_grid, t_grid, grid_space);
 
   memcpy(grid, main_grid, grid_space);
-  ASSERT_EQ(-1, run_test(grid, n, "dijkstra"));
+  ASSERT_EQ(14, run_test(grid, n, "dijkstra"));
   memcpy(grid, main_grid, grid_space);
-  ASSERT_EQ(-1, run_test(grid, n, "a_star"));
+  ASSERT_EQ(14, run_test(grid, n, "a_star"));
   // NOTE: RRT currently does not store cost. Now becomes a TODO.
   // memcpy(grid, main_grid, grid_space);
   // ASSERT_EQ(floor(sqrt((double)8 )), floor(run_test(grid, n, "rrt")));
   memcpy(grid, main_grid, grid_space);
-  ASSERT_EQ(-1, run_test(grid, n, "rrt_star"));
+  ASSERT_EQ(4+5*sqrt(2), run_test(grid, n, "rrt_star"));
 }
-
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);

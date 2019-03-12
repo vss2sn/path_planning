@@ -7,7 +7,8 @@ class AStar{
 public:
   std::vector<Node> a_star(void *grid, int n, Node start_, Node goal_);
 private:
-  std::priority_queue<Node, std::vector<Node>, compare_cost> point_list_;
+  std::vector<Node> open_list_;
+  std::vector<Node> closed_list_;
   Node start_, goal_;
 };
 
