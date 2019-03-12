@@ -103,8 +103,6 @@ void MakeGrid(void *grid, int n){
 
 // Print out the grid
 void PrintGrid(void *grid, int n){
-  std::cout << "Calling print grid"<< std::endl;
-
   //NOTE: Using a void pointer isnt the best option
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
@@ -132,15 +130,13 @@ void PrintGrid(void *grid, int n){
 
 void PrintPath(std::vector<Node> path_vector, Node start, Node goal, void *grid, int n){
   //NOTE: Using a void pointer isn't the best option
-  std::cout << "In print path"<< std::endl;
-
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   if(path_vector[0].id_ == -1){
     std::cout << "No path exists" << std::endl;
     PrintGrid(*p_grid, n);
     return;
   }
-  std::cout << "Path (goal to start):" << std::endl;
+  // std::cout << "Path (goal to start):" << std::endl;
   int i = 0;
   for(i = 0; i < path_vector.size(); i++){
     if(goal == path_vector[i]) break;
@@ -158,7 +154,6 @@ void PrintPath(std::vector<Node> path_vector, Node start, Node goal, void *grid,
     }
   }
   (*p_grid)[start.x_][start.y_] = 3;
-  //std::cout << "Calling print grid"<< std::endl;
   PrintGrid((*p_grid), n);
 }
 
