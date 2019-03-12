@@ -37,7 +37,6 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
     if(current.x_ == goal_.x_ && current.y_ == goal_.y_){
       closed_list_.push_back(current);
       (*p_grid)[current.x_][current.y_] = 2;
-      std::cout << "DOne with astar func." << std::endl;
       return closed_list_;
     }
 
@@ -50,14 +49,6 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
       new_point.id_ = n*new_point.x_+new_point.y_;
       new_point.pid_ = current.id_;
       new_point.h_cost_ = abs(new_point.x_ - goal_.x_) + abs(new_point.y_ - goal_.y_);
-      if(new_point.id_ == 44){
-        std::cout << "new_point" << std::endl;
-        new_point.PrintStatus();
-      }
-      if(current.id_ == 44){
-        std::cout << "current" << std::endl;
-        current.PrintStatus();
-      }
 
       if(new_point == goal_){
         open_list_.push_back(new_point);
@@ -65,43 +56,19 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
       }
       if(new_point.x_ < 0 || new_point.y_ < 0 || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
       if((*p_grid)[new_point.x_][new_point.y_]==1){
-        if(new_point.id_ == 44){
-          std::cout << "obstacle" << std::endl;
-          new_point.PrintStatus();
-        }
-
         continue; //obstacle
       }
       std::vector<Node>::iterator it_v = find (open_list_.begin(), open_list_.end(), new_point);
       if(it_v!=open_list_.end() && ((new_point.cost_ + new_point.h_cost_) < (it_v->cost_ + it_v->h_cost_))){
-        if(new_point.id_ == 44){
-          std::cout << "option 1" << std::endl;
-          new_point.PrintStatus();
-        }
         *it_v = new_point;
         continue;
       }
       it_v = find (closed_list_.begin(), closed_list_.end(), new_point);
       if(it_v!=closed_list_.end() && ((new_point.cost_ + new_point.h_cost_) > (it_v->cost_ + it_v->h_cost_))){
-        if(new_point.id_ == 44){
-          std::cout << "option 2" << std::endl;
-          new_point.PrintStatus();
-        }
         continue;
-      }
-      else if(it_v!=closed_list_.end()){
-        if(new_point.id_ == 44){
-          std::cout << "option 3" << std::endl;
-          new_point.PrintStatus();
-        }
-        //closed_list_.erase(it_v);
       }
       open_list_.push_back(new_point);
     }
-    //PrintGrid((*p_grid), n);
-    //std::cout << "DOne with print grid." << std::endl;
-    std::cout<< "Putting into closed"<<std::endl;
-    current.PrintStatus();
     closed_list_.push_back(current);
   }
   closed_list_.clear();
@@ -131,9 +98,7 @@ int main(){
 
   AStar new_a_star;
   std::vector<Node> path_vector = new_a_star.a_star(grid, n, start, goal);
-  //for(auto it_v=path_vector.begin(); it_v != path_vector.end(); ++it_v) it_v->PrintStatus();
-  std::cout<< "Calling print grid"<< std::endl;
-
+  
   PrintPath(path_vector, start, goal, grid, n);
   return 0;
 }
