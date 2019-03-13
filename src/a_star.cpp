@@ -9,6 +9,21 @@ A* grid based planning
 #include <stdio.h>
 #include <stdlib.h>
 
+void insertionSort(std::vector<Node>& v){
+   int n = v.size();
+   int i, j;
+   Node key;
+   for (i = 1; i < n; i++) {
+       key = v[i];
+       j = i-1;
+       while (j >= 0 && (v[j].cost_ + v[j].h_cost_ >= key.cost_+key.h_cost_)){
+           v[j+1] = v[j];
+           j--;
+       }
+       v[j+1] = key;
+   }
+}
+
 std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
@@ -22,15 +37,7 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
   Node temp;
   while(!open_list_.empty()){
     //sorting; minor problem with inbuild sort for vector. To optimise.
-    for(int i=0; i < open_list_.size(); i++){
-      for(int j=0; j < open_list_.size(); j++){
-        if(open_list_[i].cost_ + open_list_[i].h_cost_ <= open_list_[j].cost_ + open_list_[j].h_cost_){
-          temp = open_list_[i];
-          open_list_[i] = open_list_[j];
-          open_list_[j] = temp;
-        }
-      }
-    }
+    insertionSort(open_list_);
     Node current = *(open_list_.begin());
     open_list_.erase(open_list_.begin());
     current.id_ = current.x_ * n + current.y_;
@@ -98,7 +105,7 @@ int main(){
 
   AStar new_a_star;
   std::vector<Node> path_vector = new_a_star.a_star(grid, n, start, goal);
-  
+
   PrintPath(path_vector, start, goal, grid, n);
   return 0;
 }

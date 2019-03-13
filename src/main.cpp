@@ -12,14 +12,18 @@ int main(){
 
   int grid_space = n*n*sizeof(int);
   int grid[n][n];
-
   MakeGrid(grid, n);
   PrintGrid(grid, n);
 
-  Node start(0,0,0,0,0,0);
+  std::random_device rd; // obtain a random number from hardware
+  std::mt19937 eng(rd()); // seed the generator
+  std::uniform_int_distribution<int> distr(0,n-1); // define the range
+
+  Node start(distr(eng),distr(eng),0,0,0,0);
+  Node goal(distr(eng),distr(eng),0,0,0,0);
+
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
