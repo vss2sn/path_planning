@@ -20,9 +20,9 @@ public:
   void Init();
   void UpdateVertex(Node u);
   int ComputeShortestPath();
-  int d_star_lite(void *grid_in, int n_in, Node start_in, Node goal_in);
-  int replan(Node u);
-  std::vector<Node> generate_path_vector();
+  std::vector<Node> d_star_lite(void *grid_in, int n_in, Node start_in, Node goal_in);
+  std::vector<Node> replan(Node u);
+  void generate_path_vector();
 private:
   Node start_, main_start_, goal_, last_;
   int grid[100][100]; // Do not let grid size exceed 100

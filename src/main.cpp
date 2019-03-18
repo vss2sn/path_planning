@@ -2,13 +2,13 @@
 #include "a_star.h"
 #include "rrt.h"
 #include "rrt_star.h"
+#include "d_star_lite.h"
 
 int main(){
   int n = 8;
   int num_points = n*n;
 
   int main_grid[n][n];
-  int new_grid[n][n];
 
   int grid_space = n*n*sizeof(int);
   int grid[n][n];
@@ -72,5 +72,29 @@ int main(){
   path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);
 
+  std::cout << "-------------------------------------------------------------" << std::endl;
+  std::cout << "--------------------- ALGORITH: D* Lite ---------------------" << std::endl;
+  std::cout << "-------------------------------------------------------------" << std::endl;
+  memcpy(grid, main_grid, grid_space);
+  DStarLite new_d_star_lite;
+  path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
+  PrintPath(path_vector, start, goal, grid, n);
+
+  std::cout << "--------------------------------------------------------------------" << std::endl;
+  std::cout << "--------------------- ALGORITH: D* Lite Replan ---------------------" << std::endl;
+  std::cout << "--------------------------------------------------------------------" << std::endl;
+  memcpy(grid, main_grid, grid_space);
+  if(path_vector.size() > 2){
+    Node new_obs(path_vector[2].x_,path_vector[2].y_);
+    grid[new_obs.x_][new_obs.y_] = 1;
+    grid[start.x_][start.y_] = 0;
+    grid[goal.x_][goal.y_] = 0;
+    path_vector = new_d_star_lite.replan(new_obs);
+  }
+  else{
+    std::cout << "Path size too small; no new obstacle created" << std::endl;
+  }
+  PrintPath(path_vector, start, goal, grid, n);
+  
   return 0;
 }
