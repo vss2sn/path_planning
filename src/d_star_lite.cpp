@@ -279,7 +279,6 @@ void DStarLite::generate_path_vector(){
       }
     }
   }
-  Node u = path_vector_[0];
 }
 
 #ifdef BUILD_INDIVIDUAL
@@ -288,25 +287,16 @@ int main(){
   int num_points = n*n;
 
   int main_grid[n][n];
-  int grid[n][n]={
-    {  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-    {  1 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
-    {  0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
-    {  0 , 0 , 1 , 0 , 0 , 0 , 0 , 1 },
-    {  0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
-    {  0 , 1 , 1 , 0 , 0 , 1 , 0 , 0 },
-    {  0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 },
-    {  0 , 0 , 1 , 1 , 0 , 1 , 0 , 0 }
-  };
+  int grid[n][n];
 
   MakeGrid(grid, n);
   PrintGrid(grid, n);
   int grid_space = n*n*sizeof(int);
 
-  Node start(0,4,0,0,0,0);
+  Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(1,1,0,0,0,0);
+  Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
@@ -323,21 +313,19 @@ int main(){
       if(grid[i][j]==3) grid[i][j]=0;
     }
   }
-
-  for(int i=0;i<n;i++){
-    for(int j=0;j<n;j++){
-      if(grid[i][j]==3) grid[i][j]=0;
-    }
-  }
-  if(path_vector.size() > 2){
+  if(path_vector.size() > 3){
     Node new_obs(path_vector[2].x_,path_vector[2].y_);
+    std::cout << "Obstacle created at: "<< std::endl;
+    new_obs.PrintStatus();
     grid[new_obs.x_][new_obs.y_] = 1;
     grid[start.x_][start.y_] = 0;
     grid[goal.x_][goal.y_] = 0;
     path_vector = new_d_star_lite.replan(grid, new_obs);
-    PrintPath(path_vector, start, goal, grid, n);
-    //new_d_star_lite.my_print();
   }
+  else{
+    std::cout << "Path size too small; no new obstacle created" << std::endl;
+  }
+  PrintPath(path_vector, start, goal, grid, n);
 
   return 0;
 }
