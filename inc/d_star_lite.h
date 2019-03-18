@@ -10,20 +10,20 @@ A* grid based planning
 
 class DStarLite{
 public:
-  double get_heuristic(Node s1, Node s2);
-  void my_print();
+  double GetHeuristic(Node s1, Node s2);
+  void MyPrint();
   std::pair<double,double> CalculateKey(const Node& s);
   std::vector<Node> GetPred(Node u);
   std::vector<Node> GetSucc(Node u);
-  void insertionSort();
-  double c(Node s1, Node s2);
+  void InsertionSort();
+  double C(Node s1, Node s2);
   void Init();
   void UpdateVertex(Node u);
   int ComputeShortestPath();
   std::vector<Node> d_star_lite(void *grid_in, int n_in, Node start_in, Node goal_in);
-  std::vector<Node> replan(void *grid_in, Node u);
-  void generate_path_vector();
-  void copy_grid(void *grid_in);
+  std::vector<Node> Replan(void *grid_in, Node u);
+  void GeneratePathVector();
+  void CopyGrid(void *grid_in);
   std::vector<Node> UpdateStart(void* grid_in, Node start_in);
 private:
   Node start_, main_start_, goal_, last_;

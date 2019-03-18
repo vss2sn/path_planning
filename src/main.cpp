@@ -91,7 +91,7 @@ int main(){
     grid[new_obs.x_][new_obs.y_] = 1;
     grid[start.x_][start.y_] = 0;
     grid[goal.x_][goal.y_] = 0;
-    path_vector = new_d_star_lite.replan(grid, new_obs);
+    path_vector = new_d_star_lite.Replan(grid, new_obs);
   }
   else{
     std::cout << "Path size too small; no new obstacle created" << std::endl;
