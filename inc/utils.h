@@ -20,6 +20,7 @@ public:
   Node(int x = 0, int y = 0, double cost = 0, double h_cost = 0, int id = 0, int pid = 0);
   void PrintStatus();
   Node operator+(Node p);
+  Node operator-(Node p);  
   Node operator=(Node p);
   bool operator==(Node p);
   bool operator!=(Node p);

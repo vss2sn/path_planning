@@ -65,22 +65,22 @@ int main(){
   int num_points = n*n;
   // int grid[n][n];
   int grid[n][n] = {
-                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
-                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-                    { 1 , 0 , 0 , 1 , 0 , 0 , 0 , 0 },
-                    { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
-                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
-                    { 0 , 0 , 1 , 0 , 1 , 0 , 0 , 0 },
-                    { 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 }
-                   };
+  {  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+  {  1 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+  {  0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
+  {  0 , 0 , 1 , 0 , 0 , 0 , 0 , 1 },
+  {  0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
+  {  0 , 1 , 1 , 0 , 0 , 1 , 0 , 0 },
+  {  0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 },
+  {  0 , 0 , 1 , 1 , 0 , 1 , 0 , 0 }
+  };
   MakeGrid(grid, n);
   PrintGrid(grid, n);
 
-  Node start(0,0,0,0,0,0);
+  Node start(0,4,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(n-1,n-1,0,0,0,0);
+  Node goal(1,n,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;

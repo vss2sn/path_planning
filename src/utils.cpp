@@ -26,6 +26,12 @@ Node Node::operator+(Node p){
   tmp.cost_ = this->cost_ + p.cost_;
   return tmp;
 }
+Node Node::operator-(Node p){
+  Node tmp;
+  tmp.x_ = this->x_ - p.x_;
+  tmp.y_ = this->y_ - p.y_;
+  return tmp;
+}
 Node Node::operator=(Node p){
   this->x_ = p.x_;
   this->y_ = p.y_;
@@ -136,19 +142,19 @@ void PrintPath(std::vector<Node> path_vector, Node start, Node goal, void *grid,
     PrintGrid(*p_grid, n);
     return;
   }
-  //std::cout << "Path (goal to start):" << std::endl;
+  // std::cout << "Path (goal to start):" << std::endl;
   int i = 0;
   for(i = 0; i < path_vector.size(); i++){
     if(goal == path_vector[i]) break;
   }
-  //path_vector[i].PrintStatus();
+  // path_vector[i].PrintStatus();
   (*p_grid)[path_vector[i].x_][path_vector[i].y_] = 3;
   while(path_vector[i].id_!=start.id_){
     if(path_vector[i].id_ == path_vector[i].pid_) break;
     for(int j = 0; j < path_vector.size(); j++){
       if(path_vector[i].pid_ == path_vector[j].id_){
         i=j;
-        //path_vector[j].PrintStatus();
+        // path_vector[j].PrintStatus();
         (*p_grid)[path_vector[j].x_][path_vector[j].y_] = 3;
       }
     }
