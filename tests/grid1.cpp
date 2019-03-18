@@ -2,7 +2,7 @@
 #include "a_star.h"
 #include "rrt.h"
 #include "rrt_star.h"
-
+#include "d_star_lite.h"
 #include <gtest/gtest.h>
 
 double run_test(void *grid, int n, std::string algo){
@@ -37,6 +37,10 @@ double run_test(void *grid, int n, std::string algo){
     RRT_Star new_rrt_star;
     path_vector = new_rrt_star.rrt_star(*p_grid, n, start, goal, max_iter_x_factor, threshold);
   }
+  else if(algo == "d_star_lite"){
+    DStarLite new_d_star_lite;
+    path_vector = new_d_star_lite.d_star_lite(*p_grid, n, start, goal);
+  }
 
   int i;
   for(i = 0; i < path_vector.size(); i++){
@@ -64,7 +68,9 @@ TEST(PathPlanningTest, Test1) {
   // memcpy(grid, main_grid, grid_space);
   // ASSERT_EQ(floor(sqrt((double)8 )), floor(run_test(grid, n, "rrt")));
   memcpy(grid, main_grid, grid_space);
-  ASSERT_EQ(floor(sqrt((double)(8))), floor(run_test(grid, n, "rrt_star")));
+  ASSERT_EQ(sqrt((double)(8)), run_test(grid, n, "rrt_star"));
+  memcpy(grid, main_grid, grid_space);
+  ASSERT_EQ(4, run_test(grid, n, "d_star_lite"));
 }
 
 TEST(PathPlanningTest, Test2) {
@@ -90,7 +96,9 @@ TEST(PathPlanningTest, Test2) {
   // memcpy(grid, main_grid, grid_space);
   // ASSERT_EQ(floor(sqrt((double)8 )), floor(run_test(grid, n, "rrt")));
   memcpy(grid, main_grid, grid_space);
-  ASSERT_EQ(floor(sqrt((double)(8))), floor(run_test(grid, n, "rrt_star")));
+  ASSERT_EQ(sqrt((double)(8)), run_test(grid, n, "rrt_star"));
+  memcpy(grid, main_grid, grid_space);
+  ASSERT_EQ(4, run_test(grid, n, "d_star_lite"));
 }
 
 
