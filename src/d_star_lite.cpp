@@ -34,6 +34,12 @@ void DStarLite::my_print(){
     }
     std::cout << std::endl;
   }
+  for(int i=0;i<n;i++){
+    for(int j=0;j<n;j++){
+      std::cout<< std::setw(5) <<S_[i][j].second << ",";
+    }
+    std::cout << std::endl;
+  }
 }
 
 
@@ -175,6 +181,15 @@ int DStarLite::ComputeShortestPath(){
   return 0;
 }
 
+void DStarLite::copy_grid(void *grid_in){
+  int (*p_grid)[n][n] = (int (*)[n][n]) grid_in;
+  for(int i=0;i<n;i++){
+    for(int j=0;j<n;j++){
+      (*p_grid)[i][j] = grid[i][j];
+    }
+  }
+}
+
 std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in, Node goal_in){
   start_ = start_in;
   main_start_ = start_;
@@ -189,6 +204,7 @@ std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in,
   last_ = start_;
   Init();
   int ans = ComputeShortestPath();
+  copy_grid(grid_in);
   if(ans < 0){
     path_vector_.clear();
     Node no_path_node(-1,-1,-1,-1,-1);
@@ -198,7 +214,7 @@ std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in,
   return path_vector_;
 }
 
-std::vector<Node> DStarLite::replan(Node u){
+std::vector<Node> DStarLite::replan(void *grid_in, Node u){
   grid[u.x_][u.y_] = 1; //cant just do this; need to undo generate grid
   path_vector_.clear();
   start_ = main_start_;
@@ -228,19 +244,21 @@ std::vector<Node> DStarLite::replan(Node u){
       path_vector_.clear();
       Node no_path_node(-1,-1,-1,-1,-1);
       path_vector_.push_back(no_path_node);
+      copy_grid(grid_in);
       return path_vector_;
     }
   }
+  copy_grid(grid_in);
   generate_path_vector();
   return path_vector_;
 }
 
 void DStarLite::generate_path_vector(){
-  main_start_.cost_ = S_[main_start_.x_][main_start_.y_].first;
+  main_start_.cost_ = S_[main_start_.x_][main_start_.y_].second;
   path_vector_.push_back(main_start_);
   while(path_vector_[0]!=goal_){
     Node u = path_vector_[0];
-    u.PrintStatus();
+    grid[u.x_][u.y_]=2;
     std::vector<Node> motions;
     motions.clear();
     motions = GetMotion();
@@ -250,8 +268,8 @@ void DStarLite::generate_path_vector(){
         continue;
       }
       if(new_node.x_ < n && new_node.x_ >= 0 && new_node.y_ < n && new_node.y_ >= 0){
-        new_node.cost_= S_[new_node.x_][new_node.y_].first;
-        if(new_node.cost_ >= u.cost_){
+        new_node.cost_= S_[new_node.x_][new_node.y_].second;
+        if(new_node.cost_ > u.cost_){
            continue;
         }
         new_node.id_ = n*new_node.x_ + new_node.y_;
@@ -271,24 +289,24 @@ int main(){
 
   int main_grid[n][n];
   int grid[n][n]={
-{ 0 , 1 , 1 , 0 , 1 , 0 , 0 , 0 },
-{ 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-{ 0 , 1 , 0 , 0 , 0 , 0 , 0 , 1 },
-{ 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 },
-{ 1 , 0 , 1 , 0 , 0 , 0 , 0 , 0 },
-{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
-{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 }
+    {  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    {  1 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+    {  0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
+    {  0 , 0 , 1 , 0 , 0 , 0 , 0 , 1 },
+    {  0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
+    {  0 , 1 , 1 , 0 , 0 , 1 , 0 , 0 },
+    {  0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 },
+    {  0 , 0 , 1 , 1 , 0 , 1 , 0 , 0 }
   };
 
-  // MakeGrid(grid, n);
+  MakeGrid(grid, n);
   PrintGrid(grid, n);
   int grid_space = n*n*sizeof(int);
 
-  Node start(0,0,0,0,0,0);
+  Node start(0,4,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(5,2,0,0,0,0);
+  Node goal(1,1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
@@ -305,18 +323,6 @@ int main(){
       if(grid[i][j]==3) grid[i][j]=0;
     }
   }
-  grid[1][0]=1;
-  path_vector = new_d_star_lite.replan(Node(1,0));
-  PrintPath(path_vector, start, goal, grid, n);
-
-  for(int i=0;i<n;i++){
-    for(int j=0;j<n;j++){
-      if(grid[i][j]==3) grid[i][j]=0;
-    }
-  }
-  grid[0][1]=1;
-  path_vector = new_d_star_lite.replan(Node(0,1));
-  PrintPath(path_vector, start, goal, grid, n);
 
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
@@ -328,8 +334,9 @@ int main(){
     grid[new_obs.x_][new_obs.y_] = 1;
     grid[start.x_][start.y_] = 0;
     grid[goal.x_][goal.y_] = 0;
-    path_vector = new_d_star_lite.replan(new_obs);
-    PrintPath(path_vector, start, goal, grid, n);      
+    path_vector = new_d_star_lite.replan(grid, new_obs);
+    PrintPath(path_vector, start, goal, grid, n);
+    //new_d_star_lite.my_print();
   }
 
   return 0;

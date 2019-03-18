@@ -6,6 +6,7 @@
 2. A* (A star) algorithm for grid based search.
 3. RRT algorithm for grid based search.
 4. RRT* (RRT star) algorithm for grid based search.
+5. D* Lite (D star lite) algorithm for grid search. (Based on Sven Koenig's & Maxim Likhachev's paper)
 
 ##### Notes: #####
 1. utils.cpp built as library and used in every separate file.
@@ -21,7 +22,7 @@
 2. A* uses Manhattan distance (L1) as its heuristic (change to L2 if adding diagonal moves to GetMotion function).
 
 ##### TODOs: #####
-1. Next algorithms to be implemented include Lifelong A*, D\* lite and a Voronoi cell based planner.
+1. Next algorithm to be implemented: a Voronoi cell based planner.
 2. Alterations for moving node variables into private namespace.
 3. Prune merged branches.
 4. Cleanup and refactor test section.
