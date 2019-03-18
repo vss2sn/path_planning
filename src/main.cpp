@@ -98,5 +98,15 @@ int main(){
   }
   PrintPath(path_vector, start, goal, grid, n);
 
+  std::cout << "--------------------------------------------------------------------------" << std::endl;
+  std::cout << "--------------------- ALGORITH: D* Lite Update Start ---------------------" << std::endl;
+  std::cout << "--------------------------------------------------------------------------" << std::endl;
+  memcpy(grid, main_grid, grid_space);
+  start = Node(distr(eng),distr(eng));
+  std::cout << "New start at: "<< std::endl;
+  start.PrintStatus();
+  path_vector = new_d_star_lite.UpdateStart(grid, start);
+  PrintPath(path_vector, start, goal, grid, n);
+
   return 0;
 }

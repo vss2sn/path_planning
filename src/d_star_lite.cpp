@@ -216,6 +216,7 @@ std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in,
 
 std::vector<Node> DStarLite::replan(void *grid_in, Node u){
   grid[u.x_][u.y_] = 1; //cant just do this; need to undo generate grid
+  if (grid[start_.x_][start_.y_]==1) grid[start_.x_][start_.y_]=0;
   path_vector_.clear();
   start_ = main_start_;
   while(start_!=goal_){
@@ -281,6 +282,24 @@ void DStarLite::generate_path_vector(){
   }
 }
 
+
+std::vector<Node> DStarLite::UpdateStart(void* grid_in, Node start_in){
+  start_ = start_in;
+  main_start_ = start_;
+  km_.first = km_.first +get_heuristic(last_, start_);
+  last_ = start_;
+  //TODO: Check if this section is required
+  int ans = ComputeShortestPath();
+  copy_grid(grid_in);
+  if(ans < 0){
+    path_vector_.clear();
+    Node no_path_node(-1,-1,-1,-1,-1);
+    path_vector_.push_back(no_path_node);
+  }
+  //End TODO
+  return replan(grid_in, start_);
+}
+
 #ifdef BUILD_INDIVIDUAL
 int main(){
   int n = 8;
@@ -308,11 +327,7 @@ int main(){
   path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
 
-  for(int i=0;i<n;i++){
-    for(int j=0;j<n;j++){
-      if(grid[i][j]==3) grid[i][j]=0;
-    }
-  }
+  // Adding obstacle to path.
   if(path_vector.size() > 3){
     Node new_obs(path_vector[2].x_,path_vector[2].y_);
     std::cout << "Obstacle created at: "<< std::endl;
@@ -322,12 +337,14 @@ int main(){
     grid[goal.x_][goal.y_] = 0;
     path_vector = new_d_star_lite.replan(grid, new_obs);
   }
-  else{
-    std::cout << "Path size too small; no new obstacle created" << std::endl;
-  }
+  else std::cout << "Path size too small; no new obstacle created" << std::endl;
+  PrintPath(path_vector, start, goal, grid, n);
+
+  // Updating start. TODO: Test more.
+  start = Node(4,4);
+  path_vector = new_d_star_lite.UpdateStart(grid, start);
   PrintPath(path_vector, start, goal, grid, n);
 
   return 0;
 }
-
 #endif BUILD_INDIVIDUAL

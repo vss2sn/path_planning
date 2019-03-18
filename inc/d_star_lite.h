@@ -24,6 +24,7 @@ public:
   std::vector<Node> replan(void *grid_in, Node u);
   void generate_path_vector();
   void copy_grid(void *grid_in);
+  std::vector<Node> UpdateStart(void* grid_in, Node start_in);
 private:
   Node start_, main_start_, goal_, last_;
   int grid[100][100]; // Do not let grid size exceed 100
