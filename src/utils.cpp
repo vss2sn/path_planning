@@ -26,6 +26,12 @@ Node Node::operator+(Node p){
   tmp.cost_ = this->cost_ + p.cost_;
   return tmp;
 }
+Node Node::operator-(Node p){
+  Node tmp;
+  tmp.x_ = this->x_ - p.x_;
+  tmp.y_ = this->y_ - p.y_;
+  return tmp;
+}
 Node Node::operator=(Node p){
   this->x_ = p.x_;
   this->y_ = p.y_;
