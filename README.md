@@ -33,3 +33,4 @@
 ##### Consider: #####
 1. Adding namespace to each header file.
 2. Inheriting node class into each file that requires a modified node (such as A* with heuristic cost etc).
+3. Consider adding tests for D* Lite Replan() and UpdateStart()

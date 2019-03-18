@@ -280,6 +280,8 @@ void DStarLite::GeneratePathVector(){
       }
     }
   }
+  // Inverting costs as dstar moves from goal to start.
+  // Then inverting path vector for reordering.
   double start_cost = path_vector_.back().cost_;
   for(auto it=path_vector_.begin(); it!=path_vector_.end(); ++it){
     (*it).cost_ = start_cost - (*it).cost_;
