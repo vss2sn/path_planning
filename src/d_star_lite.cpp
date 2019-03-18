@@ -280,6 +280,11 @@ void DStarLite::GeneratePathVector(){
       }
     }
   }
+  double start_cost = path_vector_.back().cost_;
+  for(auto it=path_vector_.begin(); it!=path_vector_.end(); ++it){
+    (*it).cost_ = start_cost - (*it).cost_;
+  }
+  std::reverse(path_vector_.begin(),path_vector_.end());
 }
 
 
