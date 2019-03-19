@@ -211,7 +211,7 @@ std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in,
     path_vector_.push_back(no_path_node);
   }
   else GeneratePathVector();
-  return path_vector_;
+  return ReturnInvertedVector();
 }
 
 std::vector<Node> DStarLite::Replan(void *grid_in, Node u){
@@ -251,7 +251,20 @@ std::vector<Node> DStarLite::Replan(void *grid_in, Node u){
   }
   CopyGrid(grid_in);
   GeneratePathVector();
-  return path_vector_;
+  return ReturnInvertedVector();
+}
+
+
+std::vector<Node> DStarLite::ReturnInvertedVector(){
+  std::vector<Node> inverted_path_vector = path_vector_;
+  // Inverting costs as dstar moves from goal to start.
+  // Then inverting path vector for reordering.
+  double start_cost = inverted_path_vector.back().cost_;
+  for(auto it=inverted_path_vector.begin(); it!=inverted_path_vector.end(); ++it){
+    (*it).cost_ = start_cost - (*it).cost_;
+  }
+  std::reverse(inverted_path_vector.begin(),inverted_path_vector.end());
+  return inverted_path_vector;
 }
 
 void DStarLite::GeneratePathVector(){
@@ -280,13 +293,7 @@ void DStarLite::GeneratePathVector(){
       }
     }
   }
-  // Inverting costs as dstar moves from goal to start.
-  // Then inverting path vector for reordering.
-  double start_cost = path_vector_.back().cost_;
-  for(auto it=path_vector_.begin(); it!=path_vector_.end(); ++it){
-    (*it).cost_ = start_cost - (*it).cost_;
-  }
-  std::reverse(path_vector_.begin(),path_vector_.end());
+
 }
 
 
