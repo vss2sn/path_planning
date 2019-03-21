@@ -18,7 +18,7 @@ public:
   void InsertionSort();
   double C(Node s1, Node s2);
   void Init();
-  void UpdateVertex(Node u);
+  void UpdateVertex(Node& u);
   int ComputeShortestPath();
   std::vector<Node> d_star_lite(void *grid_in, int n_in, Node start_in, Node goal_in);
   std::vector<Node> Replan(void *grid_in, Node u);
@@ -26,6 +26,7 @@ public:
   void CopyGrid(void *grid_in);
   std::vector<Node> UpdateStart(void* grid_in, Node start_in);
   std::vector<Node> ReturnInvertedVector();
+  bool CompareKey(std::pair<double,double>& pair_in, Node& u);
 private:
   Node start_, main_start_, goal_, last_;
   int grid[100][100]; // Do not let grid size exceed 100

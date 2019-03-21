@@ -7,6 +7,7 @@ D* Lite grid based planning
 #include "utils.h"
 #include "d_star_lite.h"
 
+using namespace std::chrono;
 void VectorInsertionSort(std::vector<Node>& v){
    int n = v.size();
    int i, j;
@@ -124,7 +125,7 @@ void DStarLite::Init(){
   InsertionSort();
 }
 
-void DStarLite::UpdateVertex(Node u){
+void DStarLite::UpdateVertex(Node& u){
   if(u!=goal_){
     std::vector<Node> succ = GetSucc(u);
     double init_min = n*n;
@@ -146,14 +147,23 @@ void DStarLite::UpdateVertex(Node u){
   }
 }
 
+bool DStarLite::CompareKey(std::pair<double,double>& pair_in, Node& u){
+  std::pair<double,double> node_key = CalculateKey(u);
+  if(pair_in.first < node_key.first ||
+    (pair_in.first == node_key.first && pair_in.second < node_key.second)){
+    return true;
+  }
+  return false;
+}
+
 int DStarLite::ComputeShortestPath(){
   ++iter_;
   if(iter_==max_iter_) return -1;
-  while((!U_.empty() && (U_[0].second.first < CalculateKey(start_).first || (U_[0].second.first == CalculateKey(start_).first && U_[0].second.second < CalculateKey(start_).second))) || S_[start_.x_][start_.y_].first != S_[start_.x_][start_.y_].second){
+  while((!U_.empty() && CompareKey(U_[0].second, start_)) || S_[start_.x_][start_.y_].first != S_[start_.x_][start_.y_].second){
     k_old_ = U_[0].second;
     Node u = U_[0].first;
     U_.erase(U_.begin());
-    if((k_old_.first < CalculateKey(u).first || k_old_.first == CalculateKey(u).first && k_old_.second < CalculateKey(u).second)){
+    if(CompareKey(k_old_, u)){
       std::pair<Node, std::pair<double, double>> u_pair = std::make_pair(goal_, CalculateKey(goal_));
       U_.push_back(u_pair);
       InsertionSort();
@@ -366,7 +376,11 @@ int main(){
 
   // Updating start. TODO: Test more.
   start = Node(4,4);
+  auto start_in = high_resolution_clock::now();
   path_vector = new_d_star_lite.UpdateStart(grid, start);
+  auto stop = high_resolution_clock::now();
+  auto duration = duration_cast<microseconds>(stop - start_in);
+  std::cout << duration.count() << std::endl;
   PrintPath(path_vector, start, goal, grid, n);
 
   return 0;
