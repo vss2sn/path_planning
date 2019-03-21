@@ -33,9 +33,9 @@ private:
   std::vector<std::pair<Node,std::pair<double,double>>> U_;
   std::pair<double,double> km_;
   std::pair<double,double> k_old_;
-  int n;
-  std::vector<Node> path_vector_;
   std::vector<Node> motions;
+  int n, iter_ = 0, max_iter_ = 0;
+  std::vector<Node> path_vector_;
 };
 
 #endif D_STAR_LITE_H
