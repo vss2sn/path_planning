@@ -34,7 +34,7 @@ private:
   std::pair<double,double> km_;
   std::pair<double,double> k_old_;
   std::vector<Node> motions;
-  int n;
+  int n, iter_ = 0, max_iter_ = 0;
   std::vector<Node> path_vector_;
 };
 
