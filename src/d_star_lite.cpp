@@ -50,7 +50,6 @@ std::pair<double,double> DStarLite::CalculateKey(const Node& s){
 }
 
 std::vector<Node> DStarLite::GetPred(Node u){
-  std::vector<Node> motions = GetMotion();
   std::vector<Node> succ;
   for(auto it=motions.begin();it!=motions.end(); ++it){
     Node new_node = u + *it;
@@ -65,12 +64,6 @@ std::vector<Node> DStarLite::GetPred(Node u){
 
 std::vector<Node> DStarLite::GetSucc(Node u){
   std::vector<Node> succ;
-  std::vector<Node> motions;
-  motions.clear();
-  motions = GetMotion();
-  for(int i=0;i<motions.size();i++){
-  }
-
   for(auto it=motions.begin();it!=motions.end(); ++it){
     Node new_node = u + *it;
     if(new_node.x_ < n && new_node.x_ >= 0 &&
@@ -102,7 +95,6 @@ void DStarLite::InsertionSort(){
 
 double DStarLite::C(Node s1, Node s2){
   if(grid[s1.x_][s1.y_] != 1 && grid[s2.x_][s2.y_] != 1){
-    std::vector<Node> motions = GetMotion();
     Node diff = s2-s1;
     for(auto it = motions.begin(); it!=motions.end(); ++it){
       if(diff == *it){
@@ -117,6 +109,7 @@ double DStarLite::C(Node s1, Node s2){
 
 void DStarLite::Init(){
   U_.clear();
+  motions = GetMotion();
   km_=std::make_pair(0,0);
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
@@ -273,9 +266,6 @@ void DStarLite::GeneratePathVector(){
   while(path_vector_[0]!=goal_){
     Node u = path_vector_[0];
     grid[u.x_][u.y_]=2;
-    std::vector<Node> motions;
-    motions.clear();
-    motions = GetMotion();
     for(auto it=motions.begin();it!=motions.end(); ++it){
       Node new_node = u + *it;
       if(grid[new_node.x_][new_node.y_]==1){
