@@ -102,7 +102,7 @@ void MakeGrid(void *grid, int n){
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
       (*p_grid)[i][j] = distr(eng)/((n-1)); // probability of obstacle is 1/n
-      //(*p_grid)[i][j] = 0; // For no obstacles
+      // (*p_grid)[i][j] = 0; // For no obstacles
     }
   }
 }
@@ -127,6 +127,7 @@ void PrintGrid(void *grid, int n){
       else if((*p_grid)[i][j]==1) std::cout << RED << (*p_grid)[i][j] << RESET << " , ";
       else if((*p_grid)[i][j]==2) std::cout << BLUE << (*p_grid)[i][j] << RESET << " , ";
       else std::cout << (*p_grid)[i][j] << " , ";
+
     }
     std::cout << std::endl << std::endl;
   }
@@ -142,19 +143,19 @@ void PrintPath(std::vector<Node> path_vector, Node start, Node goal, void *grid,
     PrintGrid(*p_grid, n);
     return;
   }
-  std::cout << "Path (goal to start):" << std::endl;
+  // std::cout << "Path (goal to start):" << std::endl;
   int i = 0;
   for(i = 0; i < path_vector.size(); i++){
     if(goal == path_vector[i]) break;
   }
-  path_vector[i].PrintStatus();
+  // path_vector[i].PrintStatus();
   (*p_grid)[path_vector[i].x_][path_vector[i].y_] = 3;
   while(path_vector[i].id_!=start.id_){
     if(path_vector[i].id_ == path_vector[i].pid_) break;
     for(int j = 0; j < path_vector.size(); j++){
       if(path_vector[i].pid_ == path_vector[j].id_){
         i=j;
-        path_vector[j].PrintStatus();
+        // path_vector[j].PrintStatus();
         (*p_grid)[path_vector[j].x_][path_vector[j].y_] = 3;
       }
     }

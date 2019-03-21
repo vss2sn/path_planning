@@ -75,16 +75,17 @@ int main(){
   {  0 , 0 , 1 , 1 , 0 , 1 , 0 , 0 }
   };
   MakeGrid(grid, n);
-  PrintGrid(grid, n);
 
-  Node start(0,4,0,0,0,0);
+  Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(1,n,0,0,0,0);
+  Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+  PrintGrid(grid, n);
+
 
   Dijkstra new_dijkstra;
   std::vector<Node> path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
