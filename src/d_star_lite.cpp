@@ -152,7 +152,7 @@ void DStarLite::UpdateVertex(Node u){
 }
 
 int DStarLite::ComputeShortestPath(){
-  while((U_[0].second.first < CalculateKey(start_).first || (U_[0].second.first == CalculateKey(start_).first && U_[0].second.second < CalculateKey(start_).second)) || S_[start_.x_][start_.y_].first != S_[start_.x_][start_.y_].second){
+  while((!U_.empty() && (U_[0].second.first < CalculateKey(start_).first || (U_[0].second.first == CalculateKey(start_).first && U_[0].second.second < CalculateKey(start_).second))) || S_[start_.x_][start_.y_].first != S_[start_.x_][start_.y_].second){
     if(U_.size()==0) return -1;
     k_old_ = U_[0].second;
     Node u = U_[0].first;
