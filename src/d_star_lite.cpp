@@ -205,7 +205,11 @@ std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in,
   goal_ = goal_in;
   n = n_in;
   int (*p_grid)[n][n] = (int (*)[n][n]) grid_in;
-
+  for(int i=0;i<n;i++){
+    for(int j=0;j<n;j++){
+      grid[i][j] = (*p_grid)[i][j];
+    }
+  }
   last_ = start_;
   Init();
   int ans = ComputeShortestPath();
@@ -217,7 +221,6 @@ std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in,
   }
 
   else GeneratePathVector();
-  PrintGrid(grid,n);
   return ReturnInvertedVector();
 }
 
@@ -307,7 +310,11 @@ void DStarLite::GeneratePathVector(){
 
 std::vector<Node> DStarLite::UpdateStart(void* grid_in, Node start_in){
   // Prevent teleportations
-  if(path_vector_[0].cost_ == -1) return path_vector_; //If no path found to
+  if(path_vector_[0].cost_ == -1){
+    std::cout << "Teleport disabled." << std::endl;
+    return path_vector_;
+  }
+  //If no path found to
   // goal from current start, not movement from start will reach a point that
   // can be reached from the goal. Teleportation is not supported by D* Lite
   // unless a second iter counter is added at the beginning of the compute cost
@@ -446,33 +453,27 @@ int main(){
   PrintPath(path_vector, start, goal, grid, n);
 
   // Adding obstacle to path.
-  // Node new_obs;
-  // if(path_vector.size() > 3){
-  //   for(int j = 0; j < path_vector.size(); j++){
-  //     if(path_vector[0].id_ == path_vector[j].pid_ && path_vector[0]!=path_vector[j]){
-  //       // path_vector[j].PrintStatus();
-  //       new_obs = path_vector[j];
-  //       break;
-  //     }
-  //   }
-  //   std::cout << "Obstacle created at: "<< std::endl;
-  //   new_obs.PrintStatus();
-  //   grid[new_obs.x_][new_obs.y_] = 1;
-  //   grid[start.x_][start.y_] = 0;
-  //   grid[goal.x_][goal.y_] = 0;
-  //   path_vector = new_d_star_lite.Replan(grid, new_obs); // CHange to setobs
-  // }
-  // else std::cout << "Path size too small; no new obstacle created" << std::endl;
-  // PrintPath(path_vector, start, goal, grid, n);
+  Node new_obs(1,0);
+  if(path_vector.size() > 3){
+    std::cout << "Obstacle created at: "<< std::endl;
+    new_obs.PrintStatus();
+    grid[new_obs.x_][new_obs.y_] = 1;
+    grid[start.x_][start.y_] = 0;
+    grid[goal.x_][goal.y_] = 0;
+    path_vector = new_d_star_lite.SetObs(grid, new_obs); // CHange to setobs
+  }
+  else std::cout << "Path size too small; no new obstacle created" << std::endl;
+  PrintPath(path_vector, start, goal, grid, n);
 
   // Updating start. TODO: Test more.
-  // start = Node(4,4);
-  // auto start_in = high_resolution_clock::now();
-  // path_vector = new_d_star_lite.UpdateStart(grid, start);
-  // auto stop = high_resolution_clock::now();
-  // auto duration = duration_cast<microseconds>(stop - start_in);
-  // std::cout << duration.count() << std::endl;
-  // PrintPath(path_vector, start, goal, grid, n);
+  start = Node(4,4);
+  auto start_in = high_resolution_clock::now();
+  path_vector = new_d_star_lite.UpdateStart(grid, start);
+  auto stop = high_resolution_clock::now();
+  auto duration = duration_cast<microseconds>(stop - start_in);
+  std::cout << duration.count() << std::endl;
+  PrintPath(path_vector, start, goal, grid, n);
+
   new_d_star_lite.RunDStarLite();
   return 0;
 }

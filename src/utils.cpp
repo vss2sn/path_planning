@@ -102,7 +102,7 @@ void MakeGrid(void *grid, int n){
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
       (*p_grid)[i][j] = distr(eng)/((n-1)); // probability of obstacle is 1/n
-      (*p_grid)[i][j] = 0; // For no obstacles
+      // (*p_grid)[i][j] = 0; // For no obstacles
     }
   }
 }
