@@ -153,7 +153,6 @@ int main(){
 
   int grid[n][n];
   MakeGrid(grid, n);
-  PrintGrid(grid, n);
 
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   Node start(0,0,0,0,0,0);
@@ -161,9 +160,9 @@ int main(){
   start.pid_ = start.id_;
   Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
-
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+  PrintGrid(grid, n);
 
   RRT new_rrt;
   double threshold = 2;

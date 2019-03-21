@@ -11,6 +11,7 @@
 ##### Notes: #####
 1. utils.cpp built as library and used in every separate file.
 2. Setting the CMake option BUILD_INDIVIDUAL allows building of each .cpp separately (except main.cpp), allowing easy testing. Setting it to OFF allows use of all base classes and algorithms in main.cpp.
+3. D* Lite can be run live with random obstacle creation using the RunDStarLite function.
 
 ##### Notes on test: #####
 1. Unit test framework set up to set algorithms under different grids. This section uses Google Test.
@@ -19,7 +20,7 @@
 
 ##### Notes on implementations: #####
 1. RRT stops as soon as goal is found. It is connects new points to the nearest point, not accounting for total cost to reach that point. In contrast RRT\* chooses to connect to a new node to the node that allows the new node to have the minimum cost. RRT\* also rewires the preexisting nodes to the new node if that path allows for a lower cost for the preexisting node.
-2. A* and D* Lite use Manhattan distance (L1) as their heuristic (change to L2 if adding diagonal moves to GetMotion function).
+2. A* and D* Lite use Manhattan distance (L1) as their heuristic (change to L2 if adding diagonal moves to GetMotion function). Node D* also uses the same in its C function.
 3. D* Lite implemented based on based on Sven Koenig's & Maxim Likhachev's paper.
 
 ##### TODOs: #####
@@ -27,10 +28,10 @@
 2. Alterations for moving node variables into private namespace.
 3. Prune merged branches.
 4. Cleanup and refactor test section.
-5. Add test setion for D* Lite
-6. Refactor GetMotion for D* Lite
+5. Use hash to check if node in list for D* Lite (can be applied to others if required)
 
 ##### Consider: #####
 1. Adding namespace to each header file.
 2. Inheriting node class into each file that requires a modified node (such as A* with heuristic cost etc).
 3. Consider adding tests for D* Lite Replan() and UpdateStart()
+4. Cleanup of D* Lite live run

@@ -13,7 +13,6 @@ int main(){
   int grid_space = n*n*sizeof(int);
   int grid[n][n];
   MakeGrid(grid, n);
-  PrintGrid(grid, n);
 
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
@@ -29,7 +28,8 @@ int main(){
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
-
+  PrintGrid(grid, n);
+  
   // Store points after algorithm has run
   std::vector<Node> path_vector;
   memcpy(main_grid, grid, grid_space);

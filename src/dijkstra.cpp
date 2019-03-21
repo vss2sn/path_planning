@@ -64,18 +64,9 @@ int main(){
   int n = 8;
   int num_points = n*n;
   // int grid[n][n];
-  int grid[n][n] = {
-  {  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-  {  1 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
-  {  0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
-  {  0 , 0 , 1 , 0 , 0 , 0 , 0 , 1 },
-  {  0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
-  {  0 , 1 , 1 , 0 , 0 , 1 , 0 , 0 },
-  {  0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 },
-  {  0 , 0 , 1 , 1 , 0 , 1 , 0 , 0 }
-  };
-  MakeGrid(grid, n);
+  int grid[n][n];
 
+  MakeGrid(grid, n);
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -85,7 +76,6 @@ int main(){
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
   PrintGrid(grid, n);
-
 
   Dijkstra new_dijkstra;
   std::vector<Node> path_vector = new_dijkstra.dijkstra(grid, n, start, goal);

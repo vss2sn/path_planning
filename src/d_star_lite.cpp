@@ -414,24 +414,7 @@ int main(){
   int num_points = n*n;
 
   int main_grid[n][n];
-  int grid[n][n]={
-{ 0 , 1 , 0 , 1 , 0 , 0 , 0 , 0 },
-{ 1 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
-{ 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 },
-{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
-{ 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 },
-{ 1 , 1 , 1 , 1 , 1 , 0 , 0 , 0 },
-{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-{ 1 , 0 , 0 , 1 , 1 , 0 , 0 , 0 }
-// { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 },
-// { 1 , 0 , 0 , 1 , 1 , 0 , 0 , 0 },
-// { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
-// { 1 , 0 , 0 , 0 , 0 , 1 , 1 , 0 },
-// { 0 , 0 , 0 , 0 , 1 , 0 , 1 , 0 },
-// { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-// { 0 , 0 , 1 , 0 , 0 , 0 , 1 , 1 },
-// { 0 , 1 , 1 , 0 , 0 , 0 , 0 , 0 }
-  };
+  int grid[n][n];
 
   MakeGrid(grid, n);
   PrintGrid(grid, n);
@@ -467,14 +450,11 @@ int main(){
 
   // Updating start. TODO: Test more.
   start = Node(4,4);
-  auto start_in = high_resolution_clock::now();
   path_vector = new_d_star_lite.UpdateStart(grid, start);
-  auto stop = high_resolution_clock::now();
-  auto duration = duration_cast<microseconds>(stop - start_in);
-  std::cout << duration.count() << std::endl;
   PrintPath(path_vector, start, goal, grid, n);
 
-  new_d_star_lite.RunDStarLite();
+//  new_d_star_lite.RunDStarLite();
+
   return 0;
 }
 #endif BUILD_INDIVIDUAL

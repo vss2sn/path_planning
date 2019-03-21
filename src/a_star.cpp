@@ -91,8 +91,6 @@ int main(){
 
   int grid[n][n];
   MakeGrid(grid, n);
-  PrintGrid(grid, n);
-
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -102,6 +100,7 @@ int main(){
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+  PrintGrid(grid, n);
 
   AStar new_a_star;
   std::vector<Node> path_vector = new_a_star.a_star(grid, n, start, goal);

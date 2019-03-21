@@ -192,8 +192,6 @@ int main(){
   int num_points = n*n;
   int grid[n][n];
   MakeGrid(grid, n);
-  PrintGrid(grid, n);
-
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -202,6 +200,7 @@ int main(){
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+  PrintGrid(grid, n);
 
   RRT_Star new_rrt_star;
   double threshold = 2;
