@@ -95,12 +95,13 @@ void DStarLite::InsertionSort(){
 
 double DStarLite::C(Node s1, Node s2){
   if(grid[s1.x_][s1.y_] != 1 && grid[s2.x_][s2.y_] != 1){
-    Node diff = s2-s1;
-    for(auto it = motions.begin(); it!=motions.end(); ++it){
-      if(diff == *it){
-        return (*it).cost_;
-      }
-    }
+    // Node diff = s2-s1;
+    // for(auto it = motions.begin(); it!=motions.end(); ++it){
+    //   if(diff == *it){
+    //     return (*it).cost_;
+    //   }
+    // }
+    return 1;
   }
   else{
     return n*n;
