@@ -9,9 +9,9 @@ int main(){
   int num_points = n*n;
 
   int main_grid[n][n];
-
-  int grid_space = n*n*sizeof(int);
   int grid[n][n];
+  int grid_space = n*n*sizeof(int);
+
   MakeGrid(grid, n);
 
   std::random_device rd; // obtain a random number from hardware
@@ -29,7 +29,7 @@ int main(){
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
   PrintGrid(grid, n);
-  
+
   // Store points after algorithm has run
   std::vector<Node> path_vector;
   memcpy(main_grid, grid, grid_space);
@@ -83,15 +83,14 @@ int main(){
   std::cout << "--------------------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: D* Lite Replan ---------------------" << std::endl;
   std::cout << "--------------------------------------------------------------------" << std::endl;
-  memcpy(grid, main_grid, grid_space);
   if(path_vector.size() > 3){
-    Node new_obs(path_vector[2].x_,path_vector[2].y_);
+    Node new_obs(path_vector[1].x_,path_vector[1].y_);
     std::cout << "Obstacle created at: "<< std::endl;
     new_obs.PrintStatus();
     grid[new_obs.x_][new_obs.y_] = 1;
     grid[start.x_][start.y_] = 0;
     grid[goal.x_][goal.y_] = 0;
-    path_vector = new_d_star_lite.Replan(grid, new_obs);
+    path_vector = new_d_star_lite.SetObs(grid, new_obs);
   }
   else{
     std::cout << "Path size too small; no new obstacle created" << std::endl;
@@ -101,12 +100,17 @@ int main(){
   std::cout << "--------------------------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: D* Lite Update Start ---------------------" << std::endl;
   std::cout << "--------------------------------------------------------------------------" << std::endl;
-  memcpy(grid, main_grid, grid_space);
   start = Node(distr(eng),distr(eng));
   std::cout << "New start at: "<< std::endl;
   start.PrintStatus();
   path_vector = new_d_star_lite.UpdateStart(grid, start);
   PrintPath(path_vector, start, goal, grid, n);
+
+  std::cout << "----------------------------------------------------------------------" << std::endl;
+  std::cout << "--------------------- ALGORITH: D* Lite Live Run ---------------------" << std::endl;
+  std::cout << "----------------------------------------------------------------------" << std::endl;
+  // Please note that this will use the updated start from immediately above.
+  new_d_star_lite.RunDStarLite();
 
   return 0;
 }

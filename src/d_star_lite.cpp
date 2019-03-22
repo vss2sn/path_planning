@@ -35,6 +35,7 @@ void DStarLite::MyPrint(){
     }
     std::cout << std::endl;
   }
+  std::cout << "RHS values:" << std::endl;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
       std::cout<< std::setw(5) <<S_[i][j].second << ",";
@@ -85,7 +86,7 @@ void DStarLite::InsertionSort(){
        key = U_[i];
        j = i-1;
        while (j >= 0 && (U_[j].second.first > key.second.first
-                          || (U_[j].second.first == key.second.first  && U_[j].second.second > key.second.second))){
+                          || (U_[j].second.first == key.second.first  && U_[j].second.second >= key.second.second))){
            U_[j+1] = U_[j];
            j--;
        }
@@ -114,7 +115,7 @@ void DStarLite::Init(){
   iter_ = 0;
   double n2 = n*n;
   large_num = std::make_pair(n2,n2);
-  max_iter_ = n2*n;
+  max_iter_ = n2*n2*n2;
   motions = GetMotion();
   km_=std::make_pair(0,0);
   for(int i=0;i<n;i++){
@@ -161,7 +162,9 @@ bool DStarLite::CompareKey(std::pair<double,double>& pair_in, Node& u){
 
 int DStarLite::ComputeShortestPath(){
   ++iter_;
-  if(iter_==max_iter_) return -1;
+  if(iter_==max_iter_){
+    return -1;
+  }
   while((!U_.empty() && CompareKey(U_[0].second, start_)) || S_[start_.x_][start_.y_].first != S_[start_.x_][start_.y_].second){
     k_old_ = U_[0].second;
     Node u = U_[0].first;
@@ -226,15 +229,17 @@ std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in,
 
 std::vector<Node> DStarLite::SetObs(void *grid_in, Node u){
   grid[u.x_][u.y_] = 1; //cant just do this; need to undo generate grid
+  if(u==goal_ ) grid[u.x_][u.y_] = 0;
   return Replan(grid_in, u);
 }
+
 std::vector<Node> DStarLite::Replan(void *grid_in, Node u){
-  // grid[u.x_][u.y_] = 1; //cant just do this; need to undo generate grid
   if (grid[start_.x_][start_.y_]==1) grid[start_.x_][start_.y_]=0;
   path_vector_.clear();
   start_ = main_start_;
   iter_=0;
   while(start_!=goal_){
+    grid[goal_.x_][goal_.y_]=0;
     std::vector<Node> succ;
     succ = GetSucc(start_);
     double init_min = n*n;
@@ -251,8 +256,7 @@ std::vector<Node> DStarLite::Replan(void *grid_in, Node u){
     km_.first = km_.first + GetHeuristic(last_,start_);
     last_ = start_;
     UpdateVertex(u);
-    succ = GetSucc(u);
-    for(int i = 0;i<succ.size();i++){
+    for(int i =0; i< succ.size(); i++){
       UpdateVertex(succ[i]);
     }
     int ans = ComputeShortestPath();
@@ -283,9 +287,12 @@ std::vector<Node> DStarLite::ReturnInvertedVector(){
 }
 
 void DStarLite::GeneratePathVector(){
+  // TODO: Recheck generate point vector for larger grids; minor jump at end
+  // Maybe caused by grids transfer into class grid
   main_start_.cost_ = S_[main_start_.x_][main_start_.y_].second;
   path_vector_.push_back(main_start_);
   while(path_vector_[0]!=goal_){
+    grid[goal_.x_][goal_.y_]=0;
     Node u = path_vector_[0];
     grid[u.x_][u.y_]=2;
     for(auto it=motions.begin();it!=motions.end(); ++it){
@@ -322,7 +329,7 @@ std::vector<Node> DStarLite::UpdateStart(void* grid_in, Node start_in){
   iter_=0;
   start_ = start_in;
   main_start_ = start_;
-  km_.first = km_.first +GetHeuristic(last_, start_);
+   km_.first = km_.first +GetHeuristic(last_, start_);
   last_ = start_;
   //TODO: Check if this section is required
   int ans = ComputeShortestPath();
@@ -351,6 +358,7 @@ void DStarLite::DisplayGrid(){
       if(grid[i][j]==3) std::cout << GREEN << grid[i][j] << RESET << " , ";
       else if(grid[i][j]==1) std::cout << RED << grid[i][j] << RESET << " , ";
       else if(grid[i][j]==2) std::cout << BLUE << grid[i][j] << RESET << " , ";
+      else if(grid[i][j]==4) std::cout << YELLOW << grid[i][j] << RESET << " , ";
       else std::cout << grid[i][j] << " , ";
     }
     std::cout << std::endl << std::endl;
@@ -362,14 +370,15 @@ void DStarLite::DisplayGrid(){
 Node DStarLite::NextPoint(){
   int i = 0;
   for(i = 0; i < path_vector_.size(); i++){
-    if(goal_ == path_vector_[i]) break;
+    if(goal_ == path_vector_[i]){
+      break;
+    }
   }
   while(path_vector_[i].pid_!=start_.id_){
     for(int j = 0; j < path_vector_.size(); j++){
       if(path_vector_[i].pid_ == path_vector_[j].id_){
         i=j;
         break;
-        path_vector_[j].PrintStatus();
       }
     }
     if(path_vector_[i].pid_==start_.id_) break;
@@ -386,7 +395,7 @@ void DStarLite::RunDStarLite(){
   std::uniform_int_distribution<int> distr(0,n); // define the range
   Node current = path_vector_.back();
   while(current!=goal_){
-    usleep(500000);
+    usleep(250000);
     grid[start_.x_][start_.y_] = 2;
     UpdateStart(grid, current);
     start_ = current;
@@ -410,25 +419,24 @@ void DStarLite::RunDStarLite(){
 
 #ifdef BUILD_INDIVIDUAL
 int main(){
-  int n = 8;
+  int n = 15;
   int num_points = n*n;
 
   int main_grid[n][n];
   int grid[n][n];
-
   MakeGrid(grid, n);
-  PrintGrid(grid, n);
   int grid_space = n*n*sizeof(int);
 
-  Node start(0,0,0,0,0,0);
+  Node start(8,2,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(n-1,n-1,0,0,0,0);
+  Node goal(1,2,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+  PrintGrid(grid, n);
   std::vector<Node> path_vector;
 
   DStarLite new_d_star_lite;
@@ -453,8 +461,7 @@ int main(){
   path_vector = new_d_star_lite.UpdateStart(grid, start);
   PrintPath(path_vector, start, goal, grid, n);
 
-//  new_d_star_lite.RunDStarLite();
-
+  new_d_star_lite.RunDStarLite();
   return 0;
 }
 #endif BUILD_INDIVIDUAL
