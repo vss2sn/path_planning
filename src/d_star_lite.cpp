@@ -419,7 +419,7 @@ void DStarLite::RunDStarLite(bool disp_inc_in){
 
 #ifdef BUILD_INDIVIDUAL
 int main(){
-  int n = 15;
+  int n = 8;
   int num_points = n*n;
 
   int main_grid[n][n];
@@ -427,11 +427,8 @@ int main(){
   MakeGrid(grid, n);
   int grid_space = n*n*sizeof(int);
 
-  std::random_device rd; // obtain a random number from hardware
-  std::mt19937 eng(rd()); // seed the generator
-  std::uniform_int_distribution<int> distr(0,n-1); // define the range
-  Node start(distr(eng),distr(eng),0,0,0,0);
-  Node goal(distr(eng),distr(eng),0,0,0,0);
+  Node start(1,1,0,0,0,0);
+  Node goal(1,1,0,0,0,0);
 
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
