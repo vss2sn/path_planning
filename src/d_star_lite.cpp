@@ -329,6 +329,9 @@ void DStarLite::GeneratePathVector(){
       }
     }
   }
+  if(path_vector_[0]==goal_){
+    grid[goal_.x_][goal_.y_]=2;
+  }
 }
 
 
@@ -451,8 +454,26 @@ int main(){
   int num_points = n*n;
 
   int main_grid[n][n];
-  int grid[n][n];
-  MakeGrid(grid, n);
+  // int grid[n][n];
+  //MakeGrid(grid, n);
+  int grid[n][n] = {
+  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
+  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 1 , 1 , 1 , 0 },
+  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
+  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 },
+  { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 },
+  { 1 , 1 , 1 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+  { 1 , 1 , 0 , 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 },
+  { 0 , 1 , 1 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 },
+  { 0 , 0 , 0 , 0 , 1 , 0 , 1 , 1 , 1 , 1 , 1 , 1 , 0 , 0 , 0 },
+  { 1 , 0 , 1 , 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 1 , 0 , 0 },
+  { 0 , 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 1 , 1 , 0 , 1 , 0 },
+  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 1 , 0 , 0 }
+  };
+
   // int grid[n][n] = {
   // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
   // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
@@ -475,14 +496,14 @@ int main(){
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
-  Node start(distr(eng),distr(eng),0,0,0,0);
-  Node goal(distr(eng),distr(eng),0,0,0,0);
-  start.PrintStatus();
-  goal.PrintStatus();
-  // Node start(8,2,0,0,0,0);
+  // Node start(distr(eng),distr(eng),0,0,0,0);
+  // Node goal(distr(eng),distr(eng),0,0,0,0);
+  // start.PrintStatus();
+  // goal.PrintStatus();
+  Node start(8,2,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  // Node goal(1,2,0,0,0,0);
+  Node goal(1,2,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
@@ -494,20 +515,20 @@ int main(){
   DStarLite new_d_star_lite;
   path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
-  std::cout << "Starting run"<< std::endl;
-  // Adding obstacle to path.
-  Node new_obs(7,2);
-  if(path_vector.size() > 3){
-    std::cout << "Obstacle created at: "<< std::endl;
-    new_obs.PrintStatus();
-    grid[new_obs.x_][new_obs.y_] = 1;
-    grid[start.x_][start.y_] = 0;
-    grid[goal.x_][goal.y_] = 0;
-    path_vector = new_d_star_lite.SetObs(grid, new_obs); // CHange to setobs
-  }
-  else std::cout << "Path size too small; no new obstacle created" << std::endl;
-  PrintPath(path_vector, start, goal, grid, n);
-
+  // std::cout << "Starting run"<< std::endl;
+  // // Adding obstacle to path.
+  // Node new_obs(7,2);
+  // if(path_vector.size() > 3){
+  //   std::cout << "Obstacle created at: "<< std::endl;
+  //   new_obs.PrintStatus();
+  //   grid[new_obs.x_][new_obs.y_] = 1;
+  //   grid[start.x_][start.y_] = 0;
+  //   grid[goal.x_][goal.y_] = 0;
+  //   path_vector = new_d_star_lite.SetObs(grid, new_obs); // CHange to setobs
+  // }
+  // else std::cout << "Path size too small; no new obstacle created" << std::endl;
+  // PrintPath(path_vector, start, goal, grid, n);
+  //
   // Updating start. TODO: Test more.
   // start = (distr(eng),distr(eng),0,0,0,0);
   // path_vector = new_d_star_lite.UpdateStart(grid, start);
