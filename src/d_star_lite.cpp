@@ -115,7 +115,7 @@ void DStarLite::Init(){
   iter_ = 0;
   double n2 = n*n;
   large_num = std::make_pair(n2,n2);
-  max_iter_ = n2*n2*n2;
+  max_iter_ = n2*n;
   motions = GetMotion();
   km_=std::make_pair(0,0);
   for(int i=0;i<n;i++){
@@ -162,7 +162,7 @@ bool DStarLite::CompareKey(std::pair<double,double>& pair_in, Node& u){
 
 int DStarLite::ComputeShortestPath(){
   ++iter_;
-  if(iter_==max_iter_){
+  if(iter_>=max_iter_){ // >= coz testing in multiple places for break condition
     return -1;
   }
   while((!U_.empty() && CompareKey(U_[0].second, start_)) || S_[start_.x_][start_.y_].first != S_[start_.x_][start_.y_].second){
@@ -193,14 +193,21 @@ int DStarLite::ComputeShortestPath(){
   return 0;
 }
 
-void DStarLite::CopyGrid(void *grid_in){
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid_in;
-  for(int i=0;i<n;i++){
-    for(int j=0;j<n;j++){
-      (*p_grid)[i][j] = grid[i][j];
-    }
-  }
-}
+// void DStarLite::CopyGrid(void *grid_in){
+//   std::cout << "copygrid" << std::endl;
+//   int (*p_grid)[n][n] = (int (*)[n][n]) grid_in;
+//   for(int i=0;i<n;i++){
+//     for(int j=0;j<n;j++){
+//       (*p_grid)[i][j] = grid[i][j];
+//       std::cout << "i,j=" << i<<","<<j<<std::endl;
+//       std::cout << grid[i][j] << std::endl;
+//       std::cout << (*p_grid)[i][j] << std::endl;
+//       DisplayGrid();
+//       //usleep(10000);
+//     }
+//   }
+//   sleep(2);
+// }
 
 std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in, Node goal_in){
   start_ = start_in;
@@ -216,7 +223,7 @@ std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in,
   last_ = start_;
   Init();
   int ans = ComputeShortestPath();
-  CopyGrid(grid_in);
+  //copygrid(grid_in);
   if(ans < 0 || S_[start_.x_][start_.y_].first==large_num.first){
     path_vector_.clear();
     Node no_path_node(-1,-1,-1,-1,-1);
@@ -230,16 +237,26 @@ std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in,
 std::vector<Node> DStarLite::SetObs(void *grid_in, Node u){
   grid[u.x_][u.y_] = 1; //cant just do this; need to undo generate grid
   if(u==goal_ ) grid[u.x_][u.y_] = 0;
+  // std::cout << "Starting SetObs"<< std::endl;
+  DisplayGrid();
+  // std::cout << "Calling replan"<< std::endl;
   return Replan(grid_in, u);
 }
 
 std::vector<Node> DStarLite::Replan(void *grid_in, Node u){
+  // std::cout << "Starting replan"<< std::endl;
+  // DisplayGrid();
   if (grid[start_.x_][start_.y_]==1) grid[start_.x_][start_.y_]=0;
   path_vector_.clear();
   start_ = main_start_;
   iter_=0;
+  // std::cout<< "Beginning loop"<< std::endl;
+  // DisplayGrid();
   while(start_!=goal_){
-    grid[goal_.x_][goal_.y_]=0;
+    // std::cout << "In loop" << std::endl;
+    // DisplayGrid();
+    // //usleep(100000);
+    //grid[goal_.x_][goal_.y_]=0;
     std::vector<Node> succ;
     succ = GetSucc(start_);
     double init_min = n*n;
@@ -264,11 +281,11 @@ std::vector<Node> DStarLite::Replan(void *grid_in, Node u){
       path_vector_.clear();
       Node no_path_node(-1,-1,-1,-1,-1);
       path_vector_.push_back(no_path_node);
-      CopyGrid(grid_in);
+      //copygrid(grid_in);
       return path_vector_;
     }
   }
-  CopyGrid(grid_in);
+  //copygrid(grid_in);
   GeneratePathVector();
   return ReturnInvertedVector();
 }
@@ -292,7 +309,7 @@ void DStarLite::GeneratePathVector(){
   main_start_.cost_ = S_[main_start_.x_][main_start_.y_].second;
   path_vector_.push_back(main_start_);
   while(path_vector_[0]!=goal_){
-    grid[goal_.x_][goal_.y_]=0;
+    // grid[goal_.x_][goal_.y_]=0;
     Node u = path_vector_[0];
     grid[u.x_][u.y_]=2;
     for(auto it=motions.begin();it!=motions.end(); ++it){
@@ -332,8 +349,14 @@ std::vector<Node> DStarLite::UpdateStart(void* grid_in, Node start_in){
    km_.first = km_.first +GetHeuristic(last_, start_);
   last_ = start_;
   //TODO: Check if this section is required
+  std::cout << "About to call ComputeShortestPath" << std::endl;
+  DisplayGrid();
   int ans = ComputeShortestPath();
-  CopyGrid(grid_in);
+  std::cout<<"Out of ComputeShortestPath and about to call copy grid"<< std::endl;
+  DisplayGrid();
+  //copygrid(grid_in);
+  std::cout<<"Out of //copygrid"<< std::endl;
+  DisplayGrid();
   if(ans < 0){
     path_vector_.clear();
     Node no_path_node(-1,-1,-1,-1,-1);
@@ -397,7 +420,11 @@ void DStarLite::RunDStarLite(){
   while(current!=goal_){
     usleep(250000);
     grid[start_.x_][start_.y_] = 2;
+    // std::cout<<"Calling update start"<< std::endl;
+    // DisplayGrid();
     UpdateStart(grid, current);
+    // std::cout<<"Out of update start"<< std::endl;
+    // DisplayGrid();
     start_ = current;
     Node next_point = NextPoint();
     if(distr(eng) > n-2 && next_point!=goal_) SetObs(grid, next_point);
@@ -412,6 +439,7 @@ void DStarLite::RunDStarLite(){
   }
   grid[start_.x_][start_.y_] = 2;
   grid[current.x_][current.y_] = 4;
+  usleep(250000);
   DisplayGrid();
   std::cout<< "Reached Goal" << std::endl;
   return;
@@ -425,12 +453,36 @@ int main(){
   int main_grid[n][n];
   int grid[n][n];
   MakeGrid(grid, n);
+  // int grid[n][n] = {
+  // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
+  // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+  // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 1 , 1 , 1 , 0 },
+  // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+  // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
+  // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 },
+  // { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 },
+  // { 0 , 1 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+  // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 },
+  // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 },
+  // { 0 , 0 , 0 , 0 , 1 , 0 , 1 , 1 , 1 , 1 , 1 , 1 , 0 , 0 , 0 },
+  // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 1 , 0 , 0 },
+  // { 0 , 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+  // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 1 , 1 , 0 , 1 , 0 },
+  // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 1 , 0 , 0 }
+  // };
   int grid_space = n*n*sizeof(int);
 
-  Node start(8,2,0,0,0,0);
+  std::random_device rd; // obtain a random number from hardware
+  std::mt19937 eng(rd()); // seed the generator
+  std::uniform_int_distribution<int> distr(0,n-1); // define the range
+  Node start(distr(eng),distr(eng),0,0,0,0);
+  Node goal(distr(eng),distr(eng),0,0,0,0);
+  start.PrintStatus();
+  goal.PrintStatus();
+  // Node start(8,2,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(1,2,0,0,0,0);
+  // Node goal(1,2,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
@@ -442,9 +494,9 @@ int main(){
   DStarLite new_d_star_lite;
   path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
-
+  std::cout << "Starting run"<< std::endl;
   // Adding obstacle to path.
-  Node new_obs(1,0);
+  Node new_obs(7,2);
   if(path_vector.size() > 3){
     std::cout << "Obstacle created at: "<< std::endl;
     new_obs.PrintStatus();
@@ -457,10 +509,48 @@ int main(){
   PrintPath(path_vector, start, goal, grid, n);
 
   // Updating start. TODO: Test more.
-  start = Node(4,4);
-  path_vector = new_d_star_lite.UpdateStart(grid, start);
-  PrintPath(path_vector, start, goal, grid, n);
-
+  // start = (distr(eng),distr(eng),0,0,0,0);
+  // path_vector = new_d_star_lite.UpdateStart(grid, start);
+  // PrintPath(path_vector, start, goal, grid, n);
+  // new_d_star_lite.RunDStarLite();
+  //
+  // start = (distr(eng),distr(eng),0,0,0,0);
+  // path_vector = new_d_star_lite.UpdateStart(grid, start);
+  // PrintPath(path_vector, start, goal, grid, n);
+  // new_d_star_lite.RunDStarLite();
+  //
+  // start = (distr(eng),distr(eng),0,0,0,0);
+  // path_vector = new_d_star_lite.UpdateStart(grid, start);
+  // PrintPath(path_vector, start, goal, grid, n);
+  // new_d_star_lite.RunDStarLite();
+  //
+  // start = (distr(eng),distr(eng),0,0,0,0);
+  // path_vector = new_d_star_lite.UpdateStart(grid, start);
+  // PrintPath(path_vector, start, goal, grid, n);
+  // new_d_star_lite.RunDStarLite();
+  //
+  // start = (distr(eng),distr(eng),0,0,0,0);
+  // path_vector = new_d_star_lite.UpdateStart(grid, start);
+  // PrintPath(path_vector, start, goal, grid, n);
+  // new_d_star_lite.RunDStarLite();
+  // start = Node(6,2);
+  // path_vector = new_d_star_lite.UpdateStart(grid, start);
+  // PrintPath(path_vector, start, goal, grid, n);
+  // start = Node(5,2);
+  // path_vector = new_d_star_lite.UpdateStart(grid, start);
+  // PrintPath(path_vector, start, goal, grid, n);
+  // start = Node(4,2);
+  // path_vector = new_d_star_lite.UpdateStart(grid, start);
+  // PrintPath(path_vector, start, goal, grid, n);
+  // Node new_obs_2(3,2);
+  // std::cout << "Obstacle created at: "<< std::endl;
+  // new_obs_2.PrintStatus();
+  // grid[new_obs_2.x_][new_obs_2.y_] = 1;
+  // grid[start.x_][start.y_] = 0;
+  // grid[goal.x_][goal.y_] = 0;
+  // path_vector = new_d_star_lite.SetObs(grid, new_obs_2); // CHange to setobs
+  // PrintPath(path_vector, start, goal, grid, n);
+  //
   new_d_star_lite.RunDStarLite();
   return 0;
 }

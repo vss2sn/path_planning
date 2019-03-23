@@ -24,7 +24,7 @@ public:
   std::vector<Node> Replan(void *grid_in, Node u);
   std::vector<Node> SetObs(void *grid_in, Node u);
   void GeneratePathVector();
-  void CopyGrid(void *grid_in);
+  // void CopyGrid(void *grid_in);
   std::vector<Node> UpdateStart(void* grid_in, Node start_in);
   std::vector<Node> ReturnInvertedVector();
   bool CompareKey(std::pair<double,double>& pair_in, Node& u);
