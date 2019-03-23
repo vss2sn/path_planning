@@ -222,7 +222,7 @@ std::vector<Node> DStarLite::SetObs(void *grid_in, Node u){
     std::cout << "Cannot set current start or goal as obstacle" << std::endl;
     return path_vector_;
   }
-  grid[u.x_][u.y_] = 1; //cant just do this; need to undo generate grid
+  grid[u.x_][u.y_] = 1;
   std::cout << "Obstacle found at: " << std::endl;
   u.PrintStatus();
   DisplayGrid();
@@ -280,8 +280,6 @@ std::vector<Node> DStarLite::ReturnInvertedVector(){
 }
 
 void DStarLite::GeneratePathVector(){
-  // TODO: Recheck generate point vector for larger grids; minor jump at end
-  // Maybe caused by grids transfer into class grid
   main_start_.cost_ = S_[main_start_.x_][main_start_.y_].second;
   path_vector_.push_back(main_start_);
   while(path_vector_[0]!=goal_){
