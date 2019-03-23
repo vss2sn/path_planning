@@ -5,7 +5,7 @@
 #include "d_star_lite.h"
 
 int main(){
-  int n = 15;
+  int n = 11;
   int num_points = n*n;
 
   int main_grid[n][n];
@@ -83,7 +83,7 @@ int main(){
   std::cout << "--------------------- ALGORITH: D* Lite Live Run ---------------------" << std::endl;
   std::cout << "----------------------------------------------------------------------" << std::endl;
   // NOTE: Make sure the function d_star_lite(grid, n, start, goal) is called
-  // before calling RunDStarLite() 
+  // before calling RunDStarLite()
   new_d_star_lite.RunDStarLite(); // NOTE: Pass false to RunDStarLite if the
   // incremental updated position of the bot is not to be displayed as it moves
   // NOTE: D* Lite currently does not return a path vector as the

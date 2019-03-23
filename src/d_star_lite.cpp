@@ -52,16 +52,16 @@ std::pair<double,double> DStarLite::CalculateKey(const Node& s){
 }
 
 std::vector<Node> DStarLite::GetPred(Node u){
-  std::vector<Node> succ;
+  std::vector<Node> pred;
   for(auto it=motions.begin();it!=motions.end(); ++it){
     Node new_node = u + *it;
     if(grid[new_node.x_][new_node.y_]==1) continue;
     if(new_node.x_ < n && new_node.x_ >= 0 &&
        new_node.y_ < n && new_node.y_ >= 0){
-         succ.push_back(new_node);
+         pred.push_back(new_node);
     }
   }
-  return succ;
+  return pred;
 }
 
 std::vector<Node> DStarLite::GetSucc(Node u){
