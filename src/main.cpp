@@ -5,31 +5,13 @@
 #include "d_star_lite.h"
 
 int main(){
-  int n = 8;
+  int n = 15;
   int num_points = n*n;
 
   int main_grid[n][n];
   int grid_space = n*n*sizeof(int);
-  // int grid[n][n];
-  // MakeGrid(grid, n);
-  int grid[n][n] = {
-  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
-  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 1 , 1 , 1 , 0 },
-  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
-  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 },
-  { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 },
-  { 0 , 1 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 },
-  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 },
-  { 0 , 0 , 0 , 0 , 1 , 0 , 1 , 1 , 1 , 1 , 1 , 1 , 0 , 0 , 0 },
-  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 1 , 0 , 0 },
-  { 0 , 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 1 , 1 , 0 , 1 , 0 },
-  { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 1 , 0 , 0 }
-  };
-
+  int grid[n][n];
+  MakeGrid(grid, n);
 
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
@@ -97,37 +79,15 @@ int main(){
   path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
 
-  std::cout << "--------------------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITH: D* Lite Replan ---------------------" << std::endl;
-  std::cout << "--------------------------------------------------------------------" << std::endl;
-  if(path_vector.size() > 3){
-    Node new_obs(path_vector[1].x_,path_vector[1].y_);
-    std::cout << "Obstacle created at: "<< std::endl;
-    new_obs.PrintStatus();
-    grid[new_obs.x_][new_obs.y_] = 1;
-    grid[start.x_][start.y_] = 0;
-    grid[goal.x_][goal.y_] = 0;
-    path_vector = new_d_star_lite.SetObs(grid, new_obs);
-  }
-  else{
-    std::cout << "Path size too small; no new obstacle created" << std::endl;
-  }
-  PrintPath(path_vector, start, goal, grid, n);
-
-  std::cout << "--------------------------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITH: D* Lite Update Start ---------------------" << std::endl;
-  std::cout << "--------------------------------------------------------------------------" << std::endl;
-  start = Node(distr(eng),distr(eng));
-  std::cout << "New start at: "<< std::endl;
-  start.PrintStatus();
-  path_vector = new_d_star_lite.UpdateStart(grid, start);
-  PrintPath(path_vector, start, goal, grid, n);
-
   std::cout << "----------------------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: D* Lite Live Run ---------------------" << std::endl;
   std::cout << "----------------------------------------------------------------------" << std::endl;
-  // Please note that this will use the updated start from immediately above.
-  new_d_star_lite.RunDStarLite();
+  new_d_star_lite.RunDStarLite(); // Pass false to RunDStarLite if the
+  // incremental updated position of the bot is not to be displayed as it moves
+  // NOTE: D* Lite currently does not return a path vector as the
+  // returned path vector changes every replan. However, the path traversed is
+  // set as 3 in the grid and displayed. 4 displays current location of bot in
+  // the live run
 
   return 0;
 }
