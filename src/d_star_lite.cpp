@@ -218,8 +218,13 @@ std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in,
 }
 
 std::vector<Node> DStarLite::SetObs(void *grid_in, Node u){
+  if(u==goal_ || u==start_){
+    std::cout << "Cannot set current start or goal as obstacle" << std::endl;
+    return path_vector_;
+  }
   grid[u.x_][u.y_] = 1; //cant just do this; need to undo generate grid
-  if(u==goal_ ) grid[u.x_][u.y_] = 0;
+  std::cout << "Obstacle found at: " << std::endl;
+  u.PrintStatus();
   DisplayGrid();
   return Replan(grid_in, u);
 }
@@ -392,7 +397,7 @@ void DStarLite::RunDStarLite(bool disp_inc_in){
     if(distr(eng) > n-2 && next_point!=goal_) SetObs(grid, next_point);
     grid[current.x_][current.y_] = 4;
     if(disp_inc){
-      usleep(200000);
+      usleep(disp_p);
       DisplayGrid();
     }
     if(path_vector_[0].cost_==-1){
@@ -406,7 +411,7 @@ void DStarLite::RunDStarLite(bool disp_inc_in){
   grid[start_.x_][start_.y_] = 3;
   grid[current.x_][current.y_] = 4;
   if(disp_inc) {
-    usleep(200000);
+    usleep(disp_p);
     DisplayGrid();
   }
   grid[current.x_][current.y_] = 3;
