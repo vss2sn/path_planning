@@ -15,12 +15,12 @@
 
 ##### Notes on test: #####
 1. Unit test framework set up to set algorithms under different grids. This section uses Google Test.
-2. CMake option TEST allows building tests when set when BUILD_INDIVIDUAL is set off.
+2. CMake option TEST allows building tests when set when BUILD_INDIVIDUAL is set OFF.
 3. Tests set to run after main file built.
 
 ##### Notes on implementations: #####
 1. RRT stops as soon as goal is found. It is connects new points to the nearest point, not accounting for total cost to reach that point. In contrast RRT\* chooses to connect to a new node to the node that allows the new node to have the minimum cost. RRT\* also rewires the preexisting nodes to the new node if that path allows for a lower cost for the preexisting node.
-2. A* and D* Lite use Manhattan distance (L1) as their heuristic (change to L2 if adding diagonal moves to GetMotion function). Node D* also uses the same in its C function.
+2. A* and D* Lite use Manhattan distance (L1) as their heuristic (change to L2 if adding diagonal moves to GetMotion function). D* also uses the same in its C function.
 3. D* Lite implemented based on based on Sven Koenig's & Maxim Likhachev's paper.
 
 ##### TODOs: #####
@@ -33,3 +33,8 @@
 ##### Consider: #####
 1. Adding namespace to each header file.
 2. Inheriting node class into each file that requires a modified node (such as A* with heuristic cost etc).
+
+##### Notes to build and run: #####
+1. If you want to run each algorithm independently, set BUILD_INDIVIDUAL to ON (Executables created: "dijkstra", "a_star", etc). If you want to run all of them on the same grid, set it to OFF (Executable created: "main").
+2. If you want to run tests, set BUILD_INDIVIDUAL to OFF and TEST to ON.
+3. To specify your own grid, set n to number of rows, created the 2D array, setting 1 for obstacles and 0 elsewhere, and comment out the MakeGrid function.

@@ -51,10 +51,6 @@ bool Node::operator!=(Node p){
 
 
 bool compare_cost::operator()(Node& p1, Node& p2){
-  // std::cout << "===================="<< std::endl;
-  // p1.PrintStatus();
-  // p2.PrintStatus();
-  // std::cout << "===================="<< std::endl;
   // Can modify this to allow tie breaks based on heuristic cost if required
   if (p1.cost_ + p1.h_cost_ >= p2.cost_ + p2.h_cost_) return true;
   return false;
@@ -85,8 +81,10 @@ std::vector<Node> GetMotion(){
   v.push_back(up);
   v.push_back(left);
   v.push_back(right);
-  // NOTE: Do not use the diagonals for A* as the heuristic used
-  // does not cover that motion
+  // NOTE: Add diagonal movements for A* and D* only after the heuristics in the
+  // algorithms have been modified. Refer to README.md. The heuristics currently
+  // implemented are based on Manhattan distance and dwill not account for
+  //diagonal/ any other motions
   return v;
 }
 
