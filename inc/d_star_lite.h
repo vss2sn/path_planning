@@ -33,7 +33,7 @@ public:
   void DisplayGrid();
 private:
   bool disp_inc = true; // Display incremental movements during D* Lite live run
-  useconds_t disp_p = 200000; // Pause for displaying grid in microseconds
+  useconds_t disp_p = 500000; // Pause for displaying grid in microseconds
   Node start_, main_start_, goal_, last_;
   int grid[100][100]; // Do not let grid size exceed 100
   std::pair<double,double> S_[100][100] = {}; // Do not let grid size exceed 100
