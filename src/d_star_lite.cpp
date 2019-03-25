@@ -1,10 +1,9 @@
-/*
-
-D* Lite grid based planning
-
+/**
+* @file d_star_lite.cpp
+* @author vss2sn
+* @brief Contains the DStarLite class
 */
 
-#include "utils.h"
 #include "d_star_lite.h"
 
 /**
@@ -283,7 +282,6 @@ std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in,
 
 /**
 * @brief Create an obstacle on input node. Does not allow start or goal to be declared an obstacle. Prints out the obstacle if created and displays the grid. Calls Replan function.
-* @param grid_in
 * @param u Node at which obstacle is to be created
 * @return path vector of nodes
 */

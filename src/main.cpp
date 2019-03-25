@@ -1,3 +1,9 @@
+/**
+* @file main.cpp
+* @author vss2sn
+* @brief Main file where all the algorithms can be used and tested.
+*/
+
 #include "dijkstra.h"
 #include "a_star.h"
 #include "rrt.h"
@@ -71,7 +77,7 @@ int main(){
   std::cout << "--------------------- ALGORITH: RRT* ---------------------" << std::endl;
   std::cout << "----------------------------------------------------------" << std::endl;
   memcpy(grid, main_grid, grid_space);
-  RRT_Star new_rrt_star;
+  RRTStar new_rrt_star;
   path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);
 

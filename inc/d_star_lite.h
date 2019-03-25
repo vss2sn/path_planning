@@ -1,13 +1,17 @@
-/*
-
-A* grid based planning
-
+/**
+* @file d_star_lite.h
+* @author vss2sn
+* @brief Contains the DStarLite class
 */
+
 #ifndef D_STAR_LITE_H
 #define D_STAR_LITE_H
 
 #include "utils.h"
 
+/**
+* @brief Class for D Star Lite objects
+*/
 class DStarLite{
 public:
   double GetHeuristic(Node s1, Node s2);

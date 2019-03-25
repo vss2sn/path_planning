@@ -1,13 +1,10 @@
-/*
-
-A* grid based planning
-
+/**
+* @file a_star.cpp
+* @author vss2sn
+* @brief Contains the AStar class
 */
 
 #include "a_star.h"
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 /**
 * @brief Using insertion sort to sort the vector list that maintains the priority queue. Good for a mostly sorted queue. Sort called afterevery insertion to maintain queue. Not using standard queue as iterating over is not allowed.
@@ -31,10 +28,10 @@ void InsertionSort(std::vector<Node>& v){
 
 /**
 * @brief Main algorithm of A*
-* @param grid_in Main grid
-         n_in number of rows/columns
-         start_in starting node
-         goal_in goal node
+* @param grid Main grid
+* @param n number of rows/columns
+* @param start_in starting node
+* @param goal_in goal node
 * @return path vector of nodes
 */
 std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){

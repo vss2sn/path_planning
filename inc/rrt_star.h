@@ -1,9 +1,18 @@
+/**
+* @file rrt_star.h
+* @author vss2sn
+* @brief Contains the RRTStar class
+*/
+
 #ifndef RRT_STAR_H
 #define RRT_STAR_H
 
 #include "utils.h"
 
-class RRT_Star{
+/**
+* @brief Class for RRT Star objects
+*/
+class RRTStar{
 public:
   Node FindNearestPoint(Node& new_node, int n);
   bool CheckObstacle(Node& n_1, Node& n_2);

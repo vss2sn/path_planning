@@ -1,7 +1,7 @@
-/*
-
-Dijstra grid based planning
-
+/**
+* @file dijkstra.cpp
+* @author vss2sn
+* @brief Contains the Dijkstra class
 */
 
 #include "dijkstra.h"
