@@ -21,11 +21,11 @@ public:
   void UpdateVertex(Node& u);
   int ComputeShortestPath();
   std::vector<Node> d_star_lite(void *grid_in, int n_in, Node start_in, Node goal_in);
-  std::vector<Node> Replan(void *grid_in, Node u);
-  std::vector<Node> SetObs(void *grid_in, Node u);
+  std::vector<Node> Replan(Node u);
+  std::vector<Node> SetObs(Node u);
   void GeneratePathVector();
   // void CopyGrid(void *grid_in);
-  std::vector<Node> UpdateStart(void* grid_in, Node start_in);
+  std::vector<Node> UpdateStart(Node start_in);
   std::vector<Node> ReturnInvertedVector();
   bool CompareKey(std::pair<double,double>& pair_in, Node& u);
   void RunDStarLite(bool disp_inc_in = true);

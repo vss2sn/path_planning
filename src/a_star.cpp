@@ -10,10 +10,10 @@ A* grid based planning
 #include <stdlib.h>
 
 /**
- * Using insertion sort to sort the vector list that maintains the priority
- * queue. Good for a mostly sorted queue. Sort called afterevery insertion to
- * maintain queue. Not using standard queue as iterating over is not allowed.
- */
+* @brief Using insertion sort to sort the vector list that maintains the priority queue. Good for a mostly sorted queue. Sort called afterevery insertion to maintain queue. Not using standard queue as iterating over is not allowed.
+* @param v Vector to be sorted
+* @return void
+*/
 void InsertionSort(std::vector<Node>& v){
    int n = v.size();
    int i, j;
@@ -30,8 +30,13 @@ void InsertionSort(std::vector<Node>& v){
 }
 
 /**
- * Main algorithm of A*.
- */
+* @brief Main algorithm of A*
+* @param grid_in Main grid
+         n_in number of rows/columns
+         start_in starting node
+         goal_in goal node
+* @return path vector of nodes
+*/
 std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
@@ -94,9 +99,9 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
 
 #ifdef BUILD_INDIVIDUAL
 /**
- * Script main function. Generates start and end nodes as well as grid, then
- * creates the algorithm object and calls the main algorithm function.
- */
+* @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm object and calls the main algorithm function.
+* @return 0
+*/
 int main(){
   int n = 8;
   int num_points = n*n;

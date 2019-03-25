@@ -4,6 +4,10 @@
 #include "rrt_star.h"
 #include "d_star_lite.h"
 
+/**
+* @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm objects and calls the main algorithm functions.
+* @return 0
+*/
 int main(){
   int n = 11;
   int num_points = n*n;
