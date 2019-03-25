@@ -1,17 +1,17 @@
 # Path Planning #
 
-#### This repository contains path planning algorithms in C++. ####
-##### It currently includes an implementation of: #####
+##### This repository contains path planning algorithms in C++. It currently includes an implementation of: #####
 1. Dijkstra's algorithm for grid based search.
-2. A* (A star) algorithm for grid based search.
+2. AStar (A*) algorithm for grid based search.
 3. RRT algorithm for grid based search.
-4. RRT* (RRT star) algorithm for grid based search.
-5. D* Lite (D star lite) algorithm for grid search.
+4. RRTStar (RRT*) algorithm for grid based search.
+5. DSstarLite (D* Lite) algorithm for grid search.
 
 ##### Notes: #####
 1. utils.cpp built as library and used in every separate file.
 2. Setting the CMake option BUILD_INDIVIDUAL allows building of each .cpp separately (except main.cpp), allowing easy testing. Setting it to OFF allows use of all base classes and algorithms in main.cpp.
 3. D* Lite can be run live with random obstacle creation using the RunDStarLite function.
+4. To create documentation using Doxygen run doxygen in the docs folder.
 
 ##### Notes on test: #####
 1. Unit test framework set up to set algorithms under different grids. This section uses Google Test.

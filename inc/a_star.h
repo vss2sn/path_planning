@@ -1,8 +1,17 @@
+/**
+* @file a_star.h
+* @author vss2sn
+* @brief Contains the AStar class
+*/
+
 #ifndef A_STAR_H
 #define A_STAR_H
 
 #include "utils.h"
 
+/**
+* @brief Class for A Star objects
+*/
 class AStar{
 public:
   std::vector<Node> a_star(void *grid, int n, Node start_, Node goal_);

@@ -1,15 +1,17 @@
-/*
-
-A* grid based planning
-
+/**
+* @file a_star.cpp
+* @author vss2sn
+* @brief Contains the AStar class
 */
 
 #include "a_star.h"
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
 
-void insertionSort(std::vector<Node>& v){
+/**
+* @brief Using insertion sort to sort the vector list that maintains the priority queue. Good for a mostly sorted queue. Sort called afterevery insertion to maintain queue. Not using standard queue as iterating over is not allowed.
+* @param v Vector to be sorted
+* @return void
+*/
+void InsertionSort(std::vector<Node>& v){
    int n = v.size();
    int i, j;
    Node key;
@@ -24,6 +26,14 @@ void insertionSort(std::vector<Node>& v){
    }
 }
 
+/**
+* @brief Main algorithm of A*
+* @param grid Main grid
+* @param n number of rows/columns
+* @param start_in starting node
+* @param goal_in goal node
+* @return path vector of nodes
+*/
 std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
@@ -37,7 +47,7 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
   Node temp;
   while(!open_list_.empty()){
     //sorting; minor problem with inbuild sort for vector. To optimise.
-    insertionSort(open_list_);
+    InsertionSort(open_list_);
     Node current = *(open_list_.begin());
     open_list_.erase(open_list_.begin());
     current.id_ = current.x_ * n + current.y_;
@@ -85,6 +95,10 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
 }
 
 #ifdef BUILD_INDIVIDUAL
+/**
+* @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm object and calls the main algorithm function.
+* @return 0
+*/
 int main(){
   int n = 8;
   int num_points = n*n;

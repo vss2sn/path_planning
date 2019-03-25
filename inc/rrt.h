@@ -1,8 +1,17 @@
+/**
+* @file rrt.h
+* @author vss2sn
+* @brief Contains the RRT class
+*/
+
 #ifndef RRT_H
 #define RRT_H
 
 #include "utils.h"
 
+/**
+* @brief Class for RRT objects
+*/
 class RRT{
 public:
   Node FindNearestPoint(Node& new_node, int n);

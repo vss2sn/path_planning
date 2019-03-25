@@ -1,11 +1,14 @@
-/*
-
-Dijstra grid based planning
-
+/**
+* @file dijkstra.cpp
+* @author vss2sn
+* @brief Contains the Dijkstra class
 */
 
 #include "dijkstra.h"
 
+/**
+ * Main algorithm of Dijstra.
+ */
 std::vector<Node> Dijkstra::dijkstra(void *grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
@@ -60,6 +63,10 @@ std::vector<Node> Dijkstra::dijkstra(void *grid, int n, Node start_in, Node goal
 }
 
 #ifdef BUILD_INDIVIDUAL
+/**
+* @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm object and calls the main algorithm function.
+* @return 0
+*/
 int main(){
   int n = 8;
   int num_points = n*n;

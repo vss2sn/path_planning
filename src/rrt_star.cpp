@@ -1,16 +1,22 @@
-/*
-
-RRT* grid based planning
-
+/**
+* @file rrt_star.h
+* @author vss2sn
+* @brief Contains the RRT_Star class
 */
 
 #include "rrt_star.h"
 
-Node RRT_Star::FindNearestPoint(Node& new_node, int n){
+/**
+* @brief Find the nearest Node that has been seen by the algorithm. This does not consider cost to reach the node.
+* @param new_node Node to which the nearest node must be found
+* @param n number of rows/columns
+* @return nearest node
+*/
+Node RRTStar::FindNearestPoint(Node& new_node, int n){
   Node nearest_node(-1,-1,-1,-1,-1,-1);
   std::vector<Node>::iterator it_v;
   std::vector<Node>::iterator it_v_store;
-  //Note: Use total cost not just distance
+  //NOTE: Use total cost not just distance
   double dist = (double)(n*n);
   double new_dist = (double)(n*n);
   for(it_v = point_list_.begin(); it_v != point_list_.end(); ++it_v){
@@ -38,8 +44,13 @@ Node RRT_Star::FindNearestPoint(Node& new_node, int n){
   return nearest_node;
 }
 
-bool RRT_Star::CheckObstacle(Node& n_1, Node& n_2){
-  // As this planner is for grid maps, the obstacles are square.
+/**
+* @brief Check if there is any obstacle between the 2 nodes. As this planner is for grid maps, the obstacles are square.
+* @param n_1 Node 1
+* @param n_2 Node 2
+* @return bool value of whether obstacle exists between nodes
+*/
+bool RRTStar::CheckObstacle(Node& n_1, Node& n_2){
   if (n_2.y_ - n_1.y_ == 0){
     double c = n_2.y_;
     for(auto it_v = obstacle_list_.begin(); it_v!=obstacle_list_.end(); ++it_v){
@@ -83,7 +94,12 @@ bool RRT_Star::CheckObstacle(Node& n_1, Node& n_2){
   return false;
 }
 
-Node RRT_Star::GenerateRandomNode(int n){
+/**
+* @brief Generates a random node
+* @param n Number of rows/columns
+* @return Generated node
+*/
+Node RRTStar::GenerateRandomNode(int n){
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -93,8 +109,12 @@ Node RRT_Star::GenerateRandomNode(int n){
   return new_node;
 }
 
-// Rewire the tree
-void RRT_Star::Rewire(Node new_node){
+/**
+* @brief Rewire the tree
+* @param new_node Node to which other nodes will be connected if their cost decreases
+* @return void
+*/
+void RRTStar::Rewire(Node new_node){
   std::vector<Node>::iterator it_v;
   for(int i=0;i<near_nodes_.size(); i++){
     if (near_nodes_[i].cost_ > near_nodes_dist_[i] + new_node.cost_){
@@ -109,8 +129,17 @@ void RRT_Star::Rewire(Node new_node){
   near_nodes_dist_.clear();
 }
 
-
-std::vector<Node> RRT_Star::rrt_star(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
+/**
+* @brief Main algorithm of RRT*
+* @param grid Main grid
+* @param n number of rows/columns
+* @param start_in starting node
+* @param goal_in goal node
+* @param max_iter_x_factor Maximum number of allowable iterations before returning no path
+* @param threshold_in Maximum distance per move
+* @return path vector of nodes
+*/
+std::vector<Node> RRTStar::rrt_star(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
   start_ = start_in;
   goal_ = goal_in;
   threshold_ = threshold_in;
@@ -153,7 +182,12 @@ std::vector<Node> RRT_Star::rrt_star(void *grid, int n, Node start_in, Node goal
   }
 }
 
-bool RRT_Star::CheckGoalVisible(Node new_node){
+/**
+* @brief Check if goal is reachable from current node
+* @param new_node Current node
+* @return bool value of whether goal is reachable from current node
+*/
+bool RRTStar::CheckGoalVisible(Node new_node){
   if(!CheckObstacle(new_node, goal_)){
     double new_dist = (double)sqrt((double)((goal_.x_-new_node.x_)*(goal_.x_-new_node.x_))
                       + (double)((goal_.y_-new_node.y_)*(goal_.y_-new_node.y_)));
@@ -173,7 +207,13 @@ bool RRT_Star::CheckGoalVisible(Node new_node){
   return false;
 }
 
-void RRT_Star::CreateObstacleList(void *grid, int n){
+/**
+* @brief Create the obstacle list from the input grid
+* @param grid Input grid for algorithm
+* @param n Number of rows/columns
+* @return void
+*/
+void RRTStar::CreateObstacleList(void *grid, int n){
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   for(int i=0; i < n; i++){
     for(int j=0;j < n; j++){
@@ -186,8 +226,11 @@ void RRT_Star::CreateObstacleList(void *grid, int n){
 }
 
 #ifdef BUILD_INDIVIDUAL
+/**
+* @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm object and calls the main algorithm function.
+* @return 0
+*/
 int main(){
-
   int n = 8;
   int num_points = n*n;
   int grid[n][n];
@@ -202,7 +245,7 @@ int main(){
   grid[goal.x_][goal.y_] = 0;
   PrintGrid(grid, n);
 
-  RRT_Star new_rrt_star;
+  RRTStar new_rrt_star;
   double threshold = 2;
   int max_iter_x_factor = 20;
   std::vector<Node> path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);

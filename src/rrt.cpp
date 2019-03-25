@@ -1,11 +1,17 @@
-/*
-
-RRT* grid based planning
-
+/**
+* @file rrt.cpp
+* @author vss2sn
+* @brief Contains the RRT class
 */
 
 #include "rrt.h"
 
+/**
+* @brief Find the nearest node that has been seen by the algorithm. This does not consider cost to reach the node.
+* @param new_node Node to which the nearest node must be found
+* @param n number of rows/columns
+* @return Nearest node
+*/
 Node RRT::FindNearestPoint(Node& new_node, int n){
   Node nearest_node(-1,-1,-1,-1,-1,-1);
   std::vector<Node>::iterator it_v;
@@ -31,9 +37,13 @@ Node RRT::FindNearestPoint(Node& new_node, int n){
   }
   return nearest_node;
 }
-
+/**
+* @brief Check if there is any obstacle between the 2 nodes. As this planner is for grid maps, the obstacles are square.
+* @param n_1 Node 1
+* @param n_2 Node 2
+* @return bool value of whether obstacle exists between nodes
+*/
 bool RRT::CheckObstacle(Node& n_1, Node& n_2){
-  // As this planner is for grid maps, the obstacles are square.
   if (n_2.y_ - n_1.y_ == 0){
     double c = n_2.y_;
     for(auto it_v = obstacle_list_.begin(); it_v!=obstacle_list_.end(); ++it_v){
@@ -76,7 +86,11 @@ bool RRT::CheckObstacle(Node& n_1, Node& n_2){
   }
   return false;
 }
-
+/**
+* @brief Generates a random node
+* @param n Number of rows/columns
+* @return Generated node
+*/
 Node RRT::GenerateRandomNode(int n){
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
@@ -87,7 +101,16 @@ Node RRT::GenerateRandomNode(int n){
   return new_node;
 }
 
-
+/**
+* @brief Main algorithm of RRT
+* @param grid Main grid
+* @param n number of rows/columns
+* @param start_in starting node
+* @param goal_in goal node
+* @param max_iter_x_factor Maximum number of allowable iterations before returning no path
+* @param threshold_in Maximum distance per move
+* @return path vector of nodes
+*/
 std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
   start_ = start_in;
   goal_ = goal_in;
@@ -104,14 +127,9 @@ std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int m
     iter++;
     new_node = GenerateRandomNode(n);
     if ((*p_grid)[new_node.x_][new_node.y_]!=0) continue;
-    // Go back to beginning of loop if point is an obstacle
-    // or has been considered already
     Node nearest_node = FindNearestPoint(new_node, n);
     if(nearest_node.id_ == -1) continue;
-    // Go back to beginning of loop if no near neighbour
     (*p_grid)[new_node.x_][new_node.y_]=2;
-    // Setting to 2 implies visited/considered
-
     point_list_.push_back(new_node);
     if (CheckGoalVisible(new_node)) return this->point_list_;
   }
@@ -121,6 +139,11 @@ std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int m
   return point_list_;
 }
 
+/**
+* @brief Check if goal is reachable from current node
+* @param new_node Current node
+* @return bool value of whether goal is reachable from current node
+*/
 bool RRT::CheckGoalVisible(Node new_node){
   if(!CheckObstacle(new_node, goal_)){
     double new_dist = (double)sqrt((double)(goal_.x_-new_node.x_)*(double)(goal_.x_-new_node.x_) + (double)(goal_.y_-new_node.y_)*(double)(goal_.y_-new_node.y_));
@@ -134,6 +157,12 @@ bool RRT::CheckGoalVisible(Node new_node){
   return false;
 }
 
+/**
+* @brief Create the obstacle list from the input grid
+* @param grid input grid for algorithm
+* @param n Number of rows/columns
+* @return void
+*/
 void RRT::CreateObstacleList(void *grid, int n){
   int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   for(int i=0; i < n; i++){
@@ -147,13 +176,15 @@ void RRT::CreateObstacleList(void *grid, int n){
 }
 
 #ifdef BUILD_INDIVIDUAL
+/**
+* @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm object and calls the main algorithm function.
+* @return 0
+*/
 int main(){
   int n = 8;
   int num_points = n*n;
-
   int grid[n][n];
   MakeGrid(grid, n);
-
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
