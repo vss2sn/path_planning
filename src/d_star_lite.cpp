@@ -448,6 +448,11 @@ Node DStarLite::NextPoint(){
   }
   return path_vector_[i];
 }
+/**
+ * Function to run D* Lite live, showing the movement of the bot with time.
+ * Timeout after each movement set in .h file. Next point in path might beset to
+ * obstacle with probability 1/n. Calls UpdateStart and SetObs.
+ */
 void DStarLite::RunDStarLite(bool disp_inc_in){
   disp_inc = disp_inc_in;
   if(path_vector_[0].cost_==-1){

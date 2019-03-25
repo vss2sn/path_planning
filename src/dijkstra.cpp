@@ -6,6 +6,9 @@ Dijstra grid based planning
 
 #include "dijkstra.h"
 
+/**
+ * Main algorithm of A*.
+ */
 std::vector<Node> Dijkstra::dijkstra(void *grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
@@ -60,6 +63,10 @@ std::vector<Node> Dijkstra::dijkstra(void *grid, int n, Node start_in, Node goal
 }
 
 #ifdef BUILD_INDIVIDUAL
+/**
+ * Script main function. Generates start and end nodes as well as grid, then
+ * creates the algorithm object and calls the main algorithm function.
+ */  
 int main(){
   int n = 8;
   int num_points = n*n;
