@@ -1,4 +1,4 @@
 build/*
 grids
-docs/html/*
-docs/latex/*
+docs/*
+!docs/Doxyfile
