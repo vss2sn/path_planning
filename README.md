@@ -11,7 +11,8 @@
 1. utils.cpp built as library and used in every separate file.
 2. Setting the CMake option BUILD_INDIVIDUAL allows building of each .cpp separately (except main.cpp), allowing easy testing. Setting it to OFF allows use of all base classes and algorithms in main.cpp.
 3. D* Lite can be run live with random obstacle creation using the RunDStarLite function.
-4. To create documentation using Doxygen run doxygen in the docs folder.
+4. To create documentation using Doxygen run `doxygen` in the docs folder. Config files added to generate documentation with the READTHEDOCs theme. To do so, make sure you have the extensions `breathe`, `exhale` and `m2r` installed (using pip). Run `make html` in the docs folder after running `doxygen`. 
+
 
 ##### Notes on test: #####
 1. Unit test framework set up to set algorithms under different grids. This section uses Google Test.
@@ -32,9 +33,9 @@
 
 ##### Consider: #####
 1. Adding namespace to each header file.
-2. Inheriting node class into each file that requires a modified node (such as A* with heuristic cost etc).
+2. Inheriting node class into each file that requires a modified node (such as A* with heuristic cost, etc).
 
 ##### Notes to build and run: #####
-1. If you want to run each algorithm independently, set BUILD_INDIVIDUAL to ON (Executables created: "dijkstra", "a_star", etc). If you want to run all of them on the same grid, set it to OFF (Executable created: "main").
+1. If you want to run each algorithm independently, set BUILD_INDIVIDUAL to ON (Executables created: `dijkstra`, `a_star`, etc). If you want to run all of them on the same grid, set it to OFF (Executable created: `main`).
 2. If you want to run tests, set BUILD_INDIVIDUAL to OFF and TEST to ON.
 3. To specify your own grid, set n to number of rows, created the 2D array, setting 1 for obstacles and 0 elsewhere, and comment out the MakeGrid function.
