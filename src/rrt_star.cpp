@@ -139,15 +139,14 @@ void RRTStar::Rewire(Node new_node){
 * @param threshold_in Maximum distance per move
 * @return path vector of nodes
 */
-std::vector<Node> RRTStar::rrt_star(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
+std::vector<Node> RRTStar::rrt_star(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
   start_ = start_in;
   goal_ = goal_in;
   threshold_ = threshold_in;
   int max_iter = max_iter_x_factor * n * n;
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
-  CreateObstacleList(*p_grid, n);
+  CreateObstacleList(grid, n);
   point_list_.push_back(start_);
-  (*p_grid)[start_.x_][start_.y_]=2;
+  grid[start_.x_][start_.y_]=2;
   int iter = 0;
   Node new_node = start_;
   if(CheckGoalVisible(new_node)) found_goal_ = true;
@@ -162,12 +161,12 @@ std::vector<Node> RRTStar::rrt_star(void *grid, int n, Node start_in, Node goal_
       return point_list_;
     }
     new_node = GenerateRandomNode(n);
-    if ((*p_grid)[new_node.x_][new_node.y_]==1) continue;
+    if (grid[new_node.x_][new_node.y_]==1) continue;
     // Go back to beginning of loop if point is an obstacle
     Node nearest_node = FindNearestPoint(new_node, n);
     if(nearest_node.id_ == -1) continue;
     // Go back to beginning of loop if no near neighbour
-    (*p_grid)[new_node.x_][new_node.y_]=2;
+    grid[new_node.x_][new_node.y_]=2;
     // Setting to 2 implies visited/considered
 
     std::vector<Node>::iterator it_v = find (point_list_.begin(), point_list_.end(), new_node);
@@ -213,11 +212,10 @@ bool RRTStar::CheckGoalVisible(Node new_node){
 * @param n Number of rows/columns
 * @return void
 */
-void RRTStar::CreateObstacleList(void *grid, int n){
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
+void RRTStar::CreateObstacleList(std::vector<std::vector<int> > &grid, int n){
   for(int i=0; i < n; i++){
     for(int j=0;j < n; j++){
-      if((*p_grid)[i][j]==1){
+      if(grid[i][j]==1){
         Node obs(i,j,0,0,i*n+j,0);
         obstacle_list_.push_back(obs);
       }
@@ -233,7 +231,11 @@ void RRTStar::CreateObstacleList(void *grid, int n){
 int main(){
   int n = 8;
   int num_points = n*n;
-  int grid[n][n];
+  std::vector<std::vector<int>> grid(n);
+  std::vector<int> tmp(n);
+  for (int i = 0; i < n; i++){
+    grid[i] = tmp;
+  }
   MakeGrid(grid, n);
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;

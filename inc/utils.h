@@ -47,8 +47,8 @@ struct compare_cost{
 };
 
 std::vector<Node> GetMotion();
-void MakeGrid(void *grid, int n);
-void PrintGrid(void *grid, int n);
-void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, void *grid, int n);
-void PrintCost(void *grid, int n, std::vector<Node> point_list);
+void MakeGrid(std::vector<std::vector<int> > &grid, int n);
+void PrintGrid(std::vector<std::vector<int> > &grid, int n);
+void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, std::vector<std::vector<int> > &grid, int n);
+void PrintCost(std::vector<std::vector<int> > &grid, int n, std::vector<Node> point_list);
 #endif UTILS_H

@@ -141,9 +141,8 @@ std::vector<Node> GetMotion(){
 * @param n number of rows/columns
 * @return void
 */
-void MakeGrid(void *grid, int n){
+void MakeGrid(std::vector<std::vector<int>> &grid, int n){
   //NOTE: Using a void pointer isnt the best option
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
 
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
@@ -151,8 +150,8 @@ void MakeGrid(void *grid, int n){
 
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
-      (*p_grid)[i][j] = distr(eng)/((n-1)); // probability of obstacle is 1/n
-      // (*p_grid)[i][j] = 0; // For no obstacles
+      grid[i][j] = distr(eng)/((n-1)); // probability of obstacle is 1/n
+      // grid[i][j] = 0; // For no obstacles
     }
   }
 }
@@ -163,7 +162,7 @@ void MakeGrid(void *grid, int n){
 * @param n number of rows/columns
 * @return void
 */
-void PrintGrid(void *grid, int n){
+void PrintGrid(std::vector<std::vector<int>> &grid, int n){
   //NOTE: Using a void pointer isnt the best option
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
@@ -171,17 +170,17 @@ void PrintGrid(void *grid, int n){
   std::cout << "3. Points considered     ---> 2" << std::endl;
   std::cout << "4. Points in final path  ---> 3" << std::endl;
 
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
+
   for(int j=0;j<n;j++){
     std::cout << "---";
   }
   std::cout << std::endl;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
-      if((*p_grid)[i][j]==3) std::cout << GREEN << (*p_grid)[i][j] << RESET << " , ";
-      else if((*p_grid)[i][j]==1) std::cout << RED << (*p_grid)[i][j] << RESET << " , ";
-      else if((*p_grid)[i][j]==2) std::cout << BLUE << (*p_grid)[i][j] << RESET << " , ";
-      else std::cout << (*p_grid)[i][j] << " , ";
+      if(grid[i][j]==3) std::cout << GREEN << grid[i][j] << RESET << " , ";
+      else if(grid[i][j]==1) std::cout << RED << grid[i][j] << RESET << " , ";
+      else if(grid[i][j]==2) std::cout << BLUE << grid[i][j] << RESET << " , ";
+      else std::cout << grid[i][j] << " , ";
 
     }
     std::cout << std::endl << std::endl;
@@ -199,12 +198,12 @@ void PrintGrid(void *grid, int n){
 * @param n number of rows/columns
 * @return void
 */
-void PrintPath(std::vector<Node> path_vector, Node start, Node goal, void *grid, int n){
+void PrintPath(std::vector<Node> path_vector, Node start, Node goal, std::vector<std::vector<int>> &grid, int n){
   //NOTE: Using a void pointer isn't the best option
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
+
   if(path_vector[0].id_ == -1){
     std::cout << "No path exists" << std::endl;
-    PrintGrid(*p_grid, n);
+    PrintGrid(grid, n);
     return;
   }
   // std::cout << "Path (goal to start):" << std::endl;
@@ -213,19 +212,19 @@ void PrintPath(std::vector<Node> path_vector, Node start, Node goal, void *grid,
     if(goal == path_vector[i]) break;
   }
   // path_vector[i].PrintStatus();
-  (*p_grid)[path_vector[i].x_][path_vector[i].y_] = 3;
+  grid[path_vector[i].x_][path_vector[i].y_] = 3;
   while(path_vector[i].id_!=start.id_){
     if(path_vector[i].id_ == path_vector[i].pid_) break;
     for(int j = 0; j < path_vector.size(); j++){
       if(path_vector[i].pid_ == path_vector[j].id_){
         i=j;
         // path_vector[j].PrintStatus();
-        (*p_grid)[path_vector[j].x_][path_vector[j].y_] = 3;
+        grid[path_vector[j].x_][path_vector[j].y_] = 3;
       }
     }
   }
-  (*p_grid)[start.x_][start.y_] = 3;
-  PrintGrid((*p_grid), n);
+  grid[start.x_][start.y_] = 3;
+  PrintGrid(grid, n);
 }
 
 /**
@@ -235,9 +234,9 @@ void PrintPath(std::vector<Node> path_vector, Node start, Node goal, void *grid,
 * @param point_list Vector of all points that have been considered. Nodes in vector contain cost.
 * @return void
 */
-void PrintCost(void *grid, int n, std::vector<Node> point_list){
+void PrintCost(std::vector<std::vector<int>> &grid, int n, std::vector<Node> point_list){
   //NOTE: Using a void pointer isnt the best option
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
+
   std::vector<Node>::iterator it_v;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){

@@ -63,9 +63,13 @@ void DStarLite::MyPrint(){
 * @return Key for given input node
 */
 std::pair<double,double> DStarLite::CalculateKey(const Node& s){
-  return std::make_pair(std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second
+  std::cout << "In cal"<< std::endl;
+  auto key = std::make_pair(std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second
                                   +GetHeuristic(start_,s)+km_.first),
                         std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second));
+std::cout << "out cal"<< std::endl;
+
+  return key;
 }
 
 /**
@@ -74,15 +78,23 @@ std::pair<double,double> DStarLite::CalculateKey(const Node& s){
 * @return Vector of nodes that are possible predecessors to input node
 */
 std::vector<Node> DStarLite::GetPred(Node u){
+  std::cout << "in getpr"<< std::endl;
+
   std::vector<Node> pred;
   for(auto it=motions.begin();it!=motions.end(); ++it){
+    std::cout << "hello"<< std::endl;
+
     Node new_node = u + *it;
-    if(grid[new_node.x_][new_node.y_]==1) continue;
-    if(new_node.x_ < n && new_node.x_ >= 0 &&
-       new_node.y_ < n && new_node.y_ >= 0){
-         pred.push_back(new_node);
-    }
+
+    if(new_node.x_ >= n || new_node.x_ < 0 ||
+       new_node.y_ >= n || new_node.y_ < 0 ||
+       grid[new_node.x_][new_node.y_]==1) continue;
+     std::cout << "aboe pushgetpr"<< std::endl;
+     pred.push_back(new_node);
+     std::cout << "belo pushgetpr"<< std::endl;
   }
+  std::cout << "about to return"<< std::endl;
+
   return pred;
 }
 
@@ -109,6 +121,7 @@ std::vector<Node> DStarLite::GetSucc(Node u){
 * @return void
 */
 void DStarLite::InsertionSort(){
+  std::cout << "in sort" << std::endl;
    int n = U_.size();
    int i, j;
    std::pair<Node,std::pair<double,double>> key;
@@ -123,6 +136,8 @@ void DStarLite::InsertionSort(){
        }
        U_[j+1] = key;
    }
+   std::cout << "out sort" << std::endl;
+
 }
 
 /**
@@ -132,7 +147,9 @@ void DStarLite::InsertionSort(){
 * @return cost of motion moving from first node to second
 */
 double DStarLite::C(Node s1, Node s2){
-  if(grid[s1.x_][s1.y_] != 1 && grid[s2.x_][s2.y_] != 1){
+  if(s1.x_ < n && s1.x_ >= 0 && s1.y_ < n && s1.y_ >= 0 &&
+     s2.x_ < n && s2.x_ >= 0 && s2.y_ < n && s2.y_ >= 0 &&
+     grid[s1.x_][s1.y_] != 1 && grid[s2.x_][s2.y_] != 1){
     // Node diff = s2-s1;
     // for(auto it = motions.begin(); it!=motions.end(); ++it){
     //   if(diff == *it){
@@ -151,21 +168,49 @@ double DStarLite::C(Node s1, Node s2){
 * @return void
 */
 void DStarLite::Init(){
+  std::cout << "hello" << std::endl;
   U_.clear();
+  std::cout << "hello" << std::endl;
+
   iter_ = 0;
   double n2 = n*n;
   large_num = std::make_pair(n2,n2);
   max_iter_ = n2*n;
+  std::cout << "hello" << std::endl;
+
   motions = GetMotion();
+  std::cout << "hello" << std::endl;
+
   km_=std::make_pair(0,0);
-  for(int i=0;i<n;i++){
-    for(int j=0;j<n;j++){
-      S_[i][j] = large_num;
-    }
+
+  std::vector<std::pair<double,double>> tmp(n);
+  std::cout << "filing" << std::endl;
+
+  std::fill(tmp.begin(), tmp.end(), large_num);
+  std::cout << "filled" << std::endl;
+  S_ = std::vector<std::vector<std::pair<double,double>>>(n) ;
+  for (int i = 0; i < n; i++){
+    std::cout << "In loop"<< i<<std::endl;
+    S_[i] = tmp;
   }
+  std::cout << "out loop"<< std::endl;
+  //MyPrint();
+  // for(int i=0;i<n;i++){
+  //   for(int j=0;j<n;j++){
+  //     std::cout << "setting" << std::endl;
+  //
+  //     S_[i][j] = large_num;
+  //     std::cout << "donesetting" << std::endl;
+  //
+  //   }
+  // }
+  std::cout << "largenum" << std::endl;
+
   S_[goal_.x_][goal_.y_].second = 0;
   std::pair<Node, std::pair<double, double>> u_pair = std::make_pair(goal_, CalculateKey(goal_));
+  std::cout << U_.size() << std::endl;
   U_.push_back(u_pair);
+  std::cout << U_.size() << std::endl;
   InsertionSort();
 }
 
@@ -175,25 +220,47 @@ void DStarLite::Init(){
 * @return void
 */
 void DStarLite::UpdateVertex(Node& u){
+  std::cout << "In update"<< std::endl;
   if(u!=goal_){
+    std::cout << "get succ"<< std::endl;
     std::vector<Node> succ = GetSucc(u);
+    std::cout << "out succ"<< std::endl;
     double init_min = n*n;
     for(int i=0;i<succ.size();i++){
+      std::cout << "in c" << std::endl;
       double new_min = C(u,succ[i])+S_[succ[i].x_][succ[i].y_].first;
+      std::cout << "out c"<< std::endl;
       if(new_min < init_min) init_min = new_min;
     }
+    std::cout << "hello_1" << std::endl;
+
     S_[u.x_][u.y_].second = init_min;
+    std::cout << "hello_2" << std::endl;
+
   }
   for(auto it = U_.begin(); it!=U_.end(); ++it){
+    std::cout << "In for"<< std::endl;
     if((*it).first == u){
       U_.erase(it);
       break;
     }
   }
+  std::cout << "before if"<< std::endl;
   if(S_[u.x_][u.y_].first != S_[u.x_][u.y_].second){
-    U_.push_back(std::make_pair(u, CalculateKey(u)));
+    std::cout << "In if"<< std::endl;
+    std::pair<double,double> key = CalculateKey(u);
+    std::cout << "key returned"<< std::endl;
+    u.PrintStatus();
+    std::cout << U_.size() << std::endl;
+
+    U_.push_back(std::make_pair(u, key));
+    std::cout << U_.size() << std::endl;
+
+    std::cout << "above sort" << std::endl;
     InsertionSort();
+    std::cout << "below sort" << std::endl;
   }
+  std::cout << "Out update"<< std::endl;
 }
 
 /**
@@ -224,19 +291,28 @@ int DStarLite::ComputeShortestPath(){
     k_old_ = U_[0].second;
     Node u = U_[0].first;
     U_.erase(U_.begin());
+    std::cout << "above else if"<< std::endl;
     if(CompareKey(k_old_, u)){
+      std::cout << "in if"<< std::endl;
       std::pair<Node, std::pair<double, double>> u_pair = std::make_pair(goal_, CalculateKey(goal_));
       U_.push_back(u_pair);
       InsertionSort();
     }
     else if (S_[u.x_][u.y_].first > S_[u.x_][u.y_].second){
+      std::cout << "in else if"<< std::endl;
       S_[u.x_][u.y_].first = S_[u.x_][u.y_].second;
+      std::cout << "in belo else if"<< std::endl;
       std::vector<Node> pred = GetPred(u);
+      std::cout << "below getpr"<< std::endl;
       for(int i = 0;i<pred.size();i++){
+        std::cout << "above udv"<< std::endl;
         UpdateVertex(pred[i]);
+        std::cout << "below udv"<< std::endl;
+
       }
     }
     else{
+      std::cout << "in else"<< std::endl;
       S_[u.x_][u.y_].first = n*n;
       std::vector<Node> pred = GetPred(u);
       for(int i = 0;i<pred.size();i++){
@@ -244,6 +320,7 @@ int DStarLite::ComputeShortestPath(){
       }
       UpdateVertex(u);
     }
+    std::cout << "out if"<< std::endl;
   }
   return 0;
 }
@@ -256,27 +333,30 @@ int DStarLite::ComputeShortestPath(){
 * @param goal_in goal node
 * @return path vector of nodes
 */
-std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in, Node goal_in){
+std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in, int n_in, Node start_in, Node goal_in){
+  std::cout << "in algo" << std::endl;
+  grid = grid_in;
+  std::cout << "addigned"<< std::endl;
   start_ = start_in;
   main_start_ = start_;
   goal_ = goal_in;
-  n = n_in;
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid_in;
-  for(int i=0;i<n;i++){
-    for(int j=0;j<n;j++){
-      grid[i][j] = (*p_grid)[i][j];
-    }
-  }
   last_ = start_;
+  std::cout << "preinit" << std::endl;
+  n = n_in;
   Init();
+  std::cout << "init" << std::endl;
+
   int ans = ComputeShortestPath();
+  std::cout << "compute" << std::endl;
+
   if(ans < 0 || S_[start_.x_][start_.y_].first==large_num.first){
     path_vector_.clear();
     Node no_path_node(-1,-1,-1,-1,-1);
     path_vector_.push_back(no_path_node);
   }
-
   else GeneratePathVector();
+  std::cout << "gen" << std::endl;
+
   return ReturnInvertedVector();
 }
 
@@ -361,25 +441,36 @@ std::vector<Node> DStarLite::ReturnInvertedVector(){
 * @return void
 */
 void DStarLite::GeneratePathVector(){
+  std::cout << "in gen" << std::endl;
   main_start_.cost_ = S_[main_start_.x_][main_start_.y_].second;
   path_vector_.push_back(main_start_);
   while(path_vector_[0]!=goal_){
+    std::cout << "in gen while1" << std::endl;
     Node u = path_vector_[0];
     grid[u.x_][u.y_]=2;
+    std::cout << "in gen while2" << std::endl;
+
     for(auto it=motions.begin();it!=motions.end(); ++it){
       Node new_node = u + *it;
-      if(grid[new_node.x_][new_node.y_]==1){
+      std::cout << "in gen while3" << std::endl;
+      if(new_node.x_ >= n || new_node.x_ < 0 || new_node.y_ >= n || new_node.y_ < 0
+         || grid[new_node.x_][new_node.y_]==1){
+        std::cout << "in gen while4" << std::endl;
         continue;
       }
+      std::cout << "in gen while5" << std::endl;
       if(new_node.x_ < n && new_node.x_ >= 0 && new_node.y_ < n && new_node.y_ >= 0){
+        std::cout << "in gen while6" << std::endl;
         new_node.cost_= S_[new_node.x_][new_node.y_].second;
         if(new_node.cost_ > u.cost_){
+          std::cout << "in gen while7" << std::endl;
            continue;
         }
         new_node.id_ = n*new_node.x_ + new_node.y_;
         new_node.pid_ = u.id_;
         path_vector_.push_back(new_node);
         VectorInsertionSort(path_vector_);
+        std::cout << "in gen while8" << std::endl;
       }
     }
   }
@@ -524,13 +615,15 @@ int main(){
   int n = 8;
   int num_points = n*n;
 
-  int main_grid[n][n];
-  int grid[n][n];
+  std::vector<std::vector<int>> grid(n);
+  std::vector<int> tmp(n);
+  for (int i = 0; i < n; i++){
+    grid[i] = tmp;
+  }
   MakeGrid(grid, n);
-  int grid_space = n*n*sizeof(int);
 
   Node start(1,1,0,0,0,0);
-  Node goal(1,1,0,0,0,0);
+  Node goal(n-1,n-1,0,0,0,0);
 
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -541,12 +634,14 @@ int main(){
   grid[goal.x_][goal.y_] = 0;
   PrintGrid(grid, n);
   std::vector<Node> path_vector;
-
+std::cout << "hello" << std::endl;
   DStarLite new_d_star_lite;
+  std::cout << "hello2" << std::endl;
+
   path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
 
-  new_d_star_lite.RunDStarLite();
+  //new_d_star_lite.RunDStarLite();
   return 0;
 }
 #endif BUILD_INDIVIDUAL
