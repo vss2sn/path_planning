@@ -5,7 +5,7 @@
 2. AStar (A*) algorithm for grid based search.
 3. RRT algorithm for grid based search.
 4. RRTStar (RRT*) algorithm for grid based search.
-5. DSstarLite (D* Lite) algorithm for grid search.
+5. DStarLite (D* Lite) algorithm for grid search.
 
 ##### Notes: #####
 1. utils.cpp built as library and used in every separate file.
