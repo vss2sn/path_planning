@@ -19,7 +19,7 @@ void InsertionSort(std::vector<Node>& v){
    for (i = 1; i < n; i++) {
        key = v[i];
        j = i-1;
-       while (j >= 0 && (v[j].cost_ + v[j].h_cost_ >= key.cost_+key.h_cost_)){
+       while (j >= 0 && (v[j].cost_ + v[j].h_cost_ > key.cost_+key.h_cost_)){
            v[j+1] = v[j];
            j--;
        }
@@ -46,7 +46,6 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, int n, Node
   // Main loop
   Node temp;
   while(!open_list_.empty()){
-    PrintGrid(grid, n);
     Node current = open_list_.top();
     open_list_.pop();
     current.id_ = current.x_ * n + current.y_;

@@ -18,32 +18,32 @@ int main(){
   int n = 8;
   int num_points = n*n;
 
-  // int grid_space = n*n*sizeof(int);
-  // std::vector<std::vector<int>> grid(n);
-  // std::vector<int> tmp(n);
-  // for (int i = 0; i < n; i++){
-  //   grid[i] = tmp;
-  // }
-  //
-  // MakeGrid(grid, n);
-  std::vector<std::vector<int>> grid{
-    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-    { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
-    { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
-    { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
-    { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
-    { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
-    { 1 , 1 , 1 , 1 , 1 , 1 , 1 , 0 },
-    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 }
-  };
+  int grid_space = n*n*sizeof(int);
+  std::vector<std::vector<int>> grid(n);
+  std::vector<int> tmp(n);
+  for (int i = 0; i < n; i++){
+    grid[i] = tmp;
+  }
+
+  MakeGrid(grid, n);
+  // std::vector<std::vector<int>> grid{
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+  //   { 1 , 1 , 1 , 1 , 1 , 1 , 1 , 0 },
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 }
+  // };
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
 
-  // Node start(distr(eng),distr(eng),0,0,0,0);
-  // Node goal(distr(eng),distr(eng),0,0,0,0);
-  Node start(0,0,0,0,0,0);
-  Node goal(n-1,n-1,0,0,0,0);
+  Node start(distr(eng),distr(eng),0,0,0,0);
+  Node goal(distr(eng),distr(eng),0,0,0,0);
+  // Node start(0,0,0,0,0,0);
+  // Node goal(n-1,n-1,0,0,0,0);
 
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
