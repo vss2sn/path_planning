@@ -10,6 +10,7 @@
    :caption: Contents:
 
    about
+   overview
    api/library_root
 
 

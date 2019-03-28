@@ -190,6 +190,7 @@ void DStarLite::UpdateVertex(Node& u){
     }
     S_[u.x_][u.y_].second = init_min;
   }
+  // can optimise following by using hash
   for(auto it = U_.begin(); it!=U_.end(); ++it){
     if((*it).first == u){
       U_.erase(it);
@@ -223,10 +224,6 @@ bool DStarLite::CompareKey(std::pair<double,double>& pair_in, Node& u){
 * @return void
 */
 int DStarLite::ComputeShortestPath(){
-  ++iter_;
-  if(iter_>=max_iter_){ // >= coz testing in multiple places for break condition
-    return -1;
-  }
   while((!U_.empty() && CompareKey(U_[0].second, start_)) || S_[start_.x_][start_.y_].first != S_[start_.x_][start_.y_].second){
     k_old_ = U_[0].second;
     Node u = U_[0].first;
@@ -308,34 +305,28 @@ std::vector<Node> DStarLite::Replan(Node u){
   if (grid[start_.x_][start_.y_]==1) grid[start_.x_][start_.y_]=0;
   path_vector_.clear();
   start_ = main_start_;
-  iter_=0;
-  while(start_!=goal_){
-    std::vector<Node> succ;
-    succ = GetSucc(start_);
-    double init_min = n*n;
-    double new_min = 0;
-    Node new_start = Node(start_.x_, start_.y_);
-    for(int i = 0;i<succ.size();i++){
-      new_min = C(start_,succ[i])+S_[succ[i].x_][succ[i].y_].first;
-      if(new_min < init_min){
-        init_min = new_min;
-        new_start = succ[i];
-      }
+  std::vector<Node> succ;
+  succ = GetSucc(start_);
+  double init_min = n*n;
+  double new_min = 0;
+  Node new_start = Node(start_.x_, start_.y_);
+  for(int i = 0;i<succ.size();i++){
+    new_min = C(start_,succ[i])+S_[succ[i].x_][succ[i].y_].first;
+    if(new_min < init_min){
+      init_min = new_min;
+      new_start = succ[i];
     }
-    start_ = new_start;
-    km_.first = km_.first + GetHeuristic(last_,start_);
-    last_ = start_;
-    UpdateVertex(u);
-    for(int i =0; i< succ.size(); i++){
-      UpdateVertex(succ[i]);
-    }
-    int ans = ComputeShortestPath();
-    if(ans < 0){
-      path_vector_.clear();
-      Node no_path_node(-1,-1,-1,-1,-1);
-      path_vector_.push_back(no_path_node);
-      return path_vector_;
-    }
+  }
+  start_ = new_start;
+  km_.first = km_.first + GetHeuristic(last_,start_);
+  last_ = start_;
+  UpdateVertex(u);
+  int ans = ComputeShortestPath();
+  if(ans < 0 || S_[start_.x_][start_.y_].first==large_num.first){
+    path_vector_.clear();
+    Node no_path_node(-1,-1,-1,-1,-1);
+    path_vector_.push_back(no_path_node);
+    return path_vector_;
   }
   GeneratePathVector();
   return ReturnInvertedVector();
@@ -396,36 +387,27 @@ void DStarLite::GeneratePathVector(){
 * @param start_in new starting position
 * @return Path vector of nodes. Can be made to void, but left as path vector to allow independent call.
 */
-
-
 std::vector<Node> DStarLite::UpdateStart(Node start_in){
   // Prevent teleportations
   if(path_vector_[0].cost_ == -1){
     std::cout << "Teleport disabled." << std::endl;
     return path_vector_;
   }
-  //If no path found to
-  // goal from current start, not movement from start will reach a point that
-  // can be reached from the goal. Teleportation is not supported by D* Lite
-  // unless a second iter counter is added at the beginning of the compute cost
-  // before the while loop.
+  // If no path found to goal from current start, not movement from start will
+  // reach a point that can be reached from the goal. Teleportation is not
+  // supported by D* Lite unless a second iter counter is added at the beginning
+  // of the compute cost before the while loop.
   start_ = start_in;
   main_start_ = start_;
   km_.first = km_.first +GetHeuristic(last_, start_);
   last_ = start_;
-  // int ans = ComputeShortestPath();
-  // if(ans < 0){
-  //   path_vector_.clear();
-  //   Node no_path_node(-1,-1,-1,-1,-1);
-  //   path_vector_.push_back(no_path_node);
-  // }
-  //return Replan(start_);
   return path_vector_;
 }
 
-/**
- * Displays the grid stored by the D* Lite object.
- */
+ /**
+* @brief Displays the grid stored by the D* Lite object.
+* @return void
+*/
 void DStarLite::DisplayGrid(){
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
@@ -494,6 +476,7 @@ void DStarLite::RunDStarLite(bool disp_inc_in){
     start_ = current;
     Node next_point = NextPoint();
     if(distr(eng) > n-2 && next_point!=goal_) SetObs(next_point);
+
     grid[current.x_][current.y_] = 4;
     if(disp_inc){
       usleep(disp_p);

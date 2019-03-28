@@ -11,7 +11,7 @@
 1. utils.cpp built as library and used in every separate file.
 2. Setting the CMake option BUILD_INDIVIDUAL allows building of each .cpp separately (except main.cpp), allowing easy testing. Setting it to OFF allows use of all base classes and algorithms in main.cpp.
 3. D* Lite can be run live with random obstacle creation using the RunDStarLite function.
-4. To create documentation using Doxygen run `doxygen` in the docs folder. Config files added to generate documentation with the READTHEDOCs theme. To do so, make sure you have the extensions `breathe`, `exhale` and `m2r` installed (using pip). Run `make html` in the docs folder after running `doxygen`. 
+4. To create documentation using Doxygen run `doxygen` in the docs folder. Config files added to generate documentation with the READTHEDOCs theme. To do so, make sure you have the extensions `breathe`, `exhale` and `m2r` installed (using pip). Run `make html` in the docs folder after running `doxygen`.
 
 
 ##### Notes on test: #####
