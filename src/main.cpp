@@ -25,16 +25,6 @@ int main(){
     grid[i] = tmp;
   }
 
-  // std::vector<std::vector<int>> grid= {
-  // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
-  // { 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 },
-  // { 0 , 0 , 0 , 1 , 0 , 1 , 0 , 1 },
-  // { 1 , 0 , 0 , 1 , 0 , 0 , 0 , 0 },
-  // { 0 , 0 , 0 , 1 , 1 , 1 , 1 , 0 },
-  // { 0 , 0 , 1 , 0 , 0 , 0 , 0 , 1 },
-  // { 0 , 0 , 1 , 0 , 1 , 1 , 0 , 0 },
-  // { 0 , 0 , 1 , 0 , 1 , 0 , 0 , 0 }
-  // };
   MakeGrid(grid, n);
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
@@ -42,7 +32,7 @@ int main(){
 
   // Node start(distr(eng),distr(eng),0,0,0,0);
   // Node goal(distr(eng),distr(eng),0,0,0,0);
-  Node start(1,1,0,0,0,0);
+  Node start(0,0,0,0,0,0);
   Node goal(n-1,n-1,0,0,0,0);
 
   start.id_ = start.x_ * n + start.y_;

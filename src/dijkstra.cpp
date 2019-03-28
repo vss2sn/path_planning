@@ -20,14 +20,6 @@ std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, int n
   // Main loop
   Node temp;
   while(!open_list_.empty()){
-    //sorting; minor problem with inbuild sort for vector. To optimise.
-     PrintGrid(grid, n);
-
-    //usleep(500000);
-    // InsertionSort(open_list_);
-    // Node current = *(open_list_.begin());
-    // open_list_.erase(open_list_.begin());
-    // current.PrintStatus();
     Node current = open_list_.top();
     open_list_.pop();
     current.id_ = current.x_ * n + current.y_;
@@ -36,9 +28,7 @@ std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, int n
       grid[current.x_][current.y_] = 2;
       return closed_list_;
     }
-
     grid[current.x_][current.y_] = 2; // Point opened
-
     int current_cost = current.cost_;
     for(auto it = motion.begin(); it!=motion.end(); ++it){
       Node new_point;
@@ -51,17 +41,8 @@ std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, int n
         break;
       }
       if(new_point.x_ < 0 || new_point.y_ < 0 || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
-      if(grid[new_point.x_][new_point.y_]==1){
-        continue; //obstacle
-      }
-      // std::vector<Node>::iterator it_v = find (open_list_.begin(), open_list_.end(), new_point);
-      // if(it_v!=open_list_.end() && ((new_point.cost_ + new_point.h_cost_) < (it_v->cost_ + it_v->h_cost_))){
-      //   *it_v = new_point;
-      //   continue;
-      // }
-      auto it_v = find (closed_list_.begin(), closed_list_.end(), new_point);
-      if(it_v!=closed_list_.end() && ((new_point.cost_) > (it_v->cost_))){
-        continue;
+      if(grid[new_point.x_][new_point.y_]!=0){
+        continue; //obstacle or visited
       }
       open_list_.push(new_point);
     }

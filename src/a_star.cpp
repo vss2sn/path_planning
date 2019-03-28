@@ -5,6 +5,7 @@
 */
 
 #include "a_star.h"
+using namespace std::chrono;
 
 /**
 * @brief Using insertion sort to sort the vector list that maintains the priority queue. Good for a mostly sorted queue. Sort called afterevery insertion to maintain queue. Not using standard queue as iterating over is not allowed.
@@ -45,14 +46,6 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, int n, Node
   // Main loop
   Node temp;
   while(!open_list_.empty()){
-    //sorting; minor problem with inbuild sort for vector. To optimise.
-     PrintGrid(grid, n);
-
-    //usleep(500000);
-    // InsertionSort(open_list_);
-    // Node current = *(open_list_.begin());
-    // open_list_.erase(open_list_.begin());
-    // current.PrintStatus();
     Node current = open_list_.top();
     open_list_.pop();
     current.id_ = current.x_ * n + current.y_;
@@ -61,9 +54,7 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, int n, Node
       grid[current.x_][current.y_] = 2;
       return closed_list_;
     }
-
     grid[current.x_][current.y_] = 2; // Point opened
-
     int current_cost = current.cost_;
     for(auto it = motion.begin(); it!=motion.end(); ++it){
       Node new_point;
@@ -71,23 +62,13 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, int n, Node
       new_point.id_ = n*new_point.x_+new_point.y_;
       new_point.pid_ = current.id_;
       new_point.h_cost_ = abs(new_point.x_ - goal_.x_) + abs(new_point.y_ - goal_.y_);
-
       if(new_point == goal_){
         open_list_.push(new_point);
         break;
       }
       if(new_point.x_ < 0 || new_point.y_ < 0 || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
-      if(grid[new_point.x_][new_point.y_]==1){
-        continue; //obstacle
-      }
-      // std::vector<Node>::iterator it_v = find (open_list_.begin(), open_list_.end(), new_point);
-      // if(it_v!=open_list_.end() && ((new_point.cost_ + new_point.h_cost_) < (it_v->cost_ + it_v->h_cost_))){
-      //   *it_v = new_point;
-      //   continue;
-      // }
-      auto it_v = find (closed_list_.begin(), closed_list_.end(), new_point);
-      if(it_v!=closed_list_.end() && ((new_point.cost_ + new_point.h_cost_) > (it_v->cost_ + it_v->h_cost_))){
-        continue;
+      if(grid[new_point.x_][new_point.y_]!=0){
+        continue; //obstacle or visited
       }
       open_list_.push(new_point);
     }
@@ -105,7 +86,7 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, int n, Node
 * @return 0
 */
 int main(){
-  int n = 8;
+  int n = 11;
   int num_points = n*n;
 
   std::vector<std::vector<int>> grid(n);
@@ -118,8 +99,10 @@ int main(){
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
 
-  Node start(distr(eng),distr(eng),0,0,0,0);
-  Node goal(distr(eng),distr(eng),0,0,0,0);
+  // Node start(distr(eng),distr(eng),0,0,0,0);
+  // Node goal(distr(eng),distr(eng),0,0,0,0);
+  Node start(0,0,0,0,0,0);
+  Node goal(n-1,n-1,0,0,0,0);
   start.PrintStatus();
   goal.PrintStatus();
   start.id_ = start.x_ * n + start.y_;
@@ -131,8 +114,12 @@ int main(){
   grid[goal.x_][goal.y_] = 0;
   PrintGrid(grid, n);
 
+  auto start_time = high_resolution_clock::now();
   AStar new_a_star;
   std::vector<Node> path_vector = new_a_star.a_star(grid, n, start, goal);
+  auto stop_time = high_resolution_clock::now();
+  auto duration = duration_cast<microseconds>(stop_time - start_time);
+  std::cout << duration.count() << std::endl;
 
   PrintPath(path_vector, start, goal, grid, n);
   return 0;

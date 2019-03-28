@@ -42,7 +42,6 @@ double run_test(std::vector<std::vector<int> > &grid, int n, std::string algo){
     path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
   }
 
-  std::cout << path_vector.size() << std::endl;
   if(path_vector.size()==1) return -1;
   int i;
   for(i = 0; i < path_vector.size(); i++){
