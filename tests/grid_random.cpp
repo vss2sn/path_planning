@@ -59,7 +59,11 @@ TEST(PathPlanningTest, Test1) {
   }
   MakeGrid(grid_1, n);
   std::vector<std::vector<int>> grid_2 = grid_1;
+  std::vector<std::vector<int>> grid_3 = grid_1;
+  std::vector<std::vector<int>> grid_4 = grid_1;
+
   ASSERT_EQ(run_test(grid_1, n, "dijkstra"), run_test(grid_2, n, "a_star"));
+  ASSERT_EQ(run_test(grid_3, n, "d_star_lite"), run_test(grid_4, n, "a_star"));
 }
 
 int main(int argc, char **argv) {

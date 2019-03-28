@@ -46,6 +46,7 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, int n, Node
   // Main loop
   Node temp;
   while(!open_list_.empty()){
+    PrintGrid(grid, n);
     Node current = open_list_.top();
     open_list_.pop();
     current.id_ = current.x_ * n + current.y_;
