@@ -1,2 +1,8 @@
 build/*
 grids
+docs/*
+!docs/conf.py
+!docs/Doxyfile
+!docs/index.rst
+!docs/make.bat
+!docs/Makefile

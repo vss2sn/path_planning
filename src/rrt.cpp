@@ -1,11 +1,17 @@
-/*
-
-RRT* grid based planning
-
+/**
+* @file rrt.cpp
+* @author vss2sn
+* @brief Contains the RRT class
 */
 
 #include "rrt.h"
 
+/**
+* @brief Find the nearest node that has been seen by the algorithm. This does not consider cost to reach the node.
+* @param new_node Node to which the nearest node must be found
+* @param n number of rows/columns
+* @return Nearest node
+*/
 Node RRT::FindNearestPoint(Node& new_node, int n){
   Node nearest_node(-1,-1,-1,-1,-1,-1);
   std::vector<Node>::iterator it_v;
@@ -31,9 +37,13 @@ Node RRT::FindNearestPoint(Node& new_node, int n){
   }
   return nearest_node;
 }
-
+/**
+* @brief Check if there is any obstacle between the 2 nodes. As this planner is for grid maps, the obstacles are square.
+* @param n_1 Node 1
+* @param n_2 Node 2
+* @return bool value of whether obstacle exists between nodes
+*/
 bool RRT::CheckObstacle(Node& n_1, Node& n_2){
-  // As this planner is for grid maps, the obstacles are square.
   if (n_2.y_ - n_1.y_ == 0){
     double c = n_2.y_;
     for(auto it_v = obstacle_list_.begin(); it_v!=obstacle_list_.end(); ++it_v){
@@ -76,7 +86,11 @@ bool RRT::CheckObstacle(Node& n_1, Node& n_2){
   }
   return false;
 }
-
+/**
+* @brief Generates a random node
+* @param n Number of rows/columns
+* @return Generated node
+*/
 Node RRT::GenerateRandomNode(int n){
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
@@ -87,31 +101,34 @@ Node RRT::GenerateRandomNode(int n){
   return new_node;
 }
 
-
-std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
+/**
+* @brief Main algorithm of RRT
+* @param grid Main grid
+* @param n number of rows/columns
+* @param start_in starting node
+* @param goal_in goal node
+* @param max_iter_x_factor Maximum number of allowable iterations before returning no path
+* @param threshold_in Maximum distance per move
+* @return path vector of nodes
+*/
+std::vector<Node> RRT::rrt(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
   start_ = start_in;
   goal_ = goal_in;
   threshold_ = threshold_in;
   int max_iter = max_iter_x_factor * n * n;
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
-  CreateObstacleList(*p_grid, n);
+  CreateObstacleList(grid, n);
   point_list_.push_back(start_);
   Node new_node = start_;
-  (*p_grid)[start_.x_][start_.y_]=2;
+  grid[start_.x_][start_.y_]=2;
   if (CheckGoalVisible(new_node)) return this->point_list_;
   int iter = 0;
   while(iter <= max_iter){
     iter++;
     new_node = GenerateRandomNode(n);
-    if ((*p_grid)[new_node.x_][new_node.y_]!=0) continue;
-    // Go back to beginning of loop if point is an obstacle
-    // or has been considered already
+    if (grid[new_node.x_][new_node.y_]!=0) continue;
     Node nearest_node = FindNearestPoint(new_node, n);
     if(nearest_node.id_ == -1) continue;
-    // Go back to beginning of loop if no near neighbour
-    (*p_grid)[new_node.x_][new_node.y_]=2;
-    // Setting to 2 implies visited/considered
-
+    grid[new_node.x_][new_node.y_]=2;
     point_list_.push_back(new_node);
     if (CheckGoalVisible(new_node)) return this->point_list_;
   }
@@ -121,6 +138,11 @@ std::vector<Node> RRT::rrt(void *grid, int n, Node start_in, Node goal_in, int m
   return point_list_;
 }
 
+/**
+* @brief Check if goal is reachable from current node
+* @param new_node Current node
+* @return bool value of whether goal is reachable from current node
+*/
 bool RRT::CheckGoalVisible(Node new_node){
   if(!CheckObstacle(new_node, goal_)){
     double new_dist = (double)sqrt((double)(goal_.x_-new_node.x_)*(double)(goal_.x_-new_node.x_) + (double)(goal_.y_-new_node.y_)*(double)(goal_.y_-new_node.y_));
@@ -134,11 +156,16 @@ bool RRT::CheckGoalVisible(Node new_node){
   return false;
 }
 
-void RRT::CreateObstacleList(void *grid, int n){
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
+/**
+* @brief Create the obstacle list from the input grid
+* @param grid input grid for algorithm
+* @param n Number of rows/columns
+* @return void
+*/
+void RRT::CreateObstacleList(std::vector<std::vector<int> > &grid, int n){
   for(int i=0; i < n; i++){
     for(int j=0;j < n; j++){
-      if((*p_grid)[i][j]==1){
+      if(grid[i][j]==1){
         Node obs(i,j,0,0,i*n+j,0);
         obstacle_list_.push_back(obs);
       }
@@ -147,23 +174,28 @@ void RRT::CreateObstacleList(void *grid, int n){
 }
 
 #ifdef BUILD_INDIVIDUAL
+/**
+* @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm object and calls the main algorithm function.
+* @return 0
+*/
 int main(){
   int n = 8;
   int num_points = n*n;
-
-  int grid[n][n];
+  std::vector<std::vector<int>> grid(n);
+  std::vector<int> tmp(n);
+  for (int i = 0; i < n; i++){
+    grid[i] = tmp;
+  }
   MakeGrid(grid, n);
-  PrintGrid(grid, n);
-
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.id_;
   Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
-
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+  PrintGrid(grid, n);
 
   RRT new_rrt;
   double threshold = 2;

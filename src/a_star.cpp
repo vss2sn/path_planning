@@ -1,15 +1,17 @@
-/*
-
-A* grid based planning
-
+/**
+* @file a_star.cpp
+* @author vss2sn
+* @brief Contains the AStar class
 */
 
 #include "a_star.h"
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
 
-void insertionSort(std::vector<Node>& v){
+/**
+* @brief Using insertion sort to sort the vector list that maintains the priority queue. Good for a mostly sorted queue. Sort called afterevery insertion to maintain queue. Not using standard queue as iterating over is not allowed.
+* @param v Vector to be sorted
+* @return void
+*/
+void InsertionSort(std::vector<Node>& v){
    int n = v.size();
    int i, j;
    Node key;
@@ -24,10 +26,17 @@ void insertionSort(std::vector<Node>& v){
    }
 }
 
-std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
+/**
+* @brief Main algorithm of A*
+* @param grid Main grid
+* @param n number of rows/columns
+* @param start_in start node
+* @param goal_in goal node
+* @return vector of path
+*/
+std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
 
   // Get possible motions
   std::vector<Node> motion = GetMotion();
@@ -37,17 +46,17 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
   Node temp;
   while(!open_list_.empty()){
     //sorting; minor problem with inbuild sort for vector. To optimise.
-    insertionSort(open_list_);
+    InsertionSort(open_list_);
     Node current = *(open_list_.begin());
     open_list_.erase(open_list_.begin());
     current.id_ = current.x_ * n + current.y_;
     if(current.x_ == goal_.x_ && current.y_ == goal_.y_){
       closed_list_.push_back(current);
-      (*p_grid)[current.x_][current.y_] = 2;
+      grid[current.x_][current.y_] = 2;
       return closed_list_;
     }
 
-    (*p_grid)[current.x_][current.y_] = 2; // Point opened
+    grid[current.x_][current.y_] = 2; // Point opened
 
     int current_cost = current.cost_;
     for(auto it = motion.begin(); it!=motion.end(); ++it){
@@ -62,7 +71,7 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
         break;
       }
       if(new_point.x_ < 0 || new_point.y_ < 0 || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
-      if((*p_grid)[new_point.x_][new_point.y_]==1){
+      if(grid[new_point.x_][new_point.y_]==1){
         continue; //obstacle
       }
       std::vector<Node>::iterator it_v = find (open_list_.begin(), open_list_.end(), new_point);
@@ -85,14 +94,20 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
 }
 
 #ifdef BUILD_INDIVIDUAL
+/**
+* @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm object and calls the main algorithm function.
+* @return 0
+*/
 int main(){
   int n = 8;
   int num_points = n*n;
 
-  int grid[n][n];
+  std::vector<std::vector<int>> grid(n);
+  std::vector<int> tmp(n);
+  for (int i = 0; i < n; i++){
+    grid[i] = tmp;
+  }
   MakeGrid(grid, n);
-  PrintGrid(grid, n);
-
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -102,6 +117,7 @@ int main(){
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+  PrintGrid(grid, n);
 
   AStar new_a_star;
   std::vector<Node> path_vector = new_a_star.a_star(grid, n, start, goal);

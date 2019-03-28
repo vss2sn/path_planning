@@ -1,15 +1,17 @@
-/*
-
-Dijstra grid based planning
-
+/**
+* @file dijkstra.cpp
+* @author vss2sn
+* @brief Contains the Dijkstra class
 */
 
 #include "dijkstra.h"
 
-std::vector<Node> Dijkstra::dijkstra(void *grid, int n, Node start_in, Node goal_in){
+/**
+ * Main algorithm of Dijstra.
+ */
+std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   int cost_grid[n][n];
   for (int i = 0; i < n; i++){
     for (int j = 0; j < n; j++){
@@ -30,18 +32,18 @@ std::vector<Node> Dijkstra::dijkstra(void *grid, int n, Node start_in, Node goal
     if(current == goal_){
       return path_vector;
     }
-    if((*p_grid)[current.x_][current.y_]!=0){
+    if(grid[current.x_][current.y_]!=0){
       continue; // Point already opened and
                 // points around it added to points list
     }
-    (*p_grid)[current.x_][current.y_] = 2; // Point opened
+    grid[current.x_][current.y_] = 2; // Point opened
     int current_cost = current.cost_;
     for(auto it = motion.begin(); it!=motion.end(); ++it){
       Node new_point;
       new_point = current + *it;
       if(new_point.x_ < 0 || new_point.y_ < 0
         || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
-      if((*p_grid)[new_point.x_][new_point.y_]==0 && cost_grid[new_point.x_][new_point.y_] > new_point.cost_){//=1 && (*p_grid)[new_point.x_][new_point.y_]!=2){
+      if(grid[new_point.x_][new_point.y_]==0 && cost_grid[new_point.x_][new_point.y_] > new_point.cost_){//=1 && grid[new_point.x_][new_point.y_]!=2){
         new_point.pid_ = current.id_;
         new_point.id_ = new_point.x_ * n + new_point.y_;
         point_list_.push(new_point);
@@ -60,31 +62,29 @@ std::vector<Node> Dijkstra::dijkstra(void *grid, int n, Node start_in, Node goal
 }
 
 #ifdef BUILD_INDIVIDUAL
+/**
+* @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm object and calls the main algorithm function.
+* @return 0
+*/
 int main(){
   int n = 8;
   int num_points = n*n;
-  // int grid[n][n];
-  int grid[n][n] = {
-  {  0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-  {  1 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
-  {  0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
-  {  0 , 0 , 1 , 0 , 0 , 0 , 0 , 1 },
-  {  0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
-  {  0 , 1 , 1 , 0 , 0 , 1 , 0 , 0 },
-  {  0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 },
-  {  0 , 0 , 1 , 1 , 0 , 1 , 0 , 0 }
-  };
-  MakeGrid(grid, n);
-  PrintGrid(grid, n);
 
-  Node start(0,4,0,0,0,0);
+  std::vector<std::vector<int>> grid(n);
+  std::vector<int> tmp(n);
+  for (int i = 0; i < n; i++){
+    grid[i] = tmp;
+  }
+  MakeGrid(grid, n);
+  Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(1,n,0,0,0,0);
+  Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+  PrintGrid(grid, n);
 
   Dijkstra new_dijkstra;
   std::vector<Node> path_vector = new_dijkstra.dijkstra(grid, n, start, goal);

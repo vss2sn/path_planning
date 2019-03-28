@@ -1,3 +1,9 @@
+/**
+* @file main.h
+* @author vss2sn
+* @brief Just includes includes
+*/
+
 #include <iostream>
 #include <cstring>
 #include <string>
