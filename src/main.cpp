@@ -18,11 +18,14 @@ int main(){
   int n = 11;
   int num_points = n*n;
 
-  int main_grid[n][n];
-  int grid_space = n*n*sizeof(int);
-  int grid[n][n];
-  MakeGrid(grid, n);
 
+  int grid_space = n*n*sizeof(int);
+  std::vector<std::vector<int>> grid(n);
+  std::vector<int> tmp(n);
+  for (int i = 0; i < n; i++){
+    grid[i] = tmp;
+  }
+  MakeGrid(grid, n);
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -41,7 +44,7 @@ int main(){
 
   // Store points after algorithm has run
   std::vector<Node> path_vector;
-  memcpy(main_grid, grid, grid_space);
+  std::vector<std::vector<int>> main_grid = grid;
   double threshold = 2;
   int max_iter_x_factor = 20;
 
@@ -52,7 +55,7 @@ int main(){
   std::cout << "--------------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: DIJKSTRA ---------------------" << std::endl;
   std::cout << "--------------------------------------------------------------" << std::endl;
-  memcpy(grid, main_grid, grid_space);
+  grid = main_grid;
   Dijkstra new_dijkstra;
   path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
@@ -60,7 +63,7 @@ int main(){
   std::cout << "--------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: A* ---------------------" << std::endl;
   std::cout << "--------------------------------------------------------" << std::endl;
-  memcpy(grid, main_grid, grid_space);
+  grid = main_grid;
   AStar new_a_star;
   path_vector = new_a_star.a_star(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
@@ -68,7 +71,7 @@ int main(){
   std::cout << "---------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: RRT ---------------------" << std::endl;
   std::cout << "---------------------------------------------------------" << std::endl;
-  memcpy(grid, main_grid, grid_space);
+  grid = main_grid;
   RRT new_rrt;
   path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);
@@ -76,7 +79,7 @@ int main(){
   std::cout << "----------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: RRT* ---------------------" << std::endl;
   std::cout << "----------------------------------------------------------" << std::endl;
-  memcpy(grid, main_grid, grid_space);
+  grid = main_grid;
   RRTStar new_rrt_star;
   path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
   PrintPath(path_vector, start, goal, grid, n);
@@ -84,7 +87,7 @@ int main(){
   std::cout << "-------------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: D* Lite ---------------------" << std::endl;
   std::cout << "-------------------------------------------------------------" << std::endl;
-  memcpy(grid, main_grid, grid_space);
+  grid = main_grid;
   DStarLite new_d_star_lite;
   path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);

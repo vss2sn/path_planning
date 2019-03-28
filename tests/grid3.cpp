@@ -5,8 +5,8 @@
 #include "d_star_lite.h"
 #include <gtest/gtest.h>
 
-double run_test(void *grid, int n, std::string algo){
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
+double run_test(std::vector<std::vector<int> > &grid, int n, std::string algo){
+
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -14,8 +14,8 @@ double run_test(void *grid, int n, std::string algo){
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
-  (*p_grid)[start.x_][start.y_] = 0;
-  (*p_grid)[goal.x_][goal.y_] = 0;
+  grid[start.x_][start.y_] = 0;
+  grid[goal.x_][goal.y_] = 0;
 
   std::vector<Node> path_vector;
   double threshold = 2;
@@ -23,23 +23,23 @@ double run_test(void *grid, int n, std::string algo){
 
   if(algo =="dijkstra"){
     Dijkstra new_dijkstra;
-    path_vector = new_dijkstra.dijkstra(*p_grid, n, start, goal);
+    path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
   }
   else if(algo == "a_star"){
     AStar new_a_star;
-    path_vector = new_a_star.a_star(*p_grid, n, start, goal);
+    path_vector = new_a_star.a_star(grid, n, start, goal);
   }
   else if(algo=="rrt"){
     RRT new_rrt;
-    path_vector = new_rrt.rrt(*p_grid, n, start, goal, max_iter_x_factor, threshold);
+    path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
   }
   else if(algo=="rrtstar"){
     RRTStar new_rrt_star;
-    path_vector = new_rrt_star.rrt_star(*p_grid, n, start, goal, max_iter_x_factor, threshold);
+    path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
   }
   else if(algo == "d_star_lite"){
     DStarLite new_d_star_lite;
-    path_vector = new_d_star_lite.d_star_lite(*p_grid, n, start, goal);
+    path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
   }
 
   if(path_vector.size()==1) return (double)-1.0;
@@ -52,8 +52,7 @@ double run_test(void *grid, int n, std::string algo){
 
 TEST(PathPlanningTest,Test1) {
   int n = 6;
-  int main_grid[n][n];
-  int grid[n][n] = {
+  std::vector<std::vector<int>> grid{
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 1 , 1 , 1 , 1, 1 },
                      { 1 , 1 , 1 , 0 , 1, 0 },
@@ -61,27 +60,23 @@ TEST(PathPlanningTest,Test1) {
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
-  int grid_space = n*n*sizeof(int);
-
-  memcpy(main_grid, grid, grid_space);
-
-  memcpy(grid, main_grid, grid_space);
+ std::vector<std::vector<int>> main_grid = grid;
+  grid = main_grid;
   ASSERT_EQ(-1, run_test(grid, n, "dijkstra"));
-  memcpy(grid, main_grid, grid_space);
+  grid = main_grid;
   ASSERT_EQ(-1, run_test(grid, n, "a_star"));
   // NOTE: RRT currently does not store cost. Now becomes a TODO.
-  // memcpy(grid, main_grid, grid_space);
+  // grid = main_grid;
   // ASSERT_EQ(floor(sqrt((double)8 )), floor(run_test(grid, n, "rrt")));
-  memcpy(grid, main_grid, grid_space);
+  grid = main_grid;
   ASSERT_EQ(-1, run_test(grid, n, "rrtstar"));
-  memcpy(grid, main_grid, grid_space);
+  grid = main_grid;
   ASSERT_EQ(-1, run_test(grid, n, "d_star_lite"));
 }
 
 TEST(PathPlanningTest,Test2) {
   int n = 6;
-  int main_grid[n][n];
-  int grid[n][n] = {
+  std::vector<std::vector<int>> grid{
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 1 , 1 , 1 , 1, 1 },
                      { 1 , 1 , 1 , 0 , 1, 0 },
@@ -89,23 +84,17 @@ TEST(PathPlanningTest,Test2) {
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
-  int grid_space = n*n*sizeof(int);
-  int t_grid[n][n];
-  for (int i = 0; i < n; ++i)
-      for (int j = 0; j < n; ++j)
-          t_grid[j][i]= grid[i][j];
-  memcpy(main_grid, t_grid, grid_space);
-
-  memcpy(grid, main_grid, grid_space);
+std::vector<std::vector<int>> main_grid = grid;
+  grid = main_grid;
   ASSERT_EQ(-1, run_test(grid, n, "dijkstra"));
-  memcpy(grid, main_grid, grid_space);
+  grid = main_grid;
   ASSERT_EQ(-1, run_test(grid, n, "a_star"));
   // NOTE: RRT currently does not store cost. Now becomes a TODO.
-  // memcpy(grid, main_grid, grid_space);
+  // grid = main_grid;
   // ASSERT_EQ(floor(sqrt((double)8 )), floor(run_test(grid, n, "rrt")));
-  memcpy(grid, main_grid, grid_space);
+  grid = main_grid;
   ASSERT_EQ(-1, run_test(grid, n, "rrtstar"));
-  memcpy(grid, main_grid, grid_space);
+  grid = main_grid;
   ASSERT_EQ(-1, run_test(grid, n, "d_star_lite"));
 }
 
