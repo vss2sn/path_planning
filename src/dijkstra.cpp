@@ -12,53 +12,65 @@
 std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
-  int cost_grid[n][n];
-  for (int i = 0; i < n; i++){
-    for (int j = 0; j < n; j++){
-      cost_grid[i][j] = n*n;
-    }
-  }
 
+  // Get possible motions
   std::vector<Node> motion = GetMotion();
-  point_list_.push(start_);
-  std::vector<Node> path_vector;
-  path_vector.push_back(start_);
+  open_list_.push(start_);
 
-  cost_grid[start_.x_][start_.y_] = 0;
-  while(!point_list_.empty()){
-    Node current = point_list_.top();
+  // Main loop
+  Node temp;
+  while(!open_list_.empty()){
+    //sorting; minor problem with inbuild sort for vector. To optimise.
+     PrintGrid(grid, n);
+
+    //usleep(500000);
+    // InsertionSort(open_list_);
+    // Node current = *(open_list_.begin());
+    // open_list_.erase(open_list_.begin());
+    // current.PrintStatus();
+    Node current = open_list_.top();
+    open_list_.pop();
     current.id_ = current.x_ * n + current.y_;
-    point_list_.pop();
-    if(current == goal_){
-      return path_vector;
+    if(current.x_ == goal_.x_ && current.y_ == goal_.y_){
+      closed_list_.push_back(current);
+      grid[current.x_][current.y_] = 2;
+      return closed_list_;
     }
-    if(grid[current.x_][current.y_]!=0){
-      continue; // Point already opened and
-                // points around it added to points list
-    }
+
     grid[current.x_][current.y_] = 2; // Point opened
+
     int current_cost = current.cost_;
     for(auto it = motion.begin(); it!=motion.end(); ++it){
       Node new_point;
       new_point = current + *it;
-      if(new_point.x_ < 0 || new_point.y_ < 0
-        || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
-      if(grid[new_point.x_][new_point.y_]==0 && cost_grid[new_point.x_][new_point.y_] > new_point.cost_){//=1 && grid[new_point.x_][new_point.y_]!=2){
-        new_point.pid_ = current.id_;
-        new_point.id_ = new_point.x_ * n + new_point.y_;
-        point_list_.push(new_point);
-        cost_grid[new_point.x_][new_point.y_] = new_point.cost_;
-        std::vector<Node>::iterator it_v;
-        it_v = find (path_vector.begin(), path_vector.end(), new_point);
-        if (it_v != path_vector.end()) *it_v = new_point;
-        else path_vector.push_back(new_point);
+      new_point.id_ = n*new_point.x_+new_point.y_;
+      new_point.pid_ = current.id_;
+
+      if(new_point == goal_){
+        open_list_.push(new_point);
+        break;
       }
+      if(new_point.x_ < 0 || new_point.y_ < 0 || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
+      if(grid[new_point.x_][new_point.y_]==1){
+        continue; //obstacle
+      }
+      // std::vector<Node>::iterator it_v = find (open_list_.begin(), open_list_.end(), new_point);
+      // if(it_v!=open_list_.end() && ((new_point.cost_ + new_point.h_cost_) < (it_v->cost_ + it_v->h_cost_))){
+      //   *it_v = new_point;
+      //   continue;
+      // }
+      auto it_v = find (closed_list_.begin(), closed_list_.end(), new_point);
+      if(it_v!=closed_list_.end() && ((new_point.cost_) > (it_v->cost_))){
+        continue;
+      }
+      open_list_.push(new_point);
     }
+    closed_list_.push_back(current);
   }
-  path_vector.clear();
-  Node no_path_node(-1,-1,-1,-1,-1);
-  path_vector.push_back(no_path_node);
-  return path_vector;
+  closed_list_.clear();
+  Node no_path_node(-1,-1,-1,-1,-1,-1);
+  closed_list_.push_back(no_path_node);
+  return closed_list_;
 }
 
 #ifdef BUILD_INDIVIDUAL
@@ -67,7 +79,7 @@ std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, int n
 * @return 0
 */
 int main(){
-  int n = 8;
+  int n = 4;
   int num_points = n*n;
 
   std::vector<std::vector<int>> grid(n);
