@@ -15,7 +15,7 @@
 * @return 0
 */
 int main(){
-  int n = 11;
+  int n = 8;
   int num_points = n*n;
 
   int grid_space = n*n*sizeof(int);
@@ -25,25 +25,25 @@ int main(){
     grid[i] = tmp;
   }
 
-  // std::vector<std::vector<int>> grid= {
-  // { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
-  // { 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 },
-  // { 0 , 0 , 0 , 1 , 0 , 1 , 0 , 1 },
-  // { 1 , 0 , 0 , 1 , 0 , 0 , 0 , 0 },
-  // { 0 , 0 , 0 , 1 , 1 , 1 , 1 , 0 },
-  // { 0 , 0 , 1 , 0 , 0 , 0 , 0 , 1 },
-  // { 0 , 0 , 1 , 0 , 1 , 1 , 0 , 0 },
-  // { 0 , 0 , 1 , 0 , 1 , 0 , 0 , 0 }
-  // };
   MakeGrid(grid, n);
+  // std::vector<std::vector<int>> grid{
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+  //   { 1 , 1 , 1 , 1 , 1 , 1 , 1 , 0 },
+  //   { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 }
+  // };
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
 
-  // Node start(distr(eng),distr(eng),0,0,0,0);
-  // Node goal(distr(eng),distr(eng),0,0,0,0);
-  Node start(1,1,0,0,0,0);
-  Node goal(n-1,n-1,0,0,0,0);
+  Node start(distr(eng),distr(eng),0,0,0,0);
+  Node goal(distr(eng),distr(eng),0,0,0,0);
+  // Node start(0,0,0,0,0,0);
+  // Node goal(n-1,n-1,0,0,0,0);
 
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -80,21 +80,21 @@ int main(){
   path_vector = new_a_star.a_star(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
 
-  std::cout << "---------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITH: RRT ---------------------" << std::endl;
-  std::cout << "---------------------------------------------------------" << std::endl;
-  grid = main_grid;
-  RRT new_rrt;
-  path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
-  PrintPath(path_vector, start, goal, grid, n);
-
-  std::cout << "----------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITH: RRT* ---------------------" << std::endl;
-  std::cout << "----------------------------------------------------------" << std::endl;
-  grid = main_grid;
-  RRTStar new_rrt_star;
-  path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
-  PrintPath(path_vector, start, goal, grid, n);
+  // std::cout << "---------------------------------------------------------" << std::endl;
+  // std::cout << "--------------------- ALGORITH: RRT ---------------------" << std::endl;
+  // std::cout << "---------------------------------------------------------" << std::endl;
+  // grid = main_grid;
+  // RRT new_rrt;
+  // path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
+  // PrintPath(path_vector, start, goal, grid, n);
+  //
+  // std::cout << "----------------------------------------------------------" << std::endl;
+  // std::cout << "--------------------- ALGORITH: RRT* ---------------------" << std::endl;
+  // std::cout << "----------------------------------------------------------" << std::endl;
+  // grid = main_grid;
+  // RRTStar new_rrt_star;
+  // path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
+  // PrintPath(path_vector, start, goal, grid, n);
 
   std::cout << "-------------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: D* Lite ---------------------" << std::endl;
@@ -104,17 +104,17 @@ int main(){
   path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
 
-  std::cout << "----------------------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITH: D* Lite Live Run ---------------------" << std::endl;
-  std::cout << "----------------------------------------------------------------------" << std::endl;
-  // NOTE: Make sure the function d_star_lite(grid, n, start, goal) is called
-  // before calling RunDStarLite()
-  new_d_star_lite.RunDStarLite(); // NOTE: Pass false to RunDStarLite if the
-  // incremental updated position of the bot is not to be displayed as it moves
-  // NOTE: D* Lite currently does not return a path vector as the
-  // returned path vector changes every replan. However, the path traversed is
-  // set as 3 in the grid and displayed. 4 displays current location of bot in
-  // the live run
+  // std::cout << "----------------------------------------------------------------------" << std::endl;
+  // std::cout << "--------------------- ALGORITH: D* Lite Live Run ---------------------" << std::endl;
+  // std::cout << "----------------------------------------------------------------------" << std::endl;
+  // // NOTE: Make sure the function d_star_lite(grid, n, start, goal) is called
+  // // before calling RunDStarLite()
+  // new_d_star_lite.RunDStarLite(); // NOTE: Pass false to RunDStarLite if the
+  // // incremental updated position of the bot is not to be displayed as it moves
+  // // NOTE: D* Lite currently does not return a path vector as the
+  // // returned path vector changes every replan. However, the path traversed is
+  // // set as 3 in the grid and displayed. 4 displays current location of bot in
+  // // the live run
 
   return 0;
 }
