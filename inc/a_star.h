@@ -14,7 +14,7 @@
 */
 class AStar{
 public:
-  std::vector<Node> a_star(void *grid, int n, Node start_, Node goal_);
+  std::vector<Node> a_star(std::vector<std::vector<int>> &grid, int n, Node start_, Node goal_);
 private:
   std::vector<Node> open_list_;
   std::vector<Node> closed_list_;

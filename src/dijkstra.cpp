@@ -9,10 +9,9 @@
 /**
  * Main algorithm of Dijstra.
  */
-std::vector<Node> Dijkstra::dijkstra(void *grid, int n, Node start_in, Node goal_in){
+std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
   int cost_grid[n][n];
   for (int i = 0; i < n; i++){
     for (int j = 0; j < n; j++){
@@ -33,18 +32,18 @@ std::vector<Node> Dijkstra::dijkstra(void *grid, int n, Node start_in, Node goal
     if(current == goal_){
       return path_vector;
     }
-    if((*p_grid)[current.x_][current.y_]!=0){
+    if(grid[current.x_][current.y_]!=0){
       continue; // Point already opened and
                 // points around it added to points list
     }
-    (*p_grid)[current.x_][current.y_] = 2; // Point opened
+    grid[current.x_][current.y_] = 2; // Point opened
     int current_cost = current.cost_;
     for(auto it = motion.begin(); it!=motion.end(); ++it){
       Node new_point;
       new_point = current + *it;
       if(new_point.x_ < 0 || new_point.y_ < 0
         || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
-      if((*p_grid)[new_point.x_][new_point.y_]==0 && cost_grid[new_point.x_][new_point.y_] > new_point.cost_){//=1 && (*p_grid)[new_point.x_][new_point.y_]!=2){
+      if(grid[new_point.x_][new_point.y_]==0 && cost_grid[new_point.x_][new_point.y_] > new_point.cost_){//=1 && grid[new_point.x_][new_point.y_]!=2){
         new_point.pid_ = current.id_;
         new_point.id_ = new_point.x_ * n + new_point.y_;
         point_list_.push(new_point);
@@ -70,9 +69,12 @@ std::vector<Node> Dijkstra::dijkstra(void *grid, int n, Node start_in, Node goal
 int main(){
   int n = 8;
   int num_points = n*n;
-  // int grid[n][n];
-  int grid[n][n];
 
+  std::vector<std::vector<int>> grid(n);
+  std::vector<int> tmp(n);
+  for (int i = 0; i < n; i++){
+    grid[i] = tmp;
+  }
   MakeGrid(grid, n);
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;

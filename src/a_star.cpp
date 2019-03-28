@@ -34,10 +34,9 @@ void InsertionSort(std::vector<Node>& v){
 * @param goal_in goal node
 * @return path vector of nodes
 */
-std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
+std::vector<Node> AStar::a_star(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid;
 
   // Get possible motions
   std::vector<Node> motion = GetMotion();
@@ -53,11 +52,11 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
     current.id_ = current.x_ * n + current.y_;
     if(current.x_ == goal_.x_ && current.y_ == goal_.y_){
       closed_list_.push_back(current);
-      (*p_grid)[current.x_][current.y_] = 2;
+      grid[current.x_][current.y_] = 2;
       return closed_list_;
     }
 
-    (*p_grid)[current.x_][current.y_] = 2; // Point opened
+    grid[current.x_][current.y_] = 2; // Point opened
 
     int current_cost = current.cost_;
     for(auto it = motion.begin(); it!=motion.end(); ++it){
@@ -72,7 +71,7 @@ std::vector<Node> AStar::a_star(void *grid, int n, Node start_in, Node goal_in){
         break;
       }
       if(new_point.x_ < 0 || new_point.y_ < 0 || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
-      if((*p_grid)[new_point.x_][new_point.y_]==1){
+      if(grid[new_point.x_][new_point.y_]==1){
         continue; //obstacle
       }
       std::vector<Node>::iterator it_v = find (open_list_.begin(), open_list_.end(), new_point);
@@ -103,7 +102,11 @@ int main(){
   int n = 8;
   int num_points = n*n;
 
-  int grid[n][n];
+  std::vector<std::vector<int>> grid(n);
+  std::vector<int> tmp(n);
+  for (int i = 0; i < n; i++){
+    grid[i] = tmp;
+  }
   MakeGrid(grid, n);
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;

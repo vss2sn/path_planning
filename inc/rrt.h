@@ -17,9 +17,9 @@ public:
   Node FindNearestPoint(Node& new_node, int n);
   bool CheckObstacle(Node& n_1, Node& n_2);
   Node GenerateRandomNode(int n);
-  std::vector<Node> rrt(void *grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity());
+  std::vector<Node> rrt(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity());
   bool CheckGoalVisible(Node new_node);
-  void CreateObstacleList(void *grid, int n);
+  void CreateObstacleList(std::vector<std::vector<int> > &grid, int n);
 
 private:
   std::vector<Node> point_list_;

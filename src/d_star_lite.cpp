@@ -77,11 +77,10 @@ std::vector<Node> DStarLite::GetPred(Node u){
   std::vector<Node> pred;
   for(auto it=motions.begin();it!=motions.end(); ++it){
     Node new_node = u + *it;
-    if(grid[new_node.x_][new_node.y_]==1) continue;
-    if(new_node.x_ < n && new_node.x_ >= 0 &&
-       new_node.y_ < n && new_node.y_ >= 0){
-         pred.push_back(new_node);
-    }
+    if(new_node.x_ >= n || new_node.x_ < 0 ||
+       new_node.y_ >= n || new_node.y_ < 0 ||
+       grid[new_node.x_][new_node.y_]==1) continue;
+     pred.push_back(new_node);
   }
   return pred;
 }
@@ -112,7 +111,6 @@ void DStarLite::InsertionSort(){
    int n = U_.size();
    int i, j;
    std::pair<Node,std::pair<double,double>> key;
-
    for (i = 1; i < n; i++) {
        key = U_[i];
        j = i-1;
@@ -132,7 +130,9 @@ void DStarLite::InsertionSort(){
 * @return cost of motion moving from first node to second
 */
 double DStarLite::C(Node s1, Node s2){
-  if(grid[s1.x_][s1.y_] != 1 && grid[s2.x_][s2.y_] != 1){
+  if(s1.x_ < n && s1.x_ >= 0 && s1.y_ < n && s1.y_ >= 0 &&
+     s2.x_ < n && s2.x_ >= 0 && s2.y_ < n && s2.y_ >= 0 &&
+     grid[s1.x_][s1.y_] != 1 && grid[s2.x_][s2.y_] != 1){
     // Node diff = s2-s1;
     // for(auto it = motions.begin(); it!=motions.end(); ++it){
     //   if(diff == *it){
@@ -156,13 +156,19 @@ void DStarLite::Init(){
   double n2 = n*n;
   large_num = std::make_pair(n2,n2);
   max_iter_ = n2*n;
+
   motions = GetMotion();
+
   km_=std::make_pair(0,0);
-  for(int i=0;i<n;i++){
-    for(int j=0;j<n;j++){
-      S_[i][j] = large_num;
-    }
+
+  std::vector<std::pair<double,double>> tmp(n);
+
+  std::fill(tmp.begin(), tmp.end(), large_num);
+  S_ = std::vector<std::vector<std::pair<double,double>>>(n) ;
+  for (int i = 0; i < n; i++){
+    S_[i] = tmp;
   }
+
   S_[goal_.x_][goal_.y_].second = 0;
   std::pair<Node, std::pair<double, double>> u_pair = std::make_pair(goal_, CalculateKey(goal_));
   U_.push_back(u_pair);
@@ -191,7 +197,8 @@ void DStarLite::UpdateVertex(Node& u){
     }
   }
   if(S_[u.x_][u.y_].first != S_[u.x_][u.y_].second){
-    U_.push_back(std::make_pair(u, CalculateKey(u)));
+    std::pair<double,double> key = CalculateKey(u);
+    U_.push_back(std::make_pair(u, key));
     InsertionSort();
   }
 }
@@ -256,18 +263,13 @@ int DStarLite::ComputeShortestPath(){
 * @param goal_in goal node
 * @return path vector of nodes
 */
-std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in, Node goal_in){
+std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in, int n_in, Node start_in, Node goal_in){
+  grid = grid_in;
   start_ = start_in;
   main_start_ = start_;
   goal_ = goal_in;
-  n = n_in;
-  int (*p_grid)[n][n] = (int (*)[n][n]) grid_in;
-  for(int i=0;i<n;i++){
-    for(int j=0;j<n;j++){
-      grid[i][j] = (*p_grid)[i][j];
-    }
-  }
   last_ = start_;
+  n = n_in;
   Init();
   int ans = ComputeShortestPath();
   if(ans < 0 || S_[start_.x_][start_.y_].first==large_num.first){
@@ -275,7 +277,6 @@ std::vector<Node> DStarLite::d_star_lite(void *grid_in, int n_in, Node start_in,
     Node no_path_node(-1,-1,-1,-1,-1);
     path_vector_.push_back(no_path_node);
   }
-
   else GeneratePathVector();
   return ReturnInvertedVector();
 }
@@ -366,9 +367,11 @@ void DStarLite::GeneratePathVector(){
   while(path_vector_[0]!=goal_){
     Node u = path_vector_[0];
     grid[u.x_][u.y_]=2;
+
     for(auto it=motions.begin();it!=motions.end(); ++it){
       Node new_node = u + *it;
-      if(grid[new_node.x_][new_node.y_]==1){
+      if(new_node.x_ >= n || new_node.x_ < 0 || new_node.y_ >= n || new_node.y_ < 0
+         || grid[new_node.x_][new_node.y_]==1){
         continue;
       }
       if(new_node.x_ < n && new_node.x_ >= 0 && new_node.y_ < n && new_node.y_ >= 0){
@@ -524,13 +527,15 @@ int main(){
   int n = 8;
   int num_points = n*n;
 
-  int main_grid[n][n];
-  int grid[n][n];
+  std::vector<std::vector<int>> grid(n);
+  std::vector<int> tmp(n);
+  for (int i = 0; i < n; i++){
+    grid[i] = tmp;
+  }
   MakeGrid(grid, n);
-  int grid_space = n*n*sizeof(int);
 
   Node start(1,1,0,0,0,0);
-  Node goal(1,1,0,0,0,0);
+  Node goal(n-1,n-1,0,0,0,0);
 
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -541,8 +546,8 @@ int main(){
   grid[goal.x_][goal.y_] = 0;
   PrintGrid(grid, n);
   std::vector<Node> path_vector;
-
   DStarLite new_d_star_lite;
+
   path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
   PrintPath(path_vector, start, goal, grid, n);
 
