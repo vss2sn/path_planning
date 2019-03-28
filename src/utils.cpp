@@ -156,9 +156,9 @@ void MakeGrid(std::vector<std::vector<int>> &grid, int n){
   }
 }
 
-/*
-* @brief Print grid
-* @param grid grid to print
+/**
+* @brief Prints the grid passed
+* @param grid Modify this grid
 * @param n number of rows/columns
 * @return void
 */
@@ -169,8 +169,6 @@ void PrintGrid(std::vector<std::vector<int>> &grid, int n){
   std::cout << "2. Obstacles             ---> 1" << std::endl;
   std::cout << "3. Points considered     ---> 2" << std::endl;
   std::cout << "4. Points in final path  ---> 3" << std::endl;
-
-
   for(int j=0;j<n;j++){
     std::cout << "---";
   }
@@ -181,7 +179,6 @@ void PrintGrid(std::vector<std::vector<int>> &grid, int n){
       else if(grid[i][j]==1) std::cout << RED << grid[i][j] << RESET << " , ";
       else if(grid[i][j]==2) std::cout << BLUE << grid[i][j] << RESET << " , ";
       else std::cout << grid[i][j] << " , ";
-
     }
     std::cout << std::endl << std::endl;
   }
@@ -189,12 +186,12 @@ void PrintGrid(std::vector<std::vector<int>> &grid, int n){
   std::cout << std::endl;
 }
 
-/*
-* @brief Prints path taken by bot. Not applicable for algorithms with real time replanning on the replanned runs
-* @param path_vector Node vector containing all points considered
-* @param start Start node
-* @param goal Goal node
-* @param grid Grid to modify to show path
+/**
+* @brief Prints the grid passed
+* @param path_vector the path vector
+* @param start start node
+* @param goal goal node
+* @param grid Modify this grid
 * @param n number of rows/columns
 * @return void
 */

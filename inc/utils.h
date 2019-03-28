@@ -31,8 +31,18 @@
 class Node{
 // Variables used here are constantly accessed and checked; leaving public for now.
 public:
-  int x_, y_, id_, pid_;
-  double cost_, h_cost_;
+    /** \brief x coordinate */
+  int x_;
+    /** \brief y coordinate */
+  int y_;
+  /** \brief Node id */
+  int id_;
+  /** \brief Node's parent's id */
+  int pid_;
+  /** \brief cost to reach this node */
+  double cost_;
+  /** \brief heuristic cost to reach the goal */
+  double h_cost_;
   Node(int x = 0, int y = 0, double cost = 0, double h_cost = 0, int id = 0, int pid = 0);
   void PrintStatus();
   Node operator+(Node p);
@@ -47,8 +57,8 @@ struct compare_cost{
 };
 
 std::vector<Node> GetMotion();
-void MakeGrid(std::vector<std::vector<int> > &grid, int n);
-void PrintGrid(std::vector<std::vector<int> > &grid, int n);
-void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, std::vector<std::vector<int> > &grid, int n);
-void PrintCost(std::vector<std::vector<int> > &grid, int n, std::vector<Node> point_list);
+void PrintGrid(std::vector<std::vector<int>> &grid, int n);
+void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, std::vector<std::vector<int>> &grid, int n);
+void PrintCost(std::vector<std::vector<int>> &grid, int n, std::vector<Node> point_list);
+void MakeGrid(std::vector<std::vector<int>> &grid, int n);
 #endif UTILS_H

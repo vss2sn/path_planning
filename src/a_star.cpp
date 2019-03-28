@@ -30,11 +30,11 @@ void InsertionSort(std::vector<Node>& v){
 * @brief Main algorithm of A*
 * @param grid Main grid
 * @param n number of rows/columns
-* @param start_in starting node
+* @param start_in start node
 * @param goal_in goal node
-* @return path vector of nodes
+* @return vector of path
 */
-std::vector<Node> AStar::a_star(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in){
+std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
 
