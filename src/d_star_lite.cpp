@@ -171,9 +171,7 @@ void DStarLite::Init(){
 
   S_[goal_.x_][goal_.y_].second = 0;
   std::pair<Node, std::pair<double, double>> u_pair = std::make_pair(goal_, CalculateKey(goal_));
-  std::cout << U_.size() << std::endl;
   U_.push_back(u_pair);
-  std::cout << U_.size() << std::endl;
   InsertionSort();
 }
 
