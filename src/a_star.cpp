@@ -40,15 +40,21 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, int n, Node
 
   // Get possible motions
   std::vector<Node> motion = GetMotion();
-  open_list_.push_back(start_);
+  open_list_.push(start_);
 
   // Main loop
   Node temp;
   while(!open_list_.empty()){
     //sorting; minor problem with inbuild sort for vector. To optimise.
-    InsertionSort(open_list_);
-    Node current = *(open_list_.begin());
-    open_list_.erase(open_list_.begin());
+     PrintGrid(grid, n);
+
+    //usleep(500000);
+    // InsertionSort(open_list_);
+    // Node current = *(open_list_.begin());
+    // open_list_.erase(open_list_.begin());
+    // current.PrintStatus();
+    Node current = open_list_.top();
+    open_list_.pop();
     current.id_ = current.x_ * n + current.y_;
     if(current.x_ == goal_.x_ && current.y_ == goal_.y_){
       closed_list_.push_back(current);
@@ -67,23 +73,23 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, int n, Node
       new_point.h_cost_ = abs(new_point.x_ - goal_.x_) + abs(new_point.y_ - goal_.y_);
 
       if(new_point == goal_){
-        open_list_.push_back(new_point);
+        open_list_.push(new_point);
         break;
       }
       if(new_point.x_ < 0 || new_point.y_ < 0 || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
       if(grid[new_point.x_][new_point.y_]==1){
         continue; //obstacle
       }
-      std::vector<Node>::iterator it_v = find (open_list_.begin(), open_list_.end(), new_point);
-      if(it_v!=open_list_.end() && ((new_point.cost_ + new_point.h_cost_) < (it_v->cost_ + it_v->h_cost_))){
-        *it_v = new_point;
-        continue;
-      }
-      it_v = find (closed_list_.begin(), closed_list_.end(), new_point);
+      // std::vector<Node>::iterator it_v = find (open_list_.begin(), open_list_.end(), new_point);
+      // if(it_v!=open_list_.end() && ((new_point.cost_ + new_point.h_cost_) < (it_v->cost_ + it_v->h_cost_))){
+      //   *it_v = new_point;
+      //   continue;
+      // }
+      auto it_v = find (closed_list_.begin(), closed_list_.end(), new_point);
       if(it_v!=closed_list_.end() && ((new_point.cost_ + new_point.h_cost_) > (it_v->cost_ + it_v->h_cost_))){
         continue;
       }
-      open_list_.push_back(new_point);
+      open_list_.push(new_point);
     }
     closed_list_.push_back(current);
   }
@@ -108,10 +114,16 @@ int main(){
     grid[i] = tmp;
   }
   MakeGrid(grid, n);
-  Node start(0,0,0,0,0,0);
+  std::random_device rd; // obtain a random number from hardware
+  std::mt19937 eng(rd()); // seed the generator
+  std::uniform_int_distribution<int> distr(0,n-1); // define the range
+
+  Node start(distr(eng),distr(eng),0,0,0,0);
+  Node goal(distr(eng),distr(eng),0,0,0,0);
+  start.PrintStatus();
+  goal.PrintStatus();
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
