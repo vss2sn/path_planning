@@ -29,7 +29,7 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 exclude_patterns = []
 highlight_language = 'c++'
 pygments_style = 'sphinx'
-todo_include_todos = False
+todo_include_todos = True
 # -- Project information -----------------------------------------------------
 
 project = u'Path Planning'
@@ -51,7 +51,7 @@ release = u''
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [ "breathe", "exhale", "m2r" ]
+extensions = [ "breathe", "exhale", "m2r", "sphinx.ext.todo", ]
 breathe_projects = {
     "Path Planning":"./xml/",
     }
@@ -128,7 +128,7 @@ html_theme_options = {
     'style_external_links': False,
     'style_nav_header_background': 'white',
     # Toc options
-    'collapse_navigation': True,
+    'collapse_navigation': False,
     'sticky_navigation': True,
     'navigation_depth': 4,
     'includehidden': True,

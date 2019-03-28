@@ -7,7 +7,7 @@
 #include "dijkstra.h"
 
 /**
- * Main algorithm of Dijstra.
+ * @brief Main algorithm of Dijstra.
  */
 std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in){
   start_ = start_in;
