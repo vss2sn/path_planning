@@ -10,16 +10,16 @@
 5. DStarLite (D* Lite) algorithm for grid based search.
 
 #### To build and run: ####
-| git clone https://github.com/vss2sn/path_planning.git
-| cd path_planning
-| mkdir build
-| cd build
-| cmake .. && make -j4
-| ./main
+git clone https://github.com/vss2sn/path_planning.git  
+cd path_planning  
+mkdir build  
+cd build  
+cmake .. && make -j4  
+./main  
 
 #### Table of contents ####
 - [Algorithms](#Algorithms:)
-- [Instructions](#Instructions to build and run:)
+- [Instructions](#To build and run:)
 - [Notes](#Notes:)
 - [Notes on tests](#Notes on tests:)
 - [Notes on implementations](#Notes on implementations:)
