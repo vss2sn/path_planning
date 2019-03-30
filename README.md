@@ -9,24 +9,6 @@
 4. RRTStar (RRT*) algorithm for grid based search.
 5. DStarLite (D* Lite) algorithm for grid based search.
 
-#### To build and run: ####
-git clone https://github.com/vss2sn/path_planning.git  
-cd path_planning  
-mkdir build  
-cd build  
-cmake .. && make -j4  
-./main  
-
-#### Table of contents ####
-- [Algorithms](#Algorithms:)
-- [Instructions](#To build and run:)
-- [Notes](#Notes:)
-- [Notes on tests](#Notes on tests:)
-- [Notes on implementations](#Notes on implementations:)
-- [Notes on CMake Options:](#Notes on CMake Options:)
-- [TODOs](#TODOs:)
-- [Consider](#Consider:)
-
 #### Notes: ####
 1. utils.cpp built as library and used in every separate file.
 2. Setting the CMake option BUILD_INDIVIDUAL allows building of each .cpp separately (except main.cpp), allowing easy testing. Setting it to OFF allows use of all base classes and algorithms in main.cpp.
