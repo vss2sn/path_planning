@@ -11,6 +11,7 @@
 
    about
    overview
+   algorithms
    api/library_root
 
 

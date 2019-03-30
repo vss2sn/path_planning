@@ -142,8 +142,6 @@ std::vector<Node> GetMotion(){
 * @return void
 */
 void MakeGrid(std::vector<std::vector<int>> &grid, int n){
-  //NOTE: Using a void pointer isnt the best option
-
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n); // define the range
@@ -163,7 +161,6 @@ void MakeGrid(std::vector<std::vector<int>> &grid, int n){
 * @return void
 */
 void PrintGrid(std::vector<std::vector<int>> &grid, int n){
-  //NOTE: Using a void pointer isnt the best option
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
   std::cout << "2. Obstacles             ---> 1" << std::endl;
@@ -196,8 +193,6 @@ void PrintGrid(std::vector<std::vector<int>> &grid, int n){
 * @return void
 */
 void PrintPath(std::vector<Node> path_vector, Node start, Node goal, std::vector<std::vector<int>> &grid, int n){
-  //NOTE: Using a void pointer isn't the best option
-
   if(path_vector[0].id_ == -1){
     std::cout << "No path exists" << std::endl;
     PrintGrid(grid, n);
@@ -232,8 +227,6 @@ void PrintPath(std::vector<Node> path_vector, Node start, Node goal, std::vector
 * @return void
 */
 void PrintCost(std::vector<std::vector<int>> &grid, int n, std::vector<Node> point_list){
-  //NOTE: Using a void pointer isnt the best option
-
   std::vector<Node>::iterator it_v;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
