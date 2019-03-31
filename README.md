@@ -12,12 +12,12 @@
 
 <a name="instructions"></a>
 #### To build and run: ####
-git clone https://github.com/vss2sn/path_planning.git  
-cd path_planning  
-mkdir build  
-cd build  
-cmake .. && make -j4  
-./main  
+     git clone https://github.com/vss2sn/path_planning.git  
+     cd path_planning  
+     mkdir build  
+     cd build  
+     cmake .. && make -j4  
+     ./main  
 
 <a name="toc"></a>
 #### Table of contents ####
@@ -36,7 +36,20 @@ cmake .. && make -j4
 1. utils.cpp built as library and used in every separate file.
 2. Setting the CMake option BUILD_INDIVIDUAL allows building of each .cpp separately (except main.cpp), allowing easy testing. Setting it to OFF allows use of all base classes and algorithms in main.cpp.
 3. D* Lite can be run live with random obstacle creation using the RunDStarLite function.
-4. To create documentation using Doxygen run `doxygen` in the docs folder. Config files added to generate documentation with the READTHEDOCs theme. To do so, make sure you have the extensions `breathe`, `exhale`, `m2r` and  `sphinx_rtd_theme` installed (using pip). Run `make html` in the docs folder after running `doxygen`.
+4. Create documentation using doxygen. Config files added to generate documentation with the READTHEDOCs theme. To do so, install doxygen based on http://www.doxygen.nl/index.html. Then:
+  ```  
+  cd path_planning/docs
+  doxygen
+  ```
+For sphinx & READTHEDOC documentation:
+  ```
+  sudo apt-get install python3-sphinx
+  pip install breathe
+  pip install exhale
+  pip install sphinx_rtd_theme
+  make html
+  ```
+Files generated in folder \_build/html
 
 <a name="notes_on_tests"></a>
 #### Notes on test: ####
