@@ -41,7 +41,7 @@
   cd path_planning/docs
   doxygen
   ```
-For sphinx & READTHEDOC documentation:
+For sphinx & Read The Docs style documentation:
   ```
   sudo apt-get install python3-sphinx
   pip install breathe
@@ -49,7 +49,8 @@ For sphinx & READTHEDOC documentation:
   pip install sphinx_rtd_theme
   make html
   ```
-Files generated in folder \_build/html
+
+Files generated in folder docs/\_build/html
 
 <a name="notes_on_tests"></a>
 #### Notes on test: ####
@@ -62,7 +63,7 @@ Files generated in folder \_build/html
 #### Notes on implementations: ####
 1. RRT stops as soon as goal is found. It is connects new points to the nearest point, not accounting for total cost to reach that point. In contrast RRT\* chooses to connect to a new node to the node that allows the new node to have the minimum cost. RRT\* also rewires the preexisting nodes to the new node if that path allows for a lower cost for the preexisting node.
 2. Acceptable motions can be modified in the GetMotion function in utils.cpp.
-3. A* and D* Lite use Manhattan distance (L1) as their heuristic (change to L2 if adding diagonal moves to the GetMotion function). D* also uses the same in its C function.
+3. A* and D* Lite use Manhattan distance (L1) as their heuristic (change to L2 if adding diagonal moves to the GetMotion function). D* Lite also uses the same in its C function.
 4. D* Lite implemented based on based on Sven Koenig's & Maxim Likhachev's paper.
 5. For the live run of D* Lite, obstacles are detected on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid.
 6. To specify your own grid, set n to number of rows, created the 2D vector, setting 1 for obstacles and 0 elsewhere, and comment out the MakeGrid function.
