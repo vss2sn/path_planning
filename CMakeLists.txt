@@ -25,15 +25,15 @@ file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )
 
 # Building utils.cpp as  a library as common to multiple files
 add_library( utils SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp ${LIB_HEADERS} )
+
 list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp )
+list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
 
 # If building each file with it's own output, set to ON
 # If buiding single file (main.cpp) to test any/all protocols, set to OFF
-
-list(REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
-
 option( BUILD_INDIVIDUAL "BUILD_INDIVIDUAL" OFF)
-option( TEST "TEST" ON)
+
+option( TEST "TEST" OFF)
 
 if(BUILD_INDIVIDUAL)
 
@@ -71,8 +71,7 @@ else (BUILD_INDIVIDUAL)
     add_custom_command(
      TARGET main # Ensures tests run only after main
      POST_BUILD
-     COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> -R "^${UNIT_TEST}$" --output-on-failures
-    )
+     COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> -R "^${UNIT_TEST}$" --output-on-failures)
   endif (TEST)
 
 endif (BUILD_INDIVIDUAL)
