@@ -7,7 +7,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "main.h"
+#include "main.hpp"
 
 #define BLACK "\x1b[1;30m"
 #define RED "\x1b[1;31m"

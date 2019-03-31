@@ -7,7 +7,7 @@
 #ifndef RRT_H
 #define RRT_H
 
-#include "utils.h"
+#include "utils.hpp"
 
 /**
 * @brief Class for RRT objects

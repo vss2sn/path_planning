@@ -4,11 +4,11 @@
 * @brief Main file where all the algorithms can be used and tested.
 */
 
-#include "dijkstra.h"
-#include "a_star.h"
-#include "rrt.h"
-#include "rrt_star.h"
-#include "d_star_lite.h"
+#include "dijkstra.hpp"
+#include "a_star.hpp"
+#include "rrt.hpp"
+#include "rrt_star.hpp"
+#include "d_star_lite.hpp"
 
 /**
 * @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm objects and calls the main algorithm functions.

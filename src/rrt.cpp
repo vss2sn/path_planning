@@ -4,7 +4,7 @@
 * @brief Contains the RRT class
 */
 
-#include "rrt.h"
+#include "rrt.hpp"
 
 /**
 * @brief Find the nearest node that has been seen by the algorithm. This does not consider cost to reach the node.

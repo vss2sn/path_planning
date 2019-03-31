@@ -4,7 +4,7 @@
 * @brief Contains the DStarLite class
 */
 
-#include "d_star_lite.h"
+#include "d_star_lite.hpp"
 
 /**
 * @brief Using insertion sort to sort the vector list.

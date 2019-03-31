@@ -4,7 +4,7 @@
 * @brief Contains the Dijkstra class
 */
 
-#include "dijkstra.h"
+#include "dijkstra.hpp"
 
 /**
  * @brief Main algorithm of Dijstra.

@@ -1,7 +1,7 @@
 /**
 * @file main.h
 * @author vss2sn
-* @brief Just includes includes
+* @brief Just includes includes. Needs to be refactored.
 */
 
 #include <iostream>

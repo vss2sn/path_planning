@@ -7,7 +7,7 @@
 #ifndef D_STAR_LITE_H
 #define D_STAR_LITE_H
 
-#include "utils.h"
+#include "utils.hpp"
 
 /**
 * @brief Class for D Star Lite objects

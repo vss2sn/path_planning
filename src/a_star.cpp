@@ -4,7 +4,7 @@
 * @brief Contains the AStar class
 */
 
-#include "a_star.h"
+#include "a_star.hpp"
 using namespace std::chrono;
 
 /**

@@ -7,7 +7,7 @@
 #ifndef A_STAR_H
 #define A_STAR_H
 
-#include "utils.h"
+#include "utils.hpp"
 
 /**
 * @brief Class for A Star objects

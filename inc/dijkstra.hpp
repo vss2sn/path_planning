@@ -7,7 +7,7 @@
 #ifndef DIJKSTRA_H
 #define DIJKSTRA_H
 
-#include "utils.h"
+#include "utils.hpp"
 
 /**
 * @brief Class for Dijkstra objects

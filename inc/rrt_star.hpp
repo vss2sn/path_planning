@@ -7,7 +7,7 @@
 #ifndef RRT_STAR_H
 #define RRT_STAR_H
 
-#include "utils.h"
+#include "utils.hpp"
 
 /**
 * @brief Class for RRT Star objects

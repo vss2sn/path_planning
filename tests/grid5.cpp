@@ -1,8 +1,8 @@
-#include "dijkstra.h"
-#include "a_star.h"
-#include "rrt.h"
-#include "rrt_star.h"
-#include "d_star_lite.h"
+#include "dijkstra.hpp"
+#include "a_star.hpp"
+#include "rrt.hpp"
+#include "rrt_star.hpp"
+#include "d_star_lite.hpp"
 #include <gtest/gtest.h>
 
 double run_test(std::vector<std::vector<int> > &grid, int n, std::string algo){

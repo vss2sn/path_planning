@@ -4,7 +4,7 @@
 * @brief Contains the RRT_Star class
 */
 
-#include "rrt_star.h"
+#include "rrt_star.hpp"
 
 /**
 * @brief Find the nearest Node that has been seen by the algorithm. This does not consider cost to reach the node.
