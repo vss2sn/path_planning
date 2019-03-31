@@ -20,7 +20,7 @@ set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -std=c++11 -pthread" )
 include_directories( ${CMAKE_SOURCE_DIR}/inc )
 
 file( GLOB LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp )
-file( GLOB LIB_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.h )
+file( GLOB LIB_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.hpp )
 file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )
 
 # Building utils.cpp as  a library as common to multiple files
