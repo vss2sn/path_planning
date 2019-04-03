@@ -88,10 +88,6 @@
 <li class="toctree-l2"><a class="reference internal" href="api/library_root.html#class-hierarchy">Class Hierarchy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/library_root.html#file-hierarchy">File Hierarchy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/library_root.html#full-api">Full API</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/library_root.html#namespaces">Namespaces</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/namespace_std__chrono.html">Namespace std::chrono</a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="api/library_root.html#classes-and-structs">Classes and Structs</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="api/structcompare__cost.html">Struct compare_cost</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classAStar.html">Class AStar</a></li>
@@ -115,7 +111,6 @@
 <li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a261d8d8f776af001a11d472ac44b4df0.html">Function PrintGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/function_utils_8cpp_1a06d11b8315f4ee5b8318fec5f02370bc.html">Function PrintPath(std::vector&lt;Node&gt;, Node, Node, std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1aa8bbe39cb49a6cd488339368ebf69944.html">Function PrintPath(std::vector&lt;Node&gt;, Node, Node, std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/function_d__star__lite_8cpp_1a743d5eba3f1b8dc29e4516a5a99515bf.html">Function VectorInsertionSort</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/library_root.html#defines">Defines</a><ul>
@@ -267,30 +262,22 @@ cmake .. &amp;&amp; make -j4
 <div class="section" id="id3">
 <h3>Notes:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
-<li>utils.cpp built as library and used in every separate file.</li>
-<li>Setting the CMake option BUILD_INDIVIDUAL allows building of each .cpp separately (except main.cpp), allowing easy testing. Setting it to OFF allows use of all base classes and algorithms in main.cpp.</li>
+<li>Main creates a grid of a given size n, with any point set as an obstacle with a probability of 1/n. It then runs all the algorithms in the repository on the given grid.</li>
+<li>Setting the CMake option <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> to <code class="docutils literal notranslate"><span class="pre">ON</span></code> allows building of each .cpp separately (except main.cpp), facilitating easy testing. Setting <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> to <code class="docutils literal notranslate"><span class="pre">OFF</span></code> allows use of all base classes and algorithms in main.cpp.</li>
 <li>D* Lite can be run live with random obstacle creation using the RunDStarLite function.</li>
-<li>Documentation can be created using doxygen; config files added to generate documentation with the READTHEDOCs theme for sphinx as well. To do so, install doxygen based on <a class="reference external" href="http://www.doxygen.nl/index.html">http://www.doxygen.nl/index.html</a>. Then:</li>
+<li>utils.cpp built as library and used in every separate file.</li>
+<li><a class="reference external" href="https://vss2sn.github.io/path_planning/">Documentation</a> moved to GitHub pages. It has been created using <a class="reference external" href="http://www.doxygen.nl/">Doxygen</a>, and pip3 packages <a class="reference external" href="http://www.sphinx-doc.org/en/master/">Sphinx</a> (sphinx==1.8.3), <a class="reference external" href="https://github.com/michaeljones/breathe">Breathe</a> (breathe==4.12.0), <a class="reference external" href="https://github.com/svenevs/exhale">Exhale</a> (exhale==0.2.2) and <a class="reference external" href="https://github.com/rtfd/sphinx_rtd_theme">Read the Docs Sphinx Theme</a> (sphinx_rtd_theme==0.4.3).</li>
 </ol>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>cd path_planning/docssrc
-doxygen
-pip install sphinx==1.8.3
-pip install breathe
-pip install exhale
-pip install sphinx_rtd_theme
-make html
-</pre></div>
-</div>
-<p>Files generated in folder docs/_build/html.</p>
 <p><span class="raw-html-m2r"><a name="notes_on_tests"></a></span></p>
 </div>
 <div class="section" id="notes-on-test">
 <h3>Notes on test:<a class="headerlink" href="#notes-on-test" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li>Unit test framework set up to set algorithms under different grids. This section uses Google Test.</li>
-<li>CMake option TEST allows building tests when set when BUILD_INDIVIDUAL is set OFF.</li>
+<li>CMake option TEST allows building tests when set when <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> is set <code class="docutils literal notranslate"><span class="pre">OFF</span></code>.</li>
 <li>Tests set to run after main file built.</li>
 <li>Files named grid#.cpp are specific grids to check for correctness under certain conditions. gridr.cpp generates a random grid and checks whether Dijkstra, A* and D* Lite (without new obstacles) generate the same cost from start to end.</li>
+<li>Given the random nature of RRT, no set has been set up for it yet.</li>
 </ol>
 <p><span class="raw-html-m2r"><a name="notes_on_implementations"></a></span></p>
 </div>
@@ -309,8 +296,8 @@ make html
 <div class="section" id="id5">
 <h3>Notes on CMake Options:<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
-<li>To run each algorithm independently, set BUILD_INDIVIDUAL to ON (Executables created: <code class="docutils literal notranslate"><span class="pre">dijkstra</span></code>, <code class="docutils literal notranslate"><span class="pre">a_star</span></code>, etc). If you want to run all of them on the same grid, set it to OFF (Executable created: <code class="docutils literal notranslate"><span class="pre">main</span></code>).</li>
-<li>To run tests, set BUILD_INDIVIDUAL to OFF and TEST to ON.</li>
+<li>To run each algorithm independently, set <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> to <code class="docutils literal notranslate"><span class="pre">ON</span></code> (Executables created: <code class="docutils literal notranslate"><span class="pre">dijkstra</span></code>, <code class="docutils literal notranslate"><span class="pre">a_star</span></code>, etc). If you want to run all of them on the same grid, set <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> to <code class="docutils literal notranslate"><span class="pre">OFF</span></code> (Executable created: <code class="docutils literal notranslate"><span class="pre">main</span></code>).</li>
+<li>To run tests, set <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> to <code class="docutils literal notranslate"><span class="pre">OFF</span></code> and TEST to <code class="docutils literal notranslate"><span class="pre">ON</span></code>.</li>
 </ol>
 <p><span class="raw-html-m2r"><a name="todos"></a></span></p>
 </div>
@@ -323,6 +310,7 @@ make html
 <li>Cleanup and refactor test section.</li>
 <li>Use hash to check if node in list for D* Lite (can be applied to others if required)</li>
 <li>Add overview, pseudo codes and references to documentation.</li>
+<li>Add test of probabilistic completeness for RRT.</li>
 </ol>
 <p><span class="raw-html-m2r"><a name="consider"></a></span></p>
 </div>

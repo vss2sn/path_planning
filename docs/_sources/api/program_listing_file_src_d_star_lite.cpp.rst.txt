@@ -13,7 +13,7 @@ Program Listing for File d_star_lite.cpp
    
    #include "d_star_lite.hpp"
    
-   void VectorInsertionSort(std::vector<Node>& v){
+   void DStarLite::VectorInsertionSort(std::vector<Node>& v){
       int n = v.size();
       int i, j;
       Node key;
@@ -408,7 +408,6 @@ Program Listing for File d_star_lite.cpp
    
    int main(){
      int n = 8;
-     int num_points = n*n;
    
      std::vector<std::vector<int>> grid(n);
      std::vector<int> tmp(n);

@@ -145,20 +145,26 @@ Program Listing for File rrt.cpp
    #ifdef BUILD_INDIVIDUAL
    
    int main(){
-     int n = 8;
-     int num_points = n*n;
+     int n = 11;
+   
      std::vector<std::vector<int>> grid(n);
      std::vector<int> tmp(n);
      for (int i = 0; i < n; i++){
        grid[i] = tmp;
      }
      MakeGrid(grid, n);
-     //Make sure start and goal are not obstacles and their ids are correctly assigned.
-     Node start(0,0,0,0,0,0);
+     std::random_device rd; // obtain a random number from hardware
+     std::mt19937 eng(rd()); // seed the generator
+     std::uniform_int_distribution<int> distr(0,n-1); // define the range
+   
+     Node start(distr(eng),distr(eng),0,0,0,0);
+     Node goal(distr(eng),distr(eng),0,0,0,0);
+   
      start.id_ = start.x_ * n + start.y_;
-     start.pid_ = start.id_;
-     Node goal(n-1,n-1,0,0,0,0);
+     start.pid_ = start.x_ * n + start.y_;
      goal.id_ = goal.x_ * n + goal.y_;
+     start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
+     //Make sure start and goal are not obstacles and their ids are correctly assigned.
      grid[start.x_][start.y_] = 0;
      grid[goal.x_][goal.y_] = 0;
      PrintGrid(grid, n);

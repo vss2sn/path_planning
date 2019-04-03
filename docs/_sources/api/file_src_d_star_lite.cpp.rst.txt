@@ -48,10 +48,3 @@ Includes
 
 
 
-
-Functions
----------
-
-
-- :ref:`exhale_function_d__star__lite_8cpp_1a743d5eba3f1b8dc29e4516a5a99515bf`
-

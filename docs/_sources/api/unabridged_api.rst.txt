@@ -3,15 +3,6 @@ Full API
 --------
 
 
-Namespaces
-**********
-
-
-.. toctree::
-   :maxdepth: 5
-
-   namespace_std__chrono.rst
-
 Classes and Structs
 *******************
 
@@ -114,11 +105,6 @@ Functions
    :maxdepth: 5
 
    function_utils_8hpp_1aa8bbe39cb49a6cd488339368ebf69944.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_d__star__lite_8cpp_1a743d5eba3f1b8dc29e4516a5a99515bf.rst
 
 Defines
 *******
