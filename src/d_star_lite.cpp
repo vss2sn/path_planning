@@ -11,7 +11,7 @@
 * @param v The vector to be sorted
 * @return void
 */
-void VectorInsertionSort(std::vector<Node>& v){
+void DStarLite::VectorInsertionSort(std::vector<Node>& v){
    int n = v.size();
    int i, j;
    Node key;
@@ -508,7 +508,6 @@ void DStarLite::RunDStarLite(bool disp_inc_in){
 */
 int main(){
   int n = 8;
-  int num_points = n*n;
 
   std::vector<std::vector<int>> grid(n);
   std::vector<int> tmp(n);

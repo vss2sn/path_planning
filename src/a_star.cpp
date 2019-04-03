@@ -5,7 +5,6 @@
 */
 
 #include "a_star.hpp"
-using namespace std::chrono;
 
 /**
 * @brief Using insertion sort to sort the vector list that maintains the priority queue. Good for a mostly sorted queue. Sort called afterevery insertion to maintain queue. Not using standard queue as iterating over is not allowed.
@@ -87,7 +86,6 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, int n, Node
 */
 int main(){
   int n = 11;
-  int num_points = n*n;
 
   std::vector<std::vector<int>> grid(n);
   std::vector<int> tmp(n);
@@ -99,12 +97,9 @@ int main(){
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
 
-  // Node start(distr(eng),distr(eng),0,0,0,0);
-  // Node goal(distr(eng),distr(eng),0,0,0,0);
-  Node start(0,0,0,0,0,0);
-  Node goal(n-1,n-1,0,0,0,0);
-  start.PrintStatus();
-  goal.PrintStatus();
+  Node start(distr(eng),distr(eng),0,0,0,0);
+  Node goal(distr(eng),distr(eng),0,0,0,0);
+
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
   goal.id_ = goal.x_ * n + goal.y_;
@@ -114,12 +109,8 @@ int main(){
   grid[goal.x_][goal.y_] = 0;
   PrintGrid(grid, n);
 
-  auto start_time = high_resolution_clock::now();
   AStar new_a_star;
   std::vector<Node> path_vector = new_a_star.a_star(grid, n, start, goal);
-  auto stop_time = high_resolution_clock::now();
-  auto duration = duration_cast<microseconds>(stop_time - start_time);
-  std::cout << duration.count() << std::endl;
 
   PrintPath(path_vector, start, goal, grid, n);
   return 0;

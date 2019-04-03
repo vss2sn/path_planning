@@ -14,6 +14,7 @@
 */
 class DStarLite{
 public:
+  void VectorInsertionSort(std::vector<Node>& v);
   double GetHeuristic(Node s1, Node s2);
   void MyPrint();
   std::pair<double,double> CalculateKey(const Node& s);
