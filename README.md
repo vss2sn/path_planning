@@ -33,7 +33,7 @@
 
 <a name="notes"></a>
 #### Notes: ####
-1. Main creates a grid of a given size n, with any point set as an obstacle with a probability of 1/n. It then runs all the algorithms in the repository on the given grid.
+1. `main` creates a grid of a given size n, with any point set as an obstacle with a probability of 1/n. It then runs all the algorithms in the repository on the given grid.
 2. Setting the CMake option `BUILD_INDIVIDUAL` to `ON` allows building of each .cpp separately (except main.cpp), facilitating easy testing. Setting `BUILD_INDIVIDUAL` to `OFF` allows use of all base classes and algorithms in main.cpp.
 3. D* Lite can be run live with random obstacle creation using the RunDStarLite function.
 4. utils.cpp built as library and used in every separate file.
