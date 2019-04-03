@@ -1,0 +1,581 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Class DStarLite &mdash; Path Planning  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+        <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class Node" href="classNode.html" />
+    <link rel="prev" title="Class Dijkstra" href="classDijkstra.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Path Planning
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="namespace_std__chrono.html">Namespace std::chrono</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structcompare__cost.html">Struct compare_cost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAStar.html">Class AStar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDijkstra.html">Class Dijkstra</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class DStarLite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classNode.html">Class Node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRRT.html">Class RRT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRRTStar.html">Class RRTStar</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_a__star_8cpp_1aa6ad1863ece771ae1001edfea26fd435.html">Function InsertionSort</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_main_8cpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.html">Function main</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a7c85b008da7c5aa00f778645108cbe47.html">Function MakeGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a7c85b008da7c5aa00f778645108cbe47.html">Function MakeGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1ac48d8b8a2e1171930046a91e34411291.html">Function PrintCost(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int, std::vector&lt;Node&gt;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1ac48d8b8a2e1171930046a91e34411291.html">Function PrintCost(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int, std::vector&lt;Node&gt;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a261d8d8f776af001a11d472ac44b4df0.html">Function PrintGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a261d8d8f776af001a11d472ac44b4df0.html">Function PrintGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1aa8bbe39cb49a6cd488339368ebf69944.html">Function PrintPath(std::vector&lt;Node&gt;, Node, Node, std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a06d11b8315f4ee5b8318fec5f02370bc.html">Function PrintPath(std::vector&lt;Node&gt;, Node, Node, std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_d__star__lite_8cpp_1a743d5eba3f1b8dc29e4516a5a99515bf.html">Function VectorInsertionSort</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#defines">Defines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a7b3b25cba33b07c303f3060fe41887f6.html">Define BLACK</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a79d10e672abb49ad63eeaa8aaef57c38.html">Define BLUE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ad243f93c16bc4c1d3e0a13b84421d760.html">Define CYAN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1acfbc006ea433ad708fdee3e82996e721.html">Define GREEN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a6f699060902f800f12aaae150f3a708e.html">Define MAGENTA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a8d23feea868a983c8c2b661e1e16972f.html">Define RED</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ab702106cf3b3e96750b6845ded4e0299.html">Define RESET</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a87b537f5fa5c109d3c05c13d6b18f382.html">Define WHITE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1abf681265909adf3d3e8116c93c0ba179.html">Define YELLOW</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#directories">Directories</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dir_inc.html">Directory inc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dir_src.html">Directory src</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#files">Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="file_src_a_star.cpp.html">File a_star.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_a_star.hpp.html">File a_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_d_star_lite.cpp.html">File d_star_lite.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_d_star_lite.hpp.html">File d_star_lite.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_dijkstra.cpp.html">File dijkstra.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_dijkstra.hpp.html">File dijkstra.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_main.cpp.html">File main.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_main.hpp.html">File main.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_README.md.html">File README.md</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_rrt.cpp.html">File rrt.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_rrt.hpp.html">File rrt.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_rrt_star.cpp.html">File rrt_star.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_rrt_star.hpp.html">File rrt_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_utils.cpp.html">File utils.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_utils.hpp.html">File utils.hpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Path Planning</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="library_root.html">Library API</a> &raquo;</li>
+        
+      <li>Class DStarLite</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/classDStarLite.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="class-dstarlite">
+<span id="exhale-class-classdstarlite"></span><h1>Class DStarLite<a class="headerlink" href="#class-dstarlite" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Defined in <a class="reference internal" href="file_inc_d_star_lite.hpp.html#file-inc-d-star-lite-hpp"><span class="std std-ref">File d_star_lite.hpp</span></a></li>
+</ul>
+<div class="section" id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="_CPPv39DStarLite">
+<span id="_CPPv29DStarLite"></span><span id="DStarLite"></span><span class="target" id="classDStarLite"></span><em class="property">class </em><code class="descname">DStarLite</code><a class="headerlink" href="#_CPPv39DStarLite" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Class for D Star Lite objects. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N9DStarLite12GetHeuristicE4Node4Node">
+<span id="_CPPv2N9DStarLite12GetHeuristicE4Node4Node"></span><span id="DStarLite::GetHeuristic__Node.Node"></span><span class="target" id="classDStarLite_1a4fec4bcc78dd1376350346b06ada0291"></span>double <code class="descname">GetHeuristic</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>s1</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>s2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite12GetHeuristicE4Node4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Calculate and return the heuristic distance between 2 nodes. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>Heuritic distance between the 2 nodes </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">s1</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> 1 </li>
+<li><code class="docutils literal notranslate"><span class="pre">s2</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> 2 </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite7MyPrintEv">
+<span id="_CPPv2N9DStarLite7MyPrintEv"></span><span id="DStarLite::MyPrint"></span><span class="target" id="classDStarLite_1ae394837473fce31d1a939b4359457084"></span>void <code class="descname">MyPrint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite7MyPrintEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Displays the G and RHS values for the entire grid. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite12CalculateKeyERK4Node">
+<span id="_CPPv2N9DStarLite12CalculateKeyERK4Node"></span><span id="DStarLite::CalculateKey__NodeCR"></span><span class="target" id="classDStarLite_1aea74d8a9c677c103910428543efcdd8b"></span>std::pair&lt;double, double&gt; <code class="descname">CalculateKey</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite12CalculateKeyERK4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the key (pair) values for a given node. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>Key for given input node </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">s</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> whose key values are to be calcualted </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite7GetPredE4Node">
+<span id="_CPPv2N9DStarLite7GetPredE4Node"></span><span id="DStarLite::GetPred__Node"></span><span class="target" id="classDStarLite_1a988a8c4919b45e17cba49d58b5794fcc"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">GetPred</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite7GetPredE4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the possible predecessors of a given node, based on allowed motion primatives. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>Vector of nodes that are possible predecessors to input node </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">u</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite7GetSuccE4Node">
+<span id="_CPPv2N9DStarLite7GetSuccE4Node"></span><span id="DStarLite::GetSucc__Node"></span><span class="target" id="classDStarLite_1ae1949de962f551b62d20cc95be7a754e"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">GetSucc</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite7GetSuccE4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the possible successors of a given node, based on allowed motion primatives. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>Vector of nodes that are possible successors to input node </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">u</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite13InsertionSortEv">
+<span id="_CPPv2N9DStarLite13InsertionSortEv"></span><span id="DStarLite::InsertionSort"></span><span class="target" id="classDStarLite_1a9d5526116938056fd176f557c01b493d"></span>void <code class="descname">InsertionSort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite13InsertionSortEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Using insertion sort to sort the vector list that maintains the priority queue. Good for a mostly sorted queue. Sort called after every insertion to maintain queue. Not using standard queue as iterating over is not allowed. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite1CE4Node4Node">
+<span id="_CPPv2N9DStarLite1CE4Node4Node"></span><span id="DStarLite::C__Node.Node"></span><span class="target" id="classDStarLite_1a7d8958967bd187985368db95825727e2"></span>double <code class="descname">C</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>s1</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>s2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite1CE4Node4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the cost of motion moving from one node to another, based on allowed motion primatives. Currently set to 1 for speed up given only 4 motions permitted, at constant cost. Change as required, based on permitted motions. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>cost of motion moving from first node to second </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">s1</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> </li>
+<li><code class="docutils literal notranslate"><span class="pre">s2</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite4InitEv">
+<span id="_CPPv2N9DStarLite4InitEv"></span><span id="DStarLite::Init"></span><span class="target" id="classDStarLite_1ab41a1e2f39d0b031509314db455ec29c"></span>void <code class="descname">Init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite4InitEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialisation function of D*. Initialises G and RHS values for all nodes, store motion allowable primatives, km value and the first value of the priority queue. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite12UpdateVertexER4Node">
+<span id="_CPPv2N9DStarLite12UpdateVertexER4Node"></span><span id="DStarLite::UpdateVertex__NodeR"></span><span class="target" id="classDStarLite_1aa67d2ea06ea4627ebafc9a2af21e2282"></span>void <code class="descname">UpdateVertex</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite12UpdateVertexER4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Update vertex procedure as per D* Lite algorithm, Figure 3. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">u</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> on which UpdateVertex has to be called </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite19ComputeShortestPathEv">
+<span id="_CPPv2N9DStarLite19ComputeShortestPathEv"></span><span id="DStarLite::ComputeShortestPath"></span><span class="target" id="classDStarLite_1adeba67c2b2b7c1fcbabcbdf212ef4eb9"></span>int <code class="descname">ComputeShortestPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite19ComputeShortestPathEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>ComputeShortestPath procedure as per D* Lite algorithm, Figure 3. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite11d_star_liteERNSt6vectorINSt6vectorIiEEEEi4Node4Node">
+<span id="_CPPv2N9DStarLite11d_star_liteERNSt6vectorINSt6vectorIiEEEEi4Node4Node"></span><span id="DStarLite::d_star_lite__std::vector:std::vector:i::R.i.Node.Node"></span><span class="target" id="classDStarLite_1a7d592f763d8a0f6ba5f199313dcdfd80"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">d_star_lite</code><span class="sig-paren">(</span>std::vector&lt;std::vector&lt;int&gt;&gt; &amp;<em>grid_in</em>, int <em>n_in</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>start_in</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>goal_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite11d_star_liteERNSt6vectorINSt6vectorIiEEEEi4Node4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Main algorithm of D* Lite. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>path vector of nodes </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">grid_in</span></code>: Main grid </li>
+<li><code class="docutils literal notranslate"><span class="pre">n_in</span></code>: number of rows/columns </li>
+<li><code class="docutils literal notranslate"><span class="pre">start_in</span></code>: starting node </li>
+<li><code class="docutils literal notranslate"><span class="pre">goal_in</span></code>: goal node </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite6ReplanE4Node">
+<span id="_CPPv2N9DStarLite6ReplanE4Node"></span><span id="DStarLite::Replan__Node"></span><span class="target" id="classDStarLite_1ae9fa7002e8c0eea929cc669772428ce2"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">Replan</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite6ReplanE4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Replan route, called whenever a previously unknown obstacle is detected. Equivalent of the effects of the code after an edge change is detectedd in the while loop within the main procedure of D* Lite. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>path vector of nodes </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">u</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> at which the change was detected </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite6SetObsE4Node">
+<span id="_CPPv2N9DStarLite6SetObsE4Node"></span><span id="DStarLite::SetObs__Node"></span><span class="target" id="classDStarLite_1a76c9f34ce285ec2897361132806932f3"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">SetObs</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite6SetObsE4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create an obstacle on input node. Does not allow start or goal to be declared an obstacle. Prints out the obstacle if created and displays the grid. Calls Replan function. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>path vector of nodes </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">u</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> at which obstacle is to be created </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite18GeneratePathVectorEv">
+<span id="_CPPv2N9DStarLite18GeneratePathVectorEv"></span><span id="DStarLite::GeneratePathVector"></span><span class="target" id="classDStarLite_1a64843ed13f935a78b314b54a938646d4"></span>void <code class="descname">GeneratePathVector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite18GeneratePathVectorEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate the path vector and set the appropriate grid values. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite11UpdateStartE4Node">
+<span id="_CPPv2N9DStarLite11UpdateStartE4Node"></span><span id="DStarLite::UpdateStart__Node"></span><span class="target" id="classDStarLite_1acd3d8344f73a138b4a686d6c0a207e5d"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">UpdateStart</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>start_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite11UpdateStartE4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Update the starting point of the algorithm. Created to be independant, used by RunDStarLite function to update the position of the bot. If using independantly, uncomment the commented section within the function. Letting it return path_vector_ as that is required for independent run. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>Path vector of nodes. Can be made to void, but left as path vector to allow independent call. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">start_in</span></code>: new starting position </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite20ReturnInvertedVectorEv">
+<span id="_CPPv2N9DStarLite20ReturnInvertedVectorEv"></span><span id="DStarLite::ReturnInvertedVector"></span><span class="target" id="classDStarLite_1a56d33dbdab43926b8584d56ac087d891"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">ReturnInvertedVector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite20ReturnInvertedVectorEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>As D* Lite moves from goal to start, inverts the path vector taht has been generated as well as the cost, ensuring that cost to start is 0. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>path vector of nodes </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite10CompareKeyERNSt4pairIddEER4Node">
+<span id="_CPPv2N9DStarLite10CompareKeyERNSt4pairIddEER4Node"></span><span id="DStarLite::CompareKey__std::pair:double.double:R.NodeR"></span><span class="target" id="classDStarLite_1aa13a06d3edd09f8979d8d025a779da28"></span>bool <code class="descname">CompareKey</code><span class="sig-paren">(</span>std::pair&lt;double, double&gt; &amp;<em>pair_in</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite10CompareKeyERNSt4pairIddEER4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compare keys function for D* Lite. Compares the key given as input with the key values of the node given as input. Calls CalculateKey on the node. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>bool value based on comparison of key values </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">pair_in</span></code>: Key pair </li>
+<li><code class="docutils literal notranslate"><span class="pre">u</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> whose key values will be calculated and compared to above key pair </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite12RunDStarLiteEb">
+<span id="_CPPv2N9DStarLite12RunDStarLiteEb"></span><span id="DStarLite::RunDStarLite__b"></span><span class="target" id="classDStarLite_1ad5c33819c72a53c905eb85da407e73e5"></span>void <code class="descname">RunDStarLite</code><span class="sig-paren">(</span>bool <em>disp_inc_in</em> = true<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite12RunDStarLiteEb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function to run D* Lite live, showing the movement of the bot with time. Timeout after each movement set in .h file. Next point in path might beset to obstacle with probability 1/n. Calls UpdateStart and SetObs. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">disp_inc_in</span></code>: Bool value to allow display incremental progress </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite9NextPointEv">
+<span id="_CPPv2N9DStarLite9NextPointEv"></span><span id="DStarLite::NextPoint"></span><span class="target" id="classDStarLite_1a68910e68c70fff813db290e8e233b118"></span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <code class="descname">NextPoint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite9NextPointEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Find and return the next point in the path_vector. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>next point node </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DStarLite11DisplayGridEv">
+<span id="_CPPv2N9DStarLite11DisplayGridEv"></span><span id="DStarLite::DisplayGrid"></span><span class="target" id="classDStarLite_1ad4e3133ab33b15b31fc9dbbca11741d6"></span>void <code class="descname">DisplayGrid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DStarLite11DisplayGridEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Displays the grid stored by the D* Lite object. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="classNode.html" class="btn btn-neutral float-right" title="Class Node" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="classDijkstra.html" class="btn btn-neutral float-left" title="Class Dijkstra" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, vss2sn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

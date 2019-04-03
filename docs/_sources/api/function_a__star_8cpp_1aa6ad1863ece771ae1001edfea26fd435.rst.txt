@@ -1,0 +1,13 @@
+.. _exhale_function_a__star_8cpp_1aa6ad1863ece771ae1001edfea26fd435:
+
+Function InsertionSort
+======================
+
+- Defined in :ref:`file_src_a_star.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: InsertionSort(std::vector<Node>&)

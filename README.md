@@ -43,14 +43,14 @@
   ```
 For sphinx & Read The Docs style documentation:
   ```
-  sudo apt-get install python3-sphinx
+  pip install sphinx==1.8.3
   pip install breathe
   pip install exhale
   pip install sphinx_rtd_theme
   make html
   ```
 
-Files generated in folder docs/\_build/html
+Files generated in folder docs/\_build/html.
 
 <a name="notes_on_tests"></a>
 #### Notes on test: ####

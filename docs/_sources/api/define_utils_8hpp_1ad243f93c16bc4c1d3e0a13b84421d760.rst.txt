@@ -1,0 +1,13 @@
+.. _exhale_define_utils_8hpp_1ad243f93c16bc4c1d3e0a13b84421d760:
+
+Define CYAN
+===========
+
+- Defined in :ref:`file_inc_utils.hpp`
+
+
+Define Documentation
+--------------------
+
+
+.. doxygendefine:: CYAN

@@ -1,0 +1,16 @@
+.. _exhale_class_classRRTStar:
+
+Class RRTStar
+=============
+
+- Defined in :ref:`file_inc_rrt_star.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: RRTStar
+   :members:
+   :protected-members:
+   :undoc-members:

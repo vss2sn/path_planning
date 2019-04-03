@@ -1,0 +1,13 @@
+.. _exhale_function_d__star__lite_8cpp_1a743d5eba3f1b8dc29e4516a5a99515bf:
+
+Function VectorInsertionSort
+============================
+
+- Defined in :ref:`file_src_d_star_lite.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: VectorInsertionSort(std::vector<Node>&)

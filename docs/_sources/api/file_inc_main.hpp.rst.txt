@@ -1,0 +1,89 @@
+
+.. _file_inc_main.hpp:
+
+File main.hpp
+=============
+
+|exhale_lsh| :ref:`Parent directory <dir_inc>` (``inc``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``inc/main.hpp``)
+-----------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_inc_main.hpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``algorithm``
+
+- ``array``
+
+- ``chrono``
+
+- ``cmath``
+
+- ``cstring``
+
+- ``ctime``
+
+- ``errno.h``
+
+- ``fstream``
+
+- ``iomanip``
+
+- ``iostream``
+
+- ``iterator``
+
+- ``list``
+
+- ``map``
+
+- ``memory``
+
+- ``mutex``
+
+- ``queue``
+
+- ``sstream``
+
+- ``stdio.h``
+
+- ``stdlib.h``
+
+- ``string``
+
+- ``sys/ioctl.h``
+
+- ``sys/syscall.h``
+
+- ``thread``
+
+- ``unistd.h``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file_inc_utils.hpp`
+
+
+

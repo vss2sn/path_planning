@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Program Listing for File main.cpp &mdash; Path Planning  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+        <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File main.hpp" href="file_inc_main.hpp.html" />
+    <link rel="prev" title="File main.cpp" href="file_src_main.cpp.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Path Planning
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="namespace_std__chrono.html">Namespace std::chrono</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="structcompare__cost.html">Struct compare_cost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAStar.html">Class AStar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDijkstra.html">Class Dijkstra</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDStarLite.html">Class DStarLite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classNode.html">Class Node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRRT.html">Class RRT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRRTStar.html">Class RRTStar</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_a__star_8cpp_1aa6ad1863ece771ae1001edfea26fd435.html">Function InsertionSort</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_main_8cpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.html">Function main</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a7c85b008da7c5aa00f778645108cbe47.html">Function MakeGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a7c85b008da7c5aa00f778645108cbe47.html">Function MakeGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1ac48d8b8a2e1171930046a91e34411291.html">Function PrintCost(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int, std::vector&lt;Node&gt;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1ac48d8b8a2e1171930046a91e34411291.html">Function PrintCost(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int, std::vector&lt;Node&gt;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a261d8d8f776af001a11d472ac44b4df0.html">Function PrintGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a261d8d8f776af001a11d472ac44b4df0.html">Function PrintGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1aa8bbe39cb49a6cd488339368ebf69944.html">Function PrintPath(std::vector&lt;Node&gt;, Node, Node, std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a06d11b8315f4ee5b8318fec5f02370bc.html">Function PrintPath(std::vector&lt;Node&gt;, Node, Node, std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_d__star__lite_8cpp_1a743d5eba3f1b8dc29e4516a5a99515bf.html">Function VectorInsertionSort</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#defines">Defines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a7b3b25cba33b07c303f3060fe41887f6.html">Define BLACK</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a79d10e672abb49ad63eeaa8aaef57c38.html">Define BLUE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ad243f93c16bc4c1d3e0a13b84421d760.html">Define CYAN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1acfbc006ea433ad708fdee3e82996e721.html">Define GREEN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a6f699060902f800f12aaae150f3a708e.html">Define MAGENTA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a8d23feea868a983c8c2b661e1e16972f.html">Define RED</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ab702106cf3b3e96750b6845ded4e0299.html">Define RESET</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a87b537f5fa5c109d3c05c13d6b18f382.html">Define WHITE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1abf681265909adf3d3e8116c93c0ba179.html">Define YELLOW</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#directories">Directories</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dir_inc.html">Directory inc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dir_src.html">Directory src</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#files">Files</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="file_src_a_star.cpp.html">File a_star.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_a_star.hpp.html">File a_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_d_star_lite.cpp.html">File d_star_lite.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_d_star_lite.hpp.html">File d_star_lite.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_dijkstra.cpp.html">File dijkstra.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_dijkstra.hpp.html">File dijkstra.hpp</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="file_src_main.cpp.html">File main.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_main.hpp.html">File main.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_README.md.html">File README.md</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_rrt.cpp.html">File rrt.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_rrt.hpp.html">File rrt.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_rrt_star.cpp.html">File rrt_star.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_rrt_star.hpp.html">File rrt_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_utils.cpp.html">File utils.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_utils.hpp.html">File utils.hpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Path Planning</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="library_root.html">Library API</a> &raquo;</li>
+        
+          <li><a href="file_src_main.cpp.html">File main.cpp</a> &raquo;</li>
+        
+      <li>Program Listing for File main.cpp</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/program_listing_file_src_main.cpp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="program-listing-for-file-main-cpp">
+<span id="program-listing-file-src-main-cpp"></span><h1>Program Listing for File main.cpp<a class="headerlink" href="#program-listing-for-file-main-cpp" title="Permalink to this headline">¶</a></h1>
+<p>↰ <a class="reference internal" href="file_src_main.cpp.html#file-src-main-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">src/main.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;dijkstra.hpp&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;a_star.hpp&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;rrt.hpp&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;rrt_star.hpp&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;d_star_lite.hpp&quot;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+  <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">num_points</span> <span class="o">=</span> <span class="n">n</span><span class="o">*</span><span class="n">n</span><span class="p">;</span>
+
+  <span class="kt">int</span> <span class="n">grid_space</span> <span class="o">=</span> <span class="n">n</span><span class="o">*</span><span class="n">n</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">grid</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">tmp</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">MakeGrid</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">random_device</span> <span class="n">rd</span><span class="p">;</span> <span class="c1">// obtain a random number from hardware</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">mt19937</span> <span class="n">eng</span><span class="p">(</span><span class="n">rd</span><span class="p">());</span> <span class="c1">// seed the generator</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">uniform_int_distribution</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">distr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// define the range</span>
+
+  <span class="n">Node</span> <span class="n">start</span><span class="p">(</span><span class="n">distr</span><span class="p">(</span><span class="n">eng</span><span class="p">),</span><span class="n">distr</span><span class="p">(</span><span class="n">eng</span><span class="p">),</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+  <span class="n">Node</span> <span class="n">goal</span><span class="p">(</span><span class="n">distr</span><span class="p">(</span><span class="n">eng</span><span class="p">),</span><span class="n">distr</span><span class="p">(</span><span class="n">eng</span><span class="p">),</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+  <span class="c1">// Node start(0,0,0,0,0,0);</span>
+  <span class="c1">// Node goal(n-1,n-1,0,0,0,0);</span>
+
+  <span class="n">start</span><span class="p">.</span><span class="n">id_</span> <span class="o">=</span> <span class="n">start</span><span class="p">.</span><span class="n">x_</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="n">start</span><span class="p">.</span><span class="n">y_</span><span class="p">;</span>
+  <span class="n">start</span><span class="p">.</span><span class="n">pid_</span> <span class="o">=</span> <span class="n">start</span><span class="p">.</span><span class="n">x_</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="n">start</span><span class="p">.</span><span class="n">y_</span><span class="p">;</span>
+  <span class="n">goal</span><span class="p">.</span><span class="n">id_</span> <span class="o">=</span> <span class="n">goal</span><span class="p">.</span><span class="n">x_</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="n">goal</span><span class="p">.</span><span class="n">y_</span><span class="p">;</span>
+  <span class="n">start</span><span class="p">.</span><span class="n">h_cost_</span> <span class="o">=</span> <span class="n">abs</span><span class="p">(</span><span class="n">start</span><span class="p">.</span><span class="n">x_</span> <span class="o">-</span> <span class="n">goal</span><span class="p">.</span><span class="n">x_</span><span class="p">)</span> <span class="o">+</span> <span class="n">abs</span><span class="p">(</span><span class="n">start</span><span class="p">.</span><span class="n">y_</span> <span class="o">-</span> <span class="n">goal</span><span class="p">.</span><span class="n">y_</span><span class="p">);</span>
+  <span class="c1">//Make sure start and goal are not obstacles and their ids are correctly assigned.</span>
+  <span class="n">grid</span><span class="p">[</span><span class="n">start</span><span class="p">.</span><span class="n">x_</span><span class="p">][</span><span class="n">start</span><span class="p">.</span><span class="n">y_</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">grid</span><span class="p">[</span><span class="n">goal</span><span class="p">.</span><span class="n">x_</span><span class="p">][</span><span class="n">goal</span><span class="p">.</span><span class="n">y_</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">PrintGrid</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+
+  <span class="c1">// Store points after algorithm has run</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">path_vector</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">main_grid</span> <span class="o">=</span> <span class="n">grid</span><span class="p">;</span>
+  <span class="kt">double</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">max_iter_x_factor</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+
+  <span class="c1">// Resetting grid</span>
+  <span class="c1">// Create object for the algorithm</span>
+  <span class="c1">// Run algorithm</span>
+  <span class="c1">// Print the final grid using the path_vector</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;--------------------------------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;--------------------- ALGORITH: DIJKSTRA ---------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;--------------------------------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">grid</span> <span class="o">=</span> <span class="n">main_grid</span><span class="p">;</span>
+  <span class="n">Dijkstra</span> <span class="n">new_dijkstra</span><span class="p">;</span>
+  <span class="n">path_vector</span> <span class="o">=</span> <span class="n">new_dijkstra</span><span class="p">.</span><span class="n">dijkstra</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">);</span>
+  <span class="n">PrintPath</span><span class="p">(</span><span class="n">path_vector</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;--------------------------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;--------------------- ALGORITH: A* ---------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;--------------------------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">grid</span> <span class="o">=</span> <span class="n">main_grid</span><span class="p">;</span>
+  <span class="n">AStar</span> <span class="n">new_a_star</span><span class="p">;</span>
+  <span class="n">path_vector</span> <span class="o">=</span> <span class="n">new_a_star</span><span class="p">.</span><span class="n">a_star</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">);</span>
+  <span class="n">PrintPath</span><span class="p">(</span><span class="n">path_vector</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---------------------------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;--------------------- ALGORITH: RRT ---------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---------------------------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">grid</span> <span class="o">=</span> <span class="n">main_grid</span><span class="p">;</span>
+  <span class="n">RRT</span> <span class="n">new_rrt</span><span class="p">;</span>
+  <span class="n">path_vector</span> <span class="o">=</span> <span class="n">new_rrt</span><span class="p">.</span><span class="n">rrt</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">max_iter_x_factor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">);</span>
+  <span class="n">PrintPath</span><span class="p">(</span><span class="n">path_vector</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;----------------------------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;--------------------- ALGORITH: RRT* ---------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;----------------------------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">grid</span> <span class="o">=</span> <span class="n">main_grid</span><span class="p">;</span>
+  <span class="n">RRTStar</span> <span class="n">new_rrt_star</span><span class="p">;</span>
+  <span class="n">path_vector</span> <span class="o">=</span> <span class="n">new_rrt_star</span><span class="p">.</span><span class="n">rrt_star</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">max_iter_x_factor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">);</span>
+  <span class="n">PrintPath</span><span class="p">(</span><span class="n">path_vector</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-------------------------------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;--------------------- ALGORITH: D* Lite ---------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-------------------------------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">grid</span> <span class="o">=</span> <span class="n">main_grid</span><span class="p">;</span>
+  <span class="n">DStarLite</span> <span class="n">new_d_star_lite</span><span class="p">;</span>
+  <span class="n">path_vector</span> <span class="o">=</span> <span class="n">new_d_star_lite</span><span class="p">.</span><span class="n">d_star_lite</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">);</span>
+  <span class="n">PrintPath</span><span class="p">(</span><span class="n">path_vector</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;----------------------------------------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;--------------------- ALGORITH: D* Lite Live Run ---------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;----------------------------------------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="c1">// NOTE: Make sure the function d_star_lite(grid, n, start, goal) is called</span>
+  <span class="c1">// before calling RunDStarLite()</span>
+  <span class="n">new_d_star_lite</span><span class="p">.</span><span class="n">RunDStarLite</span><span class="p">();</span> <span class="c1">// NOTE: Pass false to RunDStarLite if the</span>
+  <span class="c1">// incremental updated position of the bot is not to be displayed as it moves</span>
+  <span class="c1">// NOTE: D* Lite currently does not return a path vector as the</span>
+  <span class="c1">// returned path vector changes every replan. However, the path traversed is</span>
+  <span class="c1">// set as 3 in the grid and displayed. 4 displays current location of bot in</span>
+  <span class="c1">// the live run</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="file_inc_main.hpp.html" class="btn btn-neutral float-right" title="File main.hpp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="file_src_main.cpp.html" class="btn btn-neutral float-left" title="File main.cpp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, vss2sn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

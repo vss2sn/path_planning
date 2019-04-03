@@ -1,0 +1,16 @@
+.. _exhale_struct_structcompare__cost:
+
+Struct compare_cost
+===================
+
+- Defined in :ref:`file_inc_utils.hpp`
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: compare_cost
+   :members:
+   :protected-members:
+   :undoc-members:

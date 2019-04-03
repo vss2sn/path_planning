@@ -1,0 +1,16 @@
+.. _exhale_class_classDStarLite:
+
+Class DStarLite
+===============
+
+- Defined in :ref:`file_inc_d_star_lite.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: DStarLite
+   :members:
+   :protected-members:
+   :undoc-members:

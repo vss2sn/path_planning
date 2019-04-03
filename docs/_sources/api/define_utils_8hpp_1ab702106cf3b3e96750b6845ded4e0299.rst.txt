@@ -1,0 +1,13 @@
+.. _exhale_define_utils_8hpp_1ab702106cf3b3e96750b6845ded4e0299:
+
+Define RESET
+============
+
+- Defined in :ref:`file_inc_utils.hpp`
+
+
+Define Documentation
+--------------------
+
+
+.. doxygendefine:: RESET

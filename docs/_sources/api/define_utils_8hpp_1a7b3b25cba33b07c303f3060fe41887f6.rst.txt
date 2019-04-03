@@ -1,0 +1,13 @@
+.. _exhale_define_utils_8hpp_1a7b3b25cba33b07c303f3060fe41887f6:
+
+Define BLACK
+============
+
+- Defined in :ref:`file_inc_utils.hpp`
+
+
+Define Documentation
+--------------------
+
+
+.. doxygendefine:: BLACK

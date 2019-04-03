@@ -1,0 +1,40 @@
+
+.. _program_listing_file_inc_main.hpp:
+
+Program Listing for File main.hpp
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_inc_main.hpp>` (``inc/main.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #include <iostream>
+   #include <cstring>
+   #include <string>
+   #include <errno.h>
+   #include <stdio.h>
+   #include <stdlib.h>
+   #include <unistd.h>
+   #include <sys/ioctl.h>
+   #include <fstream>
+   #include <thread>
+   #include <mutex>
+   #include <ctime>
+   #include <sstream>
+   #include <array>
+   #include <algorithm>
+   #include <iterator>
+   #include <memory>
+   #include <chrono>
+   #include <sys/syscall.h>
+   
+   #include <iomanip>
+   #include <queue>
+   #include <list>
+   #include <map>
+   
+   #include <cmath>
+   #include <thread>

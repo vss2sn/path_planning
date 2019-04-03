@@ -1,8 +1,10 @@
 build/*
 grids
-docs/*
-!docs/conf.py
-!docs/Doxyfile
-!docs/index.rst
-!docs/make.bat
-!docs/Makefile
+docssrc/*
+!docssrc/conf.py
+!docssrc/Doxyfile
+!docssrc/index.rst
+!docssrc/index.html
+!docssrc/make.bat
+!docssrc/Makefile
+!docssrc/.nojekyll

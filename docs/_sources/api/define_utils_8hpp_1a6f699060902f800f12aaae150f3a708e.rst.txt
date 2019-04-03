@@ -1,0 +1,13 @@
+.. _exhale_define_utils_8hpp_1a6f699060902f800f12aaae150f3a708e:
+
+Define MAGENTA
+==============
+
+- Defined in :ref:`file_inc_utils.hpp`
+
+
+Define Documentation
+--------------------
+
+
+.. doxygendefine:: MAGENTA

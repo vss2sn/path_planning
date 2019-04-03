@@ -1,0 +1,16 @@
+.. _exhale_class_classNode:
+
+Class Node
+==========
+
+- Defined in :ref:`file_inc_utils.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: Node
+   :members:
+   :protected-members:
+   :undoc-members:

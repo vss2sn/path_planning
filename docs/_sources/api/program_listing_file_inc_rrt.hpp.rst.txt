@@ -1,0 +1,35 @@
+
+.. _program_listing_file_inc_rrt.hpp:
+
+Program Listing for File rrt.hpp
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_inc_rrt.hpp>` (``inc/rrt.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef RRT_H
+   #define RRT_H
+   
+   #include "utils.hpp"
+   
+   class RRT{
+   public:
+     Node FindNearestPoint(Node& new_node, int n);
+     bool CheckObstacle(Node& n_1, Node& n_2);
+     Node GenerateRandomNode(int n);
+     std::vector<Node> rrt(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity());
+     bool CheckGoalVisible(Node new_node);
+     void CreateObstacleList(std::vector<std::vector<int> > &grid, int n);
+   
+   private:
+     std::vector<Node> point_list_;
+     std::vector<Node> obstacle_list_;
+     Node start_, goal_;
+     double threshold_ = 1;
+   };
+   
+   #endif RRT_H

@@ -1,0 +1,13 @@
+.. _exhale_define_utils_8hpp_1acfbc006ea433ad708fdee3e82996e721:
+
+Define GREEN
+============
+
+- Defined in :ref:`file_inc_utils.hpp`
+
+
+Define Documentation
+--------------------
+
+
+.. doxygendefine:: GREEN

@@ -1,0 +1,13 @@
+.. _exhale_define_utils_8hpp_1abf681265909adf3d3e8116c93c0ba179:
+
+Define YELLOW
+=============
+
+- Defined in :ref:`file_inc_utils.hpp`
+
+
+Define Documentation
+--------------------
+
+
+.. doxygendefine:: YELLOW

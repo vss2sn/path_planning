@@ -1,0 +1,52 @@
+
+.. _file_inc_d_star_lite.hpp:
+
+File d_star_lite.hpp
+====================
+
+|exhale_lsh| :ref:`Parent directory <dir_inc>` (``inc``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``inc/d_star_lite.hpp``)
+------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_inc_d_star_lite.hpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``utils.hpp`` (:ref:`file_inc_utils.hpp`)
+
+
+
+Included By
+-----------
+
+
+- :ref:`file_src_d_star_lite.cpp`
+
+- :ref:`file_src_main.cpp`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classDStarLite`
+

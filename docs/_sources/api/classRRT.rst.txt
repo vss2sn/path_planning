@@ -1,0 +1,16 @@
+.. _exhale_class_classRRT:
+
+Class RRT
+=========
+
+- Defined in :ref:`file_inc_rrt.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: RRT
+   :members:
+   :protected-members:
+   :undoc-members:

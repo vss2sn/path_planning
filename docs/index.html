@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Path Planning &mdash; Path Planning  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+        <script type="text/javascript" src="_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Library API" href="api/library_root.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="#" class="icon icon-home"> Path Planning
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/library_root.html">Library API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/library_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/library_root.html#full-api">Full API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/library_root.html#namespaces">Namespaces</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/namespace_std__chrono.html">Namespace std::chrono</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/library_root.html#classes-and-structs">Classes and Structs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/structcompare__cost.html">Struct compare_cost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/classAStar.html">Class AStar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/classDijkstra.html">Class Dijkstra</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/classDStarLite.html">Class DStarLite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/classNode.html">Class Node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/classRRT.html">Class RRT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/classRRTStar.html">Class RRTStar</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/library_root.html#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8cpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_a__star_8cpp_1aa6ad1863ece771ae1001edfea26fd435.html">Function InsertionSort</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_main_8cpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.html">Function main</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a7c85b008da7c5aa00f778645108cbe47.html">Function MakeGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8cpp_1a7c85b008da7c5aa00f778645108cbe47.html">Function MakeGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1ac48d8b8a2e1171930046a91e34411291.html">Function PrintCost(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int, std::vector&lt;Node&gt;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8cpp_1ac48d8b8a2e1171930046a91e34411291.html">Function PrintCost(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int, std::vector&lt;Node&gt;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a261d8d8f776af001a11d472ac44b4df0.html">Function PrintGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8cpp_1a261d8d8f776af001a11d472ac44b4df0.html">Function PrintGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1aa8bbe39cb49a6cd488339368ebf69944.html">Function PrintPath(std::vector&lt;Node&gt;, Node, Node, std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8cpp_1a06d11b8315f4ee5b8318fec5f02370bc.html">Function PrintPath(std::vector&lt;Node&gt;, Node, Node, std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_d__star__lite_8cpp_1a743d5eba3f1b8dc29e4516a5a99515bf.html">Function VectorInsertionSort</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/library_root.html#defines">Defines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a7b3b25cba33b07c303f3060fe41887f6.html">Define BLACK</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a79d10e672abb49ad63eeaa8aaef57c38.html">Define BLUE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1ad243f93c16bc4c1d3e0a13b84421d760.html">Define CYAN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1acfbc006ea433ad708fdee3e82996e721.html">Define GREEN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a6f699060902f800f12aaae150f3a708e.html">Define MAGENTA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a8d23feea868a983c8c2b661e1e16972f.html">Define RED</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1ab702106cf3b3e96750b6845ded4e0299.html">Define RESET</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a87b537f5fa5c109d3c05c13d6b18f382.html">Define WHITE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1abf681265909adf3d3e8116c93c0ba179.html">Define YELLOW</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/library_root.html#directories">Directories</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/dir_inc.html">Directory inc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/dir_src.html">Directory src</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/library_root.html#files">Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/file_src_a_star.cpp.html">File a_star.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_inc_a_star.hpp.html">File a_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_src_d_star_lite.cpp.html">File d_star_lite.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_inc_d_star_lite.hpp.html">File d_star_lite.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_src_dijkstra.cpp.html">File dijkstra.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_inc_dijkstra.hpp.html">File dijkstra.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_src_main.cpp.html">File main.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_inc_main.hpp.html">File main.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_README.md.html">File README.md</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_src_rrt.cpp.html">File rrt.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_inc_rrt.hpp.html">File rrt.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_src_rrt_star.cpp.html">File rrt_star.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_inc_rrt_star.hpp.html">File rrt_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_src_utils.cpp.html">File utils.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_inc_utils.hpp.html">File utils.hpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Path Planning</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Path Planning</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="path-planning">
+<h1>Path Planning<a class="headerlink" href="#path-planning" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="this-repository-contains-path-planning-algorithms-in-c">
+<h2>This repository contains path planning algorithms in C++.<a class="headerlink" href="#this-repository-contains-path-planning-algorithms-in-c" title="Permalink to this headline">¶</a></h2>
+<p><span class="raw-html-m2r"><a name="algorithms"></a></span></p>
+<div class="section" id="algorithms">
+<h3>Algorithms:<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Dijkstra’s algorithm for grid based search.</li>
+<li>AStar (A*) algorithm for grid based search.</li>
+<li>RRT algorithm for grid based search.</li>
+<li>RRTStar (RRT*) algorithm for grid based search.</li>
+<li>DStarLite (D* Lite) algorithm for grid based search.</li>
+</ol>
+<p><span class="raw-html-m2r"><a name="instructions"></a></span></p>
+</div>
+<div class="section" id="to-build-and-run">
+<h3>To build and run:<a class="headerlink" href="#to-build-and-run" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/vss2sn/path_planning.git
+cd path_planning
+mkdir build
+cd build
+cmake .. &amp;&amp; make -j4
+./main
+</pre></div>
+</div>
+<p><span class="raw-html-m2r"><a name="toc"></a></span></p>
+</div>
+<div class="section" id="table-of-contents">
+<h3>Table of contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="#algorithms">Algorithms</a></li>
+<li><a class="reference external" href="#instructions">Instructions</a></li>
+<li><a class="reference external" href="#toc">Table of contents</a></li>
+<li><a class="reference external" href="#notes">Notes</a></li>
+<li><a class="reference external" href="#notes_on_tests">Notes on tests</a></li>
+<li><a class="reference external" href="#notes_on_implementations">Notes on implementations</a></li>
+<li><a class="reference external" href="#notes_on_cmake_options">Notes on CMake Options:</a></li>
+<li><a class="reference external" href="#todos">TODOs</a></li>
+<li><a class="reference external" href="#consider">Consider</a></li>
+</ul>
+<p><span class="raw-html-m2r"><a name="notes"></a></span></p>
+</div>
+<div class="section" id="id3">
+<h3>Notes:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">utils.cpp built as library and used in every separate file.</p>
+</li>
+<li><p class="first">Setting the CMake option BUILD_INDIVIDUAL allows building of each .cpp separately (except main.cpp), allowing easy testing. Setting it to OFF allows use of all base classes and algorithms in main.cpp.</p>
+</li>
+<li><p class="first">D* Lite can be run live with random obstacle creation using the RunDStarLite function.</p>
+</li>
+<li><p class="first">Documentation can be created using doxygen; config files added to generate documentation with the READTHEDOCs themefor sphinx as well. To do so, install doxygen based on <a class="reference external" href="http://www.doxygen.nl/index.html">http://www.doxygen.nl/index.html</a>. Then:
+.. code-block:: guess</p>
+<blockquote>
+<div><p>cd path_planning/docs
+doxygen</p>
+</div></blockquote>
+<p>For sphinx &amp; Read The Docs style documentation:
+.. code-block:: guess</p>
+<blockquote>
+<div><p>pip install sphinx==1.8.3
+pip install breathe
+pip install exhale
+pip install sphinx_rtd_theme
+make html</p>
+</div></blockquote>
+</li>
+</ol>
+<p>Files generated in folder docs/_build/html.</p>
+<p><span class="raw-html-m2r"><a name="notes_on_tests"></a></span></p>
+</div>
+<div class="section" id="notes-on-test">
+<h3>Notes on test:<a class="headerlink" href="#notes-on-test" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Unit test framework set up to set algorithms under different grids. This section uses Google Test.</li>
+<li>CMake option TEST allows building tests when set when BUILD_INDIVIDUAL is set OFF.</li>
+<li>Tests set to run after main file built.</li>
+<li>Files named grid#.cpp are specific grids to check for correctness under certain conditions. gridr.cpp generates a random grid and checks whether Dijkstra, A* and D* Lite (without new obstacles) generate the same cost from start to end.</li>
+</ol>
+<p><span class="raw-html-m2r"><a name="notes_on_implementations"></a></span></p>
+</div>
+<div class="section" id="id4">
+<h3>Notes on implementations:<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>RRT stops as soon as goal is found. It is connects new points to the nearest point, not accounting for total cost to reach that point. In contrast RRT* chooses to connect to a new node to the node that allows the new node to have the minimum cost. RRT* also rewires the preexisting nodes to the new node if that path allows for a lower cost for the preexisting node.</li>
+<li>Acceptable motions can be modified in the GetMotion function in utils.cpp.</li>
+<li>A* and D* Lite use Manhattan distance (L1) as their heuristic (change to L2 if adding diagonal moves to the GetMotion function). D* Lite also uses the same in its C function.</li>
+<li>D* Lite implemented based on based on Sven Koenig’s &amp; Maxim Likhachev’s paper.</li>
+<li>For the live run of D* Lite, obstacles are detected on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid.</li>
+<li>To specify your own grid, set n to number of rows, created the 2D vector, setting 1 for obstacles and 0 elsewhere, and comment out the MakeGrid function.</li>
+</ol>
+<p><span class="raw-html-m2r"><a name="notes_on_cmake_options"></a></span></p>
+</div>
+<div class="section" id="id5">
+<h3>Notes on CMake Options:<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>To run each algorithm independently, set BUILD_INDIVIDUAL to ON (Executables created: <code class="docutils literal notranslate"><span class="pre">dijkstra</span></code>, <code class="docutils literal notranslate"><span class="pre">a_star</span></code>, etc). If you want to run all of them on the same grid, set it to OFF (Executable created: <code class="docutils literal notranslate"><span class="pre">main</span></code>).</li>
+<li>To run tests, set BUILD_INDIVIDUAL to OFF and TEST to ON.</li>
+</ol>
+<p><span class="raw-html-m2r"><a name="todos"></a></span></p>
+</div>
+<div class="section" id="id6">
+<h3>TODOs:<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Next algorithm to be implemented: a Voronoi cell based planner.</li>
+<li>Alterations for moving node variables into private namespace.</li>
+<li>Prune merged branches.</li>
+<li>Cleanup and refactor test section.</li>
+<li>Use hash to check if node in list for D* Lite (can be applied to others if required)</li>
+<li>Add overview, pseudo codes and references to documentation.</li>
+</ol>
+<p><span class="raw-html-m2r"><a name="consider"></a></span></p>
+</div>
+<div class="section" id="id7">
+<h3>Consider:<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Adding namespace to each header file.</li>
+<li>Inheriting node class into each file that requires a modified node (such as A* with heuristic cost, etc).</li>
+<li>Moving TODOs to another file</li>
+</ol>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/library_root.html">Library API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/library_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/library_root.html#full-api">Full API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api/library_root.html" class="btn btn-neutral float-right" title="Library API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, vss2sn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

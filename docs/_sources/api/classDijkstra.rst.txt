@@ -1,0 +1,16 @@
+.. _exhale_class_classDijkstra:
+
+Class Dijkstra
+==============
+
+- Defined in :ref:`file_inc_dijkstra.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: Dijkstra
+   :members:
+   :protected-members:
+   :undoc-members:
