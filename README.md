@@ -27,7 +27,7 @@
 - [Notes](#notes)
 - [Notes on tests](#notes_on_tests)
 - [Notes on implementations](#notes_on_implementations)
-- [Notes on CMake Options:](#notes_on_cmake_options)
+- [Notes on CMake Options](#notes_on_cmake_options)
 - [TODOs](#todos)
 - [Consider](#consider)
 

@@ -253,7 +253,7 @@ cmake .. &amp;&amp; make -j4
 <li><a class="reference external" href="#notes">Notes</a></li>
 <li><a class="reference external" href="#notes_on_tests">Notes on tests</a></li>
 <li><a class="reference external" href="#notes_on_implementations">Notes on implementations</a></li>
-<li><a class="reference external" href="#notes_on_cmake_options">Notes on CMake Options:</a></li>
+<li><a class="reference external" href="#notes_on_cmake_options">Notes on CMake Options</a></li>
 <li><a class="reference external" href="#todos">TODOs</a></li>
 <li><a class="reference external" href="#consider">Consider</a></li>
 </ul>
@@ -262,7 +262,7 @@ cmake .. &amp;&amp; make -j4
 <div class="section" id="id3">
 <h3>Notes:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
-<li>Main creates a grid of a given size n, with any point set as an obstacle with a probability of 1/n. It then runs all the algorithms in the repository on the given grid.</li>
+<li><code class="docutils literal notranslate"><span class="pre">main</span></code> creates a grid of a given size n, with any point set as an obstacle with a probability of 1/n. It then runs all the algorithms in the repository on the given grid.</li>
 <li>Setting the CMake option <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> to <code class="docutils literal notranslate"><span class="pre">ON</span></code> allows building of each .cpp separately (except main.cpp), facilitating easy testing. Setting <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> to <code class="docutils literal notranslate"><span class="pre">OFF</span></code> allows use of all base classes and algorithms in main.cpp.</li>
 <li>D* Lite can be run live with random obstacle creation using the RunDStarLite function.</li>
 <li>utils.cpp built as library and used in every separate file.</li>
