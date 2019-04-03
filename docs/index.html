@@ -270,9 +270,9 @@ cmake .. &amp;&amp; make -j4
 <li>utils.cpp built as library and used in every separate file.</li>
 <li>Setting the CMake option BUILD_INDIVIDUAL allows building of each .cpp separately (except main.cpp), allowing easy testing. Setting it to OFF allows use of all base classes and algorithms in main.cpp.</li>
 <li>D* Lite can be run live with random obstacle creation using the RunDStarLite function.</li>
-<li>Documentation can be created using doxygen; config files added to generate documentation with the READTHEDOCs themefor sphinx as well. To do so, install doxygen based on <a class="reference external" href="http://www.doxygen.nl/index.html">http://www.doxygen.nl/index.html</a>. Then:</li>
+<li>Documentation can be created using doxygen; config files added to generate documentation with the READTHEDOCs theme for sphinx as well. To do so, install doxygen based on <a class="reference external" href="http://www.doxygen.nl/index.html">http://www.doxygen.nl/index.html</a>. Then:</li>
 </ol>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>cd path_planning/docs
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>cd path_planning/docssrc
 doxygen
 pip install sphinx==1.8.3
 pip install breathe

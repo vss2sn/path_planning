@@ -267,24 +267,19 @@
 1. utils.cpp built as library and used in every separate file.
 2. Setting the CMake option BUILD_INDIVIDUAL allows building of each .cpp separately (except main.cpp), allowing easy testing. Setting it to OFF allows use of all base classes and algorithms in main.cpp.
 3. D* Lite can be run live with random obstacle creation using the RunDStarLite function.
-4. Documentation can be created using doxygen; config files added to generate documentation with the READTHEDOCs theme for sphinx as well. To do so, install doxygen based on http://www.doxygen.nl/index.html. Then
+4. Documentation can be created using doxygen; config files added to generate documentation with the READTHEDOCs theme for sphinx as well. To do so, install doxygen based on http://www.doxygen.nl/index.html. Then:
+
 ```
-  cd path_planning/docssrc
-  doxygen
+cd path_planning/docssrc
+doxygen
+pip install sphinx==1.8.3
+pip install breathe
+pip install exhale
+pip install sphinx_rtd_theme
+make html
 ```
 
-  For sphinx &amp; Read The Docs style documentation:
-  ```
-  pip install sphinx==1.8.3
-  pip install breathe
-  pip install exhale
-  pip install sphinx_rtd_theme
-  make html # For generating docs.
-  make github # For creting github docs.
-  ```
-  Files generated in folder docssrc/\_build/html for make html
-  Files generated in folder docs/ for make github
-
+Files generated in folder docs/\_build/html.
 
 &lt;a name=&quot;notes_on_tests&quot;&gt;&lt;/a&gt;
 #### Notes on test: ####

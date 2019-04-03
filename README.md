@@ -39,7 +39,7 @@
 4. Documentation can be created using doxygen; config files added to generate documentation with the READTHEDOCs theme for sphinx as well. To do so, install doxygen based on http://www.doxygen.nl/index.html. Then:
 
 ```
-cd path_planning/docs  
+cd path_planning/docssrc
 doxygen  
 pip install sphinx==1.8.3  
 pip install breathe  
