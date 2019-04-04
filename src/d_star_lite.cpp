@@ -76,6 +76,7 @@ std::pair<double,double> DStarLite::CalculateKey(const Node& s){
 std::vector<Node> DStarLite::GetPred(Node u){
   std::vector<Node> pred;
   for(auto it=motions.begin();it!=motions.end(); ++it){
+    // Modify to prevent points already in the queue fro  being added?
     Node new_node = u + *it;
     if(new_node.x_ >= n || new_node.x_ < 0 ||
        new_node.y_ >= n || new_node.y_ < 0 ||

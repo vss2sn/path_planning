@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; Path Planning  documentation</title>
+  <title>Algorithms &mdash; Path Planning  documentation</title>
   
 
   
@@ -27,7 +27,6 @@
         <script type="text/javascript" src="_static/language_data.js"></script>
         <script type="text/javascript" src="_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
         <script type="text/javascript" src="_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
-        <script type="text/javascript" src="_static/searchtools.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -38,7 +37,9 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/collapsible-lists/css/tree_view.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Library API" href="api/library_root.html" />
+    <link rel="prev" title="Path Planning" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -65,7 +66,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -83,13 +84,13 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="algorithms.html">Algorithms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="algorithms.html#rrt">RRT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="algorithms.html#rrtstar">RRTStar</a></li>
-<li class="toctree-l2"><a class="reference internal" href="algorithms.html#dijkstra">Dijkstra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="algorithms.html#a">A*</a></li>
-<li class="toctree-l2"><a class="reference internal" href="algorithms.html#d-lite">D* Lite:</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Algorithms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rrt">RRT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rrtstar">RRTStar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dijkstra">Dijkstra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a">A*</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#d-lite">D* Lite:</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/library_root.html">Library API</a><ul>
@@ -205,12 +206,14 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Search</li>
+      <li>Algorithms</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
+            <a href="_sources/algorithms.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -222,24 +225,234 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="algorithms">
+<span id="id1"></span><h1>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>This page contains the pseudo code outlining the algorithms implemented.</li>
+<li>An effort has been made to implement the algorithm in a way that allows easy correspondence with the pseudo code, facilitating learning.</li>
+</ul>
+</div>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<ul class="last simple">
+<li>The pseudo code is written based on the original papers from which the algorithms are derived; slight modifications might be made, while retaining the essence of the algorithm.</li>
+<li>Minor modifications have been made to the implementation of Dijkstra to highlight it’s similarity of A*.</li>
+<li>Using the grid on which the algorithm runs to maintain cost would make the speed up the  algorithms significantly for both A* and Dijkstra, and remove the necessity for using the closed list, maintaining cost in the open list.</li>
+</ul>
+</div>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>Highlight changes between pseudocode and implementation</li>
+</ul>
+</div>
+<div class="section" id="rrt">
+<h2>RRT<a class="headerlink" href="#rrt" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><strong>procedure main()</strong></div>
+<div class="line-block">
+<div class="line">T = 0; // Initialize list/tree</div>
+<div class="line">for k = 1 to K</div>
+<div class="line-block">
+<div class="line">q<sub>rand</sub>← GenerateRandomNode()</div>
+<div class="line">q<sub>parent</sub>← FindNearestPoint(q<sub>rand</sub>, T, threshold) // Returns closest node based on distance</div>
+<div class="line">if(q<sub>parent</sub>exists)</div>
+<div class="line-block">
+<div class="line">q<sub>parent</sub>&lt;— q<sub>parent</sub></div>
+<div class="line">if(q<sub>rand</sub>= goal) return path found</div>
+</div>
+</div>
+<div class="line">return no path</div>
+</div>
+</div>
+</div>
+<div class="section" id="rrtstar">
+<h2>RRTStar<a class="headerlink" href="#rrtstar" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><strong>procedure main()</strong></div>
+<div class="line-block">
+<div class="line">T = 0; // Initialize list/tree</div>
+<div class="line">for k = 1 to K</div>
+<div class="line-block">
+<div class="line">q<sub>rand</sub>← GenerateRandomNode()</div>
+<div class="line">q<sub>parent</sub>, close_node_list ← FindNearestPoint(q<sub>rand</sub>, T, threshold) // Returns node that results in lowest total cost and list of all close nodes</div>
+<div class="line-block">
+<div class="line">// Updates q<sub>rand</sub>.cost to q<sub>parent</sub>.cost + distance(q<sub>rand</sub>, q<sub>parent</sub>)</div>
+</div>
+<div class="line">if(q<sub>parent</sub>exists)</div>
+<div class="line-block">
+<div class="line">q<sub>parent</sub>&lt;— q<sub>parent</sub></div>
+<div class="line">if(q<sub>rand</sub>= goal) return path found</div>
+<div class="line">rewire()</div>
+</div>
+</div>
+<div class="line">return no path</div>
+</div>
+<div class="line"><strong>procedure rewire()</strong></div>
+<div class="line-block">
+<div class="line">for all node in close_node_list != q<sub>parent</sub></div>
+<div class="line-block">
+<div class="line">if(q<sub>rand</sub>.cost + dist(node ,q<sub>rand</sub>) &lt; node.cost)</div>
+<div class="line-block">
+<div class="line">node.parent &lt;— q<sub>rand</sub></div>
+<div class="line">node.cost &lt;— q<sub>rand</sub>.cost + distance(node, q<sub>rand</sub>)</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="dijkstra">
+<h2>Dijkstra<a class="headerlink" href="#dijkstra" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><strong>procedure main()</strong></div>
+<div class="line-block">
+<div class="line">OL = 0 //Initialize the open list. Priority queue sorted by cost</div>
+<div class="line">CL = 0 //Initialize the closed list</div>
+<div class="line">OL &lt;— s<sub>start</sub></div>
+<div class="line">while(!OL.empty())</div>
+<div class="line-block">
+<div class="line">q &lt;— OL.pop()</div>
+<div class="line">for all s in Succ(q)</div>
+<div class="line-block">
+<div class="line">if(s=s<sub>goal</sub>) return path found</div>
+<div class="line">if(s is obstacle) continue</div>
+<div class="line">s.parent &lt;— q</div>
+<div class="line">s.cost = q.cost + distance between successor and q</div>
+<div class="line">if(s` = s in OL &amp;&amp; s`.cost &lt; s.cost)</div>
+<div class="line-block">
+<div class="line">continue</div>
+</div>
+<div class="line">if(s` = s in OL &amp;&amp; s`.cost &lt; s.cost)</div>
+<div class="line-block">
+<div class="line">continue</div>
+</div>
+<div class="line">OL &lt;— s</div>
+</div>
+<div class="line">CL &lt;— q</div>
+</div>
+<div class="line">return no path</div>
+</div>
+</div>
+</div>
+<div class="section" id="a">
+<h2>A*<a class="headerlink" href="#a" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><strong>procedure main()</strong></div>
+<div class="line-block">
+<div class="line">OL = 0 //Initialize the open list. Priority queue sorted by cost + heuristic cost value</div>
+<div class="line">CL = 0 //Initialize the closed list</div>
+<div class="line">OL &lt;— s<sub>start</sub></div>
+<div class="line">while(!OL.empty())</div>
+<div class="line-block">
+<div class="line">q &lt;— OL.pop()</div>
+<div class="line">for all s in Succ(q)</div>
+<div class="line-block">
+<div class="line">if(s=s<sub>goal</sub>) return path found</div>
+<div class="line">if(s is obstacle) continue</div>
+<div class="line">s.parent &lt;— q</div>
+<div class="line">s.cost = q.cost + distance between successor and q</div>
+<div class="line">s.h_cost = heuristic(s, s<sub>goal</sub>)</div>
+<div class="line">if(s` = s in OL &amp;&amp; s`.cost + s`.h_cost &lt; s.cost + s.h_cost)</div>
+<div class="line-block">
+<div class="line">continue</div>
+</div>
+<div class="line">if(s` = s in CL &amp;&amp; s`.cost + s`.h_cost &lt; s.cost + s.h_cost)</div>
+<div class="line-block">
+<div class="line">continue</div>
+</div>
+<div class="line">OL &lt;— s</div>
+</div>
+<div class="line">CL &lt;— q</div>
+</div>
+<div class="line">return no path</div>
+</div>
+</div>
+</div>
+<div class="section" id="d-lite">
+<h2>D* Lite:<a class="headerlink" href="#d-lite" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><strong>procedure CalculateKey(s)</strong></div>
+<div class="line-block">
+<div class="line">return [min(g(s), rhs(s)) + h(s<sub>start</sub>, s) + k<sub>m</sub>= 0; min(g(s),rhs(s))];</div>
+</div>
+<div class="line"><strong>procedure Initialize()</strong></div>
+<div class="line-block">
+<div class="line">U = 0;</div>
+<div class="line">k<sub>m</sub>= 0;</div>
+<div class="line">for all s in S rhs(s) = g(s) = inf</div>
+<div class="line">rhs(s<sub>goal</sub>) = 0;</div>
+<div class="line">U.insert(s<sub>goal</sub>, CalculateKey(s<sub>goal</sub>));</div>
+</div>
+<div class="line"><strong>procedure UpdateVertex()</strong></div>
+<div class="line-block">
+<div class="line">if(u!=s<sub>goal</sub>) rhs(s) = minfor all <sub>s’ in Succ(u)</sub>c(u, s’) + g(s’)</div>
+<div class="line">if(u in U) U.remove(u</div>
+<div class="line">if(g(u)!=rhs(u)) U.insert(u, CalculateKey(u));</div>
+</div>
+<div class="line"><strong>procedure ComputeShortestPath()</strong></div>
+<div class="line-block">
+<div class="line">while(U.TopKey() &lt; CalculateKey(s<sub>start</sub>) OR rhs(s<sub>start</sub>) != g(s<sub>start</sub>))</div>
+<div class="line-block">
+<div class="line">k<sub>old</sub>= U.TopKey();</div>
+<div class="line">u = U.Pop();</div>
+<div class="line">if(k<sub>old</sub>&lt; CalculateKey(u))</div>
+<div class="line-block">
+<div class="line">U.insert(u, CalculateKey(u))</div>
+</div>
+<div class="line">else if(g(u) &gt; rhs(u))</div>
+<div class="line-block">
+<div class="line">g(u) = rhs(u);</div>
+<div class="line">for all s in Pred(u) UpdateVertex(s);</div>
+</div>
+<div class="line">else</div>
+<div class="line-block">
+<div class="line">g(u) = inf;</div>
+<div class="line">for all s in Pred(u) (union) {u} UpdateVertex(s)</div>
+</div>
+</div>
+</div>
+<div class="line"><strong>procedure Main()</strong></div>
+<div class="line-block">
+<div class="line">s<sub>last</sub>= s<sub>start</sub></div>
+<div class="line">Initialize();</div>
+<div class="line">ComputeShortestPath();</div>
+<div class="line">while(s<sub>start</sub>!=s<sub>goal</sub>)</div>
+<div class="line-block">
+<div class="line">/* if(g(s<sub>start</sub>)=inf) there is no known path <a href="#id2"><span class="problematic" id="id3">*</span></a>/</div>
+<div class="line">s<sub>start</sub>= arg min<sub>for all s’ in Succ(s:sub:`start</sub>)`(c(s<sub>start</sub>,s’)+g(s’)</div>
+<div class="line">Move to start</div>
+<div class="line">Scan graph for changed edge costs;</div>
+<div class="line">if any edge cost changed</div>
+<div class="line">k<sub>m</sub>= k<sub>m</sub>+ h(s<sub>last</sub>,s<sub>start</sub>);</div>
+<div class="line">s<sub>last</sub>= s<sub>start</sub></div>
+<div class="line">for all directed edges (u,v) with changed edge costs</div>
+<div class="line-block">
+<div class="line">Update the edge cost c(u,v);</div>
+<div class="line">UpdateVertex(u)</div>
+</div>
+</div>
+<div class="line">ComputeShortestPath()</div>
+</div>
+</div>
+</div>
+</div>
 
-  
-  <div id="search-results">
-  
-  </div>
 
            </div>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api/library_root.html" class="btn btn-neutral float-right" title="Library API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Path Planning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -272,14 +485,7 @@
   
   
     
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>
