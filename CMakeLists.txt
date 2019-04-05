@@ -33,7 +33,7 @@ list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
 # If buiding single file (main.cpp) to test any/all protocols, set to OFF
 option( BUILD_INDIVIDUAL "BUILD_INDIVIDUAL" OFF)
 
-option( TEST "TEST" OFF)
+option( TEST "TEST" ON)
 
 if(BUILD_INDIVIDUAL)
 
@@ -55,15 +55,16 @@ else (BUILD_INDIVIDUAL)
   target_link_libraries( main utils algos)
 
   if (TEST)
-    find_package(GTest REQUIRED)
+    #find_package(GTest REQUIRED)
     enable_testing()
     add_definitions(-DTEST)
-    include_directories(${GTEST_INCLUDE_DIRS})
+    #include_directories(${GTEST_INCLUDE_DIRS})
+    include(gtest.cmake)
     foreach(test_source_file ${LIB_TESTS_SOURCES})
       string( REPLACE ".cpp" "" test_output_file ${test_source_file} )
       string( REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/tests/" "" test_output_file ${test_output_file} )
       add_executable( ${test_output_file} ${test_source_file} ${LIB_HEADERS})
-      target_link_libraries( ${test_output_file} ${GTEST_LIBRARIES} pthread utils algos )
+      target_link_libraries( ${test_output_file} pthread utils algos gtest )
       add_test(${test_output_file} ${test_output_file})
       add_dependencies(main ${test_output_file}) # ensure main is built after the test grids.
     endforeach(test_source_file ${LIB_SOURCES})

@@ -1,16 +1,18 @@
 language: cpp
+
 compiler:
   - gcc
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-6
-install:
-- "[ $CXX = g++ ] && export CXX=g++-6 || true"
-script:
+
+before_script:
+  - git submodule add https://github.com/google/googletest.git gtest
   - mkdir build
   - cd build
   - cmake ..
+
+script:
   - make
+
+after_test:
+  - git submodule deinit -f -- gtest
+  - rm -rf .git/modules/gtest
+  - git rm -f gtest

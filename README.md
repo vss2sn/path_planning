@@ -2,6 +2,8 @@
 
 ### This repository contains path planning algorithms in C++. ###
 
+[![Build Status](https://travis-ci.com/vss2sn/path_planning.svg?branch=feature%2Ftravis_ci)](https://travis-ci.com/vss2sn/path_planning)
+
 <a name="algorithms"></a>
 #### Algorithms: ####
 1. Dijkstra's algorithm for grid based search.
@@ -28,6 +30,7 @@
 - [Notes on tests](#notes_on_tests)
 - [Notes on implementations](#notes_on_implementations)
 - [Notes on CMake Options](#notes_on_cmake_options)
+- [Notes on Travis CI Integration](#notes_on_travis_ci_integration)
 - [TODOs](#todos)
 - [Consider](#consider)
 
@@ -60,6 +63,10 @@
 #### Notes on CMake Options: ####
 1. To run each algorithm independently, set `BUILD_INDIVIDUAL` to `ON` (Executables created: `dijkstra`, `a_star`, etc). If you want to run all of them on the same grid, set `BUILD_INDIVIDUAL` to `OFF` (Executable created: `main`).
 2. To run tests, set `BUILD_INDIVIDUAL` to `OFF` and TEST to `ON`.
+
+<a name="notes_on_travis_ci_integration"></a>
+#### Notes on Travis CI integration: ####
+1. CI integrated in the feature/travis_ci branch, as integrating googletest with travis_ci, along with the test setup that runs automatically after every local build of `main` requires changes to CMakeLists.txt and use of google test as a submodule.
 
 <a name="todos"></a>
 #### TODOs: ####
