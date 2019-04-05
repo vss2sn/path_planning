@@ -6,12 +6,6 @@
 
 #include "rrt.hpp"
 
-/**
-* @brief Find the nearest node that has been seen by the algorithm. This does not consider cost to reach the node.
-* @param new_node Node to which the nearest node must be found
-* @param n number of rows/columns
-* @return Nearest node
-*/
 Node RRT::FindNearestPoint(Node& new_node, int n){
   Node nearest_node(-1,-1,-1,-1,-1,-1);
   std::vector<Node>::iterator it_v;
@@ -37,12 +31,6 @@ Node RRT::FindNearestPoint(Node& new_node, int n){
   }
   return nearest_node;
 }
-/**
-* @brief Check if there is any obstacle between the 2 nodes. As this planner is for grid maps, the obstacles are square.
-* @param n_1 Node 1
-* @param n_2 Node 2
-* @return bool value of whether obstacle exists between nodes
-*/
 bool RRT::CheckObstacle(Node& n_1, Node& n_2){
   if (n_2.y_ - n_1.y_ == 0){
     double c = n_2.y_;
@@ -86,11 +74,7 @@ bool RRT::CheckObstacle(Node& n_1, Node& n_2){
   }
   return false;
 }
-/**
-* @brief Generates a random node
-* @param n Number of rows/columns
-* @return Generated node
-*/
+
 Node RRT::GenerateRandomNode(int n){
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
@@ -101,16 +85,6 @@ Node RRT::GenerateRandomNode(int n){
   return new_node;
 }
 
-/**
-* @brief Main algorithm of RRT
-* @param grid Main grid
-* @param n number of rows/columns
-* @param start_in starting node
-* @param goal_in goal node
-* @param max_iter_x_factor Maximum number of allowable iterations before returning no path
-* @param threshold_in Maximum distance per move
-* @return path vector of nodes
-*/
 std::vector<Node> RRT::rrt(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
   start_ = start_in;
   goal_ = goal_in;
@@ -138,11 +112,6 @@ std::vector<Node> RRT::rrt(std::vector<std::vector<int> > &grid, int n, Node sta
   return point_list_;
 }
 
-/**
-* @brief Check if goal is reachable from current node
-* @param new_node Current node
-* @return bool value of whether goal is reachable from current node
-*/
 bool RRT::CheckGoalVisible(Node new_node){
   if(!CheckObstacle(new_node, goal_)){
     double new_dist = (double)sqrt((double)(goal_.x_-new_node.x_)*(double)(goal_.x_-new_node.x_) + (double)(goal_.y_-new_node.y_)*(double)(goal_.y_-new_node.y_));
@@ -156,12 +125,7 @@ bool RRT::CheckGoalVisible(Node new_node){
   return false;
 }
 
-/**
-* @brief Create the obstacle list from the input grid
-* @param grid input grid for algorithm
-* @param n Number of rows/columns
-* @return void
-*/
+
 void RRT::CreateObstacleList(std::vector<std::vector<int> > &grid, int n){
   for(int i=0; i < n; i++){
     for(int j=0;j < n; j++){

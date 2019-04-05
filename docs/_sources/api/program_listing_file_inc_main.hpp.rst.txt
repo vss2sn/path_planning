@@ -38,3 +38,8 @@ Program Listing for File main.hpp
    
    #include <cmath>
    #include <thread>
+   
+   #ifndef BUILD_INDIVIDUAL
+   
+   int main();
+   #endif

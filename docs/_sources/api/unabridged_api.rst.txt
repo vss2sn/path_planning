@@ -49,27 +49,12 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_utils_8cpp_1a3314a5898aaa777e954abfa9f3996d41.rst
-
-.. toctree::
-   :maxdepth: 5
-
    function_utils_8hpp_1a3314a5898aaa777e954abfa9f3996d41.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_a__star_8cpp_1aa6ad1863ece771ae1001edfea26fd435.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_main_8cpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_utils_8cpp_1a7c85b008da7c5aa00f778645108cbe47.rst
+   function_main_8hpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.rst
 
 .. toctree::
    :maxdepth: 5
@@ -79,27 +64,12 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_utils_8cpp_1ac48d8b8a2e1171930046a91e34411291.rst
-
-.. toctree::
-   :maxdepth: 5
-
    function_utils_8hpp_1ac48d8b8a2e1171930046a91e34411291.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_utils_8cpp_1a261d8d8f776af001a11d472ac44b4df0.rst
-
-.. toctree::
-   :maxdepth: 5
-
    function_utils_8hpp_1a261d8d8f776af001a11d472ac44b4df0.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_utils_8cpp_1a06d11b8315f4ee5b8318fec5f02370bc.rst
 
 .. toctree::
    :maxdepth: 5
@@ -164,19 +134,9 @@ Directories
 
    dir_inc.rst
 
-.. toctree::
-   :maxdepth: 5
-
-   dir_src.rst
-
 Files
 *****
 
-
-.. toctree::
-   :maxdepth: 5
-
-   file_src_a_star.cpp.rst
 
 .. toctree::
    :maxdepth: 5
@@ -186,17 +146,7 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_src_d_star_lite.cpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
    file_inc_d_star_lite.hpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_src_dijkstra.cpp.rst
 
 .. toctree::
    :maxdepth: 5
@@ -206,22 +156,7 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_src_main.cpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
    file_inc_main.hpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_README.md.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_src_rrt.cpp.rst
 
 .. toctree::
    :maxdepth: 5
@@ -231,17 +166,7 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_src_rrt_star.cpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
    file_inc_rrt_star.hpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_src_utils.cpp.rst
 
 .. toctree::
    :maxdepth: 5

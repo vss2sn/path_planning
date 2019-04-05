@@ -8,6 +8,11 @@ File main.hpp
 
 .. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
+
+Just includes includes. Needs to be refactored. 
+
+
+
 .. contents:: Contents
    :local:
    :backlinks: none
@@ -20,6 +25,14 @@ Definition (``inc/main.hpp``)
    :maxdepth: 1
 
    program_listing_file_inc_main.hpp.rst
+
+
+
+Detailed Description
+--------------------
+
+vss2sn 
+
 
 
 
@@ -86,4 +99,11 @@ Included By
 - :ref:`file_inc_utils.hpp`
 
 
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_main_8hpp_1ae66f6b31b5ad750f1fe042a706a4e3d4`
 

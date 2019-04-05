@@ -6,11 +6,6 @@
 
 #include "d_star_lite.hpp"
 
-/**
-* @brief Using insertion sort to sort the vector list.
-* @param v The vector to be sorted
-* @return void
-*/
 void DStarLite::VectorInsertionSort(std::vector<Node>& v){
    int n = v.size();
    int i, j;
@@ -26,20 +21,10 @@ void DStarLite::VectorInsertionSort(std::vector<Node>& v){
    }
 }
 
-/**
-* @brief Calculate and return the heuristic distance between 2 nodes
-* @param s1 Node 1
-* @param s2 Node 2
-* @return Heuritic distance between the 2 nodes
-*/
 double DStarLite::GetHeuristic(Node s1, Node s2){
   return abs(s1.x_ - s2.x_) + abs(s1.y_ - s2.y_);
 }
 
-/**
-* @brief Displays the G and RHS values for the entire grid.
-* @return void
-*/
 void DStarLite::MyPrint(){
   std::cout << "G values:" << std::endl;
   for(int i=0;i<n;i++){
@@ -57,22 +42,12 @@ void DStarLite::MyPrint(){
   }
 }
 
-/**
-* @brief Returns the key (pair) values for a given node.
-* @param s Node whose key values are to be calcualted
-* @return Key for given input node
-*/
 std::pair<double,double> DStarLite::CalculateKey(const Node& s){
   return std::make_pair(std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second
                                   +GetHeuristic(start_,s)+km_.first),
                         std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second));
 }
 
-/**
-* @brief Returns the possible predecessors of a given node, based on allowed motion primatives
-* @param u Node
-* @return Vector of nodes that are possible predecessors to input node
-*/
 std::vector<Node> DStarLite::GetPred(Node u){
   std::vector<Node> pred;
   for(auto it=motions.begin();it!=motions.end(); ++it){
@@ -86,11 +61,6 @@ std::vector<Node> DStarLite::GetPred(Node u){
   return pred;
 }
 
-/**
-* @brief Returns the possible successors of a given node, based on allowed motion primatives
-* @param u Node
-* @return Vector of nodes that are possible successors to input node
-*/
 std::vector<Node> DStarLite::GetSucc(Node u){
   std::vector<Node> succ;
   for(auto it=motions.begin();it!=motions.end(); ++it){
@@ -104,10 +74,6 @@ std::vector<Node> DStarLite::GetSucc(Node u){
   return succ;
 }
 
-/**
-* @brief Using insertion sort to sort the vector list that maintains the priority queue. Good for a mostly sorted queue. Sort called after every insertion to maintain queue. Not using standard queue as iterating over is not allowed.
-* @return void
-*/
 void DStarLite::InsertionSort(){
    int n = U_.size();
    int i, j;
@@ -124,12 +90,6 @@ void DStarLite::InsertionSort(){
    }
 }
 
-/**
-* @brief Returns the cost of motion moving from one node to another, based on allowed motion primatives. Currently set to 1 for speed up given only 4 motions permitted, at constant cost. Change as required, based on permitted motions.
-* @param s1 Node
-* @param s2 Node
-* @return cost of motion moving from first node to second
-*/
 double DStarLite::C(Node s1, Node s2){
   if(s1.x_ < n && s1.x_ >= 0 && s1.y_ < n && s1.y_ >= 0 &&
      s2.x_ < n && s2.x_ >= 0 && s2.y_ < n && s2.y_ >= 0 &&
@@ -147,10 +107,6 @@ double DStarLite::C(Node s1, Node s2){
   }
 }
 
-/**
-* @brief Initialisation function of D*. Initialises G and RHS values for all nodes, store motion allowable primatives, km value and the first value of the priority queue.
-* @return void
-*/
 void DStarLite::Init(){
   U_.clear();
   iter_ = 0;
@@ -176,11 +132,6 @@ void DStarLite::Init(){
   InsertionSort();
 }
 
-/**
-* @brief Update vertex procedure as per D* Lite algorithm, Figure 3.
-* @param u Node on which UpdateVertex has to be called
-* @return void
-*/
 void DStarLite::UpdateVertex(Node& u){
   if(u!=goal_){
     std::vector<Node> succ = GetSucc(u);
@@ -205,12 +156,6 @@ void DStarLite::UpdateVertex(Node& u){
   }
 }
 
-/**
-* @brief Compare keys function for D* Lite. Compares the key given as input with the key values of the node given as input. Calls CalculateKey on the node.
-* @param pair_in Key pair
-* @param u Node whose key values will be calculated and compared to above key pair
-* @return bool value based on comparison of key values
-*/
 bool DStarLite::CompareKey(std::pair<double,double>& pair_in, Node& u){
   std::pair<double,double> node_key = CalculateKey(u);
   if(pair_in.first < node_key.first ||
@@ -220,10 +165,6 @@ bool DStarLite::CompareKey(std::pair<double,double>& pair_in, Node& u){
   return false;
 }
 
-/**
-* @brief ComputeShortestPath procedure as per D* Lite algorithm, Figure 3.
-* @return void
-*/
 int DStarLite::ComputeShortestPath(){
   while((!U_.empty() && CompareKey(U_[0].second, start_)) || S_[start_.x_][start_.y_].first != S_[start_.x_][start_.y_].second){
     k_old_ = U_[0].second;
@@ -253,14 +194,6 @@ int DStarLite::ComputeShortestPath(){
   return 0;
 }
 
-/**
-* @brief Main algorithm of D* Lite
-* @param grid_in Main grid
-* @param n_in number of rows/columns
-* @param start_in starting node
-* @param goal_in goal node
-* @return path vector of nodes
-*/
 std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in, int n_in, Node start_in, Node goal_in){
   grid = grid_in;
   start_ = start_in;
@@ -279,11 +212,6 @@ std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in,
   return ReturnInvertedVector();
 }
 
-/**
-* @brief Create an obstacle on input node. Does not allow start or goal to be declared an obstacle. Prints out the obstacle if created and displays the grid. Calls Replan function.
-* @param u Node at which obstacle is to be created
-* @return path vector of nodes
-*/
 std::vector<Node> DStarLite::SetObs(Node u){
   if(u==goal_ || u==start_){
     std::cout << "Cannot set current start or goal as obstacle" << std::endl;
@@ -296,12 +224,6 @@ std::vector<Node> DStarLite::SetObs(Node u){
   return Replan(u);
 }
 
-/**
-* @brief Replan route, called whenever a previously unknown obstacle is detected.
-        Equivalent of the effects of the code after an edge change is detectedd in the while loop within the main procedure of D* Lite.
-* @param u Node at which the change was detected
-* @return path vector of nodes
-*/
 std::vector<Node> DStarLite::Replan(Node u){
   if (grid[start_.x_][start_.y_]==1) grid[start_.x_][start_.y_]=0;
   path_vector_.clear();
@@ -333,10 +255,6 @@ std::vector<Node> DStarLite::Replan(Node u){
   return ReturnInvertedVector();
 }
 
-/**
-* @brief As D* Lite moves from goal to start, inverts the path vector taht has been generated as well as the cost, ensuring that cost to start is 0.
-* @return path vector of nodes
-*/
 std::vector<Node> DStarLite::ReturnInvertedVector(){
   std::vector<Node> inverted_path_vector = path_vector_;
   // Inverting costs as dstar moves from goal to start.
@@ -349,10 +267,6 @@ std::vector<Node> DStarLite::ReturnInvertedVector(){
   return inverted_path_vector;
 }
 
-/**
-* @brief Generate the path vector and set the appropriate grid values
-* @return void
-*/
 void DStarLite::GeneratePathVector(){
   main_start_.cost_ = S_[main_start_.x_][main_start_.y_].second;
   path_vector_.push_back(main_start_);
@@ -383,11 +297,6 @@ void DStarLite::GeneratePathVector(){
   }
 }
 
-/**
-* @brief Update the starting point of the algorithm. Created to be independant, used by RunDStarLite function to update the position of the bot. If using independantly, uncomment the commented section within the function. Letting it return path_vector_ as that is required for independent run.
-* @param start_in new starting position
-* @return Path vector of nodes. Can be made to void, but left as path vector to allow independent call.
-*/
 std::vector<Node> DStarLite::UpdateStart(Node start_in){
   // Prevent teleportations
   if(path_vector_[0].cost_ == -1){
@@ -405,10 +314,6 @@ std::vector<Node> DStarLite::UpdateStart(Node start_in){
   return path_vector_;
 }
 
- /**
-* @brief Displays the grid stored by the D* Lite object.
-* @return void
-*/
 void DStarLite::DisplayGrid(){
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
@@ -434,10 +339,6 @@ void DStarLite::DisplayGrid(){
   std::cout << std::endl;
 }
 
-/**
-* @brief Find and return the next point in the path_vector
-* @return next point node
-*/
 Node DStarLite::NextPoint(){
   int i = 0;
   for(i = 0; i < path_vector_.size(); i++){
@@ -456,11 +357,7 @@ Node DStarLite::NextPoint(){
   }
   return path_vector_[i];
 }
-/**
-* @brief Function to run D* Lite live, showing the movement of the bot with time. Timeout after each movement set in .h file. Next point in path might beset to obstacle with probability 1/n. Calls UpdateStart and SetObs.
-* @param disp_inc_in Bool value to allow display incremental progress
-* @return void
-*/
+
 void DStarLite::RunDStarLite(bool disp_inc_in){
   disp_inc = disp_inc_in;
   if(path_vector_[0].cost_==-1){

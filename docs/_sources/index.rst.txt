@@ -9,8 +9,6 @@
    :maxdepth: 2
    :caption: Contents:
 
-   about
-   overview
    algorithms
    api/library_root
 

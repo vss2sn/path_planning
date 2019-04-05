@@ -18,6 +18,7 @@ Program Listing for File dijkstra.hpp
    
    class Dijkstra{
    public:
+   
      std::vector<Node> dijkstra(std::vector<std::vector<int> > &grid, int n, Node start_, Node goal_);
    private:
      std::priority_queue<Node, std::vector<Node>, compare_cost> open_list_;

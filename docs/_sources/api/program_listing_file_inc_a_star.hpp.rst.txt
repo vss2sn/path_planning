@@ -18,7 +18,10 @@ Program Listing for File a_star.hpp
    
    class AStar{
    public:
-     std::vector<Node> a_star(std::vector<std::vector<int>> &grid, int n, Node start_, Node goal_);
+   
+     std::vector<Node> a_star(std::vector<std::vector<int>> &grid, int n, Node start_in, Node goal_in);
+   
+     void InsertionSort(std::vector<Node>& v);
    private:
      std::priority_queue<Node, std::vector<Node>, compare_cost> open_list_;
      std::vector<Node> closed_list_;

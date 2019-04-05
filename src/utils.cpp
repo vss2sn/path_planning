@@ -6,15 +6,6 @@
 
 #include "utils.hpp"
 
-/**
-* @brief Constructor for Node class
-* @param x X value
-* @param y Y value
-* @param cost Cost to get to this node
-* @param h_cost Heuritic cost of this node
-* @param id Node's id
-* @param pid Node's parent's id
-*/
 Node::Node(int x, int y, double cost, double h_cost, int id, int pid){
   this->x_ = x;
   this->y_ = y;
@@ -24,10 +15,6 @@ Node::Node(int x, int y, double cost, double h_cost, int id, int pid){
   this->pid_ = pid;
 }
 
-/**
-* @brief Prints the values of the variables in the node
-* @return void
-*/
 void Node::PrintStatus(){
   std::cout << "--------------"              << std::endl
             << "Node          :"             << std::endl
@@ -40,11 +27,6 @@ void Node::PrintStatus(){
             << "--------------"              << std::endl;
 }
 
-/**
-* @brief Overloading operator + for Node class
-* @param p node
-* @return Node with current node's and input node p's values added
-*/
 Node Node::operator+(Node p){
   Node tmp;
   tmp.x_ = this->x_ + p.x_;
@@ -53,11 +35,6 @@ Node Node::operator+(Node p){
   return tmp;
 }
 
-/**
-* @brief Overloading operator - for Node class
-* @param p node
-* @return Node with current node's and input node p's values subtracted
-*/
 Node Node::operator-(Node p){
   Node tmp;
   tmp.x_ = this->x_ - p.x_;
@@ -65,11 +42,6 @@ Node Node::operator-(Node p){
   return tmp;
 }
 
-/**
-* @brief Overloading operator = for Node class
-* @param p node
-* @return void
-*/
 void Node::operator=(Node p){
   this->x_ = p.x_;
   this->y_ = p.y_;
@@ -79,31 +51,16 @@ void Node::operator=(Node p){
   this->pid_ = p.pid_;
 }
 
-/**
-* @brief Overloading operator == for Node class
-* @param p node
-* @return bool whether current node equals input node
-*/
 bool Node::operator==(Node p){
   if (this->x_ == p.x_ && this->y_ == p.y_) return true;
   return false;
 }
-/**
-* @brief Overloading operator != for Node class
-* @param p node
-* @return bool whether current node is not equal to input node
-*/
+
 bool Node::operator!=(Node p){
   if (this->x_ != p.x_ || this->y_ != p.y_) return true;
   return false;
 }
 
-/**
-* @brief Compare cost between 2 nodes
-* @param p1 Node 1
-* @param p2 Node 2
-* @return Returns whether cost to get to node 1 is greater than the cost to get to node 2
-*/
 bool compare_cost::operator()(Node& p1, Node& p2){
   // Can modify this to allow tie breaks based on heuristic cost if required
   if (p1.cost_ + p1.h_cost_ >= p2.cost_ + p2.h_cost_) return true;
@@ -114,10 +71,7 @@ bool compare_cost::operator()(Node& p1, Node& p2){
 // Not using this for RRT & RRT* to allow random direction movements.
 // TODO: Consider adding option for motion restriction in RRT and RRT* by
 //       replacing new node with nearest node that satisfies motion constraints
-/**
-* @brief Get permissible motion primatives for the bot
-* @return vector of permissible motions
-*/
+
 std::vector<Node> GetMotion(){
   Node down(0,1,1,0,0,0);
   Node up(0,-1,1,0,0,0);
@@ -135,12 +89,6 @@ std::vector<Node> GetMotion(){
   return v;
 }
 
-/**
-* @brief Creates a random grid of a given size
-* @param grid Modify this grid
-* @param n number of rows/columns
-* @return void
-*/
 void MakeGrid(std::vector<std::vector<int>> &grid, int n){
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
@@ -154,12 +102,6 @@ void MakeGrid(std::vector<std::vector<int>> &grid, int n){
   }
 }
 
-/**
-* @brief Prints the grid passed
-* @param grid Modify this grid
-* @param n number of rows/columns
-* @return void
-*/
 void PrintGrid(std::vector<std::vector<int>> &grid, int n){
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
@@ -183,15 +125,6 @@ void PrintGrid(std::vector<std::vector<int>> &grid, int n){
   std::cout << std::endl;
 }
 
-/**
-* @brief Prints the grid passed
-* @param path_vector the path vector
-* @param start start node
-* @param goal goal node
-* @param grid Modify this grid
-* @param n number of rows/columns
-* @return void
-*/
 void PrintPath(std::vector<Node> path_vector, Node start, Node goal, std::vector<std::vector<int>> &grid, int n){
   if(path_vector[0].id_ == -1){
     std::cout << "No path exists" << std::endl;
@@ -219,13 +152,6 @@ void PrintPath(std::vector<Node> path_vector, Node start, Node goal, std::vector
   PrintGrid(grid, n);
 }
 
-/**
-* @brief Prints out the cost for reaching points on the grid in the grid shape
-* @param grid Grid on which algorithm is running
-* @param n Number of rows/columns
-* @param point_list Vector of all points that have been considered. Nodes in vector contain cost.
-* @return void
-*/
 void PrintCost(std::vector<std::vector<int>> &grid, int n, std::vector<Node> point_list){
   std::vector<Node>::iterator it_v;
   for(int i=0;i<n;i++){

@@ -35,22 +35,34 @@ Program Listing for File utils.hpp
      int pid_;
      double cost_;
      double h_cost_;
+   
      Node(int x = 0, int y = 0, double cost = 0, double h_cost = 0, int id = 0, int pid = 0);
+   
      void PrintStatus();
+   
      Node operator+(Node p);
+   
      Node operator-(Node p);
+   
      void operator=(Node p);
+   
      bool operator==(Node p);
+   
      bool operator!=(Node p);
    };
    
    struct compare_cost{
+   
      bool operator()(Node& p1, Node& p2);
    };
    
    std::vector<Node> GetMotion();
+   
    void PrintGrid(std::vector<std::vector<int>> &grid, int n);
+   
    void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, std::vector<std::vector<int>> &grid, int n);
+   
    void PrintCost(std::vector<std::vector<int>> &grid, int n, std::vector<Node> point_list);
+   
    void MakeGrid(std::vector<std::vector<int>> &grid, int n);
    #endif UTILS_H

@@ -8,6 +8,11 @@ File utils.hpp
 
 .. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
+
+Contains common/commonly used funtions and classes. 
+
+
+
 .. contents:: Contents
    :local:
    :backlinks: none
@@ -20,6 +25,14 @@ Definition (``inc/utils.hpp``)
    :maxdepth: 1
 
    program_listing_file_inc_utils.hpp.rst
+
+
+
+Detailed Description
+--------------------
+
+vss2sn 
+
 
 
 
@@ -46,8 +59,6 @@ Included By
 - :ref:`file_inc_rrt.hpp`
 
 - :ref:`file_inc_rrt_star.hpp`
-
-- :ref:`file_src_utils.cpp`
 
 
 

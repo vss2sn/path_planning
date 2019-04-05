@@ -1,5 +1,5 @@
 /**
-* @file main.h
+* @file main.hpp
 * @author vss2sn
 * @brief Just includes includes. Needs to be refactored.
 */
@@ -31,3 +31,11 @@
 
 #include <cmath>
 #include <thread>
+
+#ifndef BUILD_INDIVIDUAL
+/**
+* @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm objects and calls the main algorithm functions.
+* @return 0
+*/
+int main();
+#endif

@@ -1,5 +1,6 @@
 .. _algorithms:
 
+================================================================================
 Algorithms
 ================================================================================
 
@@ -7,13 +8,16 @@ Algorithms
   - This page contains the pseudo code outlining the algorithms implemented.
   - An effort has been made to implement the algorithm in a way that allows easy correspondence with the pseudo code, facilitating learning.
 
-.. important::  
+.. important::
   - The pseudo code is written based on the original papers from which the algorithms are derived; slight modifications might be made, while retaining the essence of the algorithm.
   - Minor modifications have been made to the implementation of Dijkstra to highlight it's similarity of A*.
   - Using the grid on which the algorithm runs to maintain cost would make the speed up the  algorithms significantly for both A* and Dijkstra, and remove the necessity for using the closed list, maintaining cost in the open list.
 
 .. todo::
   - Highlight changes between pseudocode and implementation
+
+.. contents::
+  :backlinks: none
 
 RRT
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -29,6 +33,11 @@ RRT
 
 RRTStar
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| **procedure rewire()**
+|  for all node in close_node_list != q\ :sub:`parent`\
+|   if(q\ :sub:`rand`\.cost + dist(node ,q\ :sub:`rand`\) < node.cost)
+|     node.parent <--- q\ :sub:`rand`\
+|     node.cost <--- q\ :sub:`rand`\.cost + distance(node, q\ :sub:`rand`\)
 | **procedure main()**
 |  T = 0; // Initialize list/tree
 |  for k = 1 to K
@@ -40,11 +49,6 @@ RRTStar
 |     if(q\ :sub:`rand`\ = goal) return path found
 |     rewire()
 |  return no path
-| **procedure rewire()**
-|  for all node in close_node_list != q\ :sub:`parent`\
-|   if(q\ :sub:`rand`\.cost + dist(node ,q\ :sub:`rand`\) < node.cost)
-|     node.parent <--- q\ :sub:`rand`\
-|     node.cost <--- q\ :sub:`rand`\.cost + distance(node, q\ :sub:`rand`\)
 
 Dijkstra
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,7 +124,7 @@ D* Lite:
 |  Initialize();
 |  ComputeShortestPath();
 |  while(s\ :sub:`start`\!=s\ :sub:`goal`\)
-|   /* if(g(s\ :sub:`start`\)=inf) there is no known path */
+|   / if(g(s\ :sub:`start`\)=inf) there is no known path /
 |   s\ :sub:`start`\ = arg min\ :sub:`for all s' in Succ(s\ :sub:`start`\)`\(c(s\ :sub:`start`\,s')+g(s')
 |   Move to start
 |   Scan graph for changed edge costs;

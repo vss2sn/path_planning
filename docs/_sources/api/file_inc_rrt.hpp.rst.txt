@@ -8,6 +8,11 @@ File rrt.hpp
 
 .. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
+
+Contains the :ref:`exhale_class_classRRT` class. 
+
+
+
 .. contents:: Contents
    :local:
    :backlinks: none
@@ -23,6 +28,14 @@ Definition (``inc/rrt.hpp``)
 
 
 
+Detailed Description
+--------------------
+
+vss2sn 
+
+
+
+
 
 
 Includes
@@ -32,14 +45,6 @@ Includes
 - ``utils.hpp`` (:ref:`file_inc_utils.hpp`)
 
 
-
-Included By
------------
-
-
-- :ref:`file_src_main.cpp`
-
-- :ref:`file_src_rrt.cpp`
 
 
 
