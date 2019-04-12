@@ -62,28 +62,19 @@ std::vector<Node> LLAStar::GetPred(Node u){
 }
 
 std::vector<Node> LLAStar::GetSucc(Node u){
-  std::cout << "in sgetsucc" << std::endl;
-
   std::vector<Node> succ;
   for(auto it=motions.begin();it!=motions.end(); ++it){
-    std::cout << "in succ for" << std::endl;
     PrintGrid(grid,n);
     Node new_node = u + *it;
-    std::cout << "sddigned" << std::endl;
     u.PrintStatus();
     if(new_node.x_ < n && new_node.x_ >= 0 && new_node.y_ < n && new_node.y_ >= 0){
-      std::cout << "in 1st if" << std::endl;
       std::cout << new_node.x_ << std::endl;
       std::cout << new_node.y_ << std::endl;
            if(grid[new_node.x_][new_node.y_]!=1){
-         std::cout << "in if abot to push " << std::endl;
-
          succ.push_back(new_node);
        }
     }
   }
-  std::cout << "returning suc" << std::endl;
-
   return succ;
 }
 
@@ -138,8 +129,8 @@ void LLAStar::Init(){
 
   S_[start_.x_][start_.y_].second = 0;
   std::pair<Node, std::pair<double, double>> u_pair = std::make_pair(start_, CalculateKey(start_));
-  U_.push_back(u_pair);
   InsertionSort();
+  U_.push_back(u_pair);
 }
 
 void LLAStar::UpdateVertex(Node& u){
@@ -176,21 +167,13 @@ bool LLAStar::CompareKey(std::pair<double,double>& pair_in, Node& u){
 }
 
 int LLAStar::ComputeShortestPath(){
-  std::cout << "in compute" << std::endl;
   while((!U_.empty() && CompareKey(U_[0].second, goal_)) || S_[goal_.x_][goal_.y_].first != S_[goal_.x_][goal_.y_].second){
-    std::cout << "in while" << std::endl;
     Node u = U_[0].first;
     U_.erase(U_.begin());
-    std::cout << "erased" << std::endl;
     if(S_[u.x_][u.y_].first > S_[u.x_][u.y_].second){
       S_[u.x_][u.y_].first = S_[u.x_][u.y_].second;
-      std::cout << "in if" << std::endl;
       std::vector<Node> succ = GetSucc(u);
-      std::cout << "gotsucc" << std::endl;
-
       for(int i = 0;i<succ.size();i++){
-        std::cout << "in first for " << std::endl;
-
         UpdateVertex(succ[i]);
       }
     }
@@ -198,14 +181,11 @@ int LLAStar::ComputeShortestPath(){
       S_[u.x_][u.y_].first = n*n;
       std::vector<Node> succ = GetSucc(u);
       for(int i = 0;i<succ.size();i++){
-        std::cout << "in second for " << std::endl;
-
         UpdateVertex(succ[i]);
       }
       UpdateVertex(u);
     }
   }
-
   if (S_[goal_.x_][goal_.y_] ==  large_num)return -1;
   return 0;
 }
@@ -221,11 +201,7 @@ std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, int 
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
   Init();
   int count = 0;
-  std::cout << "out of init"<< std::endl;
   int ans = ComputeShortestPath();
-  DisplayGrid();
-  // MyPrint();
-  //sleep(10);
   if(ans < 0 || S_[start_.x_][start_.y_].first==large_num.first){
         DisplayGrid();
     path_vector_.clear();
@@ -241,15 +217,11 @@ std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, int 
   }
   GeneratePathVector();
   while(count < 10){
-    // sleep(1);
     if(distr(eng) > n-2){
       DisplayGrid();
-
       Node new_obs = Node(distr(eng),distr(eng));
       std::vector<Node> succ = GetSucc(new_obs);
-      // std::cout << "entering SetObs"<< std::endl;
       SetObs(new_obs);
-      // std::cout << "out of SetObs"<< std::endl;
       for(int i=0;i<succ.size();i++){
         UpdateVertex(succ[i]);
       }
@@ -257,9 +229,8 @@ std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, int 
     }
     int ans = ComputeShortestPath();
     std::cout << "out of compute "<< ans << std::endl;
-    //MyPrint();
     if(ans < 0 || S_[start_.x_][start_.y_].first==large_num.first){
-          DisplayGrid();
+      DisplayGrid();
       path_vector_.clear();
       Node no_path_node(-1,-1,-1,-1,-1);
       path_vector_.push_back(no_path_node);
@@ -272,14 +243,18 @@ std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, int 
       return path_vector_;
     }
     GeneratePathVector();
-    //DisplayGrid();
     MyPrint();
     count++;
   }
   DisplayGrid();
-
   grid_in = grid;
-  return path_vector_;//ReturnInvertedVector();
+  grid_in = grid;
+  for(int i=0;i<n;i++){
+    for(int j=0;j<n;j++){
+      if(grid_in[i][j]==2) grid_in[i][j]=0;
+    }
+  }
+  return path_vector_;
 }
 
 void LLAStar::SetObs(Node u){
@@ -287,24 +262,12 @@ void LLAStar::SetObs(Node u){
   std::cout << n << std::endl;
   if(u==goal_ || u==start_){
     std::cout << "Cannot set current start or goal as obstacle" << std::endl;
-    //return path_vector_;
+    return;
   }
   std::cout << "setting grid"<< std::endl;
   grid[u.x_][u.y_] = 1;
   std::cout << "Obstacle found at: " << std::endl;
   u.PrintStatus();
-}
-
-std::vector<Node> LLAStar::ReturnInvertedVector(){
-  std::vector<Node> inverted_path_vector = path_vector_;
-  // Inverting costs as dstar moves from goal to start.
-  // Then inverting path vector for reordering.
-  double start_cost = inverted_path_vector.back().cost_;
-  for(auto it=inverted_path_vector.begin(); it!=inverted_path_vector.end(); ++it){
-    (*it).cost_ = start_cost - (*it).cost_;
-  }
-  std::reverse(inverted_path_vector.begin(),inverted_path_vector.end());
-  return inverted_path_vector;
 }
 
 void LLAStar::GeneratePathVector(){
@@ -316,20 +279,15 @@ void LLAStar::GeneratePathVector(){
     std::cout << "In while of gen" <<std::endl;
     Node u = path_vector_[0];
     grid[u.x_][u.y_]=2;
-    //sleep(1);
-    // std::cout << "Size " << path_vector_.size() << std::endl;
-    //u.PrintStatus();MyPrint();
     for(auto it=motions.begin();it!=motions.end(); ++it){
       Node new_node = u + *it;
       if(new_node.x_ >= n || new_node.x_ < 0 || new_node.y_ >= n || new_node.y_ < 0
          || grid[new_node.x_][new_node.y_]==1){
-           // std::cout << "First continue" << std::endl;
         continue;
       }
       if(new_node.x_ < n && new_node.x_ >= 0 && new_node.y_ < n && new_node.y_ >= 0){
         new_node.cost_= S_[new_node.x_][new_node.y_].second;
         if(new_node.cost_ > u.cost_){
-          // std::cout << "Second continue" << std::endl;
            continue;
         }
         new_node.id_ = n*new_node.x_ + new_node.y_;
@@ -389,7 +347,6 @@ Node LLAStar::NextPoint(){
   return path_vector_[i];
 }
 
-
 #ifdef BUILD_INDIVIDUAL
 /**
 * @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm object and calls the main algorithm function.
@@ -397,15 +354,25 @@ Node LLAStar::NextPoint(){
 */
 int main(){
   int n = 8;
+  std::vector<std::vector<int>> grid = {
+    { 0 , 0 , 1 , 0 , 0 , 1 , 0 , 0 },
+    { 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
+    { 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
+    { 0 , 1 , 0 , 1 , 0 , 1 , 0 , 0 },
+    { 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
+    { 0 , 0 , 1 , 0 , 0 , 0 , 1 , 0 }
+  };
 
-  std::vector<std::vector<int>> grid(n);
-  std::vector<int> tmp(n);
-  for (int i = 0; i < n; i++){
-    grid[i] = tmp;
-  }
-  MakeGrid(grid, n);
+  // std::vector<std::vector<int>> grid(n);
+  // std::vector<int> tmp(n);
+  // for (int i = 0; i < n; i++){
+  //   grid[i] = tmp;
+  // }
+  // MakeGrid(grid, n);
 
-  Node start((n-1)/2,(n-1)/2,0,0,0,0);
+  Node start(0,0,0,0,0,0);
   Node goal(n-1,n-1,0,0,0,0);
 
   start.id_ = start.x_ * n + start.y_;
@@ -419,12 +386,6 @@ int main(){
   std::vector<Node> path_vector;
   LLAStar new_lla_star;
   path_vector = new_lla_star.lla_star(grid, n, start, goal);
-  std::cout << "Here"<<std::endl;
-
-  for(int i=0;i<path_vector.size();i++){
-    path_vector[i].PrintStatus();
-  }
-  std::cout << "Here" <<std::endl;
-  PrintPath(path_vector, goal, start, grid, n);
+  PrintPath(path_vector, goal, start, grid, n); //Order of start and goal switched here due to the way LPA* works.
 }
 #endif BUILD_INDIVIDUAL
