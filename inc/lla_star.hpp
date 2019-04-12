@@ -106,7 +106,7 @@ public:
   * @param goal_in goal node
   * @return path vector of nodes
   */
-  std::vector<Node> lla_star(std::vector<std::vector<int> > &grid_in, int n_in, Node start_in, Node goal_in);
+  std::vector<Node> lla_star(std::vector<std::vector<int> > &grid_in, int n_in, Node start_in, Node goal_in, int max_iter_in);
 
   /**
   * @brief Replan route, called whenever a previously unknown obstacle is detected.
@@ -137,12 +137,6 @@ public:
   std::vector<Node> UpdateStart(Node start_in);
 
   /**
-  * @brief As LLA* Lite moves from goal to start, inverts the path vector taht has been generated as well as the cost, ensuring that cost to start is 0.
-  * @return path vector of nodes
-  */
-  std::vector<Node> ReturnInvertedVector();
-
-  /**
   * @brief Function to run LLA* Lite live, showing the movement of the bot with time. Timeout after each movement set in .h file. Next point in path might beset to obstacle with probability 1/n. Calls UpdateStart and SetObs.
   * @param disp_inc_in Bool value to allow display incremental progress
   * @return void
@@ -161,15 +155,11 @@ public:
   */
   void DisplayGrid();
 private:
-  bool disp_inc = true; // Display incremental movements during LLA* Lite live run
-  useconds_t disp_p = 500000; // Pause for displaying grid in microseconds
-  Node start_, main_start_, goal_, last_;
-  std::vector<std::vector<std::pair<double,double>>> S_; // Do not let grid size exceed 100
+  Node start_, goal_;
+  std::vector<std::vector<std::pair<double,double>>> S_;
   std::vector<std::pair<Node,std::pair<double,double>>> U_;
-  std::pair<double,double> km_;
-  std::pair<double,double> k_old_;
   std::vector<Node> motions;
-  int n, iter_ = 0, max_iter_ = 0;
+  int n, iter_ = 0, max_iter_;
   std::vector<Node> path_vector_;
   std::pair<double,double> large_num;
   std::vector<std::vector<int>> grid;

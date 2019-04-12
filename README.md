@@ -8,9 +8,10 @@
 #### Algorithms: ####
 1. Dijkstra's algorithm for grid based search.
 2. AStar (A*) algorithm for grid based search.
-3. RRT algorithm for grid based search.
-4. RRTStar (RRT*) algorithm for grid based search.
-5. DStarLite (D* Lite) algorithm for grid based search.
+3. Lifelong Planning AStar (LPA*) algorithm for grid based search.
+4. DStarLite (D* Lite) algorithm for grid based search.
+5. RRT algorithm for grid based search.
+6. RRTStar (RRT*) algorithm for grid based search.
 
 <a name="instructions"></a>
 #### To build and run: ####
@@ -38,9 +39,8 @@
 #### Notes: ####
 1. `main` creates a grid of a given size n, with any point set as an obstacle with a probability of 1/n. It then runs all the algorithms in the repository on the given grid.
 2. Setting the CMake option `BUILD_INDIVIDUAL` to `ON` allows building of each .cpp separately (except main.cpp), facilitating easy testing. Setting `BUILD_INDIVIDUAL` to `OFF` allows use of all base classes and algorithms in main.cpp.
-3. D* Lite can be run live with random obstacle creation using the RunDStarLite function.
-4. utils.cpp built as library and used in every separate file.
-5. [Documentation](https://vss2sn.github.io/path_planning/) moved to GitHub pages. It has been created using [Doxygen](http://www.doxygen.nl/), and pip3 packages [Sphinx](http://www.sphinx-doc.org/en/master/) (sphinx==1.8.3), [Breathe](https://github.com/michaeljones/breathe) (breathe==4.12.0), [Exhale](https://github.com/svenevs/exhale) (exhale==0.2.2) and [Read the Docs Sphinx Theme](https://github.com/rtfd/sphinx_rtd_theme) (sphinx_rtd_theme==0.4.3).
+3. utils.cpp built as library and used in every separate file.
+4. [Documentation](https://vss2sn.github.io/path_planning/) moved to GitHub pages. It has been created using [Doxygen](http://www.doxygen.nl/), and pip3 packages [Sphinx](http://www.sphinx-doc.org/en/master/) (sphinx==1.8.3), [Breathe](https://github.com/michaeljones/breathe) (breathe==4.12.0), [Exhale](https://github.com/svenevs/exhale) (exhale==0.2.2) and [Read the Docs Sphinx Theme](https://github.com/rtfd/sphinx_rtd_theme) (sphinx_rtd_theme==0.4.3).
 
 <a name="notes_on_tests"></a>
 #### Notes on test: ####
@@ -55,9 +55,9 @@
 1. RRT stops as soon as goal is found. It is connects new points to the nearest point, not accounting for total cost to reach that point. In contrast RRT\* chooses to connect to a new node to the node that allows the new node to have the minimum cost. RRT\* also rewires the preexisting nodes to the new node if that path allows for a lower cost for the preexisting node.
 2. Acceptable motions can be modified in the GetMotion function in utils.cpp.
 3. A\* and D\* Lite use Manhattan distance (L1) as their heuristic (change to L2 if adding diagonal moves to the GetMotion function). D* Lite also uses the same in its C function.
-4. D* Lite implemented based on based on Sven Koenig's & Maxim Likhachev's paper.
-5. For the live run of D* Lite, obstacles are detected on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid.
-6. To specify your own grid, set n to number of rows, created the 2D vector, setting 1 for obstacles and 0 elsewhere, and comment out the MakeGrid function.
+4. D* Lite can be run live with random obstacle creation using the RunDStarLite function. For the live run of D* Lite, obstacles are detected on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid. D* Lite is implemented based on Sven Koenig's & Maxim Likhachev's paper.
+5. To specify your own grid, set n to number of rows, created the 2D vector, setting 1 for obstacles and 0 elsewhere, and comment out the MakeGrid function.
+6. The LPA* algorithm is implemented to run `max_iter_` number of times with default value `n`. Obstacles are created on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid, at a random point along the path.
 
 <a name="notes_on_cmake_options"></a>
 #### Notes on CMake Options: ####

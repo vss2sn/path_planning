@@ -64,12 +64,8 @@ std::vector<Node> LLAStar::GetPred(Node u){
 std::vector<Node> LLAStar::GetSucc(Node u){
   std::vector<Node> succ;
   for(auto it=motions.begin();it!=motions.end(); ++it){
-    PrintGrid(grid,n);
     Node new_node = u + *it;
-    u.PrintStatus();
     if(new_node.x_ < n && new_node.x_ >= 0 && new_node.y_ < n && new_node.y_ >= 0){
-      std::cout << new_node.x_ << std::endl;
-      std::cout << new_node.y_ << std::endl;
            if(grid[new_node.x_][new_node.y_]!=1){
          succ.push_back(new_node);
        }
@@ -115,7 +111,6 @@ void LLAStar::Init(){
   U_.clear();
   double n2 = n*n;
   large_num = std::make_pair(n2,n2);
-  max_iter_ = n2*n;
 
   motions = GetMotion();
 
@@ -190,20 +185,18 @@ int LLAStar::ComputeShortestPath(){
   return 0;
 }
 
-std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, int n_in, Node start_in, Node goal_in){
+std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, int n_in, Node start_in, Node goal_in, int max_iter_in){
+  max_iter_ = max_iter_in;
   grid = grid_in;
   start_ = start_in;
-  main_start_ = start_;
   goal_ = goal_in;
   n = n_in;
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
   Init();
-  int count = 0;
   int ans = ComputeShortestPath();
   if(ans < 0 || S_[start_.x_][start_.y_].first==large_num.first){
-        DisplayGrid();
     path_vector_.clear();
     Node no_path_node(-1,-1,-1,-1,-1);
     path_vector_.push_back(no_path_node);
@@ -216,10 +209,11 @@ std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, int 
     return path_vector_;
   }
   GeneratePathVector();
-  while(count < 10){
+  while(iter_ < max_iter_){
+
     if(distr(eng) > n-2){
-      DisplayGrid();
-      Node new_obs = Node(distr(eng),distr(eng));
+      int rand = distr(eng)*(path_vector_.size()/(n-1)); // Scaling along path so any point on path could become an obstacle
+      Node new_obs = path_vector_[rand];
       std::vector<Node> succ = GetSucc(new_obs);
       SetObs(new_obs);
       for(int i=0;i<succ.size();i++){
@@ -228,9 +222,7 @@ std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, int 
       UpdateVertex(new_obs);
     }
     int ans = ComputeShortestPath();
-    std::cout << "out of compute "<< ans << std::endl;
     if(ans < 0 || S_[start_.x_][start_.y_].first==large_num.first){
-      DisplayGrid();
       path_vector_.clear();
       Node no_path_node(-1,-1,-1,-1,-1);
       path_vector_.push_back(no_path_node);
@@ -243,10 +235,8 @@ std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, int 
       return path_vector_;
     }
     GeneratePathVector();
-    MyPrint();
-    count++;
+    iter_++;
   }
-  DisplayGrid();
   grid_in = grid;
   grid_in = grid;
   for(int i=0;i<n;i++){
@@ -258,13 +248,11 @@ std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, int 
 }
 
 void LLAStar::SetObs(Node u){
-  u.PrintStatus();
-  std::cout << n << std::endl;
+  // PrintGrid(grid,n); // Uncomment if you want to see old and new path
   if(u==goal_ || u==start_){
     std::cout << "Cannot set current start or goal as obstacle" << std::endl;
     return;
   }
-  std::cout << "setting grid"<< std::endl;
   grid[u.x_][u.y_] = 1;
   std::cout << "Obstacle found at: " << std::endl;
   u.PrintStatus();
@@ -272,11 +260,9 @@ void LLAStar::SetObs(Node u){
 
 void LLAStar::GeneratePathVector(){
   path_vector_.clear();
-  std::cout << "Generating vector" << std::endl;
   goal_.cost_ = S_[goal_.x_][goal_.y_].second;
   path_vector_.push_back(goal_);
   while(path_vector_[0]!=start_){
-    std::cout << "In while of gen" <<std::endl;
     Node u = path_vector_[0];
     grid[u.x_][u.y_]=2;
     for(auto it=motions.begin();it!=motions.end(); ++it){
@@ -300,7 +286,6 @@ void LLAStar::GeneratePathVector(){
   if(path_vector_[0]==goal_){
     grid[goal_.x_][goal_.y_]=2;
   }
-  std::cout << "End enerating vector" << std::endl;
 }
 
 void LLAStar::DisplayGrid(){
@@ -354,23 +339,23 @@ Node LLAStar::NextPoint(){
 */
 int main(){
   int n = 8;
-  std::vector<std::vector<int>> grid = {
-    { 0 , 0 , 1 , 0 , 0 , 1 , 0 , 0 },
-    { 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-    { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
-    { 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-    { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
-    { 0 , 1 , 0 , 1 , 0 , 1 , 0 , 0 },
-    { 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
-    { 0 , 0 , 1 , 0 , 0 , 0 , 1 , 0 }
-  };
+  // std::vector<std::vector<int>> grid = {
+  //   { 0 , 0 , 1 , 0 , 0 , 1 , 0 , 0 },
+  //   { 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+  //   { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
+  //   { 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+  //   { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
+  //   { 0 , 1 , 0 , 1 , 0 , 1 , 0 , 0 },
+  //   { 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
+  //   { 0 , 0 , 1 , 0 , 0 , 0 , 1 , 0 }
+  // };
 
-  // std::vector<std::vector<int>> grid(n);
-  // std::vector<int> tmp(n);
-  // for (int i = 0; i < n; i++){
-  //   grid[i] = tmp;
-  // }
-  // MakeGrid(grid, n);
+  std::vector<std::vector<int>> grid(n);
+  std::vector<int> tmp(n);
+  for (int i = 0; i < n; i++){
+    grid[i] = tmp;
+  }
+  MakeGrid(grid, n);
 
   Node start(0,0,0,0,0,0);
   Node goal(n-1,n-1,0,0,0,0);
@@ -382,10 +367,11 @@ int main(){
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+  int max_iter = n;
   PrintGrid(grid, n);
   std::vector<Node> path_vector;
   LLAStar new_lla_star;
-  path_vector = new_lla_star.lla_star(grid, n, start, goal);
+  path_vector = new_lla_star.lla_star(grid, n, start, goal, max_iter);
   PrintPath(path_vector, goal, start, grid, n); //Order of start and goal switched here due to the way LPA* works.
 }
 #endif BUILD_INDIVIDUAL
