@@ -58,11 +58,11 @@ Program Listing for File utils.hpp
    
    std::vector<Node> GetMotion();
    
-   void PrintGrid(std::vector<std::vector<int>> &grid, int n);
+   void PrintGrid(std::vector<std::vector<int>> &grid);
    
-   void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, std::vector<std::vector<int>> &grid, int n);
+   void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, std::vector<std::vector<int>> &grid);
    
-   void PrintCost(std::vector<std::vector<int>> &grid, int n, std::vector<Node> point_list);
+   void PrintCost(std::vector<std::vector<int>> &grid, std::vector<Node> point_list);
    
-   void MakeGrid(std::vector<std::vector<int>> &grid, int n);
+   void MakeGrid(std::vector<std::vector<int>> &grid);
    #endif UTILS_H

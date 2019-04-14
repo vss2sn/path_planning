@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Class LPAStar &mdash; Path Planning  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+        <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class Node" href="classNode.html" />
+    <link rel="prev" title="Class DStarLite" href="classDStarLite.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Path Planning
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../algorithms.html">Algorithms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrt">RRT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrtstar">RRTStar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#dijkstra">Dijkstra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#a">A*</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#d-lite">D* Lite:</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structcompare__cost.html">Struct compare_cost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAStar.html">Class AStar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDijkstra.html">Class Dijkstra</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDStarLite.html">Class DStarLite</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class LPAStar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classNode.html">Class Node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRRT.html">Class RRT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRRTStar.html">Class RRTStar</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_main_8hpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.html">Function main</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1ad8afc8a6d98fae87fffe3ad0621eaf4b.html">Function MakeGrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a012ce27d2ee6c480975c0cfa6944104a.html">Function PrintCost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1ae78f95d1e36b0989a307b951da25532e.html">Function PrintGrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a557054c14922455add5f4b8ab1616ab0.html">Function PrintPath</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#defines">Defines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a7b3b25cba33b07c303f3060fe41887f6.html">Define BLACK</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a79d10e672abb49ad63eeaa8aaef57c38.html">Define BLUE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ad243f93c16bc4c1d3e0a13b84421d760.html">Define CYAN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1acfbc006ea433ad708fdee3e82996e721.html">Define GREEN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_lla__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.html">Define LPA_STAR__H</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a6f699060902f800f12aaae150f3a708e.html">Define MAGENTA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a8d23feea868a983c8c2b661e1e16972f.html">Define RED</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ab702106cf3b3e96750b6845ded4e0299.html">Define RESET</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a87b537f5fa5c109d3c05c13d6b18f382.html">Define WHITE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1abf681265909adf3d3e8116c93c0ba179.html">Define YELLOW</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#directories">Directories</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dir_inc.html">Directory inc</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#files">Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_a_star.hpp.html">File a_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_d_star_lite.hpp.html">File d_star_lite.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_dijkstra.hpp.html">File dijkstra.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_lla_star.hpp.html">File lla_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_main.hpp.html">File main.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_rrt.hpp.html">File rrt.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_rrt_star.hpp.html">File rrt_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_utils.hpp.html">File utils.hpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Path Planning</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="library_root.html">Library API</a> &raquo;</li>
+        
+      <li>Class LPAStar</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/classLPAStar.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="class-lpastar">
+<span id="exhale-class-classlpastar"></span><h1>Class LPAStar<a class="headerlink" href="#class-lpastar" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Defined in <a class="reference internal" href="file_inc_lla_star.hpp.html#file-inc-lla-star-hpp"><span class="std std-ref">File lla_star.hpp</span></a></li>
+</ul>
+<div class="section" id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="_CPPv37LPAStar">
+<span id="_CPPv27LPAStar"></span><span id="LPAStar"></span><span class="target" id="classLPAStar"></span><em class="property">class </em><code class="descname">LPAStar</code><a class="headerlink" href="#_CPPv37LPAStar" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Class for <a class="reference internal" href="#classLPAStar"><span class="std std-ref">LPAStar</span></a> objects. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N7LPAStar19VectorInsertionSortERNSt6vectorI4NodeEE">
+<span id="_CPPv2N7LPAStar19VectorInsertionSortERNSt6vectorI4NodeEE"></span><span id="LPAStar::VectorInsertionSort__std::vector:Node:R"></span><span class="target" id="classLPAStar_1a481684ffbad1428ac1a29fa108cf1664"></span>void <code class="descname">VectorInsertionSort</code><span class="sig-paren">(</span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; &amp;<em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar19VectorInsertionSortERNSt6vectorI4NodeEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Using insertion sort to sort the vector list. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">v</span></code>: The vector to be sorted </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar12GetHeuristicE4Node4Node">
+<span id="_CPPv2N7LPAStar12GetHeuristicE4Node4Node"></span><span id="LPAStar::GetHeuristic__Node.Node"></span><span class="target" id="classLPAStar_1a8af0814f8bcd3ea1c10fa2e4e89fe64f"></span>double <code class="descname">GetHeuristic</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>s1</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>s2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar12GetHeuristicE4Node4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Calculate and return the heuristic distance between 2 nodes. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>Heuritic distance between the 2 nodes </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">s1</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> 1 </li>
+<li><code class="docutils literal notranslate"><span class="pre">s2</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> 2 </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar9PrintGRHSEv">
+<span id="_CPPv2N7LPAStar9PrintGRHSEv"></span><span id="LPAStar::PrintGRHS"></span><span class="target" id="classLPAStar_1ae11f30398b90a2c8a6cf1547a131f84e"></span>void <code class="descname">PrintGRHS</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar9PrintGRHSEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Displays the G and RHS values for the entire grid. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar12CalculateKeyERK4Node">
+<span id="_CPPv2N7LPAStar12CalculateKeyERK4Node"></span><span id="LPAStar::CalculateKey__NodeCR"></span><span class="target" id="classLPAStar_1a9e1bead82cd5c7457c65c189eb8ba2c4"></span>std::pair&lt;double, double&gt; <code class="descname">CalculateKey</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar12CalculateKeyERK4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the key (pair) values for a given node. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>Key for given input node </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">s</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> whose key values are to be calcualted </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar7GetPredE4Node">
+<span id="_CPPv2N7LPAStar7GetPredE4Node"></span><span id="LPAStar::GetPred__Node"></span><span class="target" id="classLPAStar_1a49d8f5a504da6a4b38f082f5ab536e8e"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">GetPred</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar7GetPredE4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the possible predecessors of a given node, based on allowed motion primatives. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>Vector of nodes that are possible predecessors to input node </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">u</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar7GetSuccE4Node">
+<span id="_CPPv2N7LPAStar7GetSuccE4Node"></span><span id="LPAStar::GetSucc__Node"></span><span class="target" id="classLPAStar_1a2ba064cee32fb950342f6eea4afe7bf3"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">GetSucc</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar7GetSuccE4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the possible successors of a given node, based on allowed motion primatives. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>Vector of nodes that are possible successors to input node </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">u</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar13InsertionSortEv">
+<span id="_CPPv2N7LPAStar13InsertionSortEv"></span><span id="LPAStar::InsertionSort"></span><span class="target" id="classLPAStar_1a208b2bb856522431ad361f1511c7ba38"></span>void <code class="descname">InsertionSort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar13InsertionSortEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Using insertion sort to sort the vector list that maintains the priority queue. Good for a mostly sorted queue. Sort called after every insertion to maintain queue. Not using standard queue as iterating over is not allowed. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar1CE4Node4Node">
+<span id="_CPPv2N7LPAStar1CE4Node4Node"></span><span id="LPAStar::C__Node.Node"></span><span class="target" id="classLPAStar_1a016f7151e4ef07d771dee12cc19489f7"></span>double <code class="descname">C</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>s1</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>s2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar1CE4Node4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the cost of motion moving from one node to another, based on allowed motion primatives. Currently set to 1 for speed up given only 4 motions permitted, at constant cost. Change as required, based on permitted motions. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>cost of motion moving from first node to second </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">s1</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> </li>
+<li><code class="docutils literal notranslate"><span class="pre">s2</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar4InitEv">
+<span id="_CPPv2N7LPAStar4InitEv"></span><span id="LPAStar::Init"></span><span class="target" id="classLPAStar_1af76b48b667fe285cc05941c1ce7d03fe"></span>void <code class="descname">Init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar4InitEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialisation function of LPA*. Initialises G and RHS values for all nodes, store motion allowable primatives, km value and the first value of the priority queue. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar12UpdateVertexER4Node">
+<span id="_CPPv2N7LPAStar12UpdateVertexER4Node"></span><span id="LPAStar::UpdateVertex__NodeR"></span><span class="target" id="classLPAStar_1ab9b5e2f7e4bbbfadf6659b77e80ea1d0"></span>void <code class="descname">UpdateVertex</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar12UpdateVertexER4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Update vertex procedure as per LPA* algorithm, Figure 3. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">u</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> on which UpdateVertex has to be called </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar10CompareKeyERNSt4pairIddEER4Node">
+<span id="_CPPv2N7LPAStar10CompareKeyERNSt4pairIddEER4Node"></span><span id="LPAStar::CompareKey__std::pair:double.double:R.NodeR"></span><span class="target" id="classLPAStar_1ad9d922ada3577d43db42643eff3fc6e7"></span>bool <code class="descname">CompareKey</code><span class="sig-paren">(</span>std::pair&lt;double, double&gt; &amp;<em>pair_in</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar10CompareKeyERNSt4pairIddEER4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compare keys function for LPA*. Compares the key given as input with the key values of the node given as input. Calls CalculateKey on the node. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>bool value based on comparison of key values </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">pair_in</span></code>: Key pair </li>
+<li><code class="docutils literal notranslate"><span class="pre">u</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> whose key values will be calculated and compared to above key pair </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar19ComputeShortestPathEv">
+<span id="_CPPv2N7LPAStar19ComputeShortestPathEv"></span><span id="LPAStar::ComputeShortestPath"></span><span class="target" id="classLPAStar_1a9d75e83cd07fb997c5b86305c125a53e"></span>int <code class="descname">ComputeShortestPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar19ComputeShortestPathEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>ComputeShortestPath procedure as per LPA* algorithm, Figure 3. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar8lla_starERNSt6vectorINSt6vectorIiEEEE4Node4Nodei">
+<span id="_CPPv2N7LPAStar8lla_starERNSt6vectorINSt6vectorIiEEEE4Node4Nodei"></span><span id="LPAStar::lla_star__std::vector:std::vector:i::R.Node.Node.i"></span><span class="target" id="classLPAStar_1abc0035df8b5c0cf63706f28a6ecf0c35"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">lla_star</code><span class="sig-paren">(</span>std::vector&lt;std::vector&lt;int&gt;&gt; &amp;<em>grid_in</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>start_in</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>goal_in</em>, int <em>max_iter_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar8lla_starERNSt6vectorINSt6vectorIiEEEE4Node4Nodei" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Main algorithm of LPA*. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>path vector of nodes </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">grid_in</span></code>: Main grid </li>
+<li><code class="docutils literal notranslate"><span class="pre">start_in</span></code>: starting node </li>
+<li><code class="docutils literal notranslate"><span class="pre">goal_in</span></code>: goal node </li>
+<li><code class="docutils literal notranslate"><span class="pre">max_iter_in</span></code>: number of oterations to run of LPA* </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar6ReplanE4Node">
+<span id="_CPPv2N7LPAStar6ReplanE4Node"></span><span id="LPAStar::Replan__Node"></span><span class="target" id="classLPAStar_1a52c259d8e9bdcd1eda5817f2ab717566"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">Replan</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar6ReplanE4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Replan route, called whenever a previously unknown obstacle is detected. Equivalent of the effects of the code after an edge change is detectedd in the while loop within the main procedure of LPA*. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>path vector of nodes </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">u</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> at which the change was detected </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar6SetObsE4Node">
+<span id="_CPPv2N7LPAStar6SetObsE4Node"></span><span id="LPAStar::SetObs__Node"></span><span class="target" id="classLPAStar_1ae7492cf9b6cf28a8f5d2c59e48a8bb2b"></span>void <code class="descname">SetObs</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar6SetObsE4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create an obstacle on input node. Does not allow start or goal to be declared an obstacle. Prints out the obstacle if created and displays the grid. Calls Replan function. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>path vector of nodes </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">u</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> at which obstacle is to be created </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar18GeneratePathVectorEv">
+<span id="_CPPv2N7LPAStar18GeneratePathVectorEv"></span><span id="LPAStar::GeneratePathVector"></span><span class="target" id="classLPAStar_1a94fe4e686edf480993e0639dcf013643"></span>void <code class="descname">GeneratePathVector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar18GeneratePathVectorEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate the path vector and set the appropriate grid values. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar11UpdateStartE4Node">
+<span id="_CPPv2N7LPAStar11UpdateStartE4Node"></span><span id="LPAStar::UpdateStart__Node"></span><span class="target" id="classLPAStar_1a351a32d715d00125972b59ee7ebc2852"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">UpdateStart</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>start_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar11UpdateStartE4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Update the starting point of the algorithm. Created to be independant, used by RunDStarLite function to update the position of the bot. If using independantly, uncomment the commented section within the function. Letting it return path_vector_ as that is required for independent run. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>Path vector of nodes. Can be made to void, but left as path vector to allow independent call. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">start_in</span></code>: new starting position </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N7LPAStar11DisplayGridEv">
+<span id="_CPPv2N7LPAStar11DisplayGridEv"></span><span id="LPAStar::DisplayGrid"></span><span class="target" id="classLPAStar_1a22047538d4cc5062aeaa05a1e178ab2b"></span>void <code class="descname">DisplayGrid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7LPAStar11DisplayGridEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Displays the grid stored by the <a class="reference internal" href="#classLPAStar"><span class="std std-ref">LPAStar</span></a> object. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>void </dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="classNode.html" class="btn btn-neutral float-right" title="Class Node" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="classDStarLite.html" class="btn btn-neutral float-left" title="Class DStarLite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, vss2sn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

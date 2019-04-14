@@ -101,6 +101,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/classAStar.html">Class AStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classDijkstra.html">Class Dijkstra</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classDStarLite.html">Class DStarLite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/classLPAStar.html">Class LPAStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classNode.html">Class Node</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classRRT.html">Class RRT</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classRRTStar.html">Class RRTStar</a></li>
@@ -109,10 +110,10 @@
 <li class="toctree-l3"><a class="reference internal" href="api/library_root.html#functions">Functions</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/function_main_8hpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.html">Function main</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a7c85b008da7c5aa00f778645108cbe47.html">Function MakeGrid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1ac48d8b8a2e1171930046a91e34411291.html">Function PrintCost</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a261d8d8f776af001a11d472ac44b4df0.html">Function PrintGrid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1aa8bbe39cb49a6cd488339368ebf69944.html">Function PrintPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1ad8afc8a6d98fae87fffe3ad0621eaf4b.html">Function MakeGrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a012ce27d2ee6c480975c0cfa6944104a.html">Function PrintCost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1ae78f95d1e36b0989a307b951da25532e.html">Function PrintGrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a557054c14922455add5f4b8ab1616ab0.html">Function PrintPath</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/library_root.html#defines">Defines</a><ul>
@@ -120,6 +121,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a79d10e672abb49ad63eeaa8aaef57c38.html">Define BLUE</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1ad243f93c16bc4c1d3e0a13b84421d760.html">Define CYAN</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1acfbc006ea433ad708fdee3e82996e721.html">Define GREEN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/define_lla__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.html">Define LPA_STAR__H</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a6f699060902f800f12aaae150f3a708e.html">Define MAGENTA</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a8d23feea868a983c8c2b661e1e16972f.html">Define RED</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1ab702106cf3b3e96750b6845ded4e0299.html">Define RESET</a></li>
@@ -135,6 +137,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_a_star.hpp.html">File a_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_d_star_lite.hpp.html">File d_star_lite.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_dijkstra.hpp.html">File dijkstra.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_inc_lla_star.hpp.html">File lla_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_main.hpp.html">File main.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_rrt.hpp.html">File rrt.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_rrt_star.hpp.html">File rrt_star.hpp</a></li>
@@ -216,6 +219,7 @@
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
@@ -231,7 +235,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/classAStar.html#_CPPv3N5AStar6a_starERNSt6vectorINSt6vectorIiEEEEi4Node4Node">AStar::a_star (C++ function)</a>
+      <li><a href="api/classAStar.html#_CPPv3N5AStar6a_starERNSt6vectorINSt6vectorIiEEEE4Node4Node">AStar::a_star (C++ function)</a>
 </li>
       <li><a href="api/classAStar.html#_CPPv3N5AStar13InsertionSortERNSt6vectorI4NodeEE">AStar::InsertionSort (C++ function)</a>
 </li>
@@ -269,7 +273,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/classDijkstra.html#_CPPv38Dijkstra">Dijkstra (C++ class)</a>
 </li>
-      <li><a href="api/classDijkstra.html#_CPPv3N8Dijkstra8dijkstraERNSt6vectorINSt6vectorIiEEEEi4Node4Node">Dijkstra::dijkstra (C++ function)</a>
+      <li><a href="api/classDijkstra.html#_CPPv3N8Dijkstra8dijkstraERNSt6vectorINSt6vectorIiEEEE4Node4Node">Dijkstra::dijkstra (C++ function)</a>
 </li>
       <li><a href="api/classDStarLite.html#_CPPv39DStarLite">DStarLite (C++ class)</a>
 </li>
@@ -281,7 +285,7 @@
 </li>
       <li><a href="api/classDStarLite.html#_CPPv3N9DStarLite19ComputeShortestPathEv">DStarLite::ComputeShortestPath (C++ function)</a>
 </li>
-      <li><a href="api/classDStarLite.html#_CPPv3N9DStarLite11d_star_liteERNSt6vectorINSt6vectorIiEEEEi4Node4Node">DStarLite::d_star_lite (C++ function)</a>
+      <li><a href="api/classDStarLite.html#_CPPv3N9DStarLite11d_star_liteERNSt6vectorINSt6vectorIiEEEE4Node4Node">DStarLite::d_star_lite (C++ function)</a>
 </li>
       <li><a href="api/classDStarLite.html#_CPPv3N9DStarLite11DisplayGridEv">DStarLite::DisplayGrid (C++ function)</a>
 </li>
@@ -299,9 +303,9 @@
 </li>
       <li><a href="api/classDStarLite.html#_CPPv3N9DStarLite13InsertionSortEv">DStarLite::InsertionSort (C++ function)</a>
 </li>
-      <li><a href="api/classDStarLite.html#_CPPv3N9DStarLite7MyPrintEv">DStarLite::MyPrint (C++ function)</a>
-</li>
       <li><a href="api/classDStarLite.html#_CPPv3N9DStarLite9NextPointEv">DStarLite::NextPoint (C++ function)</a>
+</li>
+      <li><a href="api/classDStarLite.html#_CPPv3N9DStarLite9PrintGRHSEv">DStarLite::PrintGRHS (C++ function)</a>
 </li>
       <li><a href="api/classDStarLite.html#_CPPv3N9DStarLite6ReplanE4Node">DStarLite::Replan (C++ function)</a>
 </li>
@@ -332,6 +336,54 @@
   </ul></td>
 </tr></table>
 
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/define_lla__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.html#c.LPA_STAR__H">LPA_STAR__H (C macro)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv37LPAStar">LPAStar (C++ class)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar1CE4Node4Node">LPAStar::C (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar12CalculateKeyERK4Node">LPAStar::CalculateKey (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar10CompareKeyERNSt4pairIddEER4Node">LPAStar::CompareKey (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar19ComputeShortestPathEv">LPAStar::ComputeShortestPath (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar11DisplayGridEv">LPAStar::DisplayGrid (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar18GeneratePathVectorEv">LPAStar::GeneratePathVector (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar12GetHeuristicE4Node4Node">LPAStar::GetHeuristic (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar7GetPredE4Node">LPAStar::GetPred (C++ function)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar7GetSuccE4Node">LPAStar::GetSucc (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar4InitEv">LPAStar::Init (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar13InsertionSortEv">LPAStar::InsertionSort (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar8lla_starERNSt6vectorINSt6vectorIiEEEE4Node4Nodei">LPAStar::lla_star (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar9PrintGRHSEv">LPAStar::PrintGRHS (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar6ReplanE4Node">LPAStar::Replan (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar6SetObsE4Node">LPAStar::SetObs (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar11UpdateStartE4Node">LPAStar::UpdateStart (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar12UpdateVertexER4Node">LPAStar::UpdateVertex (C++ function)</a>
+</li>
+      <li><a href="api/classLPAStar.html#_CPPv3N7LPAStar19VectorInsertionSortERNSt6vectorI4NodeEE">LPAStar::VectorInsertionSort (C++ function)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -341,7 +393,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/function_main_8hpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.html#_CPPv34mainv">main (C++ function)</a>
 </li>
-      <li><a href="api/function_utils_8hpp_1a7c85b008da7c5aa00f778645108cbe47.html#_CPPv38MakeGridRNSt6vectorINSt6vectorIiEEEEi">MakeGrid (C++ function)</a>
+      <li><a href="api/function_utils_8hpp_1a7c85b008da7c5aa00f778645108cbe47.html#_CPPv38MakeGridRNSt6vectorINSt6vectorIiEEEE">MakeGrid (C++ function)</a>, <a href="api/function_utils_8hpp_1ad8afc8a6d98fae87fffe3ad0621eaf4b.html#_CPPv38MakeGridRNSt6vectorINSt6vectorIiEEEE">[1]</a>
 </li>
   </ul></td>
 </tr></table>
@@ -385,13 +437,13 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/function_utils_8hpp_1ac48d8b8a2e1171930046a91e34411291.html#_CPPv39PrintCostRNSt6vectorINSt6vectorIiEEEEiNSt6vectorI4NodeEE">PrintCost (C++ function)</a>
+      <li><a href="api/function_utils_8hpp_1a012ce27d2ee6c480975c0cfa6944104a.html#_CPPv39PrintCostRNSt6vectorINSt6vectorIiEEEENSt6vectorI4NodeEE">PrintCost (C++ function)</a>, <a href="api/function_utils_8hpp_1ac48d8b8a2e1171930046a91e34411291.html#_CPPv39PrintCostRNSt6vectorINSt6vectorIiEEEENSt6vectorI4NodeEE">[1]</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/function_utils_8hpp_1a261d8d8f776af001a11d472ac44b4df0.html#_CPPv39PrintGridRNSt6vectorINSt6vectorIiEEEEi">PrintGrid (C++ function)</a>
+      <li><a href="api/function_utils_8hpp_1a261d8d8f776af001a11d472ac44b4df0.html#_CPPv39PrintGridRNSt6vectorINSt6vectorIiEEEE">PrintGrid (C++ function)</a>, <a href="api/function_utils_8hpp_1ae78f95d1e36b0989a307b951da25532e.html#_CPPv39PrintGridRNSt6vectorINSt6vectorIiEEEE">[1]</a>
 </li>
-      <li><a href="api/function_utils_8hpp_1aa8bbe39cb49a6cd488339368ebf69944.html#_CPPv39PrintPathNSt6vectorI4NodeEE4Node4NodeRNSt6vectorINSt6vectorIiEEEEi">PrintPath (C++ function)</a>
+      <li><a href="api/function_utils_8hpp_1a557054c14922455add5f4b8ab1616ab0.html#_CPPv39PrintPathNSt6vectorI4NodeEE4Node4NodeRNSt6vectorINSt6vectorIiEEEE">PrintPath (C++ function)</a>, <a href="api/function_utils_8hpp_1aa8bbe39cb49a6cd488339368ebf69944.html#_CPPv39PrintPathNSt6vectorI4NodeEE4Node4NodeRNSt6vectorINSt6vectorIiEEEE">[1]</a>
 </li>
   </ul></td>
 </tr></table>
@@ -409,15 +461,15 @@
 </li>
       <li><a href="api/classRRT.html#_CPPv3N3RRT13CheckObstacleER4NodeR4Node">RRT::CheckObstacle (C++ function)</a>
 </li>
-      <li><a href="api/classRRT.html#_CPPv3N3RRT18CreateObstacleListERNSt6vectorINSt6vectorIiEEEEi">RRT::CreateObstacleList (C++ function)</a>
+      <li><a href="api/classRRT.html#_CPPv3N3RRT18CreateObstacleListERNSt6vectorINSt6vectorIiEEEE">RRT::CreateObstacleList (C++ function)</a>
 </li>
-      <li><a href="api/classRRT.html#_CPPv3N3RRT16FindNearestPointER4Nodei">RRT::FindNearestPoint (C++ function)</a>
+      <li><a href="api/classRRT.html#_CPPv3N3RRT16FindNearestPointER4Node">RRT::FindNearestPoint (C++ function)</a>
 </li>
       <li><a href="api/classRRT.html#_CPPv3N3RRT18GenerateRandomNodeEi">RRT::GenerateRandomNode (C++ function)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/classRRT.html#_CPPv3N3RRT3rrtERNSt6vectorINSt6vectorIiEEEEi4Node4Nodeid">RRT::rrt (C++ function)</a>
+      <li><a href="api/classRRT.html#_CPPv3N3RRT3rrtERNSt6vectorINSt6vectorIiEEEE4Node4Nodeid">RRT::rrt (C++ function)</a>
 </li>
       <li><a href="api/classRRTStar.html#_CPPv37RRTStar">RRTStar (C++ class)</a>
 </li>
@@ -425,15 +477,15 @@
 </li>
       <li><a href="api/classRRTStar.html#_CPPv3N7RRTStar13CheckObstacleER4NodeR4Node">RRTStar::CheckObstacle (C++ function)</a>
 </li>
-      <li><a href="api/classRRTStar.html#_CPPv3N7RRTStar18CreateObstacleListERNSt6vectorINSt6vectorIiEEEEi">RRTStar::CreateObstacleList (C++ function)</a>
+      <li><a href="api/classRRTStar.html#_CPPv3N7RRTStar18CreateObstacleListERNSt6vectorINSt6vectorIiEEEE">RRTStar::CreateObstacleList (C++ function)</a>
 </li>
-      <li><a href="api/classRRTStar.html#_CPPv3N7RRTStar16FindNearestPointER4Nodei">RRTStar::FindNearestPoint (C++ function)</a>
+      <li><a href="api/classRRTStar.html#_CPPv3N7RRTStar16FindNearestPointER4Node">RRTStar::FindNearestPoint (C++ function)</a>
 </li>
-      <li><a href="api/classRRTStar.html#_CPPv3N7RRTStar18GenerateRandomNodeEi">RRTStar::GenerateRandomNode (C++ function)</a>
+      <li><a href="api/classRRTStar.html#_CPPv3N7RRTStar18GenerateRandomNodeEv">RRTStar::GenerateRandomNode (C++ function)</a>
 </li>
       <li><a href="api/classRRTStar.html#_CPPv3N7RRTStar6RewireE4Node">RRTStar::Rewire (C++ function)</a>
 </li>
-      <li><a href="api/classRRTStar.html#_CPPv3N7RRTStar8rrt_starERNSt6vectorINSt6vectorIiEEEEi4Node4Nodeid">RRTStar::rrt_star (C++ function)</a>
+      <li><a href="api/classRRTStar.html#_CPPv3N7RRTStar8rrt_starERNSt6vectorINSt6vectorIiEEEE4Node4Nodeid">RRTStar::rrt_star (C++ function)</a>
 </li>
   </ul></td>
 </tr></table>

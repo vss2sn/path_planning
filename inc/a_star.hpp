@@ -18,7 +18,6 @@ public:
   /**
   * @brief Main algorithm of A*
   * @param grid Main grid
-  * @param n number of rows/columns
   * @param start_in start node
   * @param goal_in goal node
   * @return vector of path

@@ -120,7 +120,6 @@ std::vector<Node> GetMotion();
 /**
 * @brief Prints the grid passed
 * @param grid Modify this grid
-* @param n number of rows/columns
 * @return void
 */
 void PrintGrid(std::vector<std::vector<int>> &grid);
@@ -131,7 +130,6 @@ void PrintGrid(std::vector<std::vector<int>> &grid);
 * @param start_ start node
 * @param goal_ goal node
 * @param grid Modify this grid
-* @param n number of rows/columns
 * @return void
 */
 void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, std::vector<std::vector<int>> &grid);
@@ -139,7 +137,6 @@ void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, std::vect
 /**
 * @brief Prints out the cost for reaching points on the grid in the grid shape
 * @param grid Grid on which algorithm is running
-* @param n Number of rows/columns
 * @param point_list Vector of all points that have been considered. Nodes in vector contain cost.
 * @return void
 */
@@ -148,7 +145,6 @@ void PrintCost(std::vector<std::vector<int>> &grid, std::vector<Node> point_list
 /**
 * @brief Creates a random grid of a given size
 * @param grid Modify this grid
-* @param n number of rows/columns
 * @return void
 */
 void MakeGrid(std::vector<std::vector<int>> &grid);

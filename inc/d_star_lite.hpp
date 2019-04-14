@@ -34,7 +34,7 @@ public:
   * @brief Displays the G and RHS values for the entire grid.
   * @return void
   */
-  void MyPrint();
+  void PrintGRHS();
 
   /**
   * @brief Returns the key (pair) values for a given node.
@@ -101,7 +101,6 @@ public:
   /**
   * @brief Main algorithm of D* Lite
   * @param grid_in Main grid
-  * @param n_in number of rows/columns
   * @param start_in starting node
   * @param goal_in goal node
   * @return path vector of nodes

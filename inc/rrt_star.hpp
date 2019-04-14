@@ -18,7 +18,6 @@ public:
   /**
   * @brief Find the nearest Node that has been seen by the algorithm. This does not consider cost to reach the node.
   * @param new_node Node to which the nearest node must be found
-  * @param n number of rows/columns
   * @return nearest node
   */
   Node FindNearestPoint(Node& new_node);
@@ -33,7 +32,6 @@ public:
 
   /**
   * @brief Generates a random node
-  * @param n Number of rows/columns
   * @return Generated node
   */
   Node GenerateRandomNode();
@@ -48,7 +46,6 @@ public:
   /**
   * @brief Main algorithm of RRT*
   * @param grid Main grid
-  * @param n number of rows/columns
   * @param start_in starting node
   * @param goal_in goal node
   * @param max_iter_x_factor Maximum number of allowable iterations before returning no path
@@ -67,7 +64,6 @@ public:
   /**
   * @brief Create the obstacle list from the input grid
   * @param grid Input grid for algorithm
-  * @param n Number of rows/columns
   * @return void
   */
   void CreateObstacleList(std::vector<std::vector<int> > &grid);

@@ -8,7 +8,7 @@ Class Hierarchy
    <ul class="treeView" id="class-treeView">
      <li>
        <ul class="collapsibleList">
-         <li>Struct <a href="structcompare__cost.html#exhale-struct-structcompare-cost">compare_cost</a></li><li>Class <a href="classAStar.html#exhale-class-classAStar">AStar</a></li><li>Class <a href="classDijkstra.html#exhale-class-classDijkstra">Dijkstra</a></li><li>Class <a href="classDStarLite.html#exhale-class-classDStarLite">DStarLite</a></li><li>Class <a href="classNode.html#exhale-class-classNode">Node</a></li><li>Class <a href="classRRT.html#exhale-class-classRRT">RRT</a></li><li class="lastChild">Class <a href="classRRTStar.html#exhale-class-classRRTStar">RRTStar</a></li>
+         <li>Struct <a href="structcompare__cost.html#exhale-struct-structcompare-cost">compare_cost</a></li><li>Class <a href="classAStar.html#exhale-class-classAStar">AStar</a></li><li>Class <a href="classDijkstra.html#exhale-class-classDijkstra">Dijkstra</a></li><li>Class <a href="classDStarLite.html#exhale-class-classDStarLite">DStarLite</a></li><li>Class <a href="classLPAStar.html#exhale-class-classLPAStar">LPAStar</a></li><li>Class <a href="classNode.html#exhale-class-classNode">Node</a></li><li>Class <a href="classRRT.html#exhale-class-classRRT">RRT</a></li><li class="lastChild">Class <a href="classRRTStar.html#exhale-class-classRRTStar">RRTStar</a></li>
        </ul>
      </li><!-- only tree view element -->
    </ul><!-- /treeView class-treeView -->

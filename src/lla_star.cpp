@@ -1,12 +1,12 @@
 /**
 * @file lla_star_lite.cpp
 * @author vss2sn
-* @brief Contains the LLAStar class
+* @brief Contains the LPAStar class
 */
 
 #include "lla_star.hpp"
 
-void LLAStar::VectorInsertionSort(std::vector<Node>& v){
+void LPAStar::VectorInsertionSort(std::vector<Node>& v){
    int n = v.size();
    int i, j;
    Node key;
@@ -21,11 +21,11 @@ void LLAStar::VectorInsertionSort(std::vector<Node>& v){
    }
 }
 
-double LLAStar::GetHeuristic(Node s1, Node s2){
+double LPAStar::GetHeuristic(Node s1, Node s2){
   return abs(s1.x_ - s2.x_) + abs(s1.y_ - s2.y_);
 }
 
-void LLAStar::MyPrint(){
+void LPAStar::PrintGRHS(){
   std::cout << "G values:" << std::endl;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
@@ -42,13 +42,13 @@ void LLAStar::MyPrint(){
   }
 }
 
-std::pair<double,double> LLAStar::CalculateKey(const Node& s){
+std::pair<double,double> LPAStar::CalculateKey(const Node& s){
   return std::make_pair(std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second)
                                   +GetHeuristic(goal_,s),
                         std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second));
 }
 
-std::vector<Node> LLAStar::GetPred(Node u){
+std::vector<Node> LPAStar::GetPred(Node u){
   std::vector<Node> pred;
   for(auto it=motions.begin();it!=motions.end(); ++it){
     // Modify to prevent points already in the queue fro  being added?
@@ -61,7 +61,7 @@ std::vector<Node> LLAStar::GetPred(Node u){
   return pred;
 }
 
-std::vector<Node> LLAStar::GetSucc(Node u){
+std::vector<Node> LPAStar::GetSucc(Node u){
   std::vector<Node> succ;
   for(auto it=motions.begin();it!=motions.end(); ++it){
     Node new_node = u + *it;
@@ -74,7 +74,7 @@ std::vector<Node> LLAStar::GetSucc(Node u){
   return succ;
 }
 
-void LLAStar::InsertionSort(){
+void LPAStar::InsertionSort(){
    int nU = U_.size();
    int i, j;
    std::pair<Node,std::pair<double,double>> key;
@@ -82,7 +82,7 @@ void LLAStar::InsertionSort(){
        key = U_[i];
        j = i-1;
        while (j >= 0 && (U_[j].second.first > key.second.first
-                          || (U_[j].second.first == key.second.first  && U_[j].second.second > key.second.second))){
+                          || (U_[j].second.first == key.second.first  && U_[j].second.second >= key.second.second))){
            U_[j+1] = U_[j];
            j--;
        }
@@ -90,7 +90,7 @@ void LLAStar::InsertionSort(){
    }
 }
 
-double LLAStar::C(Node s1, Node s2){
+double LPAStar::C(Node s1, Node s2){
   if(s1.x_ < n && s1.x_ >= 0 && s1.y_ < n && s1.y_ >= 0 &&
      s2.x_ < n && s2.x_ >= 0 && s2.y_ < n && s2.y_ >= 0 &&
      grid[s1.x_][s1.y_] != 1 && grid[s2.x_][s2.y_] != 1){
@@ -107,7 +107,7 @@ double LLAStar::C(Node s1, Node s2){
   }
 }
 
-void LLAStar::Init(){
+void LPAStar::Init(){
   U_.clear();
   double n2 = n*n;
   large_num = std::make_pair(n2,n2);
@@ -128,7 +128,7 @@ void LLAStar::Init(){
   U_.push_back(u_pair);
 }
 
-void LLAStar::UpdateVertex(Node& u){
+void LPAStar::UpdateVertex(Node& u){
   if(u!=start_){
     std::vector<Node> pred = GetPred(u);
     double init_min = n*n;
@@ -152,7 +152,7 @@ void LLAStar::UpdateVertex(Node& u){
   }
 }
 
-bool LLAStar::CompareKey(std::pair<double,double>& pair_in, Node& u){
+bool LPAStar::CompareKey(std::pair<double,double>& pair_in, Node& u){
   std::pair<double,double> node_key = CalculateKey(u);
   if(pair_in.first < node_key.first ||
     (pair_in.first == node_key.first && pair_in.second < node_key.second)){
@@ -161,8 +161,9 @@ bool LLAStar::CompareKey(std::pair<double,double>& pair_in, Node& u){
   return false;
 }
 
-int LLAStar::ComputeShortestPath(){
+int LPAStar::ComputeShortestPath(){
   while((!U_.empty() && CompareKey(U_[0].second, goal_)) || S_[goal_.x_][goal_.y_].first != S_[goal_.x_][goal_.y_].second){
+    PrintGRHS();
     Node u = U_[0].first;
     U_.erase(U_.begin());
     if(S_[u.x_][u.y_].first > S_[u.x_][u.y_].second){
@@ -185,7 +186,7 @@ int LLAStar::ComputeShortestPath(){
   return 0;
 }
 
-std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, Node start_in, Node goal_in, int max_iter_in){
+std::vector<Node> LPAStar::lla_star(std::vector<std::vector<int>> &grid_in, Node start_in, Node goal_in, int max_iter_in){
   max_iter_ = max_iter_in;
   grid = grid_in;
   start_ = start_in;
@@ -210,7 +211,6 @@ std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, Node
   }
   GeneratePathVector();
   while(iter_ < max_iter_){
-
     if(distr(eng) > n-2){
       int rand = distr(eng)*(path_vector_.size()/(n-1)); // Scaling along path so any point on path could become an obstacle
       Node new_obs = path_vector_[rand];
@@ -247,18 +247,20 @@ std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, Node
   return path_vector_;
 }
 
-void LLAStar::SetObs(Node u){
+void LPAStar::SetObs(Node u){
   // PrintGrid(grid,n); // Uncomment if you want to see old and new path
   if(u==goal_ || u==start_){
     std::cout << "Cannot set current start or goal as obstacle" << std::endl;
     return;
   }
+  std::cout << "Current grid and path: " << std::endl;
+  PrintGrid(grid);
   grid[u.x_][u.y_] = 1;
   std::cout << "Obstacle found at: " << std::endl;
   u.PrintStatus();
 }
 
-void LLAStar::GeneratePathVector(){
+void LPAStar::GeneratePathVector(){
   path_vector_.clear();
   goal_.cost_ = S_[goal_.x_][goal_.y_].second;
   path_vector_.push_back(goal_);
@@ -288,7 +290,7 @@ void LLAStar::GeneratePathVector(){
   }
 }
 
-void LLAStar::DisplayGrid(){
+void LPAStar::DisplayGrid(){
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
   std::cout << "2. Obstacles             ---> 1" << std::endl;
@@ -311,25 +313,6 @@ void LLAStar::DisplayGrid(){
   }
   for(int j=0;j<n;j++) std::cout <<  "---";
   std::cout << std::endl;
-}
-
-Node LLAStar::NextPoint(){
-  int i = 0;
-  for(i = 0; i < path_vector_.size(); i++){
-    if(goal_ == path_vector_[i]){
-      break;
-    }
-  }
-  while(path_vector_[i].pid_!=start_.id_){
-    for(int j = 0; j < path_vector_.size(); j++){
-      if(path_vector_[i].pid_ == path_vector_[j].id_){
-        i=j;
-        break;
-      }
-    }
-    if(path_vector_[i].pid_==start_.id_) break;
-  }
-  return path_vector_[i];
 }
 
 #ifdef BUILD_INDIVIDUAL
@@ -370,7 +353,7 @@ int main(){
   int max_iter = n;
   PrintGrid(grid);
   std::vector<Node> path_vector;
-  LLAStar new_lla_star;
+  LPAStar new_lla_star;
   path_vector = new_lla_star.lla_star(grid, start, goal, max_iter);
   PrintPath(path_vector, goal, start, grid); //Order of start and goal switched here due to the way LPA* works.
 }

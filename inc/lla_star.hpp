@@ -1,18 +1,18 @@
 /**
 * @file lla_star.hpp
 * @author vss2sn
-* @brief Contains the LLAStar class
+* @brief Contains the LPAStar class
 */
 
-#ifndef LLA_STAR_H
-#define LLA_STAR__H
+#ifndef LPA_STAR_H
+#define LPA_STAR__H
 
 #include "utils.hpp"
 
 /**
-* @brief Class for LLAStar objects
+* @brief Class for LPAStar objects
 */
-class LLAStar{
+class LPAStar{
 public:
 
   /**
@@ -34,7 +34,7 @@ public:
   * @brief Displays the G and RHS values for the entire grid.
   * @return void
   */
-  void MyPrint();
+  void PrintGRHS();
 
   /**
   * @brief Returns the key (pair) values for a given node.
@@ -72,20 +72,20 @@ public:
   double C(Node s1, Node s2);
 
   /**
-  * @brief Initialisation function of LLA*. Initialises G and RHS values for all nodes, store motion allowable primatives, km value and the first value of the priority queue.
+  * @brief Initialisation function of LPA*. Initialises G and RHS values for all nodes, store motion allowable primatives, km value and the first value of the priority queue.
   * @return void
   */
   void Init();
 
   /**
-  * @brief Update vertex procedure as per LLA* algorithm, Figure 3.
+  * @brief Update vertex procedure as per LPA* algorithm, Figure 3.
   * @param u Node on which UpdateVertex has to be called
   * @return void
   */
   void UpdateVertex(Node& u);
 
   /**
-  * @brief Compare keys function for LLA*. Compares the key given as input with the key values of the node given as input. Calls CalculateKey on the node.
+  * @brief Compare keys function for LPA*. Compares the key given as input with the key values of the node given as input. Calls CalculateKey on the node.
   * @param pair_in Key pair
   * @param u Node whose key values will be calculated and compared to above key pair
   * @return bool value based on comparison of key values
@@ -93,24 +93,24 @@ public:
   bool CompareKey(std::pair<double,double>& pair_in, Node& u);
 
   /**
-  * @brief ComputeShortestPath procedure as per LLA* algorithm, Figure 3.
+  * @brief ComputeShortestPath procedure as per LPA* algorithm, Figure 3.
   * @return void
   */
   int ComputeShortestPath();
 
   /**
-  * @brief Main algorithm of LLA*
+  * @brief Main algorithm of LPA*
   * @param grid_in Main grid
-  * @param n_in number of rows/columns
   * @param start_in starting node
   * @param goal_in goal node
+  * @param max_iter_in number of oterations to run of LPA*
   * @return path vector of nodes
   */
   std::vector<Node> lla_star(std::vector<std::vector<int> > &grid_in, Node start_in, Node goal_in, int max_iter_in);
 
   /**
   * @brief Replan route, called whenever a previously unknown obstacle is detected.
-          Equivalent of the effects of the code after an edge change is detectedd in the while loop within the main procedure of LLA*.
+          Equivalent of the effects of the code after an edge change is detectedd in the while loop within the main procedure of LPA*.
   * @param u Node at which the change was detected
   * @return path vector of nodes
   */
@@ -137,20 +137,7 @@ public:
   std::vector<Node> UpdateStart(Node start_in);
 
   /**
-  * @brief Function to run LLA* live, showing the movement of the bot with time. Timeout after each movement set in .h file. Next point in path might beset to obstacle with probability 1/n. Calls UpdateStart and SetObs.
-  * @param disp_inc_in Bool value to allow display incremental progress
-  * @return void
-  */
-  void RunDStarLite(bool disp_inc_in = true);
-
-  /**
-  * @brief Find and return the next point in the path_vector
-  * @return next point node
-  */
-  Node NextPoint();
-
-  /**
-  * @brief Displays the grid stored by the LLAStar object.
+  * @brief Displays the grid stored by the LPAStar object.
   * @return void
   */
   void DisplayGrid();
@@ -165,4 +152,4 @@ private:
   std::vector<std::vector<int>> grid;
 };
 
-#endif LLA_STAR_H
+#endif LPA_STAR_H
