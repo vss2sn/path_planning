@@ -1,9 +1,9 @@
-.. _exhale_define_lla__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44:
+.. _exhale_define_lpa__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44:
 
 Define LPA_STAR__H
 ==================
 
-- Defined in :ref:`file_inc_lla_star.hpp`
+- Defined in :ref:`file_inc_lpa_star.hpp`
 
 
 Define Documentation

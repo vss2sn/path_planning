@@ -108,7 +108,7 @@ Defines
 .. toctree::
    :maxdepth: 5
 
-   define_lla__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.rst
+   define_lpa__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.rst
 
 .. toctree::
    :maxdepth: 5
@@ -166,7 +166,7 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_inc_lla_star.hpp.rst
+   file_inc_lpa_star.hpp.rst
 
 .. toctree::
    :maxdepth: 5

@@ -86,11 +86,12 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Algorithms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#rrt">RRT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rrtstar">RRTStar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dijkstra">Dijkstra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#a">A*</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lpa">LPA*:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#d-lite">D* Lite:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rrt">RRT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rrtstar">RRTStar</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/library_root.html">Library API</a><ul>
@@ -122,7 +123,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a79d10e672abb49ad63eeaa8aaef57c38.html">Define BLUE</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1ad243f93c16bc4c1d3e0a13b84421d760.html">Define CYAN</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1acfbc006ea433ad708fdee3e82996e721.html">Define GREEN</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/define_lla__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.html">Define LPA_STAR__H</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/define_lpa__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.html">Define LPA_STAR__H</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a6f699060902f800f12aaae150f3a708e.html">Define MAGENTA</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a8d23feea868a983c8c2b661e1e16972f.html">Define RED</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1ab702106cf3b3e96750b6845ded4e0299.html">Define RESET</a></li>
@@ -138,7 +139,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_a_star.hpp.html">File a_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_d_star_lite.hpp.html">File d_star_lite.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_dijkstra.hpp.html">File dijkstra.hpp</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/file_inc_lla_star.hpp.html">File lla_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_inc_lpa_star.hpp.html">File lpa_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_main.hpp.html">File main.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_rrt.hpp.html">File rrt.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_rrt_star.hpp.html">File rrt_star.hpp</a></li>
@@ -240,69 +241,15 @@
 <p class="topic-title first">Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#algorithms" id="id2">Algorithms</a><ul>
-<li><a class="reference internal" href="#rrt" id="id3">RRT</a></li>
-<li><a class="reference internal" href="#rrtstar" id="id4">RRTStar</a></li>
-<li><a class="reference internal" href="#dijkstra" id="id5">Dijkstra</a></li>
-<li><a class="reference internal" href="#a" id="id6">A*</a></li>
-<li><a class="reference internal" href="#d-lite" id="id7">D* Lite:</a></li>
+<li><a class="reference internal" href="#dijkstra" id="id3">Dijkstra</a></li>
+<li><a class="reference internal" href="#a" id="id4">A*</a></li>
+<li><a class="reference internal" href="#lpa" id="id5">LPA*:</a></li>
+<li><a class="reference internal" href="#d-lite" id="id6">D* Lite:</a></li>
+<li><a class="reference internal" href="#rrt" id="id7">RRT</a></li>
+<li><a class="reference internal" href="#rrtstar" id="id8">RRTStar</a></li>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="rrt">
-<h2>RRT<a class="headerlink" href="#rrt" title="Permalink to this headline">¶</a></h2>
-<div class="line-block">
-<div class="line"><strong>procedure main()</strong></div>
-<div class="line-block">
-<div class="line">T = 0; // Initialize list/tree</div>
-<div class="line">for k = 1 to K</div>
-<div class="line-block">
-<div class="line">q<sub>rand</sub>← GenerateRandomNode()</div>
-<div class="line">q<sub>parent</sub>← FindNearestPoint(q<sub>rand</sub>, T, threshold) // Returns closest node based on distance</div>
-<div class="line">if(q<sub>parent</sub>exists)</div>
-<div class="line-block">
-<div class="line">q<sub>parent</sub>&lt;— q<sub>parent</sub></div>
-<div class="line">if(q<sub>rand</sub>= goal) return path found</div>
-</div>
-</div>
-<div class="line">return no path</div>
-</div>
-</div>
-</div>
-<div class="section" id="rrtstar">
-<h2>RRTStar<a class="headerlink" href="#rrtstar" title="Permalink to this headline">¶</a></h2>
-<div class="line-block">
-<div class="line"><strong>procedure rewire()</strong></div>
-<div class="line-block">
-<div class="line">for all node in close_node_list != q<sub>parent</sub></div>
-<div class="line-block">
-<div class="line">if(q<sub>rand</sub>.cost + dist(node ,q<sub>rand</sub>) &lt; node.cost)</div>
-<div class="line-block">
-<div class="line">node.parent &lt;— q<sub>rand</sub></div>
-<div class="line">node.cost &lt;— q<sub>rand</sub>.cost + distance(node, q<sub>rand</sub>)</div>
-</div>
-</div>
-</div>
-<div class="line"><strong>procedure main()</strong></div>
-<div class="line-block">
-<div class="line">T = 0; // Initialize list/tree</div>
-<div class="line">for k = 1 to K</div>
-<div class="line-block">
-<div class="line">q<sub>rand</sub>← GenerateRandomNode()</div>
-<div class="line">q<sub>parent</sub>, close_node_list ← FindNearestPoint(q<sub>rand</sub>, T, threshold) // Returns node that results in lowest total cost and list of all close nodes</div>
-<div class="line-block">
-<div class="line">// Updates q<sub>rand</sub>.cost to q<sub>parent</sub>.cost + distance(q<sub>rand</sub>, q<sub>parent</sub>)</div>
-</div>
-<div class="line">if(q<sub>parent</sub>exists)</div>
-<div class="line-block">
-<div class="line">q<sub>parent</sub>&lt;— q<sub>parent</sub></div>
-<div class="line">if(q<sub>rand</sub>= goal) return path found</div>
-<div class="line">rewire()</div>
-</div>
-</div>
-<div class="line">return no path</div>
-</div>
-</div>
 </div>
 <div class="section" id="dijkstra">
 <h2>Dijkstra<a class="headerlink" href="#dijkstra" title="Permalink to this headline">¶</a></h2>
@@ -371,12 +318,66 @@
 </div>
 </div>
 </div>
+<div class="section" id="lpa">
+<h2>LPA*:<a class="headerlink" href="#lpa" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><strong>procedure CalculateKey(s)</strong></div>
+<div class="line-block">
+<div class="line">return [min(g(s), rhs(s)) + h(s<sub>start</sub>, s); min(g(s),rhs(s))];</div>
+</div>
+<div class="line"><strong>procedure Initialize()</strong></div>
+<div class="line-block">
+<div class="line">U = 0;</div>
+<div class="line">for all s in S rhs(s) = g(s) = inf</div>
+<div class="line">rhs(s<sub>start</sub>) = 0;</div>
+<div class="line">U.insert(s<sub>start</sub>, CalculateKey(s<sub>start</sub>));</div>
+</div>
+<div class="line"><strong>procedure UpdateVertex()</strong></div>
+<div class="line-block">
+<div class="line">if(u!=s<sub>start</sub>) rhs(s) = minfor all <sub>s’ in Succ(u)</sub>c(u, s’) + g(s’)</div>
+<div class="line">if(u in U) U.remove(u)</div>
+<div class="line">if(g(u)!=rhs(u)) U.insert(u, CalculateKey(u));</div>
+</div>
+<div class="line"><strong>procedure ComputeShortestPath()</strong></div>
+<div class="line-block">
+<div class="line">while(U.TopKey() &lt; CalculateKey(s<sub>goal</sub>) OR rhs(s<sub>goal</sub>) != g(s<sub>goal</sub>))</div>
+<div class="line-block">
+<div class="line">u = U.Pop();</div>
+<div class="line">if(g(u) &gt; rhs(u))</div>
+<div class="line-block">
+<div class="line">g(u) = rhs(u);</div>
+<div class="line">for all s in Succ(u) UpdateVertex(s);</div>
+</div>
+<div class="line">else</div>
+<div class="line-block">
+<div class="line">g(u) = inf;</div>
+<div class="line">for all s in Succ(u) (union) {u} UpdateVertex(s)</div>
+</div>
+</div>
+</div>
+<div class="line"><strong>procedure Main()</strong></div>
+<div class="line-block">
+<div class="line">Initialize();</div>
+<div class="line">forever: // This runs for n times by default in current implementation</div>
+<div class="line-block">
+<div class="line">ComputeShortestPath();</div>
+<div class="line">Scan graph for changed edge costs;</div>
+<div class="line">if any edge cost changed // this occurs with probability 1/n for every iteration</div>
+<div class="line">for all directed edges (u,v) with changed edge costs</div>
+<div class="line-block">
+<div class="line">Update the edge cost c(u,v);</div>
+<div class="line">UpdateVertex(u)</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="section" id="d-lite">
 <h2>D* Lite:<a class="headerlink" href="#d-lite" title="Permalink to this headline">¶</a></h2>
 <div class="line-block">
 <div class="line"><strong>procedure CalculateKey(s)</strong></div>
 <div class="line-block">
-<div class="line">return [min(g(s), rhs(s)) + h(s<sub>start</sub>, s) + k<sub>m</sub>= 0; min(g(s),rhs(s))];</div>
+<div class="line">return [min(g(s), rhs(s)) + h(s<sub>start</sub>, s) + k<sub>m</sub>; min(g(s),rhs(s))];</div>
 </div>
 <div class="line"><strong>procedure Initialize()</strong></div>
 <div class="line-block">
@@ -389,7 +390,7 @@
 <div class="line"><strong>procedure UpdateVertex()</strong></div>
 <div class="line-block">
 <div class="line">if(u!=s<sub>goal</sub>) rhs(s) = minfor all <sub>s’ in Succ(u)</sub>c(u, s’) + g(s’)</div>
-<div class="line">if(u in U) U.remove(u</div>
+<div class="line">if(u in U) U.remove(u)</div>
 <div class="line">if(g(u)!=rhs(u)) U.insert(u, CalculateKey(u));</div>
 </div>
 <div class="line"><strong>procedure ComputeShortestPath()</strong></div>
@@ -435,6 +436,61 @@
 </div>
 </div>
 <div class="line">ComputeShortestPath()</div>
+</div>
+</div>
+</div>
+<div class="section" id="rrt">
+<h2>RRT<a class="headerlink" href="#rrt" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><strong>procedure main()</strong></div>
+<div class="line-block">
+<div class="line">T = 0; // Initialize list/tree</div>
+<div class="line">for k = 1 to K</div>
+<div class="line-block">
+<div class="line">q<sub>rand</sub>← GenerateRandomNode()</div>
+<div class="line">q<sub>parent</sub>← FindNearestPoint(q<sub>rand</sub>, T, threshold) // Returns closest node based on distance</div>
+<div class="line">if(q<sub>parent</sub>exists)</div>
+<div class="line-block">
+<div class="line">q<sub>parent</sub>&lt;— q<sub>parent</sub></div>
+<div class="line">if(q<sub>rand</sub>= goal) return path found</div>
+</div>
+</div>
+<div class="line">return no path</div>
+</div>
+</div>
+</div>
+<div class="section" id="rrtstar">
+<h2>RRTStar<a class="headerlink" href="#rrtstar" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><strong>procedure rewire()</strong></div>
+<div class="line-block">
+<div class="line">for all node in close_node_list != q<sub>parent</sub></div>
+<div class="line-block">
+<div class="line">if(q<sub>rand</sub>.cost + dist(node ,q<sub>rand</sub>) &lt; node.cost)</div>
+<div class="line-block">
+<div class="line">node.parent &lt;— q<sub>rand</sub></div>
+<div class="line">node.cost &lt;— q<sub>rand</sub>.cost + distance(node, q<sub>rand</sub>)</div>
+</div>
+</div>
+</div>
+<div class="line"><strong>procedure main()</strong></div>
+<div class="line-block">
+<div class="line">T = 0; // Initialize list/tree</div>
+<div class="line">for k = 1 to K</div>
+<div class="line-block">
+<div class="line">q<sub>rand</sub>← GenerateRandomNode()</div>
+<div class="line">q<sub>parent</sub>, close_node_list ← FindNearestPoint(q<sub>rand</sub>, T, threshold) // Returns node that results in lowest total cost and list of all close nodes</div>
+<div class="line-block">
+<div class="line">// Updates q<sub>rand</sub>.cost to q<sub>parent</sub>.cost + distance(q<sub>rand</sub>, q<sub>parent</sub>)</div>
+</div>
+<div class="line">if(q<sub>parent</sub>exists)</div>
+<div class="line-block">
+<div class="line">q<sub>parent</sub>&lt;— q<sub>parent</sub></div>
+<div class="line">if(q<sub>rand</sub>= goal) return path found</div>
+<div class="line">rewire()</div>
+</div>
+</div>
+<div class="line">return no path</div>
 </div>
 </div>
 </div>

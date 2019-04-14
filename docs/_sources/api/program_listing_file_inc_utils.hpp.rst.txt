@@ -65,4 +65,5 @@ Program Listing for File utils.hpp
    void PrintCost(std::vector<std::vector<int>> &grid, std::vector<Node> point_list);
    
    void MakeGrid(std::vector<std::vector<int>> &grid);
+   
    #endif UTILS_H

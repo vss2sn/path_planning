@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>File lla_star.hpp &mdash; Path Planning  documentation</title>
+  <title>File lpa_star.hpp &mdash; Path Planning  documentation</title>
   
 
   
@@ -38,7 +38,7 @@
   <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Program Listing for File lla_star.hpp" href="program_listing_file_inc_lla_star.hpp.html" />
+    <link rel="next" title="Program Listing for File lpa_star.hpp" href="program_listing_file_inc_lpa_star.hpp.html" />
     <link rel="prev" title="Program Listing for File dijkstra.hpp" href="program_listing_file_inc_dijkstra.hpp.html" /> 
 </head>
 
@@ -86,11 +86,12 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../algorithms.html">Algorithms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrt">RRT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrtstar">RRTStar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithms.html#dijkstra">Dijkstra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithms.html#a">A*</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#lpa">LPA*:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithms.html#d-lite">D* Lite:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrt">RRT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrtstar">RRTStar</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
@@ -122,7 +123,7 @@
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a79d10e672abb49ad63eeaa8aaef57c38.html">Define BLUE</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ad243f93c16bc4c1d3e0a13b84421d760.html">Define CYAN</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1acfbc006ea433ad708fdee3e82996e721.html">Define GREEN</a></li>
-<li class="toctree-l4"><a class="reference internal" href="define_lla__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.html">Define LPA_STAR__H</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_lpa__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.html">Define LPA_STAR__H</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a6f699060902f800f12aaae150f3a708e.html">Define MAGENTA</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a8d23feea868a983c8c2b661e1e16972f.html">Define RED</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ab702106cf3b3e96750b6845ded4e0299.html">Define RESET</a></li>
@@ -138,7 +139,7 @@
 <li class="toctree-l4"><a class="reference internal" href="file_inc_a_star.hpp.html">File a_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_d_star_lite.hpp.html">File d_star_lite.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_dijkstra.hpp.html">File dijkstra.hpp</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">File lla_star.hpp</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">File lpa_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_main.hpp.html">File main.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_rrt.hpp.html">File rrt.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_rrt_star.hpp.html">File rrt_star.hpp</a></li>
@@ -196,13 +197,13 @@
         
           <li><a href="library_root.html">Library API</a> &raquo;</li>
         
-      <li>File lla_star.hpp</li>
+      <li>File lpa_star.hpp</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/api/file_inc_lla_star.hpp.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/file_inc_lpa_star.hpp.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -215,25 +216,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="file-lla-star-hpp">
-<span id="file-inc-lla-star-hpp"></span><h1>File lla_star.hpp<a class="headerlink" href="#file-lla-star-hpp" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="file-lpa-star-hpp">
+<span id="file-inc-lpa-star-hpp"></span><h1>File lpa_star.hpp<a class="headerlink" href="#file-lpa-star-hpp" title="Permalink to this headline">¶</a></h1>
 <p>↰ <a class="reference internal" href="dir_inc.html#dir-inc"><span class="std std-ref">Parent directory</span></a> (<code class="docutils literal notranslate"><span class="pre">inc</span></code>)</p>
 <p>Contains the <a class="reference internal" href="classLPAStar.html#exhale-class-classlpastar"><span class="std std-ref">Class LPAStar</span></a> class.</p>
 <div class="contents local topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#definition-inc-lla-star-hpp" id="id1">Definition (<code class="docutils literal notranslate"><span class="pre">inc/lla_star.hpp</span></code>)</a></li>
+<li><a class="reference internal" href="#definition-inc-lpa-star-hpp" id="id1">Definition (<code class="docutils literal notranslate"><span class="pre">inc/lpa_star.hpp</span></code>)</a></li>
 <li><a class="reference internal" href="#detailed-description" id="id2">Detailed Description</a></li>
 <li><a class="reference internal" href="#includes" id="id3">Includes</a></li>
 <li><a class="reference internal" href="#classes" id="id4">Classes</a></li>
 <li><a class="reference internal" href="#defines" id="id5">Defines</a></li>
 </ul>
 </div>
-<div class="section" id="definition-inc-lla-star-hpp">
-<h2>Definition (<code class="docutils literal notranslate"><span class="pre">inc/lla_star.hpp</span></code>)<a class="headerlink" href="#definition-inc-lla-star-hpp" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="definition-inc-lpa-star-hpp">
+<h2>Definition (<code class="docutils literal notranslate"><span class="pre">inc/lpa_star.hpp</span></code>)<a class="headerlink" href="#definition-inc-lpa-star-hpp" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="program_listing_file_inc_lla_star.hpp.html">Program Listing for File lla_star.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="program_listing_file_inc_lpa_star.hpp.html">Program Listing for File lpa_star.hpp</a></li>
 </ul>
 </div>
 </div>
@@ -256,7 +257,7 @@
 <div class="section" id="defines">
 <h2>Defines<a class="headerlink" href="#defines" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference internal" href="define_lla__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.html#exhale-define-lla-star-8hpp-1a5bd181e29d3aa3a1daeb348c8ddada44"><span class="std std-ref">Define LPA_STAR__H</span></a></li>
+<li><a class="reference internal" href="define_lpa__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.html#exhale-define-lpa-star-8hpp-1a5bd181e29d3aa3a1daeb348c8ddada44"><span class="std std-ref">Define LPA_STAR__H</span></a></li>
 </ul>
 </div>
 </div>
@@ -269,7 +270,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="program_listing_file_inc_lla_star.hpp.html" class="btn btn-neutral float-right" title="Program Listing for File lla_star.hpp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="program_listing_file_inc_lpa_star.hpp.html" class="btn btn-neutral float-right" title="Program Listing for File lpa_star.hpp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="program_listing_file_inc_dijkstra.hpp.html" class="btn btn-neutral float-left" title="Program Listing for File dijkstra.hpp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

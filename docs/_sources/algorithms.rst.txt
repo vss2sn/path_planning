@@ -19,37 +19,6 @@ Algorithms
 .. contents::
   :backlinks: none
 
-RRT
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-| **procedure main()**
-|  T = 0; // Initialize list/tree
-|  for k = 1 to K
-|   q\ :sub:`rand`\ ← GenerateRandomNode()
-|   q\ :sub:`parent`\ ← FindNearestPoint(q\ :sub:`rand`\, T, threshold) // Returns closest node based on distance
-|   if(q\ :sub:`parent`\ exists)
-|     q\ :sub:`parent`\ <--- q\ :sub:`parent`\
-|     if(q\ :sub:`rand`\ = goal) return path found
-|  return no path
-
-RRTStar
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-| **procedure rewire()**
-|  for all node in close_node_list != q\ :sub:`parent`\
-|   if(q\ :sub:`rand`\.cost + dist(node ,q\ :sub:`rand`\) < node.cost)
-|     node.parent <--- q\ :sub:`rand`\
-|     node.cost <--- q\ :sub:`rand`\.cost + distance(node, q\ :sub:`rand`\)
-| **procedure main()**
-|  T = 0; // Initialize list/tree
-|  for k = 1 to K
-|   q\ :sub:`rand`\ ← GenerateRandomNode()
-|   q\ :sub:`parent`\, close_node_list ← FindNearestPoint(q\ :sub:`rand`\, T, threshold) // Returns node that results in lowest total cost and list of all close nodes
-|                                                                    // Updates q\ :sub:`rand`\.cost to q\ :sub:`parent`\.cost + distance(q\ :sub:`rand`\, q\ :sub:`parent`\)
-|   if(q\ :sub:`parent`\ exists)
-|     q\ :sub:`parent`\ <--- q\ :sub:`parent`\
-|     if(q\ :sub:`rand`\ = goal) return path found
-|     rewire()
-|  return no path
-
 Dijkstra
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 | **procedure main()**
@@ -93,10 +62,42 @@ A*
 |    CL <--- q
 |  return no path
 
+LPA*:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| **procedure CalculateKey(s)**
+|  return [min(g(s), rhs(s)) + h(s\ :sub:`start`\ , s); min(g(s),rhs(s))];
+| **procedure Initialize()**
+|  U = 0;
+|  for all s in S rhs(s) = g(s) = inf
+|  rhs(s\ :sub:`start`\ ) = 0;
+|  U.insert(s\ :sub:`start`\ , CalculateKey(s\ :sub:`start`\ ));
+| **procedure UpdateVertex()**
+|  if(u!=s\ :sub:`start`\ ) rhs(s) = min\ for all :sub:`s' in Succ(u)`\ c(u, s') + g(s')
+|  if(u in U) U.remove(u)
+|  if(g(u)!=rhs(u)) U.insert(u, CalculateKey(u));
+| **procedure ComputeShortestPath()**
+|  while(U.TopKey() < CalculateKey(s\ :sub:`goal`\ ) OR rhs(s\ :sub:`goal`\) != g(s\ :sub:`goal`\ ))
+|   u = U.Pop();
+|   if(g(u) > rhs(u))
+|     g(u) = rhs(u);
+|     for all s in Succ(u) UpdateVertex(s);
+|   else
+|     g(u) = inf;
+|     for all s in Succ(u) (union) {u} UpdateVertex(s)
+| **procedure Main()**
+|  Initialize();
+|  forever: // This runs for n times by default in current implementation
+|   ComputeShortestPath();
+|   Scan graph for changed edge costs;
+|   if any edge cost changed // this occurs with probability 1/n for every iteration
+|   for all directed edges (u,v) with changed edge costs
+|    Update the edge cost c(u,v);
+|    UpdateVertex(u)
+
 D* Lite:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 | **procedure CalculateKey(s)**
-|  return [min(g(s), rhs(s)) + h(s\ :sub:`start`\ , s) + k\ :sub:`m`\ = 0; min(g(s),rhs(s))];
+|  return [min(g(s), rhs(s)) + h(s\ :sub:`start`\ , s) + k\ :sub:`m`\ ; min(g(s),rhs(s))];
 | **procedure Initialize()**
 |  U = 0;
 |  k\ :sub:`m`\ = 0;
@@ -105,7 +106,7 @@ D* Lite:
 |  U.insert(s\ :sub:`goal`\ , CalculateKey(s\ :sub:`goal`\ ));
 | **procedure UpdateVertex()**
 |  if(u!=s\ :sub:`goal`\ ) rhs(s) = min\ for all :sub:`s' in Succ(u)`\ c(u, s') + g(s')
-|  if(u in U) U.remove(u
+|  if(u in U) U.remove(u)
 |  if(g(u)!=rhs(u)) U.insert(u, CalculateKey(u));
 | **procedure ComputeShortestPath()**
 |  while(U.TopKey() < CalculateKey(s\ :sub:`start`\ ) OR rhs(s\ :sub:`start`\) != g(s\ :sub:`start`\ ))
@@ -135,3 +136,34 @@ D* Lite:
 |    Update the edge cost c(u,v);
 |    UpdateVertex(u)
 |  ComputeShortestPath()
+
+RRT
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| **procedure main()**
+|  T = 0; // Initialize list/tree
+|  for k = 1 to K
+|   q\ :sub:`rand`\ ← GenerateRandomNode()
+|   q\ :sub:`parent`\ ← FindNearestPoint(q\ :sub:`rand`\, T, threshold) // Returns closest node based on distance
+|   if(q\ :sub:`parent`\ exists)
+|     q\ :sub:`parent`\ <--- q\ :sub:`parent`\
+|     if(q\ :sub:`rand`\ = goal) return path found
+|  return no path
+
+RRTStar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| **procedure rewire()**
+|  for all node in close_node_list != q\ :sub:`parent`\
+|   if(q\ :sub:`rand`\.cost + dist(node ,q\ :sub:`rand`\) < node.cost)
+|     node.parent <--- q\ :sub:`rand`\
+|     node.cost <--- q\ :sub:`rand`\.cost + distance(node, q\ :sub:`rand`\)
+| **procedure main()**
+|  T = 0; // Initialize list/tree
+|  for k = 1 to K
+|   q\ :sub:`rand`\ ← GenerateRandomNode()
+|   q\ :sub:`parent`\, close_node_list ← FindNearestPoint(q\ :sub:`rand`\, T, threshold) // Returns node that results in lowest total cost and list of all close nodes
+|                                                                    // Updates q\ :sub:`rand`\.cost to q\ :sub:`parent`\.cost + distance(q\ :sub:`rand`\, q\ :sub:`parent`\)
+|   if(q\ :sub:`parent`\ exists)
+|     q\ :sub:`parent`\ <--- q\ :sub:`parent`\
+|     if(q\ :sub:`rand`\ = goal) return path found
+|     rewire()
+|  return no path

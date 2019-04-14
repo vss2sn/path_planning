@@ -3,7 +3,7 @@
 Class LPAStar
 =============
 
-- Defined in :ref:`file_inc_lla_star.hpp`
+- Defined in :ref:`file_inc_lpa_star.hpp`
 
 
 Class Documentation

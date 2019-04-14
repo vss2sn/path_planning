@@ -1,10 +1,10 @@
 
-.. _program_listing_file_inc_lla_star.hpp:
+.. _program_listing_file_inc_lpa_star.hpp:
 
-Program Listing for File lla_star.hpp
+Program Listing for File lpa_star.hpp
 =====================================
 
-|exhale_lsh| :ref:`Return to documentation for file <file_inc_lla_star.hpp>` (``inc/lla_star.hpp``)
+|exhale_lsh| :ref:`Return to documentation for file <file_inc_lpa_star.hpp>` (``inc/lpa_star.hpp``)
 
 .. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
@@ -43,7 +43,7 @@ Program Listing for File lla_star.hpp
    
      int ComputeShortestPath();
    
-     std::vector<Node> lla_star(std::vector<std::vector<int> > &grid_in, Node start_in, Node goal_in, int max_iter_in);
+     std::vector<Node> lpa_star(std::vector<std::vector<int> > &grid_in, Node start_in, Node goal_in, int max_iter_in);
    
      std::vector<Node> Replan(Node u);
    

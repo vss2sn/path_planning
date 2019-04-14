@@ -56,7 +56,7 @@ Included By
 
 - :ref:`file_inc_dijkstra.hpp`
 
-- :ref:`file_inc_lla_star.hpp`
+- :ref:`file_inc_lpa_star.hpp`
 
 - :ref:`file_inc_rrt.hpp`
 
