@@ -7,10 +7,10 @@
 #include "a_star.hpp"
 
 void AStar::InsertionSort(std::vector<Node>& v){
-   int n = v.size();
+   int nV = v.size();
    int i, j;
    Node key;
-   for (i = 1; i < n; i++) {
+   for (i = 1; i < nV; i++) {
        key = v[i];
        j = i-1;
        while (j >= 0 && (v[j].cost_ + v[j].h_cost_ > key.cost_+key.h_cost_)){
@@ -21,10 +21,10 @@ void AStar::InsertionSort(std::vector<Node>& v){
    }
 }
 
-std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, int n, Node start_in, Node goal_in){
+std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, Node start_in, Node goal_in){
   start_ = start_in;
   goal_ = goal_in;
-
+  n = grid.size();
   // Get possible motions
   std::vector<Node> motion = GetMotion();
   open_list_.push(start_);
@@ -79,7 +79,7 @@ int main(){
   for (int i = 0; i < n; i++){
     grid[i] = tmp;
   }
-  MakeGrid(grid, n);
+  MakeGrid(grid);
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -94,12 +94,12 @@ int main(){
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
-  PrintGrid(grid, n);
+  PrintGrid(grid);
 
   AStar new_a_star;
-  std::vector<Node> path_vector = new_a_star.a_star(grid, n, start, goal);
+  std::vector<Node> path_vector = new_a_star.a_star(grid, start, goal);
 
-  PrintPath(path_vector, start, goal, grid, n);
+  PrintPath(path_vector, start, goal, grid);
   return 0;
 }
 #endif

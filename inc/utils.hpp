@@ -123,7 +123,7 @@ std::vector<Node> GetMotion();
 * @param n number of rows/columns
 * @return void
 */
-void PrintGrid(std::vector<std::vector<int>> &grid, int n);
+void PrintGrid(std::vector<std::vector<int>> &grid);
 
 /**
 * @brief Prints the grid passed
@@ -134,7 +134,7 @@ void PrintGrid(std::vector<std::vector<int>> &grid, int n);
 * @param n number of rows/columns
 * @return void
 */
-void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, std::vector<std::vector<int>> &grid, int n);
+void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, std::vector<std::vector<int>> &grid);
 
 /**
 * @brief Prints out the cost for reaching points on the grid in the grid shape
@@ -143,7 +143,7 @@ void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, std::vect
 * @param point_list Vector of all points that have been considered. Nodes in vector contain cost.
 * @return void
 */
-void PrintCost(std::vector<std::vector<int>> &grid, int n, std::vector<Node> point_list);
+void PrintCost(std::vector<std::vector<int>> &grid, std::vector<Node> point_list);
 
 /**
 * @brief Creates a random grid of a given size
@@ -151,5 +151,5 @@ void PrintCost(std::vector<std::vector<int>> &grid, int n, std::vector<Node> poi
 * @param n number of rows/columns
 * @return void
 */
-void MakeGrid(std::vector<std::vector<int>> &grid, int n);
+void MakeGrid(std::vector<std::vector<int>> &grid);
 #endif UTILS_H

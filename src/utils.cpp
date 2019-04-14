@@ -89,7 +89,8 @@ std::vector<Node> GetMotion(){
   return v;
 }
 
-void MakeGrid(std::vector<std::vector<int>> &grid, int n){
+void MakeGrid(std::vector<std::vector<int>> &grid){
+  int n = grid.size();
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n); // define the range
@@ -102,7 +103,8 @@ void MakeGrid(std::vector<std::vector<int>> &grid, int n){
   }
 }
 
-void PrintGrid(std::vector<std::vector<int>> &grid, int n){
+void PrintGrid(std::vector<std::vector<int>> &grid){
+  int n = grid.size();
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
   std::cout << "2. Obstacles             ---> 1" << std::endl;
@@ -125,10 +127,10 @@ void PrintGrid(std::vector<std::vector<int>> &grid, int n){
   std::cout << std::endl;
 }
 
-void PrintPath(std::vector<Node> path_vector, Node start, Node goal, std::vector<std::vector<int>> &grid, int n){
+void PrintPath(std::vector<Node> path_vector, Node start, Node goal, std::vector<std::vector<int>> &grid){
   if(path_vector[0].id_ == -1){
     std::cout << "No path exists" << std::endl;
-    PrintGrid(grid, n);
+    PrintGrid(grid);
     return;
   }
   // std::cout << "Path (goal to start):" << std::endl;
@@ -149,10 +151,11 @@ void PrintPath(std::vector<Node> path_vector, Node start, Node goal, std::vector
     }
   }
   grid[start.x_][start.y_] = 3;
-  PrintGrid(grid, n);
+  PrintGrid(grid);
 }
 
-void PrintCost(std::vector<std::vector<int>> &grid, int n, std::vector<Node> point_list){
+void PrintCost(std::vector<std::vector<int>> &grid, std::vector<Node> point_list){
+  int n = grid.size();
   std::vector<Node>::iterator it_v;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){

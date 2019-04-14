@@ -6,7 +6,7 @@
 
 #include "rrt_star.hpp"
 
-Node RRTStar::FindNearestPoint(Node& new_node, int n){
+Node RRTStar::FindNearestPoint(Node& new_node){
   Node nearest_node(-1,-1,-1,-1,-1,-1);
   std::vector<Node>::iterator it_v;
   std::vector<Node>::iterator it_v_store;
@@ -82,7 +82,7 @@ bool RRTStar::CheckObstacle(Node& n_1, Node& n_2){
   return false;
 }
 
-Node RRTStar::GenerateRandomNode(int n){
+Node RRTStar::GenerateRandomNode(){
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -107,12 +107,13 @@ void RRTStar::Rewire(Node new_node){
   near_nodes_dist_.clear();
 }
 
-std::vector<Node> RRTStar::rrt_star(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
+std::vector<Node> RRTStar::rrt_star(std::vector<std::vector<int> > &grid, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
   start_ = start_in;
   goal_ = goal_in;
+  n = grid.size();
   threshold_ = threshold_in;
   int max_iter = max_iter_x_factor * n * n;
-  CreateObstacleList(grid, n);
+  CreateObstacleList(grid);
   point_list_.push_back(start_);
   grid[start_.x_][start_.y_]=2;
   int iter = 0;
@@ -128,10 +129,10 @@ std::vector<Node> RRTStar::rrt_star(std::vector<std::vector<int> > &grid, int n,
       }
       return point_list_;
     }
-    new_node = GenerateRandomNode(n);
+    new_node = GenerateRandomNode();
     if (grid[new_node.x_][new_node.y_]==1) continue;
     // Go back to beginning of loop if point is an obstacle
-    Node nearest_node = FindNearestPoint(new_node, n);
+    Node nearest_node = FindNearestPoint(new_node);
     if(nearest_node.id_ == -1) continue;
     // Go back to beginning of loop if no near neighbour
     grid[new_node.x_][new_node.y_]=2;
@@ -169,7 +170,7 @@ bool RRTStar::CheckGoalVisible(Node new_node){
   return false;
 }
 
-void RRTStar::CreateObstacleList(std::vector<std::vector<int> > &grid, int n){
+void RRTStar::CreateObstacleList(std::vector<std::vector<int> > &grid){
   for(int i=0; i < n; i++){
     for(int j=0;j < n; j++){
       if(grid[i][j]==1){
@@ -193,7 +194,7 @@ int main(){
   for (int i = 0; i < n; i++){
     grid[i] = tmp;
   }
-  MakeGrid(grid, n);
+  MakeGrid(grid);
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -208,13 +209,13 @@ int main(){
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
-  PrintGrid(grid, n);
+  PrintGrid(grid);
 
   RRTStar new_rrt_star;
   double threshold = 2;
   int max_iter_x_factor = 20;
-  std::vector<Node> path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
-  PrintPath(path_vector, start, goal, grid, n);
+  std::vector<Node> path_vector = new_rrt_star.rrt_star(grid, start, goal, max_iter_x_factor, threshold);
+  PrintPath(path_vector, start, goal, grid);
 
   return 0;
 }

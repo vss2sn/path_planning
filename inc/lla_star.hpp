@@ -1,16 +1,16 @@
 /**
-* @file lla_star_lite.hpp
+* @file lla_star.hpp
 * @author vss2sn
 * @brief Contains the LLAStar class
 */
 
-#ifndef LLA_STAR_LITE_H
-#define LLA_STAR_LITE_H
+#ifndef LLA_STAR_H
+#define LLA_STAR__H
 
 #include "utils.hpp"
 
 /**
-* @brief Class for D Star Lite objects
+* @brief Class for LLAStar objects
 */
 class LLAStar{
 public:
@@ -78,14 +78,14 @@ public:
   void Init();
 
   /**
-  * @brief Update vertex procedure as per LLA* Lite algorithm, Figure 3.
+  * @brief Update vertex procedure as per LLA* algorithm, Figure 3.
   * @param u Node on which UpdateVertex has to be called
   * @return void
   */
   void UpdateVertex(Node& u);
 
   /**
-  * @brief Compare keys function for LLA* Lite. Compares the key given as input with the key values of the node given as input. Calls CalculateKey on the node.
+  * @brief Compare keys function for LLA*. Compares the key given as input with the key values of the node given as input. Calls CalculateKey on the node.
   * @param pair_in Key pair
   * @param u Node whose key values will be calculated and compared to above key pair
   * @return bool value based on comparison of key values
@@ -93,24 +93,24 @@ public:
   bool CompareKey(std::pair<double,double>& pair_in, Node& u);
 
   /**
-  * @brief ComputeShortestPath procedure as per LLA* Lite algorithm, Figure 3.
+  * @brief ComputeShortestPath procedure as per LLA* algorithm, Figure 3.
   * @return void
   */
   int ComputeShortestPath();
 
   /**
-  * @brief Main algorithm of LLA* Lite
+  * @brief Main algorithm of LLA*
   * @param grid_in Main grid
   * @param n_in number of rows/columns
   * @param start_in starting node
   * @param goal_in goal node
   * @return path vector of nodes
   */
-  std::vector<Node> lla_star(std::vector<std::vector<int> > &grid_in, int n_in, Node start_in, Node goal_in, int max_iter_in);
+  std::vector<Node> lla_star(std::vector<std::vector<int> > &grid_in, Node start_in, Node goal_in, int max_iter_in);
 
   /**
   * @brief Replan route, called whenever a previously unknown obstacle is detected.
-          Equivalent of the effects of the code after an edge change is detectedd in the while loop within the main procedure of LLA* Lite.
+          Equivalent of the effects of the code after an edge change is detectedd in the while loop within the main procedure of LLA*.
   * @param u Node at which the change was detected
   * @return path vector of nodes
   */
@@ -137,7 +137,7 @@ public:
   std::vector<Node> UpdateStart(Node start_in);
 
   /**
-  * @brief Function to run LLA* Lite live, showing the movement of the bot with time. Timeout after each movement set in .h file. Next point in path might beset to obstacle with probability 1/n. Calls UpdateStart and SetObs.
+  * @brief Function to run LLA* live, showing the movement of the bot with time. Timeout after each movement set in .h file. Next point in path might beset to obstacle with probability 1/n. Calls UpdateStart and SetObs.
   * @param disp_inc_in Bool value to allow display incremental progress
   * @return void
   */
@@ -150,7 +150,7 @@ public:
   Node NextPoint();
 
   /**
-  * @brief Displays the grid stored by the LLA* Lite object.
+  * @brief Displays the grid stored by the LLAStar object.
   * @return void
   */
   void DisplayGrid();
@@ -165,4 +165,4 @@ private:
   std::vector<std::vector<int>> grid;
 };
 
-#endif LLA_STAR_LITE_H
+#endif LLA_STAR_H

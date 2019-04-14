@@ -75,10 +75,10 @@ std::vector<Node> LLAStar::GetSucc(Node u){
 }
 
 void LLAStar::InsertionSort(){
-   int n = U_.size();
+   int nU = U_.size();
    int i, j;
    std::pair<Node,std::pair<double,double>> key;
-   for (i = 1; i < n; i++) {
+   for (i = 1; i < nU; i++) {
        key = U_[i];
        j = i-1;
        while (j >= 0 && (U_[j].second.first > key.second.first
@@ -185,12 +185,12 @@ int LLAStar::ComputeShortestPath(){
   return 0;
 }
 
-std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, int n_in, Node start_in, Node goal_in, int max_iter_in){
+std::vector<Node> LLAStar::lla_star(std::vector<std::vector<int>> &grid_in, Node start_in, Node goal_in, int max_iter_in){
   max_iter_ = max_iter_in;
   grid = grid_in;
   start_ = start_in;
   goal_ = goal_in;
-  n = n_in;
+  n = grid.size();
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -355,7 +355,7 @@ int main(){
   for (int i = 0; i < n; i++){
     grid[i] = tmp;
   }
-  MakeGrid(grid, n);
+  MakeGrid(grid);
 
   Node start(0,0,0,0,0,0);
   Node goal(n-1,n-1,0,0,0,0);
@@ -368,10 +368,10 @@ int main(){
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
   int max_iter = n;
-  PrintGrid(grid, n);
+  PrintGrid(grid);
   std::vector<Node> path_vector;
   LLAStar new_lla_star;
-  path_vector = new_lla_star.lla_star(grid, n, start, goal, max_iter);
-  PrintPath(path_vector, goal, start, grid, n); //Order of start and goal switched here due to the way LPA* works.
+  path_vector = new_lla_star.lla_star(grid, start, goal, max_iter);
+  PrintPath(path_vector, goal, start, grid); //Order of start and goal switched here due to the way LPA* works.
 }
 #endif BUILD_INDIVIDUAL

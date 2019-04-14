@@ -21,7 +21,7 @@ public:
   * @param n number of rows/columns
   * @return nearest node
   */
-  Node FindNearestPoint(Node& new_node, int n);
+  Node FindNearestPoint(Node& new_node);
 
   /**
   * @brief Check if there is any obstacle between the 2 nodes. As this planner is for grid maps, the obstacles are square.
@@ -36,7 +36,7 @@ public:
   * @param n Number of rows/columns
   * @return Generated node
   */
-  Node GenerateRandomNode(int n);
+  Node GenerateRandomNode();
 
   /**
   * @brief Rewire the tree
@@ -55,7 +55,7 @@ public:
   * @param threshold_in Maximum distance per move
   * @return path vector of nodes
   */
-  std::vector<Node> rrt_star(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity());
+  std::vector<Node> rrt_star(std::vector<std::vector<int> > &grid, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity());
 
   /**
   * @brief Check if goal is reachable from current node
@@ -70,7 +70,7 @@ public:
   * @param n Number of rows/columns
   * @return void
   */
-  void CreateObstacleList(std::vector<std::vector<int> > &grid, int n);
+  void CreateObstacleList(std::vector<std::vector<int> > &grid);
 
 private:
   std::vector<Node> point_list_;
@@ -80,6 +80,7 @@ private:
   Node start_, goal_;
   double threshold_ = 1;
   bool found_goal_ = false;
+  int n = 0;
 };
 
 #endif RRT_STAR_H
