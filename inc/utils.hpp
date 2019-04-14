@@ -148,4 +148,5 @@ void PrintCost(std::vector<std::vector<int>> &grid, std::vector<Node> point_list
 * @return void
 */
 void MakeGrid(std::vector<std::vector<int>> &grid);
+
 #endif UTILS_H

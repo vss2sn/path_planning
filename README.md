@@ -57,7 +57,7 @@
 3. A\* and D\* Lite use Manhattan distance (L1) as their heuristic (change to L2 if adding diagonal moves to the GetMotion function). D* Lite also uses the same in its C function.
 4. D* Lite can be run live with random obstacle creation using the RunDStarLite function. For the live run of D* Lite, obstacles are detected on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid. D* Lite is implemented based on Sven Koenig's & Maxim Likhachev's paper.
 5. To specify your own grid, set n to number of rows, created the 2D vector, setting 1 for obstacles and 0 elsewhere, and comment out the MakeGrid function.
-6. The LPA* algorithm is implemented to run `max_iter_` number of times with default value `n`. Obstacles are created on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid, at a random point along the path.
+6. The LPA* algorithm is implemented to run `max_iter_` number of times with default value `n`. Obstacles are created on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid, at a random point along the path. It can be run with `max_iter_` set to `0` if continuous replanning is to be disabled.
 
 <a name="notes_on_cmake_options"></a>
 #### Notes on CMake Options: ####

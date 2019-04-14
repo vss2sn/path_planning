@@ -1,10 +1,10 @@
 /**
-* @file lla_star_lite.cpp
+* @file lpa_star.cpp
 * @author vss2sn
 * @brief Contains the LPAStar class
 */
 
-#include "lla_star.hpp"
+#include "lpa_star.hpp"
 
 void LPAStar::VectorInsertionSort(std::vector<Node>& v){
    int n = v.size();
@@ -186,7 +186,7 @@ int LPAStar::ComputeShortestPath(){
   return 0;
 }
 
-std::vector<Node> LPAStar::lla_star(std::vector<std::vector<int>> &grid_in, Node start_in, Node goal_in, int max_iter_in){
+std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, Node start_in, Node goal_in, int max_iter_in){
   max_iter_ = max_iter_in;
   grid = grid_in;
   start_ = start_in;
@@ -258,6 +258,7 @@ void LPAStar::SetObs(Node u){
     grid[u.x_][u.y_] = 1;
     std::cout << "Obstacle found at: " << std::endl;
     u.PrintStatus();
+    usleep(500000);
   }
 }
 
@@ -322,17 +323,7 @@ void LPAStar::DisplayGrid(){
 * @return 0
 */
 int main(){
-  int n = 8;
-  // std::vector<std::vector<int>> grid = {
-  //   { 0 , 0 , 1 , 0 , 0 , 1 , 0 , 0 },
-  //   { 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-  //   { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
-  //   { 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-  //   { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
-  //   { 0 , 1 , 0 , 1 , 0 , 1 , 0 , 0 },
-  //   { 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
-  //   { 0 , 0 , 1 , 0 , 0 , 0 , 1 , 0 }
-  // };
+  int n = 11;
 
   std::vector<std::vector<int>> grid(n);
   std::vector<int> tmp(n);
@@ -340,9 +331,12 @@ int main(){
     grid[i] = tmp;
   }
   MakeGrid(grid);
+  std::random_device rd; // obtain a random number from hardware
+  std::mt19937 eng(rd()); // seed the generator
+  std::uniform_int_distribution<int> distr(0,n-1); // define the range
 
-  Node start(0,0,0,0,0,0);
-  Node goal(n-1,n-1,0,0,0,0);
+  Node start(distr(eng),distr(eng),0,0,0,0);
+  Node goal(distr(eng),distr(eng),0,0,0,0);
 
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -354,8 +348,8 @@ int main(){
   int max_iter = n;
   PrintGrid(grid);
   std::vector<Node> path_vector;
-  LPAStar new_lla_star;
-  path_vector = new_lla_star.lla_star(grid, start, goal, max_iter);
+  LPAStar new_lpa_star;
+  path_vector = new_lpa_star.lpa_star(grid, start, goal, n);
   PrintPath(path_vector, goal, start, grid); //Order of start and goal switched here due to the way LPA* works.
 }
 #endif BUILD_INDIVIDUAL

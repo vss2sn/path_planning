@@ -205,9 +205,12 @@ std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in,
     path_vector_.clear();
     Node no_path_node(-1,-1,-1,-1,-1);
     path_vector_.push_back(no_path_node);
+    return path_vector_;
   }
-  else GeneratePathVector();
-  return ReturnInvertedVector();
+  else{
+    GeneratePathVector();
+    return ReturnInvertedVector();
+  }
 }
 
 std::vector<Node> DStarLite::SetObs(Node u){
@@ -403,7 +406,7 @@ void DStarLite::RunDStarLite(bool disp_inc_in){
 * @return 0
 */
 int main(){
-  int n = 8;
+  int n = 11;
 
   std::vector<std::vector<int>> grid(n);
   std::vector<int> tmp(n);
@@ -411,9 +414,12 @@ int main(){
     grid[i] = tmp;
   }
   MakeGrid(grid);
+  std::random_device rd; // obtain a random number from hardware
+  std::mt19937 eng(rd()); // seed the generator
+  std::uniform_int_distribution<int> distr(0,n-1); // define the range
 
-  Node start(1,1,0,0,0,0);
-  Node goal(n-1,n-1,0,0,0,0);
+  Node start(distr(eng),distr(eng),0,0,0,0);
+  Node goal(distr(eng),distr(eng),0,0,0,0);
 
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -429,7 +435,7 @@ int main(){
   path_vector = new_d_star_lite.d_star_lite(grid, start, goal);
   PrintPath(path_vector, start, goal, grid);
 
-  new_d_star_lite.RunDStarLite();
+//  new_d_star_lite.RunDStarLite();
   return 0;
 }
 #endif BUILD_INDIVIDUAL

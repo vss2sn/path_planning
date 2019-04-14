@@ -1,12 +1,13 @@
 #include "dijkstra.hpp"
 #include "a_star.hpp"
+#include "lpa_star.hpp"
 #include "rrt.hpp"
 #include "rrt_star.hpp"
 #include "d_star_lite.hpp"
 #include <gtest/gtest.h>
 
-double run_test(std::vector<std::vector<int> > &grid, int n, std::string algo){
-
+double run_test(std::vector<std::vector<int> > &grid, std::string algo){
+  int n = grid.size();
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -23,27 +24,31 @@ double run_test(std::vector<std::vector<int> > &grid, int n, std::string algo){
 
   if(algo =="dijkstra"){
     Dijkstra new_dijkstra;
-    path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
+    path_vector = new_dijkstra.dijkstra(grid, start, goal);
   }
   else if(algo == "a_star"){
     AStar new_a_star;
-    path_vector = new_a_star.a_star(grid, n, start, goal);
+    path_vector = new_a_star.a_star(grid, start, goal);
+  }
+  else if(algo == "lpa_star"){
+    LPAStar new_lpa_star;
+    path_vector = new_lpa_star.lpa_star(grid, start, goal, 0);
   }
   else if(algo=="rrt"){
     RRT new_rrt;
-    path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
+    path_vector = new_rrt.rrt(grid, start, goal, max_iter_x_factor, threshold);
   }
   else if(algo=="rrtstar"){
     RRTStar new_rrt_star;
-    path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
+    path_vector = new_rrt_star.rrt_star(grid, start, goal, max_iter_x_factor, threshold);
   }
   else if(algo == "d_star_lite"){
     DStarLite new_d_star_lite;
-    path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
+    path_vector = new_d_star_lite.d_star_lite(grid, start, goal);
   }
 
-  if(path_vector.size()==1) return -1;
   int i;
+  if(path_vector[0].cost_==-1) return -1;
   for(i = 0; i < path_vector.size(); i++){
     if(goal == path_vector[i]) break;
   }
@@ -63,16 +68,18 @@ TEST(PathPlanningTest, Test1) {
 
   std::vector<std::vector<int>> main_grid = grid;
   grid = main_grid;
-  ASSERT_EQ(-1, run_test(grid, n, "dijkstra"));
+  ASSERT_EQ(-1, run_test(grid, "dijkstra"));
   grid = main_grid;
-  ASSERT_EQ(-1, run_test(grid, n, "a_star"));
+  ASSERT_EQ(-1, run_test(grid, "a_star"));
+  grid = main_grid;
+  ASSERT_EQ(-1, run_test(grid, "lpa_star"));
   // NOTE: RRT currently does not store cost. Now becomes a TODO.
   // grid = main_grid;
-  // ASSERT_EQ(floor(sqrt((double)8 )), floor(run_test(grid, n, "rrt")));
+  // ASSERT_EQ(floor(sqrt((double)8 )), floor(run_test(grid, "rrt")));
   grid = main_grid;
-  ASSERT_EQ(-1, run_test(grid, n, "rrtstar"));
+  ASSERT_EQ(-1, run_test(grid, "rrtstar"));
   grid = main_grid;
-  ASSERT_EQ(-1, run_test(grid, n, "d_star_lite"));
+  ASSERT_EQ(-1, run_test(grid, "d_star_lite"));
 }
 
 TEST(PathPlanningTest, Test2) {
@@ -87,16 +94,18 @@ TEST(PathPlanningTest, Test2) {
                    } ;
   std::vector<std::vector<int>> main_grid = grid;
   grid = main_grid;
-  ASSERT_EQ(-1, run_test(grid, n, "dijkstra"));
+  ASSERT_EQ(-1, run_test(grid, "dijkstra"));
   grid = main_grid;
-  ASSERT_EQ(-1, run_test(grid, n, "a_star"));
+  ASSERT_EQ(-1, run_test(grid, "a_star"));
+  grid = main_grid;
+  ASSERT_EQ(-1, run_test(grid, "lpa_star"));
   // NOTE: RRT currently does not store cost. Now becomes a TODO.
   // grid = main_grid;
-  // ASSERT_EQ(floor(sqrt((double)8 )), floor(run_test(grid, n, "rrt")));
+  // ASSERT_EQ(floor(sqrt((double)8 )), floor(run_test(grid, "rrt")));
   grid = main_grid;
-  ASSERT_EQ(-1, run_test(grid, n, "rrtstar"));
+  ASSERT_EQ(-1, run_test(grid, "rrtstar"));
   grid = main_grid;
-  ASSERT_EQ(-1, run_test(grid, n, "d_star_lite"));
+  ASSERT_EQ(-1, run_test(grid, "d_star_lite"));
 }
 
 

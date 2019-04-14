@@ -133,19 +133,19 @@ void PrintPath(std::vector<Node> path_vector, Node start, Node goal, std::vector
     PrintGrid(grid);
     return;
   }
-  // std::cout << "Path (goal to start):" << std::endl;
+  std::cout << "Path (goal to start):" << std::endl;
   int i = 0;
   for(i = 0; i < path_vector.size(); i++){
     if(goal == path_vector[i]) break;
   }
-  // path_vector[i].PrintStatus();
+  path_vector[i].PrintStatus();
   grid[path_vector[i].x_][path_vector[i].y_] = 3;
   while(path_vector[i].id_!=start.id_){
     if(path_vector[i].id_ == path_vector[i].pid_) break;
     for(int j = 0; j < path_vector.size(); j++){
       if(path_vector[i].pid_ == path_vector[j].id_){
         i=j;
-        // path_vector[j].PrintStatus();
+        path_vector[j].PrintStatus();
         grid[path_vector[j].x_][path_vector[j].y_] = 3;
       }
     }

@@ -1,5 +1,5 @@
 /**
-* @file lla_star.hpp
+* @file lpa_star.hpp
 * @author vss2sn
 * @brief Contains the LPAStar class
 */
@@ -106,7 +106,7 @@ public:
   * @param max_iter_in number of oterations to run of LPA*
   * @return path vector of nodes
   */
-  std::vector<Node> lla_star(std::vector<std::vector<int> > &grid_in, Node start_in, Node goal_in, int max_iter_in);
+  std::vector<Node> lpa_star(std::vector<std::vector<int> > &grid_in, Node start_in, Node goal_in, int max_iter_in);
 
   /**
   * @brief Replan route, called whenever a previously unknown obstacle is detected.

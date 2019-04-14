@@ -6,6 +6,7 @@
 
 #include "dijkstra.hpp"
 #include "a_star.hpp"
+#include "lpa_star.hpp"
 #include "rrt.hpp"
 #include "rrt_star.hpp"
 #include "d_star_lite.hpp"
@@ -58,8 +59,17 @@ int main(){
   std::cout << "--------------------------------------------------------" << std::endl;
   grid = main_grid;
   AStar new_a_star;
-  path_vector = new_a_star.a_star(grid, n, start, goal);
+  path_vector = new_a_star.a_star(grid, start, goal);
   PrintPath(path_vector, start, goal, grid);
+
+  std::cout << "--------------------------------------------------------------------------" << std::endl;
+  std::cout << "--------------------- ALGORITH: Lifeling Planning A* ---------------------" << std::endl;
+  std::cout << "--------------------------------------------------------------------------" << std::endl;
+  grid = main_grid;
+  LPAStar new_lpa_star;
+  path_vector.clear();
+  path_vector = new_lpa_star.lpa_star(grid, start, goal, n);
+  PrintPath(path_vector, goal, start, grid); //Order of start and goal switched here due to the way LPA* works.
 
   std::cout << "---------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: RRT ---------------------" << std::endl;
@@ -88,7 +98,7 @@ int main(){
   std::cout << "----------------------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: D* Lite Live Run ---------------------" << std::endl;
   std::cout << "----------------------------------------------------------------------" << std::endl;
-  // NOTE: Make sure the function d_star_lite(grid, n, start, goal) is called
+  // NOTE: Make sure the function d_star_lite(grid, start, goal) is called
   // before calling RunDStarLite()
   new_d_star_lite.RunDStarLite(); // NOTE: Pass false to RunDStarLite if the
   // incremental updated position of the bot is not to be displayed as it moves
