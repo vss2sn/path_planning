@@ -7,10 +7,10 @@
 #include "d_star_lite.hpp"
 
 void DStarLite::VectorInsertionSort(std::vector<Node>& v){
-   int n = v.size();
+   int nV = v.size();
    int i, j;
    Node key;
-   for (i = 1; i < n; i++) {
+   for (i = 1; i < nV; i++) {
        key = v[i];
        j = i-1;
        while (j >= 0 && (v[j].cost_ + v[j].h_cost_ >= key.cost_+key.h_cost_)){
@@ -25,7 +25,7 @@ double DStarLite::GetHeuristic(Node s1, Node s2){
   return abs(s1.x_ - s2.x_) + abs(s1.y_ - s2.y_);
 }
 
-void DStarLite::MyPrint(){
+void DStarLite::PrintGRHS(){
   std::cout << "G values:" << std::endl;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
@@ -75,10 +75,10 @@ std::vector<Node> DStarLite::GetSucc(Node u){
 }
 
 void DStarLite::InsertionSort(){
-   int n = U_.size();
+   int nU = U_.size();
    int i, j;
    std::pair<Node,std::pair<double,double>> key;
-   for (i = 1; i < n; i++) {
+   for (i = 1; i < nU; i++) {
        key = U_[i];
        j = i-1;
        while (j >= 0 && (U_[j].second.first > key.second.first
@@ -109,10 +109,8 @@ double DStarLite::C(Node s1, Node s2){
 
 void DStarLite::Init(){
   U_.clear();
-  iter_ = 0;
   double n2 = n*n;
   large_num = std::make_pair(n2,n2);
-  max_iter_ = n2*n;
 
   motions = GetMotion();
 
@@ -194,13 +192,13 @@ int DStarLite::ComputeShortestPath(){
   return 0;
 }
 
-std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in, int n_in, Node start_in, Node goal_in){
+std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in, Node start_in, Node goal_in){
   grid = grid_in;
   start_ = start_in;
   main_start_ = start_;
   goal_ = goal_in;
   last_ = start_;
-  n = n_in;
+  n = grid.size();
   Init();
   int ans = ComputeShortestPath();
   if(ans < 0 || S_[start_.x_][start_.y_].first==large_num.first){
@@ -412,7 +410,7 @@ int main(){
   for (int i = 0; i < n; i++){
     grid[i] = tmp;
   }
-  MakeGrid(grid, n);
+  MakeGrid(grid);
 
   Node start(1,1,0,0,0,0);
   Node goal(n-1,n-1,0,0,0,0);
@@ -424,12 +422,12 @@ int main(){
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
-  PrintGrid(grid, n);
+  PrintGrid(grid);
   std::vector<Node> path_vector;
   DStarLite new_d_star_lite;
 
-  path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
-  PrintPath(path_vector, start, goal, grid, n);
+  path_vector = new_d_star_lite.d_star_lite(grid, start, goal);
+  PrintPath(path_vector, start, goal, grid);
 
   new_d_star_lite.RunDStarLite();
   return 0;

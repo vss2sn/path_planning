@@ -101,6 +101,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/classAStar.html">Class AStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classDijkstra.html">Class Dijkstra</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classDStarLite.html">Class DStarLite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/classLPAStar.html">Class LPAStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classNode.html">Class Node</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classRRT.html">Class RRT</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classRRTStar.html">Class RRTStar</a></li>
@@ -109,10 +110,10 @@
 <li class="toctree-l3"><a class="reference internal" href="api/library_root.html#functions">Functions</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/function_main_8hpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.html">Function main</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a7c85b008da7c5aa00f778645108cbe47.html">Function MakeGrid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1ac48d8b8a2e1171930046a91e34411291.html">Function PrintCost</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a261d8d8f776af001a11d472ac44b4df0.html">Function PrintGrid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1aa8bbe39cb49a6cd488339368ebf69944.html">Function PrintPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1ad8afc8a6d98fae87fffe3ad0621eaf4b.html">Function MakeGrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a012ce27d2ee6c480975c0cfa6944104a.html">Function PrintCost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1ae78f95d1e36b0989a307b951da25532e.html">Function PrintGrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a557054c14922455add5f4b8ab1616ab0.html">Function PrintPath</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/library_root.html#defines">Defines</a><ul>
@@ -120,6 +121,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a79d10e672abb49ad63eeaa8aaef57c38.html">Define BLUE</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1ad243f93c16bc4c1d3e0a13b84421d760.html">Define CYAN</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1acfbc006ea433ad708fdee3e82996e721.html">Define GREEN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/define_lla__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.html">Define LPA_STAR__H</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a6f699060902f800f12aaae150f3a708e.html">Define MAGENTA</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1a8d23feea868a983c8c2b661e1e16972f.html">Define RED</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/define_utils_8hpp_1ab702106cf3b3e96750b6845ded4e0299.html">Define RESET</a></li>
@@ -135,6 +137,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_a_star.hpp.html">File a_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_d_star_lite.hpp.html">File d_star_lite.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_dijkstra.hpp.html">File dijkstra.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_inc_lla_star.hpp.html">File lla_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_main.hpp.html">File main.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_rrt.hpp.html">File rrt.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_rrt_star.hpp.html">File rrt_star.hpp</a></li>
@@ -213,15 +216,17 @@
 <h1>Path Planning<a class="headerlink" href="#path-planning" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="this-repository-contains-path-planning-algorithms-in-c">
 <h2>This repository contains path planning algorithms in C++.<a class="headerlink" href="#this-repository-contains-path-planning-algorithms-in-c" title="Permalink to this headline">¶</a></h2>
+<a class="reference external image-reference" href="https://travis-ci.com/vss2sn/path_planning"><img alt="Build Status" src="https://travis-ci.com/vss2sn/path_planning.svg?branch=feature%2Ftravis_ci" /></a>
 <p><span class="raw-html-m2r"><a name="algorithms"></a></span></p>
 <div class="section" id="algorithms">
 <h3>Algorithms:<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li>Dijkstra’s algorithm for grid based search.</li>
 <li>AStar (A*) algorithm for grid based search.</li>
+<li>Lifelong Planning AStar (LPA*) algorithm for grid based search.</li>
+<li>DStarLite (D* Lite) algorithm for grid based search.</li>
 <li>RRT algorithm for grid based search.</li>
 <li>RRTStar (RRT*) algorithm for grid based search.</li>
-<li>DStarLite (D* Lite) algorithm for grid based search.</li>
 </ol>
 <p><span class="raw-html-m2r"><a name="instructions"></a></span></p>
 </div>
@@ -247,6 +252,7 @@ cmake .. &amp;&amp; make -j4
 <li><a class="reference external" href="#notes_on_tests">Notes on tests</a></li>
 <li><a class="reference external" href="#notes_on_implementations">Notes on implementations</a></li>
 <li><a class="reference external" href="#notes_on_cmake_options">Notes on CMake Options</a></li>
+<li><a class="reference external" href="#notes_on_travis_ci_integration">Notes on Travis CI Integration</a></li>
 <li><a class="reference external" href="#todos">TODOs</a></li>
 <li><a class="reference external" href="#consider">Consider</a></li>
 </ul>
@@ -257,7 +263,6 @@ cmake .. &amp;&amp; make -j4
 <ol class="arabic simple">
 <li><code class="docutils literal notranslate"><span class="pre">main</span></code> creates a grid of a given size n, with any point set as an obstacle with a probability of 1/n. It then runs all the algorithms in the repository on the given grid.</li>
 <li>Setting the CMake option <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> to <code class="docutils literal notranslate"><span class="pre">ON</span></code> allows building of each .cpp separately (except main.cpp), facilitating easy testing. Setting <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> to <code class="docutils literal notranslate"><span class="pre">OFF</span></code> allows use of all base classes and algorithms in main.cpp.</li>
-<li>D* Lite can be run live with random obstacle creation using the RunDStarLite function.</li>
 <li>utils.cpp built as library and used in every separate file.</li>
 <li><a class="reference external" href="https://vss2sn.github.io/path_planning/">Documentation</a> moved to GitHub pages. It has been created using <a class="reference external" href="http://www.doxygen.nl/">Doxygen</a>, and pip3 packages <a class="reference external" href="http://www.sphinx-doc.org/en/master/">Sphinx</a> (sphinx==1.8.3), <a class="reference external" href="https://github.com/michaeljones/breathe">Breathe</a> (breathe==4.12.0), <a class="reference external" href="https://github.com/svenevs/exhale">Exhale</a> (exhale==0.2.2) and <a class="reference external" href="https://github.com/rtfd/sphinx_rtd_theme">Read the Docs Sphinx Theme</a> (sphinx_rtd_theme==0.4.3).</li>
 </ol>
@@ -280,9 +285,9 @@ cmake .. &amp;&amp; make -j4
 <li>RRT stops as soon as goal is found. It is connects new points to the nearest point, not accounting for total cost to reach that point. In contrast RRT* chooses to connect to a new node to the node that allows the new node to have the minimum cost. RRT* also rewires the preexisting nodes to the new node if that path allows for a lower cost for the preexisting node.</li>
 <li>Acceptable motions can be modified in the GetMotion function in utils.cpp.</li>
 <li>A* and D* Lite use Manhattan distance (L1) as their heuristic (change to L2 if adding diagonal moves to the GetMotion function). D* Lite also uses the same in its C function.</li>
-<li>D* Lite implemented based on based on Sven Koenig’s &amp; Maxim Likhachev’s paper.</li>
-<li>For the live run of D* Lite, obstacles are detected on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid.</li>
+<li>D* Lite can be run live with random obstacle creation using the RunDStarLite function. For the live run of D* Lite, obstacles are detected on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid. D* Lite is implemented based on Sven Koenig’s &amp; Maxim Likhachev’s paper.</li>
 <li>To specify your own grid, set n to number of rows, created the 2D vector, setting 1 for obstacles and 0 elsewhere, and comment out the MakeGrid function.</li>
+<li>The LPA* algorithm is implemented to run <code class="docutils literal notranslate"><span class="pre">max_iter_</span></code> number of times with default value <code class="docutils literal notranslate"><span class="pre">n</span></code>. Obstacles are created on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid, at a random point along the path.</li>
 </ol>
 <p><span class="raw-html-m2r"><a name="notes_on_cmake_options"></a></span></p>
 </div>
@@ -292,10 +297,17 @@ cmake .. &amp;&amp; make -j4
 <li>To run each algorithm independently, set <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> to <code class="docutils literal notranslate"><span class="pre">ON</span></code> (Executables created: <code class="docutils literal notranslate"><span class="pre">dijkstra</span></code>, <code class="docutils literal notranslate"><span class="pre">a_star</span></code>, etc). If you want to run all of them on the same grid, set <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> to <code class="docutils literal notranslate"><span class="pre">OFF</span></code> (Executable created: <code class="docutils literal notranslate"><span class="pre">main</span></code>).</li>
 <li>To run tests, set <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> to <code class="docutils literal notranslate"><span class="pre">OFF</span></code> and TEST to <code class="docutils literal notranslate"><span class="pre">ON</span></code>.</li>
 </ol>
-<p><span class="raw-html-m2r"><a name="todos"></a></span></p>
+<p><span class="raw-html-m2r"><a name="notes_on_travis_ci_integration"></a></span></p>
 </div>
 <div class="section" id="id6">
-<h3>TODOs:<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<h3>Notes on Travis CI integration:<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>CI integrated in the feature/travis_ci branch, as integrating googletest with travis_ci, along with the test setup that runs automatically after every local build of <code class="docutils literal notranslate"><span class="pre">main</span></code> requires changes to CMakeLists.txt and use of google test as a submodule. Current travis_ci use is aimed more at future proofing than anything else.</li>
+</ol>
+<p><span class="raw-html-m2r"><a name="todos"></a></span></p>
+</div>
+<div class="section" id="id7">
+<h3>TODOs:<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li>Next algorithm to be implemented: a Voronoi cell based planner.</li>
 <li>Alterations for moving node variables into private namespace.</li>
@@ -307,8 +319,8 @@ cmake .. &amp;&amp; make -j4
 </ol>
 <p><span class="raw-html-m2r"><a name="consider"></a></span></p>
 </div>
-<div class="section" id="id7">
-<h3>Consider:<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h3>Consider:<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li>Adding namespace to each header file.</li>
 <li>Inheriting node class into each file that requires a modified node (such as A* with heuristic cost, etc).</li>

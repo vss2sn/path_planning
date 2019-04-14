@@ -34,7 +34,7 @@ public:
   * @brief Displays the G and RHS values for the entire grid.
   * @return void
   */
-  void MyPrint();
+  void PrintGRHS();
 
   /**
   * @brief Returns the key (pair) values for a given node.
@@ -101,12 +101,11 @@ public:
   /**
   * @brief Main algorithm of D* Lite
   * @param grid_in Main grid
-  * @param n_in number of rows/columns
   * @param start_in starting node
   * @param goal_in goal node
   * @return path vector of nodes
   */
-  std::vector<Node> d_star_lite(std::vector<std::vector<int> > &grid_in, int n_in, Node start_in, Node goal_in);
+  std::vector<Node> d_star_lite(std::vector<std::vector<int> > &grid_in, Node start_in, Node goal_in);
 
   /**
   * @brief Replan route, called whenever a previously unknown obstacle is detected.
@@ -169,7 +168,7 @@ private:
   std::pair<double,double> km_;
   std::pair<double,double> k_old_;
   std::vector<Node> motions;
-  int n, iter_ = 0, max_iter_ = 0;
+  int n;
   std::vector<Node> path_vector_;
   std::pair<double,double> large_num;
   std::vector<std::vector<int>> grid;

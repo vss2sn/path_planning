@@ -23,7 +23,7 @@ Program Listing for File d_star_lite.hpp
    
      double GetHeuristic(Node s1, Node s2);
    
-     void MyPrint();
+     void PrintGRHS();
    
      std::pair<double,double> CalculateKey(const Node& s);
    
@@ -43,7 +43,7 @@ Program Listing for File d_star_lite.hpp
    
      int ComputeShortestPath();
    
-     std::vector<Node> d_star_lite(std::vector<std::vector<int> > &grid_in, int n_in, Node start_in, Node goal_in);
+     std::vector<Node> d_star_lite(std::vector<std::vector<int> > &grid_in, Node start_in, Node goal_in);
    
      std::vector<Node> Replan(Node u);
    
@@ -69,7 +69,7 @@ Program Listing for File d_star_lite.hpp
      std::pair<double,double> km_;
      std::pair<double,double> k_old_;
      std::vector<Node> motions;
-     int n, iter_ = 0, max_iter_ = 0;
+     int n;
      std::vector<Node> path_vector_;
      std::pair<double,double> large_num;
      std::vector<std::vector<int>> grid;

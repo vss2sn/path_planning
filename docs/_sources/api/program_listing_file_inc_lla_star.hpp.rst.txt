@@ -1,0 +1,68 @@
+
+.. _program_listing_file_inc_lla_star.hpp:
+
+Program Listing for File lla_star.hpp
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_inc_lla_star.hpp>` (``inc/lla_star.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef LPA_STAR_H
+   #define LPA_STAR__H
+   
+   #include "utils.hpp"
+   
+   class LPAStar{
+   public:
+   
+     void VectorInsertionSort(std::vector<Node>& v);
+   
+     double GetHeuristic(Node s1, Node s2);
+   
+     void PrintGRHS();
+   
+     std::pair<double,double> CalculateKey(const Node& s);
+   
+     std::vector<Node> GetPred(Node u);
+   
+     std::vector<Node> GetSucc(Node u);
+   
+     void InsertionSort();
+   
+     double C(Node s1, Node s2);
+   
+     void Init();
+   
+     void UpdateVertex(Node& u);
+   
+     bool CompareKey(std::pair<double,double>& pair_in, Node& u);
+   
+     int ComputeShortestPath();
+   
+     std::vector<Node> lla_star(std::vector<std::vector<int> > &grid_in, Node start_in, Node goal_in, int max_iter_in);
+   
+     std::vector<Node> Replan(Node u);
+   
+     void SetObs(Node u);
+   
+     void GeneratePathVector();
+   
+     std::vector<Node> UpdateStart(Node start_in);
+   
+     void DisplayGrid();
+   private:
+     Node start_, goal_;
+     std::vector<std::vector<std::pair<double,double>>> S_;
+     std::vector<std::pair<Node,std::pair<double,double>>> U_;
+     std::vector<Node> motions;
+     int n, iter_ = 0, max_iter_;
+     std::vector<Node> path_vector_;
+     std::pair<double,double> large_num;
+     std::vector<std::vector<int>> grid;
+   };
+   
+   #endif LPA_STAR_H

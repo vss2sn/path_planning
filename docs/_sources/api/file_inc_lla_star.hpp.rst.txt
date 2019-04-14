@@ -1,0 +1,64 @@
+
+.. _file_inc_lla_star.hpp:
+
+File lla_star.hpp
+=================
+
+|exhale_lsh| :ref:`Parent directory <dir_inc>` (``inc``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+Contains the :ref:`exhale_class_classLPAStar` class. 
+
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``inc/lla_star.hpp``)
+---------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_inc_lla_star.hpp.rst
+
+
+
+Detailed Description
+--------------------
+
+vss2sn 
+
+
+
+
+
+
+Includes
+--------
+
+
+- ``utils.hpp`` (:ref:`file_inc_utils.hpp`)
+
+
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classLPAStar`
+
+
+Defines
+-------
+
+
+- :ref:`exhale_define_lla__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44`
+

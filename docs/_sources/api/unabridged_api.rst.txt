@@ -30,6 +30,11 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   classLPAStar.rst
+
+.. toctree::
+   :maxdepth: 5
+
    classNode.rst
 
 .. toctree::
@@ -59,22 +64,22 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_utils_8hpp_1a7c85b008da7c5aa00f778645108cbe47.rst
+   function_utils_8hpp_1ad8afc8a6d98fae87fffe3ad0621eaf4b.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_utils_8hpp_1ac48d8b8a2e1171930046a91e34411291.rst
+   function_utils_8hpp_1a012ce27d2ee6c480975c0cfa6944104a.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_utils_8hpp_1a261d8d8f776af001a11d472ac44b4df0.rst
+   function_utils_8hpp_1ae78f95d1e36b0989a307b951da25532e.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_utils_8hpp_1aa8bbe39cb49a6cd488339368ebf69944.rst
+   function_utils_8hpp_1a557054c14922455add5f4b8ab1616ab0.rst
 
 Defines
 *******
@@ -99,6 +104,11 @@ Defines
    :maxdepth: 5
 
    define_utils_8hpp_1acfbc006ea433ad708fdee3e82996e721.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   define_lla__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.rst
 
 .. toctree::
    :maxdepth: 5
@@ -152,6 +162,11 @@ Files
    :maxdepth: 5
 
    file_inc_dijkstra.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_inc_lla_star.hpp.rst
 
 .. toctree::
    :maxdepth: 5

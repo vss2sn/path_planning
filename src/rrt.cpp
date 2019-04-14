@@ -6,7 +6,7 @@
 
 #include "rrt.hpp"
 
-Node RRT::FindNearestPoint(Node& new_node, int n){
+Node RRT::FindNearestPoint(Node& new_node){
   Node nearest_node(-1,-1,-1,-1,-1,-1);
   std::vector<Node>::iterator it_v;
   std::vector<Node>::iterator it_v_store;
@@ -85,12 +85,13 @@ Node RRT::GenerateRandomNode(int n){
   return new_node;
 }
 
-std::vector<Node> RRT::rrt(std::vector<std::vector<int> > &grid, int n, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
+std::vector<Node> RRT::rrt(std::vector<std::vector<int> > &grid, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
   start_ = start_in;
   goal_ = goal_in;
+  n = grid.size();
   threshold_ = threshold_in;
   int max_iter = max_iter_x_factor * n * n;
-  CreateObstacleList(grid, n);
+  CreateObstacleList(grid);
   point_list_.push_back(start_);
   Node new_node = start_;
   grid[start_.x_][start_.y_]=2;
@@ -100,7 +101,7 @@ std::vector<Node> RRT::rrt(std::vector<std::vector<int> > &grid, int n, Node sta
     iter++;
     new_node = GenerateRandomNode(n);
     if (grid[new_node.x_][new_node.y_]!=0) continue;
-    Node nearest_node = FindNearestPoint(new_node, n);
+    Node nearest_node = FindNearestPoint(new_node);
     if(nearest_node.id_ == -1) continue;
     grid[new_node.x_][new_node.y_]=2;
     point_list_.push_back(new_node);
@@ -126,7 +127,7 @@ bool RRT::CheckGoalVisible(Node new_node){
 }
 
 
-void RRT::CreateObstacleList(std::vector<std::vector<int> > &grid, int n){
+void RRT::CreateObstacleList(std::vector<std::vector<int> > &grid){
   for(int i=0; i < n; i++){
     for(int j=0;j < n; j++){
       if(grid[i][j]==1){
@@ -150,7 +151,7 @@ int main(){
   for (int i = 0; i < n; i++){
     grid[i] = tmp;
   }
-  MakeGrid(grid, n);
+  MakeGrid(grid);
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -165,13 +166,13 @@ int main(){
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
-  PrintGrid(grid, n);
+  PrintGrid(grid);
 
   RRT new_rrt;
   double threshold = 2;
   int max_iter_x_factor = 20;
-  std::vector<Node> path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
-  PrintPath(path_vector, start, goal, grid, n);
+  std::vector<Node> path_vector = new_rrt.rrt(grid, start, goal, max_iter_x_factor, threshold);
+  PrintPath(path_vector, start, goal, grid);
 
   return 0;
 }

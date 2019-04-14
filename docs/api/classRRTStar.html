@@ -102,6 +102,7 @@
 <li class="toctree-l4"><a class="reference internal" href="classAStar.html">Class AStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classDijkstra.html">Class Dijkstra</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classDStarLite.html">Class DStarLite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLPAStar.html">Class LPAStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classNode.html">Class Node</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classRRT.html">Class RRT</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Class RRTStar</a></li>
@@ -110,10 +111,10 @@
 <li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_main_8hpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.html">Function main</a></li>
-<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a7c85b008da7c5aa00f778645108cbe47.html">Function MakeGrid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1ac48d8b8a2e1171930046a91e34411291.html">Function PrintCost</a></li>
-<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a261d8d8f776af001a11d472ac44b4df0.html">Function PrintGrid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1aa8bbe39cb49a6cd488339368ebf69944.html">Function PrintPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1ad8afc8a6d98fae87fffe3ad0621eaf4b.html">Function MakeGrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a012ce27d2ee6c480975c0cfa6944104a.html">Function PrintCost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1ae78f95d1e36b0989a307b951da25532e.html">Function PrintGrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a557054c14922455add5f4b8ab1616ab0.html">Function PrintPath</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="library_root.html#defines">Defines</a><ul>
@@ -121,6 +122,7 @@
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a79d10e672abb49ad63eeaa8aaef57c38.html">Define BLUE</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ad243f93c16bc4c1d3e0a13b84421d760.html">Define CYAN</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1acfbc006ea433ad708fdee3e82996e721.html">Define GREEN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_lla__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.html">Define LPA_STAR__H</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a6f699060902f800f12aaae150f3a708e.html">Define MAGENTA</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a8d23feea868a983c8c2b661e1e16972f.html">Define RED</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ab702106cf3b3e96750b6845ded4e0299.html">Define RESET</a></li>
@@ -136,6 +138,7 @@
 <li class="toctree-l4"><a class="reference internal" href="file_inc_a_star.hpp.html">File a_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_d_star_lite.hpp.html">File d_star_lite.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_dijkstra.hpp.html">File dijkstra.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_lla_star.hpp.html">File lla_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_main.hpp.html">File main.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_rrt.hpp.html">File rrt.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_rrt_star.hpp.html">File rrt_star.hpp</a></li>
@@ -226,8 +229,8 @@
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="function">
-<dt id="_CPPv3N7RRTStar16FindNearestPointER4Nodei">
-<span id="_CPPv2N7RRTStar16FindNearestPointER4Nodei"></span><span id="RRTStar::FindNearestPoint__NodeR.i"></span><span class="target" id="classRRTStar_1a1d3e3172062049fe0af550da60ea2534"></span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <code class="descname">FindNearestPoint</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>new_node</em>, int <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7RRTStar16FindNearestPointER4Nodei" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N7RRTStar16FindNearestPointER4Node">
+<span id="_CPPv2N7RRTStar16FindNearestPointER4Node"></span><span id="RRTStar::FindNearestPoint__NodeR"></span><span class="target" id="classRRTStar_1a52a8613636c06dc9b47760266e51bdc7"></span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <code class="descname">FindNearestPoint</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>new_node</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7RRTStar16FindNearestPointER4Node" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Find the nearest <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> that has been seen by the algorithm. This does not consider cost to reach the node. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
@@ -235,7 +238,6 @@
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
 <li><code class="docutils literal notranslate"><span class="pre">new_node</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> to which the nearest node must be found </li>
-<li><code class="docutils literal notranslate"><span class="pre">n</span></code>: number of rows/columns </li>
 </ul>
 </dd>
 </dl>
@@ -260,17 +262,12 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N7RRTStar18GenerateRandomNodeEi">
-<span id="_CPPv2N7RRTStar18GenerateRandomNodeEi"></span><span id="RRTStar::GenerateRandomNode__i"></span><span class="target" id="classRRTStar_1ad5acf9f835443c32361ffb5318156ac2"></span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <code class="descname">GenerateRandomNode</code><span class="sig-paren">(</span>int <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7RRTStar18GenerateRandomNodeEi" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N7RRTStar18GenerateRandomNodeEv">
+<span id="_CPPv2N7RRTStar18GenerateRandomNodeEv"></span><span id="RRTStar::GenerateRandomNode"></span><span class="target" id="classRRTStar_1a04b30b19ac1b42998ead1000834fbb35"></span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <code class="descname">GenerateRandomNode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7RRTStar18GenerateRandomNodeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Generates a random node. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
 <dd>Generated node </dd>
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal notranslate"><span class="pre">n</span></code>: Number of rows/columns </li>
-</ul>
-</dd>
 </dl>
 </p>
 </dd></dl>
@@ -292,8 +289,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N7RRTStar8rrt_starERNSt6vectorINSt6vectorIiEEEEi4Node4Nodeid">
-<span id="_CPPv2N7RRTStar8rrt_starERNSt6vectorINSt6vectorIiEEEEi4Node4Nodeid"></span><span id="RRTStar::rrt_star__std::vector:std::vector:i::R.i.Node.Node.i.double"></span><span class="target" id="classRRTStar_1a68e9f724b226accec4f19fa32e2a7b5e"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">rrt_star</code><span class="sig-paren">(</span>std::vector&lt;std::vector&lt;int&gt;&gt; &amp;<em>grid</em>, int <em>n</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>start_in</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>goal_in</em>, int <em>max_iter_x_factor</em> = 500, double <em>threshold_in</em> = std::numeric_limits&lt;double&gt;::infinity()<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7RRTStar8rrt_starERNSt6vectorINSt6vectorIiEEEEi4Node4Nodeid" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N7RRTStar8rrt_starERNSt6vectorINSt6vectorIiEEEE4Node4Nodeid">
+<span id="_CPPv2N7RRTStar8rrt_starERNSt6vectorINSt6vectorIiEEEE4Node4Nodeid"></span><span id="RRTStar::rrt_star__std::vector:std::vector:i::R.Node.Node.i.double"></span><span class="target" id="classRRTStar_1adb4219eb968ed59698c6176dd6f297f3"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">rrt_star</code><span class="sig-paren">(</span>std::vector&lt;std::vector&lt;int&gt;&gt; &amp;<em>grid</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>start_in</em>, <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <em>goal_in</em>, int <em>max_iter_x_factor</em> = 500, double <em>threshold_in</em> = std::numeric_limits&lt;double&gt;::infinity()<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7RRTStar8rrt_starERNSt6vectorINSt6vectorIiEEEE4Node4Nodeid" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Main algorithm of RRT*. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
@@ -301,7 +298,6 @@
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
 <li><code class="docutils literal notranslate"><span class="pre">grid</span></code>: Main grid </li>
-<li><code class="docutils literal notranslate"><span class="pre">n</span></code>: number of rows/columns </li>
 <li><code class="docutils literal notranslate"><span class="pre">start_in</span></code>: starting node </li>
 <li><code class="docutils literal notranslate"><span class="pre">goal_in</span></code>: goal node </li>
 <li><code class="docutils literal notranslate"><span class="pre">max_iter_x_factor</span></code>: Maximum number of allowable iterations before returning no path </li>
@@ -329,8 +325,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N7RRTStar18CreateObstacleListERNSt6vectorINSt6vectorIiEEEEi">
-<span id="_CPPv2N7RRTStar18CreateObstacleListERNSt6vectorINSt6vectorIiEEEEi"></span><span id="RRTStar::CreateObstacleList__std::vector:std::vector:i::R.i"></span><span class="target" id="classRRTStar_1a0ce4e73a95c422c39068bff69f005d3d"></span>void <code class="descname">CreateObstacleList</code><span class="sig-paren">(</span>std::vector&lt;std::vector&lt;int&gt;&gt; &amp;<em>grid</em>, int <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7RRTStar18CreateObstacleListERNSt6vectorINSt6vectorIiEEEEi" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N7RRTStar18CreateObstacleListERNSt6vectorINSt6vectorIiEEEE">
+<span id="_CPPv2N7RRTStar18CreateObstacleListERNSt6vectorINSt6vectorIiEEEE"></span><span id="RRTStar::CreateObstacleList__std::vector:std::vector:i::R"></span><span class="target" id="classRRTStar_1a15e0416e4b03d41edeaf6a9481b41836"></span>void <code class="descname">CreateObstacleList</code><span class="sig-paren">(</span>std::vector&lt;std::vector&lt;int&gt;&gt; &amp;<em>grid</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N7RRTStar18CreateObstacleListERNSt6vectorINSt6vectorIiEEEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create the obstacle list from the input grid. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
@@ -338,7 +334,6 @@
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
 <li><code class="docutils literal notranslate"><span class="pre">grid</span></code>: Input grid for algorithm </li>
-<li><code class="docutils literal notranslate"><span class="pre">n</span></code>: Number of rows/columns </li>
 </ul>
 </dd>
 </dl>
