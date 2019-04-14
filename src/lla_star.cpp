@@ -163,7 +163,7 @@ bool LPAStar::CompareKey(std::pair<double,double>& pair_in, Node& u){
 
 int LPAStar::ComputeShortestPath(){
   while((!U_.empty() && CompareKey(U_[0].second, goal_)) || S_[goal_.x_][goal_.y_].first != S_[goal_.x_][goal_.y_].second){
-    PrintGRHS();
+    // PrintGRHS();
     Node u = U_[0].first;
     U_.erase(U_.begin());
     if(S_[u.x_][u.y_].first > S_[u.x_][u.y_].second){
@@ -251,13 +251,14 @@ void LPAStar::SetObs(Node u){
   // PrintGrid(grid,n); // Uncomment if you want to see old and new path
   if(u==goal_ || u==start_){
     std::cout << "Cannot set current start or goal as obstacle" << std::endl;
-    return;
   }
-  std::cout << "Current grid and path: " << std::endl;
-  PrintGrid(grid);
-  grid[u.x_][u.y_] = 1;
-  std::cout << "Obstacle found at: " << std::endl;
-  u.PrintStatus();
+  else{
+    std::cout << "Current grid and path: " << std::endl;
+    PrintGrid(grid);
+    grid[u.x_][u.y_] = 1;
+    std::cout << "Obstacle found at: " << std::endl;
+    u.PrintStatus();
+  }
 }
 
 void LPAStar::GeneratePathVector(){
