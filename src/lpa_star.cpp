@@ -277,13 +277,13 @@ void LPAStar::GeneratePathVector(){
       }
       if(new_node.x_ < n && new_node.x_ >= 0 && new_node.y_ < n && new_node.y_ >= 0){
         new_node.cost_= S_[new_node.x_][new_node.y_].second;
-        if(new_node.cost_ > u.cost_){
-           continue;
+        if(new_node.cost_ < u.cost_){
+          new_node.id_ = n*new_node.x_ + new_node.y_;
+          path_vector_[0].pid_ = new_node.id_;
+          path_vector_.push_back(new_node);
+          VectorInsertionSort(path_vector_);
+          break; // So that only one of the predecessors is added to the queue
         }
-        new_node.id_ = n*new_node.x_ + new_node.y_;
-        new_node.pid_ = u.id_;
-        path_vector_.push_back(new_node);
-        VectorInsertionSort(path_vector_);
       }
     }
   }
@@ -350,6 +350,6 @@ int main(){
   std::vector<Node> path_vector;
   LPAStar new_lpa_star;
   path_vector = new_lpa_star.lpa_star(grid, start, goal, n);
-  PrintPath(path_vector, goal, start, grid); //Order of start and goal switched here due to the way LPA* works.
+  PrintPath(path_vector, start, goal, grid);
 }
 #endif BUILD_INDIVIDUAL

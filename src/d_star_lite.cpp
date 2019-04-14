@@ -435,7 +435,7 @@ int main(){
   path_vector = new_d_star_lite.d_star_lite(grid, start, goal);
   PrintPath(path_vector, start, goal, grid);
 
-//  new_d_star_lite.RunDStarLite();
+ new_d_star_lite.RunDStarLite();
   return 0;
 }
 #endif BUILD_INDIVIDUAL

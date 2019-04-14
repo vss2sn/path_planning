@@ -69,7 +69,7 @@ int main(){
   LPAStar new_lpa_star;
   path_vector.clear();
   path_vector = new_lpa_star.lpa_star(grid, start, goal, n);
-  PrintPath(path_vector, goal, start, grid); //Order of start and goal switched here due to the way LPA* works.
+  PrintPath(path_vector, start, goal, grid); 
 
   std::cout << "---------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: RRT ---------------------" << std::endl;
