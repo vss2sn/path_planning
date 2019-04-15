@@ -31,8 +31,6 @@
 
 #include <cmath>
 #include <thread>
-<<<<<<< HEAD
-=======
 
 #ifndef BUILD_INDIVIDUAL // Only to make sure main is is included in documentation
 #ifndef TEST             // Only to make sure main is is included in documentation
@@ -43,4 +41,3 @@
 int main();
 #endif
 #endif
->>>>>>> master
