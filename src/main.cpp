@@ -6,6 +6,7 @@
 
 #include "dijkstra.hpp"
 #include "a_star.hpp"
+#include "lpa_star.hpp"
 #include "rrt.hpp"
 #include "rrt_star.hpp"
 #include "d_star_lite.hpp"
@@ -18,7 +19,7 @@ int main(){
   for (int i = 0; i < n; i++){
     grid[i] = tmp;
   }
-  MakeGrid(grid, n);
+  MakeGrid(grid);
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -33,7 +34,7 @@ int main(){
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
-  PrintGrid(grid, n);
+  PrintGrid(grid);
 
   // Store points after algorithm has run
   std::vector<Node> path_vector;
@@ -50,45 +51,54 @@ int main(){
   std::cout << "--------------------------------------------------------------" << std::endl;
   grid = main_grid;
   Dijkstra new_dijkstra;
-  path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
-  PrintPath(path_vector, start, goal, grid, n);
+  path_vector = new_dijkstra.dijkstra(grid, start, goal);
+  PrintPath(path_vector, start, goal, grid);
 
   std::cout << "--------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: A* ---------------------" << std::endl;
   std::cout << "--------------------------------------------------------" << std::endl;
   grid = main_grid;
   AStar new_a_star;
-  path_vector = new_a_star.a_star(grid, n, start, goal);
-  PrintPath(path_vector, start, goal, grid, n);
+  path_vector = new_a_star.a_star(grid, start, goal);
+  PrintPath(path_vector, start, goal, grid);
+
+  std::cout << "--------------------------------------------------------------------------" << std::endl;
+  std::cout << "--------------------- ALGORITH: Lifeling Planning A* ---------------------" << std::endl;
+  std::cout << "--------------------------------------------------------------------------" << std::endl;
+  grid = main_grid;
+  LPAStar new_lpa_star;
+  path_vector.clear();
+  path_vector = new_lpa_star.lpa_star(grid, start, goal, n);
+  PrintPath(path_vector, start, goal, grid); 
 
   std::cout << "---------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: RRT ---------------------" << std::endl;
   std::cout << "---------------------------------------------------------" << std::endl;
   grid = main_grid;
   RRT new_rrt;
-  path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
-  PrintPath(path_vector, start, goal, grid, n);
+  path_vector = new_rrt.rrt(grid, start, goal, max_iter_x_factor, threshold);
+  PrintPath(path_vector, start, goal, grid);
 
   std::cout << "----------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: RRT* ---------------------" << std::endl;
   std::cout << "----------------------------------------------------------" << std::endl;
   grid = main_grid;
   RRTStar new_rrt_star;
-  path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
-  PrintPath(path_vector, start, goal, grid, n);
+  path_vector = new_rrt_star.rrt_star(grid, start, goal, max_iter_x_factor, threshold);
+  PrintPath(path_vector, start, goal, grid);
 
   std::cout << "-------------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: D* Lite ---------------------" << std::endl;
   std::cout << "-------------------------------------------------------------" << std::endl;
   grid = main_grid;
   DStarLite new_d_star_lite;
-  path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
-  PrintPath(path_vector, start, goal, grid, n);
+  path_vector = new_d_star_lite.d_star_lite(grid, start, goal);
+  PrintPath(path_vector, start, goal, grid);
 
   std::cout << "----------------------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: D* Lite Live Run ---------------------" << std::endl;
   std::cout << "----------------------------------------------------------------------" << std::endl;
-  // NOTE: Make sure the function d_star_lite(grid, n, start, goal) is called
+  // NOTE: Make sure the function d_star_lite(grid, start, goal) is called
   // before calling RunDStarLite()
   new_d_star_lite.RunDStarLite(); // NOTE: Pass false to RunDStarLite if the
   // incremental updated position of the bot is not to be displayed as it moves

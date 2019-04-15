@@ -1,0 +1,16 @@
+.. _exhale_class_classLPAStar:
+
+Class LPAStar
+=============
+
+- Defined in :ref:`file_inc_lpa_star.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: LPAStar
+   :members:
+   :protected-members:
+   :undoc-members:

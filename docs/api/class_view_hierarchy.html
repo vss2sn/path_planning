@@ -84,11 +84,12 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../algorithms.html">Algorithms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrt">RRT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrtstar">RRTStar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithms.html#dijkstra">Dijkstra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithms.html#a">A*</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#lpa">LPA*:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithms.html#d-lite">D* Lite:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrt">RRT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrtstar">RRTStar</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a><ul>
@@ -100,6 +101,7 @@
 <li class="toctree-l4"><a class="reference internal" href="classAStar.html">Class AStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classDijkstra.html">Class Dijkstra</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classDStarLite.html">Class DStarLite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLPAStar.html">Class LPAStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classNode.html">Class Node</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classRRT.html">Class RRT</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classRRTStar.html">Class RRTStar</a></li>
@@ -108,10 +110,10 @@
 <li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_main_8hpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.html">Function main</a></li>
-<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a7c85b008da7c5aa00f778645108cbe47.html">Function MakeGrid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1ac48d8b8a2e1171930046a91e34411291.html">Function PrintCost</a></li>
-<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a261d8d8f776af001a11d472ac44b4df0.html">Function PrintGrid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1aa8bbe39cb49a6cd488339368ebf69944.html">Function PrintPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1ad8afc8a6d98fae87fffe3ad0621eaf4b.html">Function MakeGrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a012ce27d2ee6c480975c0cfa6944104a.html">Function PrintCost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1ae78f95d1e36b0989a307b951da25532e.html">Function PrintGrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a557054c14922455add5f4b8ab1616ab0.html">Function PrintPath</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="library_root.html#defines">Defines</a><ul>
@@ -119,6 +121,7 @@
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a79d10e672abb49ad63eeaa8aaef57c38.html">Define BLUE</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ad243f93c16bc4c1d3e0a13b84421d760.html">Define CYAN</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1acfbc006ea433ad708fdee3e82996e721.html">Define GREEN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_lpa__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44.html">Define LPA_STAR__H</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a6f699060902f800f12aaae150f3a708e.html">Define MAGENTA</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a8d23feea868a983c8c2b661e1e16972f.html">Define RED</a></li>
 <li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ab702106cf3b3e96750b6845ded4e0299.html">Define RESET</a></li>
@@ -134,6 +137,7 @@
 <li class="toctree-l4"><a class="reference internal" href="file_inc_a_star.hpp.html">File a_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_d_star_lite.hpp.html">File d_star_lite.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_dijkstra.hpp.html">File dijkstra.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_lpa_star.hpp.html">File lpa_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_main.hpp.html">File main.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_rrt.hpp.html">File rrt.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_rrt_star.hpp.html">File rrt_star.hpp</a></li>
@@ -213,7 +217,7 @@
 <ul class="treeView" id="class-treeView">
   <li>
     <ul class="collapsibleList">
-      <li>Struct <a href="structcompare__cost.html#exhale-struct-structcompare-cost">compare_cost</a></li><li>Class <a href="classAStar.html#exhale-class-classAStar">AStar</a></li><li>Class <a href="classDijkstra.html#exhale-class-classDijkstra">Dijkstra</a></li><li>Class <a href="classDStarLite.html#exhale-class-classDStarLite">DStarLite</a></li><li>Class <a href="classNode.html#exhale-class-classNode">Node</a></li><li>Class <a href="classRRT.html#exhale-class-classRRT">RRT</a></li><li class="lastChild">Class <a href="classRRTStar.html#exhale-class-classRRTStar">RRTStar</a></li>
+      <li>Struct <a href="structcompare__cost.html#exhale-struct-structcompare-cost">compare_cost</a></li><li>Class <a href="classAStar.html#exhale-class-classAStar">AStar</a></li><li>Class <a href="classDijkstra.html#exhale-class-classDijkstra">Dijkstra</a></li><li>Class <a href="classDStarLite.html#exhale-class-classDStarLite">DStarLite</a></li><li>Class <a href="classLPAStar.html#exhale-class-classLPAStar">LPAStar</a></li><li>Class <a href="classNode.html#exhale-class-classNode">Node</a></li><li>Class <a href="classRRT.html#exhale-class-classRRT">RRT</a></li><li class="lastChild">Class <a href="classRRTStar.html#exhale-class-classRRTStar">RRTStar</a></li>
     </ul>
   </li><!-- only tree view element -->
 </ul><!-- /treeView class-treeView --></div>

@@ -1,0 +1,13 @@
+.. _exhale_define_lpa__star_8hpp_1a5bd181e29d3aa3a1daeb348c8ddada44:
+
+Define LPA_STAR__H
+==================
+
+- Defined in :ref:`file_inc_lpa_star.hpp`
+
+
+Define Documentation
+--------------------
+
+
+.. doxygendefine:: LPA_STAR__H

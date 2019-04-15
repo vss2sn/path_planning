@@ -1,16 +1,17 @@
 #include "dijkstra.hpp"
 #include "a_star.hpp"
+#include "lpa_star.hpp"
 #include "rrt.hpp"
 #include "rrt_star.hpp"
 #include "d_star_lite.hpp"
 #include <gtest/gtest.h>
 
-double run_test(std::vector<std::vector<int> > &grid, int n, std::string algo){
-
-  Node start(0,n-1,0,0,0,0);
+double run_test(std::vector<std::vector<int> > &grid, std::string algo){
+  int n = grid.size();
+  Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
-  Node goal(n-1,0,0,0,0,0);
+  Node goal(n-1,n-1,0,0,0,0);
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
@@ -23,27 +24,31 @@ double run_test(std::vector<std::vector<int> > &grid, int n, std::string algo){
 
   if(algo =="dijkstra"){
     Dijkstra new_dijkstra;
-    path_vector = new_dijkstra.dijkstra(grid, n, start, goal);
+    path_vector = new_dijkstra.dijkstra(grid, start, goal);
   }
   else if(algo == "a_star"){
     AStar new_a_star;
-    path_vector = new_a_star.a_star(grid, n, start, goal);
+    path_vector = new_a_star.a_star(grid, start, goal);
+  }
+  else if(algo == "lpa_star"){
+    LPAStar new_lpa_star;
+    path_vector = new_lpa_star.lpa_star(grid, start, goal, 0);
   }
   else if(algo=="rrt"){
     RRT new_rrt;
-    path_vector = new_rrt.rrt(grid, n, start, goal, max_iter_x_factor, threshold);
+    path_vector = new_rrt.rrt(grid, start, goal, max_iter_x_factor, threshold);
   }
   else if(algo=="rrtstar"){
     RRTStar new_rrt_star;
-    path_vector = new_rrt_star.rrt_star(grid, n, start, goal, max_iter_x_factor, threshold);
+    path_vector = new_rrt_star.rrt_star(grid, start, goal, max_iter_x_factor, threshold);
   }
   else if(algo == "d_star_lite"){
     DStarLite new_d_star_lite;
-    path_vector = new_d_star_lite.d_star_lite(grid, n, start, goal);
+    path_vector = new_d_star_lite.d_star_lite(grid, start, goal);
   }
 
-  if(path_vector.size()==1) return -1;
   int i;
+  if(path_vector[0].cost_==-1) return -1;
   for(i = 0; i < path_vector.size(); i++){
     if(goal == path_vector[i]) break;
   }
@@ -57,13 +62,16 @@ TEST(PathPlanningTest, Test1) {
   for (int i = 0; i < n; i++){
     grid_1[i] = tmp;
   }
-  MakeGrid(grid_1, n);
+  MakeGrid(grid_1);
   std::vector<std::vector<int>> grid_2 = grid_1;
   std::vector<std::vector<int>> grid_3 = grid_1;
   std::vector<std::vector<int>> grid_4 = grid_1;
+  std::vector<std::vector<int>> grid_5 = grid_1;
+  std::vector<std::vector<int>> grid_6 = grid_1;
 
-  ASSERT_EQ(run_test(grid_1, n, "dijkstra"), run_test(grid_2, n, "a_star"));
-  ASSERT_EQ(run_test(grid_3, n, "d_star_lite"), run_test(grid_4, n, "a_star"));
+  ASSERT_EQ(run_test(grid_1, "dijkstra"), run_test(grid_2, "a_star"));
+  ASSERT_EQ(run_test(grid_3, "lpa_star"), run_test(grid_4, "a_star"));
+  ASSERT_EQ(run_test(grid_5, "d_star_lite"), run_test(grid_6, "a_star"));
 }
 
 int main(int argc, char **argv) {
