@@ -63,7 +63,6 @@ public:
           if(c.x_ >=0 && c.x_ < grid_size && c.y_ >=0 && c.y_ < grid_size){
               pheromone_grid.insert({std::make_pair(i*grid_size + j, c.x_*grid_size + c.y_) , 1.0});
           }
-
         }
         // std::cout << "Hello"<<std::endl;
       }
@@ -76,6 +75,7 @@ public:
     std::random_device device;
     std::mt19937 engine(device());
     // print(1);
+    std::vector<Node> last_best_path;
     for(int i=0;i<iterations;i++){
       int n_success = 0;
       auto motions = GetMotion();
@@ -115,7 +115,7 @@ public:
           }
           if(n_obs==possible_positions.size()){
             // Ant in a cul-de-sac
-            std::cout << "Breaking" << std::endl;
+            // std::cout << "Breaking" << std::endl;
             break;
           }
           else if(prob_sum == 0){
@@ -159,6 +159,7 @@ public:
       // }
       for(auto it = pheromone_grid.begin(); it!=pheromone_grid.end();it++){
         it->second = it->second*(1-evap_rate);
+        // std::cout << it->second<< std::endl;
       }
       double avg_len = 0;
       int count = 0;
@@ -193,10 +194,15 @@ public:
         std::cout << "Best path length = " << bpl << std::endl;
       }
       else std::cout << "Failed to find path" << std::endl;
-
+      if(i+1==iterations) last_best_path = bp;
       // sleep(3);
     }//for every iteration loop ends here
-    return std::vector<Node>();
+    for(int i=1;i<last_best_path.size();i++){
+      last_best_path[i-1].id_ = last_best_path[i-1].x_*grid_size + last_best_path[i-1].y_;
+      last_best_path[i].pid_ = last_best_path[i-1].id_;
+    }
+    last_best_path.back().id_ = last_best_path.back().x_*grid_size + last_best_path.back().y_;
+    return last_best_path;
   }
 
 };
@@ -207,18 +213,18 @@ public:
 * @return 0
 */
 int main(){
-  int n = 30;
+  int n = 50;
 
   std::vector<std::vector<int>> grid(n);
   std::vector<int> tmp(n);
   for (int i = 0; i < n; i++){
     grid[i] = tmp;
   }
-  // MakeGrid(grid);
-  // std::random_device rd; // obtain a random number from hardware
-  // std::mt19937 eng(rd()); // seed the generator
-  // std::uniform_int_distribution<int> distr(0,n-1); // define the range
-  //
+  MakeGrid(grid);
+  std::random_device rd; // obtain a random number from hardware
+  std::mt19937 eng(rd()); // seed the generator
+  std::uniform_int_distribution<int> distr(0,n-1); // define the range
+
   // Node start(distr(eng),distr(eng),0,0,0,0);
   // Node goal(distr(eng),distr(eng),0,0,0,0);
   // std::vector<std::vector<int>> grid{
@@ -243,11 +249,12 @@ int main(){
   grid[goal.x_][goal.y_] = 0;
   PrintGrid(grid);
 
-  AntColony new_ant_colony(grid, start, goal, 20, 1, 0, 0.3, 25);
+  AntColony new_ant_colony(grid, start, goal, 25, 1, 0.5, 0.3, 100);
+  //Normally as  beta increases the solution becomes greedier. However, as the heuristic is < 1 here, reducing beta increases the value places on the heuristic
   std::cout << "Constructor called" << std::endl;
   std::vector<Node> path_vector = new_ant_colony.ant_colony();
   print("out");
-  // PrintPath(path_vector, start, goal, grid);
+  PrintPath(path_vector, start, goal, grid);
   return 0;
 }
 #endif
