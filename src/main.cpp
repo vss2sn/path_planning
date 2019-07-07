@@ -10,9 +10,10 @@
 #include "rrt.hpp"
 #include "rrt_star.hpp"
 #include "d_star_lite.hpp"
+#include "ant_colony.hpp"
 
 int main(){
-  int n = 11;
+  int n = 21;
 
   std::vector<std::vector<int>> grid(n);
   std::vector<int> tmp(n);
@@ -39,8 +40,14 @@ int main(){
   // Store points after algorithm has run
   std::vector<Node> path_vector;
   std::vector<std::vector<int>> main_grid = grid;
+
+  // Variables for RRT and RRTStar
   double threshold = 2;
   int max_iter_x_factor = 20;
+
+  // Variables for Ant Colony Optimization
+  int n_ants = 10, iterations = 50;
+  float alpha = 1, beta =0.7, evap_rate = 0.3, Q = 10;
 
   // Resetting grid
   // Create object for the algorithm
@@ -69,7 +76,7 @@ int main(){
   LPAStar new_lpa_star;
   path_vector.clear();
   path_vector = new_lpa_star.lpa_star(grid, start, goal, n);
-  PrintPath(path_vector, start, goal, grid); 
+  PrintPath(path_vector, start, goal, grid);
 
   std::cout << "---------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: RRT ---------------------" << std::endl;
@@ -106,6 +113,14 @@ int main(){
   // returned path vector changes every replan. However, the path traversed is
   // set as 3 in the grid and displayed. 4 displays current location of bot in
   // the live run
+
+  std::cout << "-----------------------------------------------------------------------------" << std::endl;
+  std::cout << "--------------------- ALGORITH: Ant Colony Optimization ---------------------" << std::endl;
+  std::cout << "-----------------------------------------------------------------------------" << std::endl;
+  grid = main_grid;
+  AntColony new_ant_colony(n_ants, alpha, beta, evap_rate, iterations, Q);
+  path_vector = new_ant_colony.ant_colony(grid, start, goal);
+  PrintPath(path_vector, start, goal, grid);
 
   return 0;
 }

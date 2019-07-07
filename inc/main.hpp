@@ -32,6 +32,9 @@
 #include <cmath>
 #include <thread>
 
+#include<climits>
+#include <unordered_map>
+
 #ifndef BUILD_INDIVIDUAL // Only to make sure main is is included in documentation
 #ifndef TEST             // Only to make sure main is is included in documentation
 /**
