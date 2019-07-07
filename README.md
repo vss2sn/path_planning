@@ -68,11 +68,7 @@
 
 <a name="notes_on_travis_ci_integration"></a>
 #### Notes on Travis CI integration: ####
-<<<<<<< HEAD
-1. CI integrated in the feature/travis_ci branch, as integrating googletest with travis_ci, along with the test setup that runs automatically after every local build of `main` requires changes to CMakeLists.txt and use of google test as a submodule.
-=======
 1. CI integrated in the feature/travis_ci branch, as integrating googletest with travis_ci, along with the test setup that runs automatically after every local build of `main` requires changes to CMakeLists.txt and use of google test as a submodule. Current travis_ci use is aimed more at future proofing than anything else.
->>>>>>> master
 
 <a name="todos"></a>
 #### TODOs: ####
