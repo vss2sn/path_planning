@@ -12,6 +12,7 @@
 4. DStarLite (D* Lite) algorithm for grid based search.
 5. RRT algorithm for grid based search.
 6. RRTStar (RRT*) algorithm for grid based search.
+7. Ant Colony Optimization (ACO) algorithm for grid based search.
 
 <a name="instructions"></a>
 #### To build and run: ####
@@ -49,6 +50,7 @@
 3. Tests set to run after main file built.
 4. Files named grid#.cpp are specific grids to check for correctness under certain conditions. gridr.cpp generates a random grid and checks whether Dijkstra, A\* and D\* Lite (without new obstacles) generate the same cost from start to end.
 5. Given the random nature of RRT, no set has been set up for it yet.
+6. Due to the nature of Ant Colony Optimization and accounting for the hyper parameters, the tests are run with a 20% margin above the optimal solution.
 
 <a name="notes_on_implementations"></a>
 #### Notes on implementations: ####
@@ -70,13 +72,13 @@
 
 <a name="todos"></a>
 #### TODOs: ####
-1. Next algorithm to be implemented: a Voronoi cell based planner.
-2. Alterations for moving node variables into private namespace.
-3. Prune merged branches.
-4. Cleanup and refactor test section.
-5. Use hash to check if node in list for D* Lite (can be applied to others if required)
-6. Add overview, pseudo codes and references to documentation.
-7. Add test of probabilistic completeness for RRT.
+1. Alterations for moving node variables into private namespace.
+2. Prune merged branches.
+3. Cleanup and refactor test section.
+4. Use hash to check if node in list for D* Lite (can be applied to others if required)
+5. Add test of probabilistic completeness for RRT.
+6. Formalize pseudocode and add references for ACO.
+7. Add ACO to test section
 
 <a name="consider"></a>
 #### Consider: ####

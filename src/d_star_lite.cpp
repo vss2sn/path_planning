@@ -310,7 +310,7 @@ std::vector<Node> DStarLite::UpdateStart(Node start_in){
   // of the compute cost before the while loop.
   start_ = start_in;
   main_start_ = start_;
-  km_.first = km_.first +GetHeuristic(last_, start_);
+  km_.first = km_.first +GetHeuristic(last_, start_); //check of required
   last_ = start_;
   return path_vector_;
 }
