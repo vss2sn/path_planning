@@ -3,6 +3,7 @@
 #include "lpa_star.hpp"
 #include "rrt.hpp"
 #include "rrt_star.hpp"
+#include "ant_colony.hpp"
 #include "d_star_lite.hpp"
 #include <gtest/gtest.h>
 
@@ -19,8 +20,13 @@ double run_test(std::vector<std::vector<int> > &grid, std::string algo){
   grid[goal.x_][goal.y_] = 0;
 
   std::vector<Node> path_vector;
+  // Variables for RRT and RRTStar
   double threshold = 2;
   int max_iter_x_factor = 20;
+
+  // Variables for Ant Colony Optimization
+  int n_ants = 10, iterations = 50;
+  float alpha = 1, beta =0.7, evap_rate = 0.3, Q = 10;
 
   if(algo =="dijkstra"){
     Dijkstra new_dijkstra;
@@ -45,6 +51,10 @@ double run_test(std::vector<std::vector<int> > &grid, std::string algo){
   else if(algo == "d_star_lite"){
     DStarLite new_d_star_lite;
     path_vector = new_d_star_lite.d_star_lite(grid, start, goal);
+  }
+  else if(algo == "ant_colony"){
+    AntColony new_ant_colony(n_ants, alpha, beta, evap_rate, iterations, Q);
+    path_vector = new_ant_colony.ant_colony(grid, start, goal);
   }
 
   int i;
@@ -79,6 +89,8 @@ TEST(PathPlanningTest,Test1) {
   ASSERT_EQ(-1, run_test(grid, "rrtstar"));
   grid = main_grid;
   ASSERT_EQ(-1, run_test(grid, "d_star_lite"));
+  grid = main_grid;
+  ASSERT_GE(-1, run_test(grid, "ant_colony"));
 }
 
 TEST(PathPlanningTest,Test2) {
@@ -105,6 +117,8 @@ std::vector<std::vector<int>> main_grid = grid;
   ASSERT_EQ(-1, run_test(grid, "rrtstar"));
   grid = main_grid;
   ASSERT_EQ(-1, run_test(grid, "d_star_lite"));
+  grid = main_grid;
+  ASSERT_GE(-1, run_test(grid, "ant_colony"));
 }
 
 

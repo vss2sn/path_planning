@@ -167,3 +167,22 @@ RRTStar
 |     if(q\ :sub:`rand`\ = goal) return path found
 |     rewire()
 |  return no path
+
+Ant Colony Optimization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| **procedure main()**
+|  Initialize ant colony
+|  for each iterations
+|    initialize ants
+|    for each ant
+|      while ant position != goal and number of steps < max steps
+|        calculate probabilities of possible next edges to traverse
+|        choose next position based on probability
+|        if not next positions possible, break
+|        if reached revisited points, remove loop and reduce number of steps taken
+|        update pheromone trail
+|      update ant in ant colony
+|    update pheromone trail by evaporation equation
+|    update pheromone trails based on ants that reached the goal
+|  if path found return last best path
+|  else return no path
