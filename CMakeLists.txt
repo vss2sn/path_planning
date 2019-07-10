@@ -65,7 +65,7 @@ else (BUILD_INDIVIDUAL)
       string( REPLACE ".cpp" "" test_output_file ${test_source_file} )
       string( REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/tests/" "" test_output_file ${test_output_file} )
       add_executable( ${test_output_file} ${test_source_file} ${LIB_HEADERS})
-      target_link_libraries( ${test_output_file} ${GTEST_LIBRARIES} pthread utils algos test_utils)
+      target_link_libraries( ${test_output_file} ${GTEST_LIBRARIES} pthread utils algos test_utils gtest)
       add_test(${test_output_file} ${test_output_file})
       add_dependencies(main ${test_output_file}) # ensure main is built after the test grids.
     endforeach(test_source_file ${LIB_SOURCES})
