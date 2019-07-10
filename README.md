@@ -61,6 +61,7 @@
 4. D* Lite can be run live with random obstacle creation using the RunDStarLite function. For the live run of D* Lite, obstacles are detected on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid. D* Lite is implemented based on Sven Koenig's & Maxim Likhachev's paper.
 5. To specify your own grid, set n to number of rows, created the 2D vector, setting 1 for obstacles and 0 elsewhere, and comment out the MakeGrid function.
 6. The LPA* algorithm is implemented to run `max_iter_` number of times with default value `n`. Obstacles are created on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid, at a random point along the path. It can be run with `max_iter_` set to `0` if continuous replanning is to be disabled.
+7. The genetic algorithm has an option `shorten_chromosome`, which allows the shortening of the chromosome (path length) based on the length of the path found that reaches the goal. This reduces computation time and pushes the solution towards the shortest path. 
 
 <a name="notes_on_cmake_options"></a>
 #### Notes on CMake Options: ####
