@@ -29,6 +29,8 @@ TEST(PathPlanningTest, Test1) {
   ASSERT_EQ(14, run_test(grid, "d_star_lite"));
   grid = main_grid;
   ASSERT_GE(17, run_test(grid, "ant_colony"));
+  grid = main_grid;
+  ASSERT_GE(17, run_test(grid, "genetic_algorithm"));
 }
 
 int main(int argc, char **argv) {

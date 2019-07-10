@@ -5,6 +5,7 @@
 #include "rrt_star.hpp"
 #include "ant_colony.hpp"
 #include "d_star_lite.hpp"
+#include "genetic_algorithm.hpp"
 #include <gtest/gtest.h>
 
 double run_test(std::vector<std::vector<int> > &grid, std::string algo){
@@ -55,6 +56,14 @@ double run_test(std::vector<std::vector<int> > &grid, std::string algo){
   else if(algo == "ant_colony"){
     AntColony new_ant_colony(n_ants, alpha, beta, evap_rate, iterations, Q);
     path_vector = new_ant_colony.ant_colony(grid, start, goal);
+  }
+  else if(algo == "genetic_algorithm"){
+    GeneticAlgorithm new_genetic_algorithm;
+    path_vector = new_genetic_algorithm.genetic_algorithm(grid, start, goal, 2*start.h_cost_);
+    int i=0;
+    if(path_vector[0].id_==-1) return -1;
+    for(;i<path_vector.size();i++) if(path_vector[i]==goal) break;
+    return i;
   }
 
   int i;
