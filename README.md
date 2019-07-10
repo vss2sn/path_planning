@@ -12,7 +12,8 @@
 4. DStarLite (D* Lite) algorithm for grid based search.
 5. RRT algorithm for grid based search.
 6. RRTStar (RRT*) algorithm for grid based search.
-7. Ant Colony Optimization (ACO) algorithm for grid based search.
+7. Ant Colony Optimization algorithm (ACO) for grid based search.
+9. Genetic algorithm (GA) for grid based search.
 
 <a name="instructions"></a>
 #### To build and run: ####
