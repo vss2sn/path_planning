@@ -149,4 +149,6 @@ void PrintCost(std::vector<std::vector<int>> &grid, std::vector<Node> point_list
 */
 void MakeGrid(std::vector<std::vector<int>> &grid);
 
+void PrintPathInOrder(std::vector<Node>& path_vector, Node start, Node goal,std::vector<std::vector<int>>& grid);
+
 #endif UTILS_H
