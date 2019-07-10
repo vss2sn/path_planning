@@ -126,7 +126,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, Nod
 
 		// Pheromone update based on successful ants
     for(Ant& ant : ants_){
-			// PrintAntPath(Ant& ant);
+			// PrintAntPath(ant);
       if(ant.found_goal_){ // Use iff goal reached
         if(ant.path_.size() < bpl){ // Save best path yet in this iteration
           bpl = ant.path_.size();
@@ -158,31 +158,19 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, Nod
 * @return 0
 */
 int main(){
-  // int n = 20;
-	//
-  // std::vector<std::vector<int>> grid(n);
-  // std::vector<int> tmp(n);
-  // for (int i = 0; i < n; i++){
-  //   grid[i] = tmp;
-  // }
-  // MakeGrid(grid);
-	int n = 6;
-  std::vector<std::vector<int>> grid{
-                     { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 1 , 1 , 1 , 1, 1 },
-                     { 1 , 1 , 1 , 0 , 1, 0 },
-                     { 1 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 0 , 0 , 0 , 0, 0 },
-                     { 0 , 0 , 0 , 0 , 0, 0 }
-                   } ;
-  // std::random_device rd; // obtain a random number from hardware
-  // std::mt19937 eng(rd()); // seed the generator
-  // std::uniform_int_distribution<int> distr(0,n-1); // define the range
+  int n = 11;	
+  std::vector<std::vector<int>> grid(n);
+  std::vector<int> tmp(n);
+  for (int i = 0; i < n; i++){
+    grid[i] = tmp;
+  }
+  MakeGrid(grid);
+  std::random_device rd; // obtain a random number from hardware
+  std::mt19937 eng(rd()); // seed the generator
+  std::uniform_int_distribution<int> distr(0,n-1); // define the range
 
-  // Node start(distr(eng),distr(eng),0,0,0,0);
-  // Node goal(distr(eng),distr(eng),0,0,0,0);
-  Node start(0,0,0,0,0,0);
-  Node goal(n-1,n-1,0,0,0,0);
+  Node start(distr(eng),distr(eng),0,0,0,0);
+  Node goal(distr(eng),distr(eng),0,0,0,0);
 
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -194,7 +182,7 @@ int main(){
   PrintGrid(grid);
 
 	//Normally as  beta increases the solution becomes greedier. However, as the heuristic is < 1 here, reducing beta increases the value places on the heuristic
-  AntColony new_ant_colony(10, 1, 0.5, 0.3, 50, 10.0);
+  AntColony new_ant_colony(1, 1, 0.5, 0.3, 5, 10.0);
   std::vector<Node> path_vector = new_ant_colony.ant_colony(grid, start, goal);
   PrintPath(path_vector, start, goal, grid);
   return 0;

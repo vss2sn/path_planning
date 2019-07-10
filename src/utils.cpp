@@ -171,3 +171,19 @@ void PrintCost(std::vector<std::vector<int>> &grid, std::vector<Node> point_list
     std::cout << std::endl << std::endl;
   }
 }
+
+void PrintPathInOrder(std::vector<Node>& path_vector, Node start, Node goal, std::vector<std::vector<int>>& grid){
+  if(path_vector[0].id_ == -1){
+    std::cout << "Path not found" << std::endl;
+    PrintGrid(grid);
+    return;
+  }
+  std::cout << "Path (goal to start):" << std::endl;
+  int i=0;
+  while(path_vector[i]!=goal) i++;
+  for(; i>=0; i=i-1){
+    path_vector[i].PrintStatus();
+    grid[path_vector[i].x_][path_vector[i].y_]=3;
+  }
+  PrintGrid(grid);
+}
