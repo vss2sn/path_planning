@@ -15,6 +15,21 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   structpair__hash.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   classAnt.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   classAntColony.rst
+
+.. toctree::
+   :maxdepth: 5
+
    classAStar.rst
 
 .. toctree::
@@ -26,6 +41,11 @@ Classes and Structs
    :maxdepth: 5
 
    classDStarLite.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   classGeneticAlgorithm.rst
 
 .. toctree::
    :maxdepth: 5
@@ -80,6 +100,11 @@ Functions
    :maxdepth: 5
 
    function_utils_8hpp_1a557054c14922455add5f4b8ab1616ab0.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_utils_8hpp_1a361bc10e4ced98ae2a1eef33a768c43c.rst
 
 Defines
 *******
@@ -156,6 +181,11 @@ Files
 .. toctree::
    :maxdepth: 5
 
+   file_inc_ant_colony.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
    file_inc_d_star_lite.hpp.rst
 
 .. toctree::
@@ -166,12 +196,22 @@ Files
 .. toctree::
    :maxdepth: 5
 
+   file_inc_genetic_algorithm.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
    file_inc_lpa_star.hpp.rst
 
 .. toctree::
    :maxdepth: 5
 
    file_inc_main.hpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_README.md.rst
 
 .. toctree::
    :maxdepth: 5

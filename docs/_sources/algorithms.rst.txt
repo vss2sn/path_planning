@@ -160,8 +160,7 @@ RRTStar
 |  T = 0; // Initialize list/tree
 |  for k = 1 to K
 |   q\ :sub:`rand`\ ← GenerateRandomNode()
-|   q\ :sub:`parent`\, close_node_list ← FindNearestPoint(q\ :sub:`rand`\, T, threshold) // Returns node that results in lowest total cost and list of all close nodes
-|                                                                    // Updates q\ :sub:`rand`\.cost to q\ :sub:`parent`\.cost + distance(q\ :sub:`rand`\, q\ :sub:`parent`\)
+|   q\ :sub:`parent`\, close_node_list ← FindNearestPoint(q\ :sub:`rand`\, T, threshold) // Returns node that results in lowest total cost and list of all close nodes                                                  // Updates q\ :sub:`rand`\.cost to q\ :sub:`parent`\.cost + distance(q\ :sub:`rand`\, q\ :sub:`parent`\)
 |   if(q\ :sub:`parent`\ exists)
 |     q\ :sub:`parent`\ <--- q\ :sub:`parent`\
 |     if(q\ :sub:`rand`\ = goal) return path found
@@ -186,3 +185,23 @@ Ant Colony Optimization
 |    update pheromone trails based on ants that reached the goal
 |  if path found return last best path
 |  else return no path
+
+Genetic Algorithm
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| **procedure main()**
+|  Initialize paths
+|  for each generation
+|    choose paths based on criteria
+|    mutate paths (using CrossoverMutation()) to find new paths if number of paths less than set number
+|    for each path
+|      calculate cost and validity of path
+|      if path valid add to paths list
+|  if path found return last best path
+|  else return no path
+| **procedure CrossoverMutation()**
+|  randomly choose 2 chromosomes (paths) in path list
+|  initialize new chromosome
+|  for each gene in chromosome
+|    choose either the gene from the first chromosome, form the second chromosome or a random gene based on probabilities set
+|    add this gene to new chromosome
+|  return new chromosome

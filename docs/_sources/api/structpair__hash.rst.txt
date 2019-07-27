@@ -1,0 +1,16 @@
+.. _exhale_struct_structpair__hash:
+
+Struct pair_hash
+================
+
+- Defined in :ref:`file_inc_ant_colony.hpp`
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: pair_hash
+   :members:
+   :protected-members:
+   :undoc-members:

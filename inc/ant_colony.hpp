@@ -15,6 +15,11 @@
 */
 struct pair_hash
 {
+	/**
+	* @brief Function used to generate hash for keys
+	* @param pair pair of values
+	* @return generated hash value
+	*/
 	template <class T1, class T2>
 	std::size_t operator() (const std::pair<T1, T2> &pair) const
 	{
@@ -27,12 +32,19 @@ struct pair_hash
 */
 class Ant{
 public:
-  bool found_goal_ = false;
-  int steps_ = 0, id_;
-  std::vector<Node> path_;
-  Node previous_node_;
-  Node current_node_;
+	/**
+	* @brief Constructor to create a new ant
+	* @param start Start node of ant
+	* @param id Ant id
+	* @return no return value
+	*/
   Ant(Node start = Node(0,0), int id = 0);
+private:
+	bool found_goal_ = false;
+	int steps_ = 0, id_;
+	std::vector<Node> path_;
+	Node previous_node_;
+	Node current_node_;
 };
 
 /**

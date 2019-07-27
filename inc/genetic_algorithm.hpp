@@ -13,6 +13,7 @@ public:
   * @param generations number of generations of genetic algorithms
   * @param popsize size of population in each generation
   * @param c multiplicative value for fitness criteria for path selection/elimination
+    * @param shorten_chromosome reduce size of chomosome based on best path
   * @return no return value
   */
   GeneticAlgorithm(int generations = 10000, int popsize = 30, float c = 1.05, bool shorten_chromosome = false);
@@ -22,6 +23,7 @@ public:
   * @param grid Main grid
   * @param start start node
   * @param goal goal node
+  * @param path_length length of path (chromosome size)
   * @return best path within last iteration of the algorithm
   */
   std::vector<Node> genetic_algorithm(std::vector<std::vector<int>>& grid, Node start, Node goal, int path_length = 30);
@@ -29,7 +31,6 @@ public:
   /**
   * @brief Returns the last valid path within an iteration
   * @return last valid path
-  * @details <details>
   */
   std::vector<Node> ReturnLastPath(); // given the way a genetic algorithm decreases fitness values, the last path is likely ot be the best. Can reorder ased on actual fitness values if required.
 
@@ -63,6 +64,7 @@ public:
 
   /**
   * @brief Mutation function to create random combinations of parents as well as some random changes. Applied to every chromosome in paths.
+  * @return void
   */
   void CrossoverMutation();
 
