@@ -24,7 +24,7 @@ void LPAStar::VectorInsertionSort(std::vector<Node>& v){
 double LPAStar::GetHeuristic(Node s1, Node s2){
   return abs(s1.x_ - s2.x_) + abs(s1.y_ - s2.y_);
 }
-
+#ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void LPAStar::PrintGRHS(){
   std::cout << "G values:" << std::endl;
   for(int i=0;i<n;i++){
@@ -41,6 +41,7 @@ void LPAStar::PrintGRHS(){
     std::cout << std::endl;
   }
 }
+#endif
 
 std::pair<double,double> LPAStar::CalculateKey(const Node& s){
   return std::make_pair(std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second)
@@ -292,6 +293,7 @@ void LPAStar::GeneratePathVector(){
   }
 }
 
+#ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void LPAStar::DisplayGrid(){
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
@@ -316,6 +318,7 @@ void LPAStar::DisplayGrid(){
   for(int j=0;j<n;j++) std::cout <<  "---";
   std::cout << std::endl;
 }
+#endif
 
 #ifdef BUILD_INDIVIDUAL
 /**

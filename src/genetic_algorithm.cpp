@@ -103,6 +103,7 @@ std::vector<Node> GeneticAlgorithm::ReturnLastPath(){ // given the way a genetic
   return v;
 }
 
+#ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void GeneticAlgorithm::PrintChromosome(std::vector<Node>& path){
   std::cout << "Chromosome: ";
   for (auto v : path){
@@ -122,6 +123,7 @@ void GeneticAlgorithm::PrintPathOfChromosome(std::vector<Node>& path){
   }
   std::cout << std::endl;
 }
+#endif
 
 void GeneticAlgorithm::InitialSetup(std::vector<Node>& path){
   int d_x = goal_.x_ - start_.x_;
@@ -208,6 +210,7 @@ bool GeneticAlgorithm::CheckPath(std::vector<Node>& path){
   return false;
 }
 
+#ifdef BUILD_INDIVIDUAL
 int main(){
   int n = 10;
 
@@ -240,3 +243,4 @@ int main(){
   path_vector = new_genetic_algorithm.genetic_algorithm(grid, start, goal, 2*start.h_cost_);
   PrintPathInOrder(path_vector, start, goal, grid);
 }
+#endif BUILD_INDIVIDUAL

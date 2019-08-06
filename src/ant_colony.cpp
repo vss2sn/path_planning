@@ -22,6 +22,7 @@ AntColony::AntColony(int n_ants, double alpha, double beta, double evap_rate, in
 	this->Q_ = Q;
 }
 
+#ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void AntColony::PrintAntPath(Ant& ant){
 	for(int k=1;k<ant.path_.size();k++) ant.path_[k].pid_ = ant.path_[k-1].id_;
 	ant.path_.back().id_ = ant.path_.back().x_*grid_size_ + ant.path_.back().y_;
@@ -29,6 +30,7 @@ void AntColony::PrintAntPath(Ant& ant){
 	PrintPath(ant.path_, start_, ant.path_.back(), grid_2);
 	sleep(1);
 }
+#endif
 
 void AntColony::RemoveLoop(Ant& ant){
 	for(auto it=ant.path_.begin(); it!=ant.path_.end();++it){
@@ -158,7 +160,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, Nod
 * @return 0
 */
 int main(){
-  int n = 11;	
+  int n = 11;
   std::vector<std::vector<int>> grid(n);
   std::vector<int> tmp(n);
   for (int i = 0; i < n; i++){
