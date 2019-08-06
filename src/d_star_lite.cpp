@@ -302,6 +302,7 @@ void DStarLite::GeneratePathVector(){
   }
 }
 
+#ifdef DYNAMIC_ALGOS
 std::vector<Node> DStarLite::UpdateStart(Node start_in){
   // Prevent teleportations
   if(path_vector_[0].cost_ == -1){
@@ -319,7 +320,6 @@ std::vector<Node> DStarLite::UpdateStart(Node start_in){
   return path_vector_;
 }
 
-#ifdef DYNAMIC_ALGOS
 void DStarLite::DisplayGrid(){
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
