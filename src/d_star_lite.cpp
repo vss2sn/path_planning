@@ -25,6 +25,7 @@ double DStarLite::GetHeuristic(Node s1, Node s2){
   return abs(s1.x_ - s2.x_) + abs(s1.y_ - s2.y_);
 }
 
+#ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void DStarLite::PrintGRHS(){
   std::cout << "G values:" << std::endl;
   for(int i=0;i<n;i++){
@@ -41,6 +42,7 @@ void DStarLite::PrintGRHS(){
     std::cout << std::endl;
   }
 }
+#endif
 
 std::pair<double,double> DStarLite::CalculateKey(const Node& s){
   return std::make_pair(std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second
@@ -315,6 +317,7 @@ std::vector<Node> DStarLite::UpdateStart(Node start_in){
   return path_vector_;
 }
 
+#ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void DStarLite::DisplayGrid(){
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
@@ -339,6 +342,7 @@ void DStarLite::DisplayGrid(){
   for(int j=0;j<n;j++) std::cout <<  "---";
   std::cout << std::endl;
 }
+#endif
 
 Node DStarLite::NextPoint(){
   int i = 0;
