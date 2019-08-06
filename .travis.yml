@@ -16,7 +16,7 @@ before_script:
 script:
   - make
 
-after_test:
+after_success:
   - git submodule deinit -f -- gtest
   - rm -rf .git/modules/gtest
   - git rm -f gtest
