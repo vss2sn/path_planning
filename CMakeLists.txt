@@ -103,12 +103,12 @@ else (BUILD_INDIVIDUAL)
 
     endforeach(test_source_file ${LIB_SOURCES})
 
-    if(NOT CHECK_COVERAGE)
+    # if(NOT CHECK_COVERAGE)
       add_custom_command(
        TARGET main # Ensures tests run only after main
        POST_BUILD
        COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> -R "^${UNIT_TEST}$" --output-on-failures)
-    endif(NOT CHECK_COVERAGE)
+    # endif(NOT CHECK_COVERAGE)
 
   endif (TEST)
 

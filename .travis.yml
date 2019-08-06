@@ -4,6 +4,7 @@ compiler:
   - gcc
 
 before_script:
+  - apt-get install lcov
   - git submodule add https://github.com/google/googletest.git gtest
   - mkdir build
   - cd build
@@ -16,3 +17,5 @@ after_test:
   - git submodule deinit -f -- gtest
   - rm -rf .git/modules/gtest
   - git rm -f gtest
+  - lcov -a grid1_coverage.info.cleaned -a grid2_coverage.info.cleaned -a grid3_coverage.info.cleaned -a grid4_coverage.info.cleaned -a grid5_coverage.info.cleaned -o total.info
+  - bash <(curl -s https://codecov.io/bash) -f total.info || echo "Codecov did not collect coverage reports"
