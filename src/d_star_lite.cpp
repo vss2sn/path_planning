@@ -215,6 +215,7 @@ std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in,
   }
 }
 
+#ifdef DYNAMIC_ALGOS
 std::vector<Node> DStarLite::SetObs(Node u){
   if(u==goal_ || u==start_){
     std::cout << "Cannot set current start or goal as obstacle" << std::endl;
@@ -257,6 +258,7 @@ std::vector<Node> DStarLite::Replan(Node u){
   GeneratePathVector();
   return ReturnInvertedVector();
 }
+#endif
 
 std::vector<Node> DStarLite::ReturnInvertedVector(){
   std::vector<Node> inverted_path_vector = path_vector_;
@@ -317,7 +319,7 @@ std::vector<Node> DStarLite::UpdateStart(Node start_in){
   return path_vector_;
 }
 
-#ifdef CUSTOM_DEBUG_HELPER_FUNCION
+#ifdef DYNAMIC_ALGOS
 void DStarLite::DisplayGrid(){
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
@@ -363,6 +365,7 @@ Node DStarLite::NextPoint(){
   return path_vector_[i];
 }
 
+#ifdef DYNAMIC_ALGOS
 void DStarLite::RunDStarLite(bool disp_inc_in){
   disp_inc = disp_inc_in;
   if(path_vector_[0].cost_==-1){
@@ -403,7 +406,7 @@ void DStarLite::RunDStarLite(bool disp_inc_in){
   DisplayGrid();
   return;
 }
-
+#endif
 #ifdef BUILD_INDIVIDUAL
 /**
 * @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm object and calls the main algorithm function.
