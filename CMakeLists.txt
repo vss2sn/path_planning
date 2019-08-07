@@ -32,10 +32,21 @@ list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
 list( REMOVE_ITEM LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_utils.cpp )
 # If building each file with it's own output, set to ON
 # If buiding single file (main.cpp) to test any/all protocols, set to OFF
+<<<<<<< HEAD
 option( BUILD_INDIVIDUAL "BUILD_INDIVIDUAL" ON)
+=======
+option( BUILD_INDIVIDUAL "BUILD_INDIVIDUAL" OFF)
+option( DYNAMIC_ALGOS "DYNAMIC_ALGOS" OFF)
+if(DYNAMIC_ALGOS)
+  add_definitions(-D DYNAMIC_ALGOS)
+endif(DYNAMIC_ALGOS)
+>>>>>>> feature/travis_ci
 
 option( TEST "TEST" ON)
 option( CHECK_COVERAGE "CHECK_COVERAGE" ON)
+if(CHECK_COVERAGE)
+  option( DYNAMIC_ALGOS "DYNAMIC_ALGOS" OFF)
+endif(CHECK_COVERAGE)
 
 
 option( CUSTOM_DEBUG_HELPER_FUNCION "CUSTOM_DEBUG_HELPER_FUNCION" OFF)
@@ -72,16 +83,17 @@ else (BUILD_INDIVIDUAL)
     endif(CHECK_COVERAGE)
 
     # For GTEST
-    find_package(GTest REQUIRED)
+    #find_package(GTest REQUIRED)
     enable_testing()
     add_definitions(-DTEST)
-    include_directories(${GTEST_INCLUDE_DIRS})
+    #include_directories(${GTEST_INCLUDE_DIRS})
+    include(gtest.cmake)
 
     foreach(test_source_file ${LIB_TESTS_SOURCES})
       string( REPLACE ".cpp" "" test_output_file ${test_source_file} )
       string( REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/tests/" "" test_output_file ${test_output_file} )
       add_executable( ${test_output_file} ${test_source_file} ${LIB_HEADERS})
-      target_link_libraries( ${test_output_file} ${GTEST_LIBRARIES} pthread utils algos test_utils)
+      target_link_libraries( ${test_output_file} ${GTEST_LIBRARIES} pthread utils algos test_utils gtest)
       add_test(${test_output_file} ${test_output_file})
 
       if(CHECK_COVERAGE)
@@ -102,12 +114,12 @@ else (BUILD_INDIVIDUAL)
 
     endforeach(test_source_file ${LIB_SOURCES})
 
-    if(NOT CHECK_COVERAGE)
+    # if(NOT CHECK_COVERAGE)
       add_custom_command(
        TARGET main # Ensures tests run only after main
        POST_BUILD
        COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> -R "^${UNIT_TEST}$" --output-on-failures)
-    endif(NOT CHECK_COVERAGE)
+    # endif(NOT CHECK_COVERAGE)
 
   endif (TEST)
 

@@ -25,6 +25,7 @@ double DStarLite::GetHeuristic(Node s1, Node s2){
   return abs(s1.x_ - s2.x_) + abs(s1.y_ - s2.y_);
 }
 
+#ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void DStarLite::PrintGRHS(){
   std::cout << "G values:" << std::endl;
   for(int i=0;i<n;i++){
@@ -41,6 +42,7 @@ void DStarLite::PrintGRHS(){
     std::cout << std::endl;
   }
 }
+#endif
 
 std::pair<double,double> DStarLite::CalculateKey(const Node& s){
   return std::make_pair(std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second
@@ -213,6 +215,7 @@ std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in,
   }
 }
 
+#ifdef DYNAMIC_ALGOS
 std::vector<Node> DStarLite::SetObs(Node u){
   if(u==goal_ || u==start_){
     std::cout << "Cannot set current start or goal as obstacle" << std::endl;
@@ -255,6 +258,7 @@ std::vector<Node> DStarLite::Replan(Node u){
   GeneratePathVector();
   return ReturnInvertedVector();
 }
+#endif
 
 std::vector<Node> DStarLite::ReturnInvertedVector(){
   std::vector<Node> inverted_path_vector = path_vector_;
@@ -298,6 +302,7 @@ void DStarLite::GeneratePathVector(){
   }
 }
 
+#ifdef DYNAMIC_ALGOS
 std::vector<Node> DStarLite::UpdateStart(Node start_in){
   // Prevent teleportations
   if(path_vector_[0].cost_ == -1){
@@ -339,6 +344,7 @@ void DStarLite::DisplayGrid(){
   for(int j=0;j<n;j++) std::cout <<  "---";
   std::cout << std::endl;
 }
+#endif
 
 Node DStarLite::NextPoint(){
   int i = 0;
@@ -359,6 +365,7 @@ Node DStarLite::NextPoint(){
   return path_vector_[i];
 }
 
+#ifdef DYNAMIC_ALGOS
 void DStarLite::RunDStarLite(bool disp_inc_in){
   disp_inc = disp_inc_in;
   if(path_vector_[0].cost_==-1){
@@ -399,7 +406,7 @@ void DStarLite::RunDStarLite(bool disp_inc_in){
   DisplayGrid();
   return;
 }
-
+#endif
 #ifdef BUILD_INDIVIDUAL
 /**
 * @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm object and calls the main algorithm function.

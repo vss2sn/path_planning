@@ -81,7 +81,6 @@
 4. Use hash to check if node in list for D* Lite (can be applied to others if required)
 5. Add test of probabilistic completeness for RRT.
 6. Formalize pseudocode and add references for ACO.
-7. Add ACO to test section
 
 <a name="consider"></a>
 #### Consider: ####
