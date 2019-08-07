@@ -76,7 +76,7 @@ int main(){
   grid = main_grid;
   LPAStar new_lpa_star;
   path_vector.clear();
-  path_vector = new_lpa_star.lpa_star(grid, start, goal, n);
+  path_vector = new_lpa_star.lpa_star(grid, start, goal, n, true);
   PrintPath(path_vector, start, goal, grid);
 
   std::cout << "---------------------------------------------------------" << std::endl;

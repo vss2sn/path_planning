@@ -39,7 +39,7 @@ double run_test(std::vector<std::vector<int> > &grid, std::string algo){
   }
   else if(algo == "lpa_star"){
     LPAStar new_lpa_star;
-    path_vector = new_lpa_star.lpa_star(grid, start, goal, 0);
+    path_vector = new_lpa_star.lpa_star(grid, start, goal, 1, false);
   }
   else if(algo=="rrt"){
     RRT new_rrt;
