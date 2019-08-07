@@ -35,9 +35,9 @@ list( REMOVE_ITEM LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_utils
 # If buiding single file (main.cpp) to test any/all protocols, set to OFF
 option( BUILD_INDIVIDUAL "BUILD_INDIVIDUAL" OFF)
 option( TEST "TEST" ON)
-option( CHECK_COVERAGE "CHECK_COVERAGE" OFF)
+option( CHECK_COVERAGE "CHECK_COVERAGE" ON)
 option( DYNAMIC_ALGOS "DYNAMIC_ALGOS" ON)
-option( CUSTOM_DEBUG_HELPER_FUNCION "CUSTOM_DEBUG_HELPER_FUNCION" ON)
+option( CUSTOM_DEBUG_HELPER_FUNCION "CUSTOM_DEBUG_HELPER_FUNCION" OFF)
 option( TRAVIS "CONFIG_FOR_TRAVIS" OFF)
 
 # Ensures dynamic runs for individual files allowed
