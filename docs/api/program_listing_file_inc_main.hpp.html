@@ -38,7 +38,7 @@
   <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="File rrt.hpp" href="file_inc_rrt.hpp.html" />
+    <link rel="next" title="File README.md" href="file_README.md.html" />
     <link rel="prev" title="File main.hpp" href="file_inc_main.hpp.html" /> 
 </head>
 
@@ -92,6 +92,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../algorithms.html#d-lite">D* Lite:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrt">RRT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrtstar">RRTStar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#ant-colony-optimization">Ant Colony Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#genetic-algorithm">Genetic Algorithm</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
@@ -100,9 +102,13 @@
 <li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="structcompare__cost.html">Struct compare_cost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structpair__hash.html">Struct pair_hash</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAnt.html">Class Ant</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAntColony.html">Class AntColony</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classAStar.html">Class AStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classDijkstra.html">Class Dijkstra</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classDStarLite.html">Class DStarLite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classGeneticAlgorithm.html">Class GeneticAlgorithm</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classLPAStar.html">Class LPAStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classNode.html">Class Node</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classRRT.html">Class RRT</a></li>
@@ -116,6 +122,7 @@
 <li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a012ce27d2ee6c480975c0cfa6944104a.html">Function PrintCost</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1ae78f95d1e36b0989a307b951da25532e.html">Function PrintGrid</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a557054c14922455add5f4b8ab1616ab0.html">Function PrintPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a361bc10e4ced98ae2a1eef33a768c43c.html">Function PrintPathInOrder</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="library_root.html#defines">Defines</a><ul>
@@ -137,10 +144,13 @@
 </li>
 <li class="toctree-l3 current"><a class="reference internal" href="library_root.html#files">Files</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="file_inc_a_star.hpp.html">File a_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_ant_colony.hpp.html">File ant_colony.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_d_star_lite.hpp.html">File d_star_lite.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_dijkstra.hpp.html">File dijkstra.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_inc_genetic_algorithm.hpp.html">File genetic_algorithm.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_lpa_star.hpp.html">File lpa_star.hpp</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="file_inc_main.hpp.html">File main.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_README.md.html">File README.md</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_rrt.hpp.html">File rrt.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_rrt_star.hpp.html">File rrt_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_inc_utils.hpp.html">File utils.hpp</a></li>
@@ -222,32 +232,16 @@
 <span id="program-listing-file-inc-main-hpp"></span><h1>Program Listing for File main.hpp<a class="headerlink" href="#program-listing-for-file-main-hpp" title="Permalink to this headline">¶</a></h1>
 <p>↰ <a class="reference internal" href="file_inc_main.hpp.html#file-inc-main-hpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">inc/main.hpp</span></code>)</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;sys/ioctl.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;mutex&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;ctime&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;array&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;iterator&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;sys/syscall.h&gt;</span><span class="cp"></span>
-
-<span class="cp">#include</span> <span class="cpf">&lt;iomanip&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iomanip&gt; // setw</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;queue&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;list&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp"></span>
-
 <span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;climits&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unordered_map&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;random&gt;</span><span class="cp"></span>
 
 <span class="cp">#ifndef BUILD_INDIVIDUAL </span><span class="c1">// Only to make sure main is is included in documentation</span>
 <span class="cp">#ifndef TEST             </span><span class="c1">// Only to make sure main is is included in documentation</span>
@@ -267,7 +261,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="file_inc_rrt.hpp.html" class="btn btn-neutral float-right" title="File rrt.hpp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="file_README.md.html" class="btn btn-neutral float-right" title="File README.md" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="file_inc_main.hpp.html" class="btn btn-neutral float-left" title="File main.hpp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

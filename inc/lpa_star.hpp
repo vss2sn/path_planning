@@ -106,12 +106,13 @@ public:
   * @param max_iter_in number of oterations to run of LPA*
   * @return path vector of nodes
   */
-  std::vector<Node> lpa_star(std::vector<std::vector<int> > &grid_in, Node start_in, Node goal_in, int max_iter_in);
+  std::vector<Node> lpa_star(std::vector<std::vector<int> > &grid_in, Node start_in, Node goal_in, int max_iter_in, bool obs_creation = true);
 
   /**
   * @brief Replan route, called whenever a previously unknown obstacle is detected.
           Equivalent of the effects of the code after an edge change is detectedd in the while loop within the main procedure of LPA*.
   * @param u Node at which the change was detected
+  * @param obs_creation Allow creation of obstacles
   * @return path vector of nodes
   */
   std::vector<Node> Replan(Node u);

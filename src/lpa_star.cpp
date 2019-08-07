@@ -187,7 +187,7 @@ int LPAStar::ComputeShortestPath(){
   return 0;
 }
 
-std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, Node start_in, Node goal_in, int max_iter_in){
+std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, Node start_in, Node goal_in, int max_iter_in, bool obs_creation){
   max_iter_ = max_iter_in;
   grid = grid_in;
   start_ = start_in;
@@ -216,7 +216,7 @@ std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, Node
       int rand = distr(eng)*(path_vector_.size()/(n-1)); // Scaling along path so any point on path could become an obstacle
       Node new_obs = path_vector_[rand];
       std::vector<Node> succ = GetSucc(new_obs);
-      SetObs(new_obs);
+      if(obs_creation) SetObs(new_obs);
       for(int i=0;i<succ.size();i++){
         UpdateVertex(succ[i]);
       }
@@ -238,7 +238,6 @@ std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, Node
     GeneratePathVector();
     iter_++;
   }
-  grid_in = grid;
   grid_in = grid;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
@@ -327,7 +326,7 @@ void LPAStar::DisplayGrid(){
 */
 int main(){
   int n = 11;
-
+  bool obs_creation = true;
   std::vector<std::vector<int>> grid(n);
   std::vector<int> tmp(n);
   for (int i = 0; i < n; i++){
@@ -352,7 +351,7 @@ int main(){
   PrintGrid(grid);
   std::vector<Node> path_vector;
   LPAStar new_lpa_star;
-  path_vector = new_lpa_star.lpa_star(grid, start, goal, n);
+  path_vector = new_lpa_star.lpa_star(grid, start, goal, n, obs_creation);
   PrintPath(path_vector, start, goal, grid);
 }
 #endif BUILD_INDIVIDUAL

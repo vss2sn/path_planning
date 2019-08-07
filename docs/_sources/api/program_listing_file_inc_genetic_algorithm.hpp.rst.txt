@@ -1,0 +1,48 @@
+
+.. _program_listing_file_inc_genetic_algorithm.hpp:
+
+Program Listing for File genetic_algorithm.hpp
+==============================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_inc_genetic_algorithm.hpp>` (``inc/genetic_algorithm.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef GENETIC_ALGORITHM_H
+   #define GENETIC_ALGORITHM_H
+   
+   #include "utils.hpp"
+   
+   class GeneticAlgorithm{
+   public:
+     GeneticAlgorithm(int generations = 10000, int popsize = 30, float c = 1.05, bool shorten_chromosome = false);
+   
+     std::vector<Node> genetic_algorithm(std::vector<std::vector<int>>& grid, Node start, Node goal, int path_length = 30);
+   
+     std::vector<Node> ReturnLastPath(); // given the way a genetic algorithm decreases fitness values, the last path is likely ot be the best. Can reorder ased on actual fitness values if required.
+   
+     void PrintChromosome(std::vector<Node>& path);
+   
+     void PrintPathOfChromosome(std::vector<Node>& path);
+   
+     void InitialSetup(std::vector<Node>& path);
+   
+     int CalculateFitness(std::vector<Node>& path);
+   
+     void CrossoverMutation();
+   
+     bool CheckPath(std::vector<Node>& path);
+   
+   private:
+     std::vector<std::vector<int>> grid_;
+     std::vector<Node> motions_;
+     Node start_, goal_;
+     int path_length_, n_, f_val, generation_, generations_, popsize_;
+     float c_;
+     std::vector<std::vector<Node>> paths_, truepaths_;
+     bool found_, shorten_chromosome_;
+   };
+   
+   #endif GENETIC_ALGORITHM_H

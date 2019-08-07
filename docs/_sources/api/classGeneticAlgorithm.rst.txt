@@ -1,0 +1,16 @@
+.. _exhale_class_classGeneticAlgorithm:
+
+Class GeneticAlgorithm
+======================
+
+- Defined in :ref:`file_inc_genetic_algorithm.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: GeneticAlgorithm
+   :members:
+   :protected-members:
+   :undoc-members:
