@@ -3,6 +3,7 @@
 ### This repository contains path planning algorithms in C++. ###
 
 [![Build Status](https://travis-ci.com/vss2sn/path_planning.svg?branch=feature%2Ftravis_ci)](https://travis-ci.com/vss2sn/path_planning)
+[![Coverage Status](https://codecov.io/gh/vss2sn/path_planning/branch/feature%2Ftravis_ci/graphs/badge.svg)](https://codecov.io/gh/vss2sn/path_planning/branch/feature%2Ftravis_ci)
 
 <a name="algorithms"></a>
 #### Algorithms: ####
@@ -68,6 +69,10 @@
 #### Notes on CMake Options: ####
 1. To run each algorithm independently, set `BUILD_INDIVIDUAL` to `ON` (Executables created: `dijkstra`, `a_star`, etc). If you want to run all of them on the same grid, set `BUILD_INDIVIDUAL` to `OFF` (Executable created: `main`).
 2. To run tests, set `BUILD_INDIVIDUAL` to `OFF` and TEST to `ON`.
+3. Set `CHECK_COVERAGE` to check code coverage.
+4. Set `DYNAMIC_ALGOS` to build the dynamic runs of LPA* and D* Lite (No tests check the dynamic runs of these algorithms in the test section. Code coverage is > 90% when these are not included in code coverage)
+5. Set `CUSTOM_DEBUG_HELPER_FUNCION` to build functions that are used primarily for debugging (excluded from code coverage)
+6. Set `TRAVIS` to allow Travis CI to run correctly
 
 <a name="notes_on_travis_ci_integration"></a>
 #### Notes on Travis CI integration: ####
@@ -77,13 +82,11 @@
 #### TODOs: ####
 1. Alterations for moving node variables into private namespace.
 2. Prune merged branches.
-3. Cleanup and refactor test section.
-4. Use hash to check if node in list for D* Lite (can be applied to others if required)
-5. Add test of probabilistic completeness for RRT.
-6. Formalize pseudocode and add references for ACO.
+3. Use hash to check if node in list for D* Lite (can be applied to others if required)
+4. Add test of probabilistic completeness for RRT.
+5. Formalize pseudocode and add references for ACO.
 
 <a name="consider"></a>
 #### Consider: ####
 1. Adding namespace to each header file.
 2. Inheriting node class into each file that requires a modified node (such as A* with heuristic cost, etc).
-3. Moving TODOs to another file
