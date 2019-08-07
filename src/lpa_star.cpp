@@ -239,7 +239,6 @@ std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, Node
     iter_++;
   }
   grid_in = grid;
-  grid_in = grid;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
       if(grid_in[i][j]==2) grid_in[i][j]=0;
