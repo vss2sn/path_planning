@@ -1,0 +1,16 @@
+.. _exhale_class_classAnt:
+
+Class Ant
+=========
+
+- Defined in :ref:`file_inc_ant_colony.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: Ant
+   :members:
+   :protected-members:
+   :undoc-members:

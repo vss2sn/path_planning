@@ -52,9 +52,13 @@ Included By
 
 - :ref:`file_inc_a_star.hpp`
 
+- :ref:`file_inc_ant_colony.hpp`
+
 - :ref:`file_inc_d_star_lite.hpp`
 
 - :ref:`file_inc_dijkstra.hpp`
+
+- :ref:`file_inc_genetic_algorithm.hpp`
 
 - :ref:`file_inc_lpa_star.hpp`
 
@@ -87,6 +91,8 @@ Functions
 - :ref:`exhale_function_utils_8hpp_1ae78f95d1e36b0989a307b951da25532e`
 
 - :ref:`exhale_function_utils_8hpp_1a557054c14922455add5f4b8ab1616ab0`
+
+- :ref:`exhale_function_utils_8hpp_1a361bc10e4ced98ae2a1eef33a768c43c`
 
 
 Defines

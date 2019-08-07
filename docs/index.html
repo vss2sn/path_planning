@@ -91,6 +91,8 @@
 <li class="toctree-l2"><a class="reference internal" href="algorithms.html#d-lite">D* Lite:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="algorithms.html#rrt">RRT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="algorithms.html#rrtstar">RRTStar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms.html#ant-colony-optimization">Ant Colony Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms.html#genetic-algorithm">Genetic Algorithm</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/library_root.html">Library API</a><ul>
@@ -99,9 +101,13 @@
 <li class="toctree-l2"><a class="reference internal" href="api/library_root.html#full-api">Full API</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/library_root.html#classes-and-structs">Classes and Structs</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="api/structcompare__cost.html">Struct compare_cost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/structpair__hash.html">Struct pair_hash</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/classAnt.html">Class Ant</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/classAntColony.html">Class AntColony</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classAStar.html">Class AStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classDijkstra.html">Class Dijkstra</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classDStarLite.html">Class DStarLite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/classGeneticAlgorithm.html">Class GeneticAlgorithm</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classLPAStar.html">Class LPAStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classNode.html">Class Node</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/classRRT.html">Class RRT</a></li>
@@ -115,6 +121,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a012ce27d2ee6c480975c0cfa6944104a.html">Function PrintCost</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1ae78f95d1e36b0989a307b951da25532e.html">Function PrintGrid</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a557054c14922455add5f4b8ab1616ab0.html">Function PrintPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/function_utils_8hpp_1a361bc10e4ced98ae2a1eef33a768c43c.html">Function PrintPathInOrder</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/library_root.html#defines">Defines</a><ul>
@@ -136,10 +143,13 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/library_root.html#files">Files</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_a_star.hpp.html">File a_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_inc_ant_colony.hpp.html">File ant_colony.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_d_star_lite.hpp.html">File d_star_lite.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_dijkstra.hpp.html">File dijkstra.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_inc_genetic_algorithm.hpp.html">File genetic_algorithm.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_lpa_star.hpp.html">File lpa_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_main.hpp.html">File main.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/file_README.md.html">File README.md</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_rrt.hpp.html">File rrt.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_rrt_star.hpp.html">File rrt_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/file_inc_utils.hpp.html">File utils.hpp</a></li>
@@ -228,6 +238,8 @@
 <li>DStarLite (D* Lite) algorithm for grid based search.</li>
 <li>RRT algorithm for grid based search.</li>
 <li>RRTStar (RRT*) algorithm for grid based search.</li>
+<li>Ant Colony Optimization algorithm (ACO) for grid based search.</li>
+<li>Genetic algorithm (GA) for grid based search.</li>
 </ol>
 <p><span class="raw-html-m2r"><a name="instructions"></a></span></p>
 </div>
@@ -277,6 +289,8 @@ cmake .. &amp;&amp; make -j4
 <li>Tests set to run after main file built.</li>
 <li>Files named grid#.cpp are specific grids to check for correctness under certain conditions. gridr.cpp generates a random grid and checks whether Dijkstra, A* and D* Lite (without new obstacles) generate the same cost from start to end.</li>
 <li>Given the random nature of RRT, no set has been set up for it yet.</li>
+<li>Due to the nature of Ant Colony Optimization and accounting for the hyper parameters, the tests are run with a 20% margin above the optimal solution. Similarly for Genetic Algorithm</li>
+<li>The test function for genetic algorithm has been modified to ensure correct functioning.</li>
 </ol>
 <p><span class="raw-html-m2r"><a name="notes_on_implementations"></a></span></p>
 </div>
@@ -289,6 +303,7 @@ cmake .. &amp;&amp; make -j4
 <li>D* Lite can be run live with random obstacle creation using the RunDStarLite function. For the live run of D* Lite, obstacles are detected on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid. D* Lite is implemented based on Sven Koenig’s &amp; Maxim Likhachev’s paper.</li>
 <li>To specify your own grid, set n to number of rows, created the 2D vector, setting 1 for obstacles and 0 elsewhere, and comment out the MakeGrid function.</li>
 <li>The LPA* algorithm is implemented to run <code class="docutils literal notranslate"><span class="pre">max_iter_</span></code> number of times with default value <code class="docutils literal notranslate"><span class="pre">n</span></code>. Obstacles are created on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid, at a random point along the path. It can be run with <code class="docutils literal notranslate"><span class="pre">max_iter_</span></code> set to <code class="docutils literal notranslate"><span class="pre">0</span></code> if continuous replanning is to be disabled.</li>
+<li>The genetic algorithm has an option <code class="docutils literal notranslate"><span class="pre">shorten_chromosome</span></code>, which allows the shortening of the chromosome (path length) based on the length of the path found that reaches the goal. This reduces computation time and pushes the solution towards the shortest path.</li>
 </ol>
 <p><span class="raw-html-m2r"><a name="notes_on_cmake_options"></a></span></p>
 </div>
@@ -310,13 +325,13 @@ cmake .. &amp;&amp; make -j4
 <div class="section" id="id7">
 <h3>TODOs:<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
-<li>Next algorithm to be implemented: a Voronoi cell based planner.</li>
 <li>Alterations for moving node variables into private namespace.</li>
 <li>Prune merged branches.</li>
 <li>Cleanup and refactor test section.</li>
 <li>Use hash to check if node in list for D* Lite (can be applied to others if required)</li>
-<li>Add overview, pseudo codes and references to documentation.</li>
 <li>Add test of probabilistic completeness for RRT.</li>
+<li>Formalize pseudocode and add references for ACO.</li>
+<li>Add ACO to test section</li>
 </ol>
 <p><span class="raw-html-m2r"><a name="consider"></a></span></p>
 </div>
@@ -337,6 +352,8 @@ cmake .. &amp;&amp; make -j4
 <li class="toctree-l2"><a class="reference internal" href="algorithms.html#d-lite">D* Lite:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="algorithms.html#rrt">RRT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="algorithms.html#rrtstar">RRTStar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms.html#ant-colony-optimization">Ant Colony Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms.html#genetic-algorithm">Genetic Algorithm</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/library_root.html">Library API</a><ul>

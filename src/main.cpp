@@ -11,6 +11,7 @@
 #include "rrt_star.hpp"
 #include "d_star_lite.hpp"
 #include "ant_colony.hpp"
+#include "genetic_algorithm.hpp"
 
 int main(){
   int n = 21;
@@ -121,6 +122,14 @@ int main(){
   AntColony new_ant_colony(n_ants, alpha, beta, evap_rate, iterations, Q);
   path_vector = new_ant_colony.ant_colony(grid, start, goal);
   PrintPath(path_vector, start, goal, grid);
+
+  std::cout << "-----------------------------------------------------------------------" << std::endl;
+  std::cout << "--------------------- ALGORITH: Genetic Algorithm ---------------------" << std::endl;
+  std::cout << "-----------------------------------------------------------------------" << std::endl;
+  grid = main_grid;
+  GeneticAlgorithm new_genetic_algorithm;
+  path_vector = new_genetic_algorithm.genetic_algorithm(grid, start, goal, 2*start.h_cost_);
+  PrintPathInOrder(path_vector, start, goal, grid);
 
   return 0;
 }

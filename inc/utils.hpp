@@ -125,7 +125,7 @@ std::vector<Node> GetMotion();
 void PrintGrid(std::vector<std::vector<int>> &grid);
 
 /**
-* @brief Prints the grid passed
+* @brief Prints the grid passed, highlighting the path taken
 * @param path_vector the path vector
 * @param start_ start node
 * @param goal_ goal node
@@ -148,7 +148,14 @@ void PrintCost(std::vector<std::vector<int>> &grid, std::vector<Node> point_list
 * @return void
 */
 void MakeGrid(std::vector<std::vector<int>> &grid);
-
+/**
+* @brief Prints the grid passed, highlighting the path taken, when the vector is the path taken in order
+* @param path_vector the path vector
+* @param start start node
+* @param goal goal node
+* @param grid Modify this grid
+* @return void
+*/
 void PrintPathInOrder(std::vector<Node>& path_vector, Node start, Node goal,std::vector<std::vector<int>>& grid);
 
 #endif UTILS_H
