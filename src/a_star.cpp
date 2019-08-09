@@ -6,6 +6,7 @@
 
 #include "a_star.hpp"
 
+#ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void AStar::InsertionSort(std::vector<Node>& v){
    int nV = v.size();
    int i, j;
@@ -20,6 +21,7 @@ void AStar::InsertionSort(std::vector<Node>& v){
        v[j+1] = key;
    }
 }
+#endif
 
 std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, Node start_in, Node goal_in){
   start_ = start_in;

@@ -39,7 +39,7 @@ double run_test(std::vector<std::vector<int> > &grid, std::string algo){
   }
   else if(algo == "lpa_star"){
     LPAStar new_lpa_star;
-    path_vector = new_lpa_star.lpa_star(grid, start, goal, 0);
+    path_vector = new_lpa_star.lpa_star(grid, start, goal, 1, false);
   }
   else if(algo=="rrt"){
     RRT new_rrt;
@@ -58,7 +58,7 @@ double run_test(std::vector<std::vector<int> > &grid, std::string algo){
     path_vector = new_ant_colony.ant_colony(grid, start, goal);
   }
   else if(algo == "genetic_algorithm"){
-    GeneticAlgorithm new_genetic_algorithm;
+    GeneticAlgorithm new_genetic_algorithm(10000, 30, 1.05, true);
     path_vector = new_genetic_algorithm.genetic_algorithm(grid, start, goal, 2*start.h_cost_);
     int i=0;
     if(path_vector[0].id_==-1) return -1;

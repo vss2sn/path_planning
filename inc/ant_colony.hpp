@@ -39,12 +39,11 @@ public:
 	* @return no return value
 	*/
   Ant(Node start = Node(0,0), int id = 0);
-private:
-	bool found_goal_ = false;
-	int steps_ = 0, id_;
 	std::vector<Node> path_;
-	Node previous_node_;
+	bool found_goal_ = false;
 	Node current_node_;
+	Node previous_node_;
+	int steps_ = 0, id_;
 };
 
 /**

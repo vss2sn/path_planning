@@ -76,7 +76,7 @@ int main(){
   grid = main_grid;
   LPAStar new_lpa_star;
   path_vector.clear();
-  path_vector = new_lpa_star.lpa_star(grid, start, goal, n);
+  path_vector = new_lpa_star.lpa_star(grid, start, goal, n, true);
   PrintPath(path_vector, start, goal, grid);
 
   std::cout << "---------------------------------------------------------" << std::endl;
@@ -103,6 +103,7 @@ int main(){
   path_vector = new_d_star_lite.d_star_lite(grid, start, goal);
   PrintPath(path_vector, start, goal, grid);
 
+#ifdef DYNAMIC_ALGOS
   std::cout << "----------------------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: D* Lite Live Run ---------------------" << std::endl;
   std::cout << "----------------------------------------------------------------------" << std::endl;
@@ -114,6 +115,7 @@ int main(){
   // returned path vector changes every replan. However, the path traversed is
   // set as 3 in the grid and displayed. 4 displays current location of bot in
   // the live run
+#endif
 
   std::cout << "-----------------------------------------------------------------------------" << std::endl;
   std::cout << "--------------------- ALGORITH: Ant Colony Optimization ---------------------" << std::endl;
