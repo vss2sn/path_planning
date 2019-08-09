@@ -7,6 +7,7 @@ Node JumpPointSearch::jump(Node& new_point, Node& motion, int id){
   next_point.h_cost_ = abs(next_point.x_ - goal_.x_) + abs(next_point.y_ - goal_.y_);
   if(next_point.x_ < 0 || next_point.y_ < 0 || next_point.x_ >= n || next_point.y_ >= n || grid[next_point.x_][next_point.y_]!=0){
     return new_point;
+    // return Node(-1,-1,-1,-1,-1,-1);
   }
   if(pruned.find(next_point.id_)!=pruned.end()) pruned.insert(next_point.id_);
   if(next_point == goal_) return next_point;
@@ -125,7 +126,7 @@ int main(){
   for (int i = 0; i < n; i++){
     grid[i] = tmp;
   }
-  // MakeGrid(grid);
+  MakeGrid(grid);
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
