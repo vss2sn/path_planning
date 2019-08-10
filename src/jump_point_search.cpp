@@ -14,10 +14,14 @@ Node JumpPointSearch::jump(Node& new_point, Node& motion, int id){
   bool fn = false;
   fn = has_forced_neighbours(new_point, next_point, motion);
   if(fn){
+    // std::cout << "Forced neighbours found"<<std::endl;
     return next_point;
   }
   else{
-    return jump(next_point, motion, id);
+    Node jump_node = jump(next_point, motion, id);
+    // Prevent over shoot 
+    if(jump_node.cost_ !=-1 &&  jump_node.cost_+ jump_node.h_cost_  <= next_point.cost_ + next_point.h_cost_) return jump_node;
+    else return next_point;
   }
 }
 
