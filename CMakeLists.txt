@@ -33,7 +33,7 @@ list( REMOVE_ITEM LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_utils
 
 # If building each file with it's own output, set to ON
 # If buiding single file (main.cpp) to test any/all protocols, set to OFF
-option( BUILD_INDIVIDUAL "BUILD_INDIVIDUAL" ON)
+option( BUILD_INDIVIDUAL "BUILD_INDIVIDUAL" OFF)
 
 option( TEST "TEST" ON)
 option( CHECK_COVERAGE "CHECK_COVERAGE" OFF)

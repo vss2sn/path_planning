@@ -19,7 +19,7 @@ Node JumpPointSearch::jump(Node& new_point, Node& motion, int id){
   }
   else{
     Node jump_node = jump(next_point, motion, id);
-    // Prevent over shoot 
+    // Prevent over shoot
     if(jump_node.cost_ !=-1 &&  jump_node.cost_+ jump_node.h_cost_  <= next_point.cost_ + next_point.h_cost_) return jump_node;
     else return next_point;
   }
@@ -122,6 +122,7 @@ std::vector<Node> JumpPointSearch::jump_point_search(std::vector<std::vector<int
   return closed_list_;
 }
 
+#ifdef BUILD_INDIVIDUAL
 int main(){
   int n = 11;
 
@@ -153,3 +154,4 @@ int main(){
   PrintPath(path_vector, start, goal, grid);
   return 0;
 }
+#endif BUILD_INDIVIDUAL
