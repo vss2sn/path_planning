@@ -9,12 +9,13 @@
 #### Algorithms: ####
 1. Dijkstra's algorithm for grid based search.
 2. AStar (A*) algorithm for grid based search.
-3. Lifelong Planning AStar (LPA*) algorithm for grid based search.
-4. DStarLite (D* Lite) algorithm for grid based search.
-5. RRT algorithm for grid based search.
-6. RRTStar (RRT*) algorithm for grid based search.
-7. Ant Colony Optimization algorithm (ACO) for grid based search.
-8. Genetic algorithm (GA) for grid based search.
+3. Jump Point Search for grid based search (Modified for 4 way motion; no diagonal motion).
+4. Lifelong Planning AStar (LPA*) algorithm for grid based search.
+5. DStarLite (D* Lite) algorithm for grid based search.
+6. RRT algorithm for grid based search.
+7. RRTStar (RRT*) algorithm for grid based search.
+8. Ant Colony Optimization algorithm (ACO) for grid based search.
+9. Genetic algorithm (GA) for grid based search.
 
 <a name="instructions"></a>
 #### To build and run: ####
@@ -49,7 +50,6 @@
 3. Set `CHECK_COVERAGE` to check code coverage.
 4. Set `DYNAMIC_ALGOS` to build the dynamic runs of LPA* and D* Lite (No tests check the dynamic runs of these algorithms in the test section. Code coverage is > 90% when these are not included in code coverage)
 5. Set `CUSTOM_DEBUG_HELPER_FUNCION` to build functions that are used primarily for debugging (excluded from code coverage)
-6. The option `TRAVIS` changes the way GTEST is accessed to allow Travis CI to run correctly
 
 <a name="notes_on_tests"></a>
 #### Notes on test: ####
