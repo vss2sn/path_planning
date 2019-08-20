@@ -38,23 +38,6 @@ option( TEST "TEST" ON)
 option( CHECK_COVERAGE "CHECK_COVERAGE" ON)
 option( DYNAMIC_ALGOS "DYNAMIC_ALGOS" ON)
 option( CUSTOM_DEBUG_HELPER_FUNCION "CUSTOM_DEBUG_HELPER_FUNCION" OFF)
-<<<<<<< HEAD
-option( TRAVIS "CONFIG_FOR_TRAVIS" ON)
-
-# Ensures dynamic runs for individual files allowed
-if(BUILD_INDIVIDUAL)
-  option( DYNAMIC_ALGOS ON)
-  option( CUSTOM_DEBUG_HELPER_FUNCION ON)
-  option( CHECK_COVERAGE OFF)
-endif(BUILD_INDIVIDUAL)
-
-# No way to check for dynamic algos as they have random obstacle generation
-# Hence removing from code coverage tests
-if(CHECK_COVERAGE)
-  option( DYNAMIC_ALGOS OFF)
-  option( CUSTOM_DEBUG_HELPER_FUNCION OFF)
-endif(CHECK_COVERAGE)
-=======
 
 # NOTE:
 #
@@ -67,7 +50,6 @@ endif(CHECK_COVERAGE)
 #   # Consider removing from code coverage tests.
 #   # DYNAMIC_ALGOS=OFF
 # CUSTOM_DEBUG_HELPER_FUNCION=OFF
->>>>>>> master
 
 if(CUSTOM_DEBUG_HELPER_FUNCION)
   add_definitions(-DCUSTOM_DEBUG_HELPER_FUNCION)
