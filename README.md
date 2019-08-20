@@ -79,6 +79,7 @@
 3. Use hash to check if node in list for D* Lite (can be applied to others if required)
 4. Add test of probabilistic completeness for RRT.
 5. Formalize pseudocode and add references for ACO.
+6. Add documentation for jump point search.
 
 <a name="consider"></a>
 #### Consider: ####
