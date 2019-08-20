@@ -14,6 +14,7 @@
 #include <cmath>
 #include <climits>
 #include <unordered_map>
+#include <unordered_set>
 #include <random>
 
 #ifndef BUILD_INDIVIDUAL // Only to make sure main is is included in documentation

@@ -14,6 +14,8 @@ TEST(PathPlanningTest, Test1) {
   grid = main_grid;
   ASSERT_EQ(4, run_test(grid, "a_star"));
   grid = main_grid;
+  ASSERT_EQ(4, run_test(grid, "jump_point_search"));
+  grid = main_grid;
   ASSERT_EQ(4, run_test(grid, "lpa_star"));
   // NOTE: RRT currently does not store cost. Now becomes a TODO.
   // grid = main_grid;

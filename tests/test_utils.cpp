@@ -1,5 +1,6 @@
 #include "dijkstra.hpp"
 #include "a_star.hpp"
+#include "jump_point_search.hpp"
 #include "lpa_star.hpp"
 #include "rrt.hpp"
 #include "rrt_star.hpp"
@@ -36,6 +37,10 @@ double run_test(std::vector<std::vector<int> > &grid, std::string algo){
   else if(algo == "a_star"){
     AStar new_a_star;
     path_vector = new_a_star.a_star(grid, start, goal);
+  }
+  else if(algo == "jump_point_search"){
+    JumpPointSearch new_jump_point_search;
+    path_vector = new_jump_point_search.jump_point_search(grid, start, goal);
   }
   else if(algo == "lpa_star"){
     LPAStar new_lpa_star;
