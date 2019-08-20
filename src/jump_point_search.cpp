@@ -50,6 +50,7 @@ bool JumpPointSearch::has_forced_neighbours(Node& new_point, Node& next_point, N
 
 }
 
+#ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void JumpPointSearch::InsertionSort(std::vector<Node>& v){
    int nV = v.size();
    int i, j;
@@ -64,6 +65,7 @@ void JumpPointSearch::InsertionSort(std::vector<Node>& v){
        v[j+1] = key;
    }
 }
+#endif
 
 std::vector<Node> JumpPointSearch::jump_point_search(std::vector<std::vector<int>> &grid, Node start_in, Node goal_in){
   this->grid = grid;

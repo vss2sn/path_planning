@@ -34,32 +34,29 @@ list( REMOVE_ITEM LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_utils
 # If building each file with it's own output, set to ON
 # If buiding single file (main.cpp) to test any/all protocols, set to OFF
 option( BUILD_INDIVIDUAL "BUILD_INDIVIDUAL" OFF)
-
 option( TEST "TEST" ON)
 option( CHECK_COVERAGE "CHECK_COVERAGE" ON)
 option( DYNAMIC_ALGOS "DYNAMIC_ALGOS" ON)
 option( CUSTOM_DEBUG_HELPER_FUNCION "CUSTOM_DEBUG_HELPER_FUNCION" OFF)
 
-# Ensures dynamic runs for individual files allowed
-if(BUILD_INDIVIDUAL)
-  option( DYNAMIC_ALGOS ON)
-  option( CUSTOM_DEBUG_HELPER_FUNCION ON)
-  option( CHECK_COVERAGE OFF)
-endif(BUILD_INDIVIDUAL)
-
-# No way to check for dynamic algos as they have random obstacle generation
-# Hence removing from code coverage tests
-if(CHECK_COVERAGE)
-  option( DYNAMIC_ALGOS OFF)
-  option( CUSTOM_DEBUG_HELPER_FUNCION OFF)
-endif(CHECK_COVERAGE)
+# NOTE:
+#
+# if(BUILD_INDIVIDUAL)
+# set DYNAMIC_ALGOS=ON
+# set CUSTOM_DEBUG_HELPER_FUNCION=ON
+#
+# if(CHECK_COVERAGE)
+#   # No way to check for dynamic algos as they have random obstacle generation
+#   # Consider removing from code coverage tests.
+#   # DYNAMIC_ALGOS=OFF
+# CUSTOM_DEBUG_HELPER_FUNCION=OFF
 
 if(CUSTOM_DEBUG_HELPER_FUNCION)
   add_definitions(-DCUSTOM_DEBUG_HELPER_FUNCION)
 endif(CUSTOM_DEBUG_HELPER_FUNCION)
 
 if(DYNAMIC_ALGOS)
-  add_definitions(-D DYNAMIC_ALGOS)
+  add_definitions(-DDYNAMIC_ALGOS)
 endif(DYNAMIC_ALGOS)
 
 if(BUILD_INDIVIDUAL)

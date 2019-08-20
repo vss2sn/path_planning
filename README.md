@@ -2,8 +2,8 @@
 
 ### This repository contains path planning algorithms in C++. ###
 
-[![Build Status](https://travis-ci.com/vss2sn/path_planning.svg?branch=feature%2Ftravis_ci)](https://travis-ci.com/vss2sn/path_planning)
-[![Coverage Status](https://codecov.io/gh/vss2sn/path_planning/branch/feature%2Ftravis_ci/graphs/badge.svg)](https://codecov.io/gh/vss2sn/path_planning/branch/feature%2Ftravis_ci)
+[![Build Status](https://travis-ci.com/vss2sn/path_planning.svg?branch=master)](https://travis-ci.com/vss2sn/path_planning)
+[![Coverage Status](https://codecov.io/gh/vss2sn/path_planning/branch/master/graphs/badge.svg)](https://codecov.io/gh/vss2sn/path_planning/branch/master)
 
 <a name="algorithms"></a>
 #### Algorithms: ####
