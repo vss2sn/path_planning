@@ -63,7 +63,8 @@ bool Node::operator!=(Node p){
 
 bool compare_cost::operator()(Node& p1, Node& p2){
   // Can modify this to allow tie breaks based on heuristic cost if required
-  if (p1.cost_ + p1.h_cost_ >= p2.cost_ + p2.h_cost_) return true;
+  if (p1.cost_ + p1.h_cost_ > p2.cost_ + p2.h_cost_) return true;
+  else if (p1.cost_ + p1.h_cost_ == p2.cost_ + p2.h_cost_ && p1.h_cost_ >= p2.h_cost_) return true;
   return false;
 }
 

@@ -15,7 +15,7 @@ if(NOT WIN32)
 endif()
 
 set( CXX_FLAGS "-w" )
-set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -std=c++11 -pthread" )
+set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -std=c++11 -pthread -g" )
 
 include_directories( ${CMAKE_SOURCE_DIR}/inc )
 
@@ -34,11 +34,11 @@ list( REMOVE_ITEM LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_utils
 # If building each file with it's own output, set to ON
 # If buiding single file (main.cpp) to test any/all protocols, set to OFF
 option( BUILD_INDIVIDUAL "BUILD_INDIVIDUAL" OFF)
+
 option( TEST "TEST" ON)
 option( CHECK_COVERAGE "CHECK_COVERAGE" OFF)
 option( DYNAMIC_ALGOS "DYNAMIC_ALGOS" ON)
 option( CUSTOM_DEBUG_HELPER_FUNCION "CUSTOM_DEBUG_HELPER_FUNCION" ON)
-option( TRAVIS "CONFIG_FOR_TRAVIS" OFF)
 
 # Ensures dynamic runs for individual files allowed
 if(BUILD_INDIVIDUAL)
@@ -91,18 +91,18 @@ else (BUILD_INDIVIDUAL)
     endif(CHECK_COVERAGE)
 
     # For GTEST
-    if(TRAVIS)
+    find_package(GTest)
+    if(GTest_FOUND)
+      # Installed
+      enable_testing()
+      add_definitions(-DTEST)
+      include_directories(${GTEST_INCLUDE_DIRS})
+    else(GTest_FOUND)
       # Using GTEST as submodule
       enable_testing()
       add_definitions(-DTEST)
       include(gtest.cmake)
-    else(TRAVIS)
-      # Installed
-      find_package(GTest REQUIRED)
-      enable_testing()
-      add_definitions(-DTEST)
-      include_directories(${GTEST_INCLUDE_DIRS})
-    endif(TRAVIS)
+    endif(GTest_FOUND)
 
     foreach(test_source_file ${LIB_TESTS_SOURCES})
       string( REPLACE ".cpp" "" test_output_file ${test_source_file} )

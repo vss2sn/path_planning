@@ -6,6 +6,7 @@
 
 #include "dijkstra.hpp"
 #include "a_star.hpp"
+#include "jump_point_search.hpp"
 #include "lpa_star.hpp"
 #include "rrt.hpp"
 #include "rrt_star.hpp"
@@ -68,6 +69,14 @@ int main(){
   grid = main_grid;
   AStar new_a_star;
   path_vector = new_a_star.a_star(grid, start, goal);
+  PrintPath(path_vector, start, goal, grid);
+
+  std::cout << "-----------------------------------------------------------------------" << std::endl;
+  std::cout << "--------------------- ALGORITH: Jump Point Search ---------------------" << std::endl;
+  std::cout << "-----------------------------------------------------------------------" << std::endl;
+  grid = main_grid;
+  JumpPointSearch new_jump_point_search;
+  path_vector = new_jump_point_search.jump_point_search(grid, start, goal);
   PrintPath(path_vector, start, goal, grid);
 
   std::cout << "--------------------------------------------------------------------------" << std::endl;
