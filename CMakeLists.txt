@@ -25,7 +25,6 @@ file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )
 
 # Building utils.cpp as  a library as common to multiple files
 add_library( utils SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp ${LIB_HEADERS} )
-add_library( test_utils SHARED ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_utils.cpp ${LIB_HEADERS} )
 
 list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp )
 list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
@@ -80,7 +79,10 @@ else (BUILD_INDIVIDUAL)
 
   if (TEST)
 
+    add_library( test_utils SHARED ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_utils.cpp ${LIB_HEADERS} )
+
     # For coverage check
+
     if(CHECK_COVERAGE)
       LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
       include(CodeCoverage)
