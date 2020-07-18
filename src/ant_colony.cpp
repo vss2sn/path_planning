@@ -12,7 +12,7 @@ Ant::Ant(Node start, int id){
   this->previous_node_ = Node(-1,-1);
 }
 
-AntColony::AntColony(int n_ants, double alpha, double beta, double evap_rate, int iterations, double Q){
+AntColony::AntColony(const int n_ants, const double alpha, const double beta, const double evap_rate, const int iterations, const double Q){
   this->n_ants_ = n_ants;
   this->alpha_ = alpha;
   this->beta_ = beta;
@@ -23,7 +23,7 @@ AntColony::AntColony(int n_ants, double alpha, double beta, double evap_rate, in
 }
 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
-void AntColony::PrintAntPath(Ant& ant){
+void AntColony::PrintAntPath(Ant& ant) const {
 	for(int k=1;k<ant.path_.size();k++) ant.path_[k].pid_ = ant.path_[k-1].id_;
 	ant.path_.back().id_ = ant.path_.back().x_*grid_size_ + ant.path_.back().y_;
 	auto grid_2 = grid_;
@@ -32,7 +32,7 @@ void AntColony::PrintAntPath(Ant& ant){
 }
 #endif
 
-void AntColony::RemoveLoop(Ant& ant){
+void AntColony::RemoveLoop(Ant& ant) const {
 	for(auto it=ant.path_.begin(); it!=ant.path_.end();++it){
 		if(*it==ant.current_node_){
 			ant.steps_ = ant.path_.end() - it;
@@ -42,7 +42,7 @@ void AntColony::RemoveLoop(Ant& ant){
 	}
 }
 
-std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, Node start, Node goal){
+std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, const Node& start, const Node& goal){
   this->grid_ = grid;
 	this->start_ = start; // Make sure start has id
 	this->goal_ = goal;

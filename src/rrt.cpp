@@ -6,10 +6,10 @@
 
 #include "rrt.hpp"
 
-Node RRT::FindNearestPoint(Node& new_node){
+Node RRT::FindNearestPoint(Node& new_node) const {
   Node nearest_node(-1,-1,-1,-1,-1,-1);
-  std::vector<Node>::iterator it_v;
-  std::vector<Node>::iterator it_v_store;
+  std::vector<Node>::const_iterator it_v;
+  std::vector<Node>::const_iterator it_v_store;
   //use just distance not total cost
   double dist = (double)(n*n);
   double new_dist = dist;
@@ -31,7 +31,7 @@ Node RRT::FindNearestPoint(Node& new_node){
   }
   return nearest_node;
 }
-bool RRT::CheckObstacle(Node& n_1, Node& n_2){
+bool RRT::CheckObstacle(const Node& n_1, const Node& n_2) const {
   if (n_2.y_ - n_1.y_ == 0){
     double c = n_2.y_;
     for(auto it_v = obstacle_list_.begin(); it_v!=obstacle_list_.end(); ++it_v){
@@ -75,7 +75,7 @@ bool RRT::CheckObstacle(Node& n_1, Node& n_2){
   return false;
 }
 
-Node RRT::GenerateRandomNode(int n){
+Node RRT::GenerateRandomNode(const int n) const {
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -85,7 +85,7 @@ Node RRT::GenerateRandomNode(int n){
   return new_node;
 }
 
-std::vector<Node> RRT::rrt(std::vector<std::vector<int> > &grid, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
+std::vector<Node> RRT::rrt(std::vector<std::vector<int>>& grid, const Node& start_in, const Node& goal_in, const int max_iter_x_factor, const double threshold_in){
   start_ = start_in;
   goal_ = goal_in;
   n = grid.size();
@@ -113,7 +113,7 @@ std::vector<Node> RRT::rrt(std::vector<std::vector<int> > &grid, Node start_in, 
   return point_list_;
 }
 
-bool RRT::CheckGoalVisible(Node new_node){
+bool RRT::CheckGoalVisible(const Node& new_node) {
   if(!CheckObstacle(new_node, goal_)){
     double new_dist = (double)sqrt((double)(goal_.x_-new_node.x_)*(double)(goal_.x_-new_node.x_) + (double)(goal_.y_-new_node.y_)*(double)(goal_.y_-new_node.y_));
     if(new_dist <= threshold_){
@@ -127,7 +127,7 @@ bool RRT::CheckGoalVisible(Node new_node){
 }
 
 
-void RRT::CreateObstacleList(std::vector<std::vector<int> > &grid){
+void RRT::CreateObstacleList(std::vector<std::vector<int>>& grid) {
   for(int i=0; i < n; i++){
     for(int j=0;j < n; j++){
       if(grid[i][j]==1){

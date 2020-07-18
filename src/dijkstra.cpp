@@ -6,7 +6,7 @@
 
 #include "dijkstra.hpp"
 
-std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, Node start_in, Node goal_in){
+std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, const Node& start_in, const Node& goal_in){
   start_ = start_in;
   goal_ = goal_in;
   n = grid.size();

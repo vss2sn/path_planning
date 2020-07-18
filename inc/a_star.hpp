@@ -22,14 +22,14 @@ public:
   * @param goal_in goal node
   * @return vector of path
   */
-  std::vector<Node> a_star(std::vector<std::vector<int>> &grid, Node start_in, Node goal_in);
+  std::vector<Node> a_star(std::vector<std::vector<int>> &grid, const Node& start_in, const Node& goal_in);
 
   /**
   * @brief Using insertion sort to sort the vector list that maintains the priority queue. Good for a mostly sorted queue. Sort called afterevery insertion to maintain queue. Not using standard queue as iterating over is not allowed.
   * @param v Vector to be sorted
   * @return void
   */
-  void InsertionSort(std::vector<Node>& v);
+  void InsertionSort(std::vector<Node>& v) const;
 private:
   std::priority_queue<Node, std::vector<Node>, compare_cost> open_list_;
   std::vector<Node> closed_list_;

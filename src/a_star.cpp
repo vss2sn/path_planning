@@ -7,7 +7,7 @@
 #include "a_star.hpp"
 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
-void AStar::InsertionSort(std::vector<Node>& v){
+void AStar::InsertionSort(std::vector<Node>& v) const {
    int nV = v.size();
    int i, j;
    Node key;
@@ -23,7 +23,7 @@ void AStar::InsertionSort(std::vector<Node>& v){
 }
 #endif
 
-std::vector<Node> AStar::a_star(std::vector<std::vector<int>> &grid, Node start_in, Node goal_in){
+std::vector<Node> AStar::a_star(std::vector<std::vector<int>>& grid, const Node& start_in, const Node& goal_in){
   start_ = start_in;
   goal_ = goal_in;
   n = grid.size();

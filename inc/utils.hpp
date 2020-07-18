@@ -53,48 +53,48 @@ public:
   * @param id Node's id
   * @param pid Node's parent's id
   */
-  Node(int x = 0, int y = 0, double cost = 0, double h_cost = 0, int id = 0, int pid = 0);
+  Node(const int x = 0, const int y = 0, const double cost = 0, const double h_cost = 0, const int id = 0, const int pid = 0);
 
   /**
   * @brief Prints the values of the variables in the node
   * @return void
   */
-  void PrintStatus();
+  void PrintStatus() const;
 
   /**
   * @brief Overloading operator + for Node class
   * @param p node
   * @return Node with current node's and input node p's values added
   */
-  Node operator+(Node p);
+  Node operator+(const Node& p) const;
 
   /**
   * @brief Overloading operator - for Node class
   * @param p node
   * @return Node with current node's and input node p's values subtracted
   */
-  Node operator-(Node p);
+  Node operator-(const Node& p) const;
 
   /**
   * @brief Overloading operator = for Node class
   * @param p node
   * @return void
   */
-  void operator=(Node p);
+  void operator=(const Node& p);
 
   /**
   * @brief Overloading operator == for Node class
   * @param p node
   * @return bool whether current node equals input node
   */
-  bool operator==(Node p);
+  bool operator==(const Node& p) const;
 
   /**
   * @brief Overloading operator != for Node class
   * @param p node
   * @return bool whether current node is not equal to input node
   */
-  bool operator!=(Node p);
+  bool operator!=(const Node& p) const;
 };
 
 /**
@@ -108,7 +108,7 @@ struct compare_cost{
   * @param p2 Node 2
   * @return Returns whether cost to get to node 1 is greater than the cost to get to node 2
   */
-  bool operator()(Node& p1, Node& p2);
+  bool operator()(const Node& p1, const Node& p2) const;
 };
 
 /**
@@ -122,7 +122,7 @@ std::vector<Node> GetMotion();
 * @param grid Modify this grid
 * @return void
 */
-void PrintGrid(std::vector<std::vector<int>> &grid);
+void PrintGrid(const std::vector<std::vector<int>> &grid);
 
 /**
 * @brief Prints the grid passed, highlighting the path taken
@@ -132,7 +132,7 @@ void PrintGrid(std::vector<std::vector<int>> &grid);
 * @param grid Modify this grid
 * @return void
 */
-void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, std::vector<std::vector<int>> &grid);
+void PrintPath(std::vector<Node>& path_vector, const Node& start_, const Node& goal_, std::vector<std::vector<int>>& grid);
 
 /**
 * @brief Prints out the cost for reaching points on the grid in the grid shape
@@ -140,14 +140,14 @@ void PrintPath(std::vector<Node> path_vector, Node start_, Node goal_, std::vect
 * @param point_list Vector of all points that have been considered. Nodes in vector contain cost.
 * @return void
 */
-void PrintCost(std::vector<std::vector<int>> &grid, std::vector<Node> point_list);
+void PrintCost(const std::vector<std::vector<int>>& grid, const std::vector<Node>& point_list);
 
 /**
 * @brief Creates a random grid of a given size
 * @param grid Modify this grid
 * @return void
 */
-void MakeGrid(std::vector<std::vector<int>> &grid);
+void MakeGrid(std::vector<std::vector<int>>& grid);
 /**
 * @brief Prints the grid passed, highlighting the path taken, when the vector is the path taken in order
 * @param path_vector the path vector
@@ -156,6 +156,6 @@ void MakeGrid(std::vector<std::vector<int>> &grid);
 * @param grid Modify this grid
 * @return void
 */
-void PrintPathInOrder(std::vector<Node>& path_vector, Node start, Node goal,std::vector<std::vector<int>>& grid);
+void PrintPathInOrder(const std::vector<Node>& path_vector, const Node& start, const Node& goal, std::vector<std::vector<int>>& grid);
 
 #endif UTILS_H

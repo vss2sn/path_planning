@@ -6,10 +6,10 @@
 
 #include "rrt_star.hpp"
 
-Node RRTStar::FindNearestPoint(Node& new_node){
+Node RRTStar::FindNearestPoint(Node& new_node) {
   Node nearest_node(-1,-1,-1,-1,-1,-1);
-  std::vector<Node>::iterator it_v;
-  std::vector<Node>::iterator it_v_store;
+  std::vector<Node>::const_iterator it_v;
+  std::vector<Node>::const_iterator it_v_store;
   //NOTE: Use total cost not just distance
   double dist = (double)(n*n);
   double new_dist = (double)(n*n);
@@ -38,7 +38,7 @@ Node RRTStar::FindNearestPoint(Node& new_node){
   return nearest_node;
 }
 
-bool RRTStar::CheckObstacle(Node& n_1, Node& n_2){
+bool RRTStar::CheckObstacle(const Node& n_1, const Node& n_2) const {
   if (n_2.y_ - n_1.y_ == 0){
     double c = n_2.y_;
     for(auto it_v = obstacle_list_.begin(); it_v!=obstacle_list_.end(); ++it_v){
@@ -82,7 +82,7 @@ bool RRTStar::CheckObstacle(Node& n_1, Node& n_2){
   return false;
 }
 
-Node RRTStar::GenerateRandomNode(){
+Node RRTStar::GenerateRandomNode() const {
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -92,7 +92,7 @@ Node RRTStar::GenerateRandomNode(){
   return new_node;
 }
 
-void RRTStar::Rewire(Node new_node){
+void RRTStar::Rewire(const Node& new_node) {
   std::vector<Node>::iterator it_v;
   for(int i=0;i<near_nodes_.size(); i++){
     if (near_nodes_[i].cost_ > near_nodes_dist_[i] + new_node.cost_){
@@ -107,7 +107,7 @@ void RRTStar::Rewire(Node new_node){
   near_nodes_dist_.clear();
 }
 
-std::vector<Node> RRTStar::rrt_star(std::vector<std::vector<int> > &grid, Node start_in, Node goal_in, int max_iter_x_factor, double threshold_in){
+std::vector<Node> RRTStar::rrt_star(std::vector<std::vector<int>>& grid, const Node& start_in, const Node& goal_in, int max_iter_x_factor, double threshold_in){
   start_ = start_in;
   goal_ = goal_in;
   n = grid.size();
@@ -150,7 +150,7 @@ std::vector<Node> RRTStar::rrt_star(std::vector<std::vector<int> > &grid, Node s
   }
 }
 
-bool RRTStar::CheckGoalVisible(Node new_node){
+bool RRTStar::CheckGoalVisible(const Node& new_node) {
   if(!CheckObstacle(new_node, goal_)){
     double new_dist = (double)sqrt((double)((goal_.x_-new_node.x_)*(goal_.x_-new_node.x_))
                       + (double)((goal_.y_-new_node.y_)*(goal_.y_-new_node.y_)));
@@ -170,7 +170,7 @@ bool RRTStar::CheckGoalVisible(Node new_node){
   return false;
 }
 
-void RRTStar::CreateObstacleList(std::vector<std::vector<int> > &grid){
+void RRTStar::CreateObstacleList(std::vector<std::vector<int>>& grid){
   for(int i=0; i < n; i++){
     for(int j=0;j < n; j++){
       if(grid[i][j]==1){

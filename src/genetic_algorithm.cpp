@@ -1,6 +1,6 @@
 #include "genetic_algorithm.hpp"
 
-GeneticAlgorithm::GeneticAlgorithm(int generations, int popsize, float c, bool shorten_chromosome){
+GeneticAlgorithm::GeneticAlgorithm(const int generations, const int popsize, const float c, const bool shorten_chromosome){
   this->generations_ = generations;
   this->popsize_ = popsize;
   this->c_ = c;
@@ -10,7 +10,7 @@ GeneticAlgorithm::GeneticAlgorithm(int generations, int popsize, float c, bool s
   f_val = INT_MAX;
 }
 
-std::vector<Node> GeneticAlgorithm::genetic_algorithm(std::vector<std::vector<int>>& grid, Node start, Node goal, int path_length){
+std::vector<Node> GeneticAlgorithm::genetic_algorithm(std::vector<std::vector<int>>& grid, const Node& start, const Node& goal, int path_length){
   this->grid_ = grid;
   this->start_ = start;
   this->goal_ = goal;
@@ -78,7 +78,7 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(std::vector<std::vector<in
   return ReturnLastPath();
 }
 
-std::vector<Node> GeneticAlgorithm::ReturnLastPath(){ // given the way a genetic algorithm decreases fitness values, the last path is likely ot be the best. Can reorder ased on actual fitness values if required.
+std::vector<Node> GeneticAlgorithm::ReturnLastPath() const { // given the way a genetic algorithm decreases fitness values, the last path is likely ot be the best. Can reorder ased on actual fitness values if required.
   std::vector<Node> v;
   v.push_back(start_);
   Node current = start_;
@@ -104,7 +104,7 @@ std::vector<Node> GeneticAlgorithm::ReturnLastPath(){ // given the way a genetic
 }
 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
-void GeneticAlgorithm::PrintChromosome(std::vector<Node>& path){
+void GeneticAlgorithm::PrintChromosome(const std::vector<Node>& path) const{
   std::cout << "Chromosome: ";
   for (auto v : path){
     for(int i=0;i<motions_.size();i++)
@@ -113,7 +113,7 @@ void GeneticAlgorithm::PrintChromosome(std::vector<Node>& path){
   std::cout << "Fitness value: " << CalculateFitness(path) << std::endl;
 }
 
-void GeneticAlgorithm::PrintPathOfChromosome(std::vector<Node>& path){
+void GeneticAlgorithm::PrintPathOfChromosome(const std::vector<Node>& path) const {
   std::cout << "Path: ";
   Node tmp = start_;
   std::cout << "("<<tmp.x_ << "," << tmp.y_ << ")" << std::setw(3);
@@ -125,7 +125,7 @@ void GeneticAlgorithm::PrintPathOfChromosome(std::vector<Node>& path){
 }
 #endif
 
-void GeneticAlgorithm::InitialSetup(std::vector<Node>& path){
+void GeneticAlgorithm::InitialSetup(std::vector<Node>& path) const {
   int d_x = goal_.x_ - start_.x_;
   int d_y = goal_.y_ - start_.y_;
   Node dx, dy;
@@ -155,7 +155,7 @@ void GeneticAlgorithm::InitialSetup(std::vector<Node>& path){
   for(int i=path.size();i < path_length_;i++) path.emplace_back(motions_[rand()%4]);
 }
 
-int GeneticAlgorithm::CalculateFitness(std::vector<Node>& path){
+int GeneticAlgorithm::CalculateFitness(const std::vector<Node>& path) const {
   int cost = 0;
   Node i = start_;
   for(auto& tmp : path){
@@ -198,7 +198,7 @@ void GeneticAlgorithm::CrossoverMutation(){
 }
 
 // NOTE: Consider storing the point where an obstacle is encountereed and forcig that gene/motion to randomly mutate for a quicker convergence to a solution while maintaining randomness
-bool GeneticAlgorithm::CheckPath(std::vector<Node>& path){
+bool GeneticAlgorithm::CheckPath(const std::vector<Node>& path) const {
   Node current = start_;
   if(current == goal_) return true;
   for(auto it = path.begin(); it!=path.end();it++){

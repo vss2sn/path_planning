@@ -6,7 +6,7 @@
 
 #include "lpa_star.hpp"
 
-void LPAStar::VectorInsertionSort(std::vector<Node>& v){
+void LPAStar::VectorInsertionSort(std::vector<Node>& v) const {
    int n = v.size();
    int i, j;
    Node key;
@@ -21,11 +21,11 @@ void LPAStar::VectorInsertionSort(std::vector<Node>& v){
    }
 }
 
-double LPAStar::GetHeuristic(Node s1, Node s2){
+double LPAStar::GetHeuristic(const Node& s1, const Node& s2) const {
   return abs(s1.x_ - s2.x_) + abs(s1.y_ - s2.y_);
 }
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
-void LPAStar::PrintGRHS(){
+void LPAStar::PrintGRHS() const {
   std::cout << "G values:" << std::endl;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
@@ -43,13 +43,13 @@ void LPAStar::PrintGRHS(){
 }
 #endif
 
-std::pair<double,double> LPAStar::CalculateKey(const Node& s){
+std::pair<double,double> LPAStar::CalculateKey(const Node& s) const {
   return std::make_pair(std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second)
                                   +GetHeuristic(goal_,s),
                         std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second));
 }
 
-std::vector<Node> LPAStar::GetPred(Node u){
+std::vector<Node> LPAStar::GetPred(const Node& u) const {
   std::vector<Node> pred;
   for(auto it=motions.begin();it!=motions.end(); ++it){
     // Modify to prevent points already in the queue fro  being added?
@@ -62,7 +62,7 @@ std::vector<Node> LPAStar::GetPred(Node u){
   return pred;
 }
 
-std::vector<Node> LPAStar::GetSucc(Node u){
+std::vector<Node> LPAStar::GetSucc(const Node& u) const {
   std::vector<Node> succ;
   for(auto it=motions.begin();it!=motions.end(); ++it){
     Node new_node = u + *it;
@@ -91,7 +91,7 @@ void LPAStar::InsertionSort(){
    }
 }
 
-double LPAStar::C(Node s1, Node s2){
+double LPAStar::C(const Node& s1, const Node& s2) const {
   if(s1.x_ < n && s1.x_ >= 0 && s1.y_ < n && s1.y_ >= 0 &&
      s2.x_ < n && s2.x_ >= 0 && s2.y_ < n && s2.y_ >= 0 &&
      grid[s1.x_][s1.y_] != 1 && grid[s2.x_][s2.y_] != 1){
@@ -129,7 +129,7 @@ void LPAStar::Init(){
   U_.push_back(u_pair);
 }
 
-void LPAStar::UpdateVertex(Node& u){
+void LPAStar::UpdateVertex(const Node& u){
   if(u!=start_){
     std::vector<Node> pred = GetPred(u);
     double init_min = n*n;
@@ -153,7 +153,7 @@ void LPAStar::UpdateVertex(Node& u){
   }
 }
 
-bool LPAStar::CompareKey(std::pair<double,double>& pair_in, Node& u){
+bool LPAStar::CompareKey(const std::pair<double,double>& pair_in, const Node& u) const {
   std::pair<double,double> node_key = CalculateKey(u);
   if(pair_in.first < node_key.first ||
     (pair_in.first == node_key.first && pair_in.second < node_key.second)){
@@ -187,7 +187,7 @@ int LPAStar::ComputeShortestPath(){
   return 0;
 }
 
-std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, Node start_in, Node goal_in, int max_iter_in, bool obs_creation){
+std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, const Node& start_in, const Node& goal_in, const int max_iter_in, const bool obs_creation){
   max_iter_ = max_iter_in;
   grid = grid_in;
   start_ = start_in;
@@ -247,7 +247,7 @@ std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, Node
   return path_vector_;
 }
 
-void LPAStar::SetObs(Node u){
+void LPAStar::SetObs(const Node& u) {
   // PrintGrid(grid,n); // Uncomment if you want to see old and new path
   if(u==goal_ || u==start_){
     std::cout << "Cannot set current start or goal as obstacle" << std::endl;
@@ -293,7 +293,7 @@ void LPAStar::GeneratePathVector(){
 }
 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
-void LPAStar::DisplayGrid(){
+void LPAStar::DisplayGrid() const {
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
   std::cout << "2. Obstacles             ---> 1" << std::endl;

@@ -28,20 +28,20 @@ public:
   * @param n_2 Node 2
   * @return bool value of whether obstacle exists between nodes
   */
-  bool CheckObstacle(Node& n_1, Node& n_2);
+  bool CheckObstacle(const Node& n_1, const Node& n_2) const;
 
   /**
   * @brief Generates a random node
   * @return Generated node
   */
-  Node GenerateRandomNode();
+  Node GenerateRandomNode() const;
 
   /**
   * @brief Rewire the tree
   * @param new_node Node to which other nodes will be connected if their cost decreases
   * @return void
   */
-  void Rewire(Node new_node);
+  void Rewire(const Node& new_node) ;
 
   /**
   * @brief Main algorithm of RRT*
@@ -52,21 +52,21 @@ public:
   * @param threshold_in Maximum distance per move
   * @return path vector of nodes
   */
-  std::vector<Node> rrt_star(std::vector<std::vector<int> > &grid, Node start_in, Node goal_in, int max_iter_x_factor = 500, double threshold_in = std::numeric_limits<double>::infinity());
+  std::vector<Node> rrt_star(std::vector<std::vector<int>>& grid, const Node& start_in, const Node& goal_in, const int max_iter_x_factor = 500, const double threshold_in = std::numeric_limits<double>::infinity());
 
   /**
   * @brief Check if goal is reachable from current node
   * @param new_node Current node
   * @return bool value of whether goal is reachable from current node
   */
-  bool CheckGoalVisible(Node new_node);
+  bool CheckGoalVisible(const Node& new_node) ;
 
   /**
   * @brief Create the obstacle list from the input grid
   * @param grid Input grid for algorithm
   * @return void
   */
-  void CreateObstacleList(std::vector<std::vector<int> > &grid);
+  void CreateObstacleList(std::vector<std::vector<int>>& grid);
 
 private:
   std::vector<Node> point_list_;

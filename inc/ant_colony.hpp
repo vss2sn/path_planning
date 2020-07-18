@@ -61,7 +61,7 @@ public:
 	* @param Q Constant multiplication factor for the cost/reward function
 	* @return no return value
 	*/
-  AntColony(int n_ants = 10, double alpha = 0.5, double beta = 0.5, double evap_rate = 0.5, int iterations = 10, double Q = 10.0);
+  AntColony(const int n_ants = 10, const  double alpha = 0.5, const double beta = 0.5, const double evap_rate = 0.5, const int iterations = 10, const double Q = 10.0);
 
 	/**
 	* @brief Prints the path taken by the ant.
@@ -69,7 +69,7 @@ public:
 	* @return void
 	* @details Prints the path taken by the ant on the grid, using the PrintPath function in utils.cpp. It can be used to print incomplete paths as well, as long as the end point and start point are specified.
 	*/
-	void PrintAntPath(Ant& ant);
+	void PrintAntPath(Ant& ant) const;
 
 	/**
 	* @brief Removes loops in path
@@ -77,7 +77,7 @@ public:
 	* @return void
 	* @details Removes loops in path of an ant only when a point is revisted.
 	*/
-	void RemoveLoop(Ant& ant);
+	void RemoveLoop(Ant& ant) const;
 
 	/**
 	* @brief Main algorithm of ant colony optimization
@@ -86,7 +86,7 @@ public:
 	* @param goal goal node
 	* @return best path within last iteration of the ant colony
 	*/
-  std::vector<Node> ant_colony(std::vector<std::vector<int>>& grid, Node start, Node goal);
+  std::vector<Node> ant_colony(std::vector<std::vector<int>>& grid, const Node& start, const Node& goal);
 private:
 	std::vector<std::vector<int>> grid_;
 	std::unordered_map<std::pair<int,int>,double, pair_hash> pheromone_edges_;

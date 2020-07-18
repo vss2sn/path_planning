@@ -20,7 +20,7 @@ public:
   * @param v The vector to be sorted
   * @return void
   */
-  void VectorInsertionSort(std::vector<Node>& v);
+  void VectorInsertionSort(std::vector<Node>& v) const;
 
   /**
   * @brief Calculate and return the heuristic distance between 2 nodes
@@ -28,34 +28,34 @@ public:
   * @param s2 Node 2
   * @return Heuritic distance between the 2 nodes
   */
-  double GetHeuristic(Node s1, Node s2);
+  double GetHeuristic(const Node& s1, const Node& s2) const;
 
   /**
   * @brief Displays the G and RHS values for the entire grid.
   * @return void
   */
-  void PrintGRHS();
+  void PrintGRHS() const;
 
   /**
   * @brief Returns the key (pair) values for a given node.
   * @param s Node whose key values are to be calcualted
   * @return Key for given input node
   */
-  std::pair<double,double> CalculateKey(const Node& s);
+  std::pair<double,double> CalculateKey(const Node& s) const;
 
   /**
   * @brief Returns the possible predecessors of a given node, based on allowed motion primatives
   * @param u Node
   * @return Vector of nodes that are possible predecessors to input node
   */
-  std::vector<Node> GetPred(Node u);
+  std::vector<Node> GetPred(const Node& u) const;
 
   /**
   * @brief Returns the possible successors of a given node, based on allowed motion primatives
   * @param u Node
   * @return Vector of nodes that are possible successors to input node
   */
-  std::vector<Node> GetSucc(Node u);
+  std::vector<Node> GetSucc(const Node& u) const;
 
   /**
   * @brief Using insertion sort to sort the vector list that maintains the priority queue. Good for a mostly sorted queue. Sort called after every insertion to maintain queue. Not using standard queue as iterating over is not allowed.
@@ -69,7 +69,7 @@ public:
   * @param s2 Node
   * @return cost of motion moving from first node to second
   */
-  double C(Node s1, Node s2);
+  double C(const Node& s1, const Node& s2) const;
 
   /**
   * @brief Initialisation function of LPA*. Initialises G and RHS values for all nodes, store motion allowable primatives, km value and the first value of the priority queue.
@@ -82,7 +82,7 @@ public:
   * @param u Node on which UpdateVertex has to be called
   * @return void
   */
-  void UpdateVertex(Node& u);
+  void UpdateVertex(const Node& u);
 
   /**
   * @brief Compare keys function for LPA*. Compares the key given as input with the key values of the node given as input. Calls CalculateKey on the node.
@@ -90,7 +90,7 @@ public:
   * @param u Node whose key values will be calculated and compared to above key pair
   * @return bool value based on comparison of key values
   */
-  bool CompareKey(std::pair<double,double>& pair_in, Node& u);
+  bool CompareKey(const std::pair<double,double>& pair_in, const Node& u) const;
 
   /**
   * @brief ComputeShortestPath procedure as per LPA* algorithm, Figure 3.
@@ -106,7 +106,7 @@ public:
   * @param max_iter_in number of oterations to run of LPA*
   * @return path vector of nodes
   */
-  std::vector<Node> lpa_star(std::vector<std::vector<int> > &grid_in, Node start_in, Node goal_in, int max_iter_in, bool obs_creation = true);
+  std::vector<Node> lpa_star(std::vector<std::vector<int>>& grid_in, const Node& start_in, const Node& goal_in, const int max_iter_in, const bool obs_creation = true);
 
   /**
   * @brief Replan route, called whenever a previously unknown obstacle is detected.
@@ -115,14 +115,14 @@ public:
   * @param obs_creation Allow creation of obstacles
   * @return path vector of nodes
   */
-  std::vector<Node> Replan(Node u);
+  std::vector<Node> Replan(const Node& u);
 
   /**
   * @brief Create an obstacle on input node. Does not allow start or goal to be declared an obstacle. Prints out the obstacle if created and displays the grid. Calls Replan function.
   * @param u Node at which obstacle is to be created
   * @return path vector of nodes
   */
-  void SetObs(Node u);
+  void SetObs(const Node& u);
 
   /**
   * @brief Generate the path vector and set the appropriate grid values
@@ -135,13 +135,13 @@ public:
   * @param start_in new starting position
   * @return Path vector of nodes. Can be made to void, but left as path vector to allow independent call.
   */
-  std::vector<Node> UpdateStart(Node start_in);
+  std::vector<Node> UpdateStart(const Node& start_in) const;
 
   /**
   * @brief Displays the grid stored by the LPAStar object.
   * @return void
   */
-  void DisplayGrid();
+  void DisplayGrid() const ;
 private:
   Node start_, goal_;
   std::vector<std::vector<std::pair<double,double>>> S_;

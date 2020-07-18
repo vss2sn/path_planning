@@ -6,7 +6,7 @@
 
 #include "d_star_lite.hpp"
 
-void DStarLite::VectorInsertionSort(std::vector<Node>& v){
+void DStarLite::VectorInsertionSort(std::vector<Node>& v) const {
    int nV = v.size();
    int i, j;
    Node key;
@@ -21,12 +21,12 @@ void DStarLite::VectorInsertionSort(std::vector<Node>& v){
    }
 }
 
-double DStarLite::GetHeuristic(Node s1, Node s2){
+double DStarLite::GetHeuristic(const Node& s1, const Node& s2) const {
   return abs(s1.x_ - s2.x_) + abs(s1.y_ - s2.y_);
 }
 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
-void DStarLite::PrintGRHS(){
+void DStarLite::PrintGRHS() const {
   std::cout << "G values:" << std::endl;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
@@ -44,13 +44,13 @@ void DStarLite::PrintGRHS(){
 }
 #endif
 
-std::pair<double,double> DStarLite::CalculateKey(const Node& s){
+std::pair<double,double> DStarLite::CalculateKey(const Node& s) const {
   return std::make_pair(std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second
                                   +GetHeuristic(start_,s)+km_.first),
                         std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second));
 }
 
-std::vector<Node> DStarLite::GetPred(Node u){
+std::vector<Node> DStarLite::GetPred(const Node& u) const {
   std::vector<Node> pred;
   for(auto it=motions.begin();it!=motions.end(); ++it){
     // Modify to prevent points already in the queue fro  being added?
@@ -63,7 +63,7 @@ std::vector<Node> DStarLite::GetPred(Node u){
   return pred;
 }
 
-std::vector<Node> DStarLite::GetSucc(Node u){
+std::vector<Node> DStarLite::GetSucc(const Node& u) const {
   std::vector<Node> succ;
   for(auto it=motions.begin();it!=motions.end(); ++it){
     Node new_node = u + *it;
@@ -92,7 +92,7 @@ void DStarLite::InsertionSort(){
    }
 }
 
-double DStarLite::C(Node s1, Node s2){
+double DStarLite::C(const Node& s1, const Node& s2) const {
   if(s1.x_ < n && s1.x_ >= 0 && s1.y_ < n && s1.y_ >= 0 &&
      s2.x_ < n && s2.x_ >= 0 && s2.y_ < n && s2.y_ >= 0 &&
      grid[s1.x_][s1.y_] != 1 && grid[s2.x_][s2.y_] != 1){
@@ -132,7 +132,7 @@ void DStarLite::Init(){
   InsertionSort();
 }
 
-void DStarLite::UpdateVertex(Node& u){
+void DStarLite::UpdateVertex(const Node& u) {
   if(u!=goal_){
     std::vector<Node> succ = GetSucc(u);
     double init_min = n*n;
@@ -156,7 +156,7 @@ void DStarLite::UpdateVertex(Node& u){
   }
 }
 
-bool DStarLite::CompareKey(std::pair<double,double>& pair_in, Node& u){
+bool DStarLite::CompareKey(const std::pair<double,double>& pair_in, const Node& u) const {
   std::pair<double,double> node_key = CalculateKey(u);
   if(pair_in.first < node_key.first ||
     (pair_in.first == node_key.first && pair_in.second < node_key.second)){
@@ -165,7 +165,7 @@ bool DStarLite::CompareKey(std::pair<double,double>& pair_in, Node& u){
   return false;
 }
 
-int DStarLite::ComputeShortestPath(){
+int DStarLite::ComputeShortestPath() {
   while((!U_.empty() && CompareKey(U_[0].second, start_)) || S_[start_.x_][start_.y_].first != S_[start_.x_][start_.y_].second){
     k_old_ = U_[0].second;
     Node u = U_[0].first;
@@ -194,7 +194,7 @@ int DStarLite::ComputeShortestPath(){
   return 0;
 }
 
-std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in, Node start_in, Node goal_in){
+std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in, const Node& start_in, const Node& goal_in){
   grid = grid_in;
   start_ = start_in;
   main_start_ = start_;
@@ -216,7 +216,7 @@ std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in,
 }
 
 #ifdef DYNAMIC_ALGOS
-std::vector<Node> DStarLite::SetObs(Node u){
+std::vector<Node> DStarLite::SetObs(const Node& u){
   if(u==goal_ || u==start_){
     std::cout << "Cannot set current start or goal as obstacle" << std::endl;
     return path_vector_;
@@ -228,7 +228,7 @@ std::vector<Node> DStarLite::SetObs(Node u){
   return Replan(u);
 }
 
-std::vector<Node> DStarLite::Replan(Node u){
+std::vector<Node> DStarLite::Replan(const Node& u){
   if (grid[start_.x_][start_.y_]==1) grid[start_.x_][start_.y_]=0;
   path_vector_.clear();
   start_ = main_start_;
@@ -260,7 +260,7 @@ std::vector<Node> DStarLite::Replan(Node u){
 }
 #endif
 
-std::vector<Node> DStarLite::ReturnInvertedVector(){
+std::vector<Node> DStarLite::ReturnInvertedVector() const{
   std::vector<Node> inverted_path_vector = path_vector_;
   // Inverting costs as dstar moves from goal to start.
   // Then inverting path vector for reordering.
@@ -272,7 +272,7 @@ std::vector<Node> DStarLite::ReturnInvertedVector(){
   return inverted_path_vector;
 }
 
-void DStarLite::GeneratePathVector(){
+void DStarLite::GeneratePathVector() {
   main_start_.cost_ = S_[main_start_.x_][main_start_.y_].second;
   path_vector_.push_back(main_start_);
   while(path_vector_[0]!=goal_){
@@ -303,7 +303,7 @@ void DStarLite::GeneratePathVector(){
 }
 
 #ifdef DYNAMIC_ALGOS
-std::vector<Node> DStarLite::UpdateStart(Node start_in){
+std::vector<Node> DStarLite::UpdateStart(const Node& start_in) {
   // Prevent teleportations
   if(path_vector_[0].cost_ == -1){
     std::cout << "Teleport disabled." << std::endl;
@@ -320,7 +320,7 @@ std::vector<Node> DStarLite::UpdateStart(Node start_in){
   return path_vector_;
 }
 
-void DStarLite::DisplayGrid(){
+void DStarLite::DisplayGrid() const {
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
   std::cout << "2. Obstacles             ---> 1" << std::endl;
@@ -346,7 +346,7 @@ void DStarLite::DisplayGrid(){
 }
 #endif
 
-Node DStarLite::NextPoint(){
+Node DStarLite::NextPoint() const {
   int i = 0;
   for(i = 0; i < path_vector_.size(); i++){
     if(goal_ == path_vector_[i]){

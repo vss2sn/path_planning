@@ -18,7 +18,7 @@ public:
   /**
    * @brief Main algorithm of Dijstra.
    */
-  std::vector<Node> dijkstra(std::vector<std::vector<int> > &grid, Node start_, Node goal_);
+  std::vector<Node> dijkstra(std::vector<std::vector<int>>& grid, const Node& start_, const Node& goal_);
 private:
   std::priority_queue<Node, std::vector<Node>, compare_cost> open_list_;
   std::vector<Node> closed_list_;

@@ -6,7 +6,7 @@
 
 #include "utils.hpp"
 
-Node::Node(int x, int y, double cost, double h_cost, int id, int pid){
+Node::Node(const int x, const int y, const double cost, const double h_cost, const int id, const int pid) {
   this->x_ = x;
   this->y_ = y;
   this->cost_ = cost;
@@ -15,7 +15,7 @@ Node::Node(int x, int y, double cost, double h_cost, int id, int pid){
   this->pid_ = pid;
 }
 
-void Node::PrintStatus(){
+void Node::PrintStatus() const {
   std::cout << "--------------"              << std::endl
             << "Node          :"             << std::endl
             << "x             : " << x_      << std::endl
@@ -27,7 +27,7 @@ void Node::PrintStatus(){
             << "--------------"              << std::endl;
 }
 
-Node Node::operator+(Node p){
+Node Node::operator+(const Node& p) const {
   Node tmp;
   tmp.x_ = this->x_ + p.x_;
   tmp.y_ = this->y_ + p.y_;
@@ -35,14 +35,14 @@ Node Node::operator+(Node p){
   return tmp;
 }
 
-Node Node::operator-(Node p){
+Node Node::operator-(const Node& p) const {
   Node tmp;
   tmp.x_ = this->x_ - p.x_;
   tmp.y_ = this->y_ - p.y_;
   return tmp;
 }
 
-void Node::operator=(Node p){
+void Node::operator=(const Node& p) {
   this->x_ = p.x_;
   this->y_ = p.y_;
   this->cost_ = p.cost_;
@@ -51,17 +51,17 @@ void Node::operator=(Node p){
   this->pid_ = p.pid_;
 }
 
-bool Node::operator==(Node p){
+bool Node::operator==(const Node& p) const {
   if (this->x_ == p.x_ && this->y_ == p.y_) return true;
   return false;
 }
 
-bool Node::operator!=(Node p){
+bool Node::operator!=(const Node& p) const {
   if (this->x_ != p.x_ || this->y_ != p.y_) return true;
   return false;
 }
 
-bool compare_cost::operator()(Node& p1, Node& p2){
+bool compare_cost::operator()(const Node& p1, const Node& p2) const {
   // Can modify this to allow tie breaks based on heuristic cost if required
   if (p1.cost_ + p1.h_cost_ > p2.cost_ + p2.h_cost_) return true;
   else if (p1.cost_ + p1.h_cost_ == p2.cost_ + p2.h_cost_ && p1.h_cost_ >= p2.h_cost_) return true;
@@ -104,7 +104,7 @@ void MakeGrid(std::vector<std::vector<int>> &grid){
   }
 }
 
-void PrintGrid(std::vector<std::vector<int>> &grid){
+void PrintGrid(const std::vector<std::vector<int>>& grid){
   int n = grid.size();
   std::cout << "Grid: " << std::endl;
   std::cout << "1. Points not considered ---> 0" << std::endl;
@@ -128,7 +128,7 @@ void PrintGrid(std::vector<std::vector<int>> &grid){
   std::cout << std::endl;
 }
 
-void PrintPath(std::vector<Node> path_vector, Node start, Node goal, std::vector<std::vector<int>> &grid){
+void PrintPath(std::vector<Node>& path_vector, const Node& start, const Node& goal, std::vector<std::vector<int>>& grid){
   if(path_vector[0].id_ == -1){
     std::cout << "No path exists" << std::endl;
     PrintGrid(grid);
@@ -155,9 +155,9 @@ void PrintPath(std::vector<Node> path_vector, Node start, Node goal, std::vector
   PrintGrid(grid);
 }
 
-void PrintCost(std::vector<std::vector<int>> &grid, std::vector<Node> point_list){
+void PrintCost(const std::vector<std::vector<int>>& grid, const std::vector<Node>& point_list){
   int n = grid.size();
-  std::vector<Node>::iterator it_v;
+  std::vector<Node>::const_iterator it_v;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
       for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
@@ -173,7 +173,7 @@ void PrintCost(std::vector<std::vector<int>> &grid, std::vector<Node> point_list
   }
 }
 
-void PrintPathInOrder(std::vector<Node>& path_vector, Node start, Node goal, std::vector<std::vector<int>>& grid){
+void PrintPathInOrder(const std::vector<Node>& path_vector, const Node& start, const Node& goal, std::vector<std::vector<int>>& grid) {
   if(path_vector[0].id_ == -1){
     std::cout << "Path not found" << std::endl;
     PrintGrid(grid);
