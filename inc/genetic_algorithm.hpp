@@ -86,4 +86,4 @@ private:
   bool found_, shorten_chromosome_;
 };
 
-#endif GENETIC_ALGORITHM_H
+#endif  // GENETIC_ALGORITHM_H

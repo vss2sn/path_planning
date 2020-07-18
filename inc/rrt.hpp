@@ -7,6 +7,8 @@
 #ifndef RRT_H
 #define RRT_H
 
+#include <limits>
+
 #include "utils.hpp"
 
 /**
@@ -52,7 +54,7 @@ public:
   * @param new_node Current node
   * @return bool value of whether goal is reachable from current node
   */
-  bool CheckGoalVisible(const Node& new_node);  
+  bool CheckGoalVisible(const Node& new_node);
 
   /**
   * @brief Create the obstacle list from the input grid
@@ -69,4 +71,4 @@ private:
   int n = 0;
 };
 
-#endif RRT_H
+#endif  // RRT_H

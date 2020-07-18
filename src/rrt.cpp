@@ -4,6 +4,9 @@
 * @brief Contains the RRT class
 */
 
+#include <cmath>
+#include <random>
+
 #include "rrt.hpp"
 
 Node RRT::FindNearestPoint(Node& new_node) const {
@@ -145,13 +148,9 @@ void RRT::CreateObstacleList(std::vector<std::vector<int>>& grid) {
 */
 int main(){
   int n = 11;
-
-  std::vector<std::vector<int>> grid(n);
-  std::vector<int> tmp(n);
-  for (int i = 0; i < n; i++){
-    grid[i] = tmp;
-  }
+  std::vector<std::vector<int>> grid(n, std::vector<int>(n));
   MakeGrid(grid);
+
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -176,4 +175,4 @@ int main(){
 
   return 0;
 }
-#endif
+#endif  // BUILD_INDIVIDUAL

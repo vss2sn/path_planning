@@ -2,8 +2,6 @@ project(path_planning)
 
 cmake_minimum_required(VERSION 3.5)
 
-add_definitions(-std=c++11)
-
 if(NOT WIN32)
   string(ASCII 27 Esc)
   set(ColourReset "${Esc}[m")
@@ -14,8 +12,8 @@ if(NOT WIN32)
   set(White       "${Esc}[37m")
 endif()
 
-set( CXX_FLAGS "-w" )
-set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -std=c++11 -pthread -g" )
+set( CMAKE_CXX_STANDARD 17 )
+set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -pthread -Wall -Werror -O3" )
 
 include_directories( ${CMAKE_SOURCE_DIR}/inc )
 
@@ -28,27 +26,29 @@ add_library( utils SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp ${LIB_HEADER
 
 list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp )
 list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
-list( REMOVE_ITEM LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_utils.cpp )
 
 # If building each file with it's own output, set to ON
 # If buiding single file (main.cpp) to test any/all protocols, set to OFF
-option( BUILD_INDIVIDUAL "BUILD_INDIVIDUAL" OFF)
-option( TEST "TEST" ON)
-option( CHECK_COVERAGE "CHECK_COVERAGE" ON)
-option( DYNAMIC_ALGOS "DYNAMIC_ALGOS" ON)
-option( CUSTOM_DEBUG_HELPER_FUNCION "CUSTOM_DEBUG_HELPER_FUNCION" OFF)
+option( BUILD_INDIVIDUAL "Build each algorithm .cpp file with its own executable" OFF)
+option( TEST "Build and run tests" OFF)
+option( CHECK_COVERAGE "Run code coverage check" OFF)
+option( DYNAMIC_ALGOS "Build and run algorithms with obstacle detection in real time (D* Lite)" ON)
+option( CUSTOM_DEBUG_HELPER_FUNCION "Build custom debug helper functions" OFF)
+option( TRAVIS "Config for Travis CI" OFF)
 
-# NOTE:
-#
-# if(BUILD_INDIVIDUAL)
-# set DYNAMIC_ALGOS=ON
-# set CUSTOM_DEBUG_HELPER_FUNCION=ON
-#
-# if(CHECK_COVERAGE)
-#   # No way to check for dynamic algos as they have random obstacle generation
-#   # Consider removing from code coverage tests.
-#   # DYNAMIC_ALGOS=OFF
-# CUSTOM_DEBUG_HELPER_FUNCION=OFF
+# Ensures dynamic runs for individual files allowed
+if(BUILD_INDIVIDUAL)
+  option( DYNAMIC_ALGOS ON)
+  option( CUSTOM_DEBUG_HELPER_FUNCION ON)
+  option( CHECK_COVERAGE OFF)
+endif(BUILD_INDIVIDUAL)
+
+# No way to check for dynamic algos as they have random obstacle generation
+# Hence removing from code coverage tests
+if(CHECK_COVERAGE)
+  option( DYNAMIC_ALGOS OFF)
+  option( CUSTOM_DEBUG_HELPER_FUNCION OFF)
+endif(CHECK_COVERAGE)
 
 if(CUSTOM_DEBUG_HELPER_FUNCION)
   add_definitions(-DCUSTOM_DEBUG_HELPER_FUNCION)
@@ -57,6 +57,11 @@ endif(CUSTOM_DEBUG_HELPER_FUNCION)
 if(DYNAMIC_ALGOS)
   add_definitions(-DDYNAMIC_ALGOS)
 endif(DYNAMIC_ALGOS)
+
+if(TEST)
+  add_library( test_utils SHARED ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_utils.cpp ${LIB_HEADERS} )
+  list( REMOVE_ITEM LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_utils.cpp )
+endif(TEST)
 
 if(BUILD_INDIVIDUAL)
 
@@ -78,8 +83,6 @@ else (BUILD_INDIVIDUAL)
   target_link_libraries( main utils algos)
 
   if (TEST)
-
-    add_library( test_utils SHARED ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_utils.cpp ${LIB_HEADERS} )
 
     # For coverage check
 

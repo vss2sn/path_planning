@@ -2,11 +2,7 @@
 
 TEST(PathPlanningTest, Test1) {
   int n = 8;
-  std::vector<std::vector<int>> grid_1(n);
-  std::vector<int> tmp(n);
-  for (int i = 0; i < n; i++){
-    grid_1[i] = tmp;
-  }
+  std::vector<std::vector<int>> grid_1(n, std::vector<int>(n));
   MakeGrid(grid_1);
   std::vector<std::vector<int>> grid_2 = grid_1;
   std::vector<std::vector<int>> grid_3 = grid_1;

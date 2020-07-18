@@ -4,6 +4,10 @@
 * @brief Contains the Dijkstra class
 */
 
+#ifdef BUILD_INDIVIDUAL
+#include <random>
+#endif  // BUILD_INDIVIDUAL
+
 #include "dijkstra.hpp"
 
 std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, const Node& start_in, const Node& goal_in){
@@ -26,10 +30,9 @@ std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, const
       return closed_list_;
     }
     grid[current.x_][current.y_] = 2; // Point opened
-    int current_cost = current.cost_;
-    for(auto it = motion.begin(); it!=motion.end(); ++it){
+    for(const auto& m : motion){
       Node new_point;
-      new_point = current + *it;
+      new_point = current + m;
       new_point.id_ = n*new_point.x_+new_point.y_;
       new_point.pid_ = current.id_;
 
@@ -59,11 +62,7 @@ std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, const
 int main(){
   int n = 11;
 
-  std::vector<std::vector<int>> grid(n);
-  std::vector<int> tmp(n);
-  for (int i = 0; i < n; i++){
-    grid[i] = tmp;
-  }
+  std::vector<std::vector<int>> grid(n, std::vector<int>(n));
   MakeGrid(grid);
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
@@ -87,4 +86,4 @@ int main(){
 
   return 0;
 }
-#endif
+#endif  // BUILD_INDIVIDUAL

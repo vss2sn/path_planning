@@ -7,6 +7,8 @@
 #ifndef D_STAR_LITE_H
 #define D_STAR_LITE_H
 
+#include <chrono>
+
 #include "utils.hpp"
 
 /**
@@ -161,7 +163,7 @@ public:
   void DisplayGrid() const;
 private:
   bool disp_inc = true; // Display incremental movements during D* Lite live run
-  useconds_t disp_p = 500000; // Pause for displaying grid in microseconds
+  std::chrono::milliseconds disp_p{500}; // Pause for displaying grid in microseconds
   Node start_, main_start_, goal_, last_;
   std::vector<std::vector<std::pair<double,double>>> S_; // Do not let grid size exceed 100
   std::vector<std::pair<Node,std::pair<double,double>>> U_;
@@ -174,4 +176,4 @@ private:
   std::vector<std::vector<int>> grid;
 };
 
-#endif D_STAR_LITE_H
+#endif  // D_STAR_LITE_H

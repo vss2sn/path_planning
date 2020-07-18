@@ -7,7 +7,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "main.hpp"
+#include <vector>
 
 #define BLACK "\x1b[1;30m"
 #define RED "\x1b[1;31m"
@@ -80,7 +80,7 @@ public:
   * @param p node
   * @return void
   */
-  void operator=(const Node& p);
+  // void operator=(const Node& p);
 
   /**
   * @brief Overloading operator == for Node class
@@ -158,4 +158,4 @@ void MakeGrid(std::vector<std::vector<int>>& grid);
 */
 void PrintPathInOrder(const std::vector<Node>& path_vector, const Node& start, const Node& goal, std::vector<std::vector<int>>& grid);
 
-#endif UTILS_H
+#endif  // UTILS_H

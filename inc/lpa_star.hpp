@@ -153,4 +153,4 @@ private:
   std::vector<std::vector<int>> grid;
 };
 
-#endif LPA_STAR_H
+#endif  // LPA_STAR_H

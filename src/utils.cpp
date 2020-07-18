@@ -4,6 +4,10 @@
 * @brief Contains common/commonly used funtions and classes
 */
 
+#include <iomanip>  // TODO: replace setw
+#include <iostream>
+#include <random>
+
 #include "utils.hpp"
 
 Node::Node(const int x, const int y, const double cost, const double h_cost, const int id, const int pid) {
@@ -42,14 +46,14 @@ Node Node::operator-(const Node& p) const {
   return tmp;
 }
 
-void Node::operator=(const Node& p) {
-  this->x_ = p.x_;
-  this->y_ = p.y_;
-  this->cost_ = p.cost_;
-  this->h_cost_ = p.h_cost_;
-  this->id_ = p.id_;
-  this->pid_ = p.pid_;
-}
+// void Node::operator=(const Node& p) {
+//   this->x_ = p.x_;
+//   this->y_ = p.y_;
+//   this->cost_ = p.cost_;
+//   this->h_cost_ = p.h_cost_;
+//   this->id_ = p.id_;
+//   this->pid_ = p.pid_;
+// }
 
 bool Node::operator==(const Node& p) const {
   if (this->x_ == p.x_ && this->y_ == p.y_) return true;
@@ -115,15 +119,26 @@ void PrintGrid(const std::vector<std::vector<int>>& grid){
     std::cout << "---";
   }
   std::cout << std::endl;
-  for(int i=0;i<n;i++){
-    for(int j=0;j<n;j++){
-      if(grid[i][j]==3) std::cout << GREEN << grid[i][j] << RESET << " , ";
-      else if(grid[i][j]==1) std::cout << RED << grid[i][j] << RESET << " , ";
-      else if(grid[i][j]==2) std::cout << BLUE << grid[i][j] << RESET << " , ";
-      else std::cout << grid[i][j] << " , ";
+  // for(int i=0;i<n;i++){
+  //   for(int j=0;j<n;j++){
+  //     if(grid[i][j]==3) std::cout << GREEN << grid[i][j] << RESET << " , ";
+  //     else if(grid[i][j]==1) std::cout << RED << grid[i][j] << RESET << " , ";
+  //     else if(grid[i][j]==2) std::cout << BLUE << grid[i][j] << RESET << " , ";
+  //     else std::cout << grid[i][j] << " , ";
+  //   }
+  //   std::cout << std::endl << std::endl;
+  // }
+
+  for(const auto& row : grid) {
+    for(const auto& ele : row) {
+      if(ele==3) std::cout << GREEN << ele << RESET << " , ";
+      else if(ele==1) std::cout << RED << ele << RESET << " , ";
+      else if(ele==2) std::cout << BLUE << ele << RESET << " , ";
+      else std::cout << ele << " , ";
     }
     std::cout << std::endl << std::endl;
   }
+
   for(int j=0;j<n;j++) std::cout <<  "---";
   std::cout << std::endl;
 }
@@ -135,20 +150,21 @@ void PrintPath(std::vector<Node>& path_vector, const Node& start, const Node& go
     return;
   }
   std::cout << "Path (goal to start):" << std::endl;
-  int i = 0;
-  for(i = 0; i < path_vector.size(); i++){
-    if(goal == path_vector[i]) break;
-  }
-  path_vector[i].PrintStatus();
-  grid[path_vector[i].x_][path_vector[i].y_] = 3;
-  while(path_vector[i].id_!=start.id_){
-    if(path_vector[i].id_ == path_vector[i].pid_) break;
-    for(int j = 0; j < path_vector.size(); j++){
-      if(path_vector[i].pid_ == path_vector[j].id_){
-        i=j;
-        path_vector[j].PrintStatus();
-        grid[path_vector[j].x_][path_vector[j].y_] = 3;
+  for(size_t i = 0; i < path_vector.size(); i++){
+    if(goal == path_vector[i]) {
+      path_vector[i].PrintStatus();
+      grid[path_vector[i].x_][path_vector[i].y_] = 3;
+      while(path_vector[i].id_!=start.id_){
+        if(path_vector[i].id_ == path_vector[i].pid_) break;
+        for(size_t j = 0; j < path_vector.size(); j++){
+          if(path_vector[i].pid_ == path_vector[j].id_){
+            i=j;
+            path_vector[j].PrintStatus();
+            grid[path_vector[j].x_][path_vector[j].y_] = 3;
+          }
+        }
       }
+      break;
     }
   }
   grid[start.x_][start.y_] = 3;
@@ -180,11 +196,13 @@ void PrintPathInOrder(const std::vector<Node>& path_vector, const Node& start, c
     return;
   }
   std::cout << "Path (goal to start):" << std::endl;
-  int i=0;
+  size_t i=0;
   while(path_vector[i]!=goal) i++;
-  for(; i>=0; i=i-1){
+  for(; i>0; i=i-1){
     path_vector[i].PrintStatus();
     grid[path_vector[i].x_][path_vector[i].y_]=3;
   }
+  path_vector[0].PrintStatus();
+  grid[path_vector[0].x_][path_vector[0].y_]=3;
   PrintGrid(grid);
 }

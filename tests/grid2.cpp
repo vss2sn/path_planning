@@ -1,8 +1,8 @@
+#include <cmath>
+
 #include "test_utils.cpp"
 
 TEST(PathPlanningTest, Test1) {
-  int n = 8;
-
   std::vector<std::vector<int>> grid{
                     { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
                     { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
@@ -26,7 +26,7 @@ TEST(PathPlanningTest, Test1) {
   // grid = main_grid;
   // ASSERT_EQ(floor(sqrt((double)8 )), floor(run_test(grid, "rrt")));
   grid = main_grid;
-  ASSERT_EQ(6*sqrt(2)+2, run_test(grid, "rrtstar"));
+  ASSERT_EQ(6*std::sqrt(2)+2, run_test(grid, "rrtstar"));
   grid = main_grid;
   ASSERT_EQ(14, run_test(grid, "d_star_lite"));
   grid = main_grid;

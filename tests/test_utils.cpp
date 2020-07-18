@@ -1,3 +1,5 @@
+#include <gtest/gtest.h>
+
 #include "dijkstra.hpp"
 #include "a_star.hpp"
 #include "jump_point_search.hpp"
@@ -7,7 +9,6 @@
 #include "ant_colony.hpp"
 #include "d_star_lite.hpp"
 #include "genetic_algorithm.hpp"
-#include <gtest/gtest.h>
 
 double run_test(std::vector<std::vector<int> > &grid, std::string algo){
   int n = grid.size();
@@ -65,16 +66,13 @@ double run_test(std::vector<std::vector<int> > &grid, std::string algo){
   else if(algo == "genetic_algorithm"){
     GeneticAlgorithm new_genetic_algorithm(10000, 30, 1.05, true);
     path_vector = new_genetic_algorithm.genetic_algorithm(grid, start, goal, 2*start.h_cost_);
-    int i=0;
     if(path_vector[0].id_==-1) return -1;
-    for(;i<path_vector.size();i++) if(path_vector[i]==goal) break;
-    return i;
+    for(size_t i = 0; i < path_vector.size(); i++) if(path_vector[i] == goal) return i;
   }
 
-  int i;
   if(path_vector[0].cost_==-1) return -1;
-  for(i = 0; i < path_vector.size(); i++){
-    if(goal == path_vector[i]) break;
+  for(const auto& p : path_vector) {
+    if(goal == p) return p.cost_;
   }
-  return path_vector[i].cost_;
+  return -1;
 }

@@ -4,6 +4,12 @@
 * @brief Contains the AStar class
 */
 
+#include <cmath>
+
+#ifdef BUILD_INDIVIDUAL
+#include <random>
+#endif  // BUILD_INDIVIDUAL
+
 #include "a_star.hpp"
 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
@@ -43,13 +49,12 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>>& grid, const Node&
       return closed_list_;
     }
     grid[current.x_][current.y_] = 2; // Point opened
-    int current_cost = current.cost_;
-    for(auto it = motion.begin(); it!=motion.end(); ++it){
+    for(const auto& m : motion){
       Node new_point;
-      new_point = current + *it;
+      new_point = current + m;
       new_point.id_ = n*new_point.x_+new_point.y_;
       new_point.pid_ = current.id_;
-      new_point.h_cost_ = abs(new_point.x_ - goal_.x_) + abs(new_point.y_ - goal_.y_);
+      new_point.h_cost_ = std::abs(new_point.x_ - goal_.x_) + std::abs(new_point.y_ - goal_.y_);
       if(new_point == goal_){
         open_list_.push(new_point);
         break;
@@ -75,13 +80,9 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>>& grid, const Node&
 */
 int main(){
   int n = 11;
-
-  std::vector<std::vector<int>> grid(n);
-  std::vector<int> tmp(n);
-  for (int i = 0; i < n; i++){
-    grid[i] = tmp;
-  }
+  std::vector<std::vector<int>> grid(n, std::vector<int>(n));
   MakeGrid(grid);
+
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -104,4 +105,4 @@ int main(){
   PrintPath(path_vector, start, goal, grid);
   return 0;
 }
-#endif
+#endif  // BUILD_INDIVIDUAL

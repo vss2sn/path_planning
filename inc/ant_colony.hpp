@@ -7,6 +7,8 @@
 #ifndef ANT_COLONY_H
 #define ANT_COLONY_H
 
+#include <unordered_map>
+
 #include "utils.hpp"
 
 /**
@@ -97,4 +99,4 @@ private:
 	std::vector<Node> motions_;
 };
 
-#endif ANT_COLONY_H
+#endif  // ANT_COLONY_H

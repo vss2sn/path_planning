@@ -4,6 +4,12 @@
 * @brief Contains the Ant and Ant Colony class
 */
 
+#include <chrono>
+#include <climits>
+#include <cmath>
+#include <random>
+#include <thread>
+
 #include "ant_colony.hpp"
 
 Ant::Ant(Node start, int id){
@@ -24,11 +30,11 @@ AntColony::AntColony(const int n_ants, const double alpha, const double beta, co
 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void AntColony::PrintAntPath(Ant& ant) const {
-	for(int k=1;k<ant.path_.size();k++) ant.path_[k].pid_ = ant.path_[k-1].id_;
+	for(size_t k=1;k<ant.path_.size();k++) ant.path_[k].pid_ = ant.path_[k-1].id_;
 	ant.path_.back().id_ = ant.path_.back().x_*grid_size_ + ant.path_.back().y_;
 	auto grid_2 = grid_;
 	PrintPath(ant.path_, start_, ant.path_.back(), grid_2);
-	sleep(1);
+	std::this_thread::sleep_for (std::chrono::seconds(1));
 }
 #endif
 
@@ -57,7 +63,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
 			}
 		}
 	}
-	this->max_steps_ = pow(grid_size_,2)/2+grid_size_;
+	this->max_steps_ = std::pow(grid_size_,2)/2+grid_size_;
 
   std::random_device device;
   std::mt19937 engine(device());
@@ -76,14 +82,14 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
         std::vector<double> possible_probabilities;
         float prob_sum = 0;
         int n_obs = 0;
-        for(auto& m : motions_){
+        for(const auto& m : motions_){
           possible_position = ant.current_node_ + m;
 					possible_position.id_ = possible_position.x_*grid_size_ + possible_position.y_;
           if(possible_position.x_ >=0 && possible_position.x_ < grid_size_ && possible_position.y_ >=0 && possible_position.y_ < grid_size_
              && possible_position!=ant.previous_node_){
             possible_positions.push_back(possible_position);
-            double new_prob = pow(pheromone_edges_[std::make_pair(possible_position.id_, ant.current_node_.id_)], alpha_) *
-              pow(1.0/pow(pow((possible_position.x_ - goal_.x_),2) +pow((possible_position.y_ - goal_.y_),2),0.5), beta_);
+            double new_prob = std::pow(pheromone_edges_[std::make_pair(possible_position.id_, ant.current_node_.id_)], alpha_) *
+              std::pow(1.0/std::pow(std::pow((possible_position.x_ - goal_.x_),2) +std::pow((possible_position.y_ - goal_.y_),2),0.5), beta_);
 						if(grid_[possible_position.x_][possible_position.y_]==1){
 							n_obs+=1;
 							new_prob = 0;
@@ -92,10 +98,10 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
             prob_sum += new_prob;
           }
         }
-        if(n_obs==possible_positions.size()) break;// Ant in a cul-de-sac
+        if(n_obs==static_cast<int>(possible_positions.size())) break;// Ant in a cul-de-sac
         else if(prob_sum == 0){
-          double new_prob = 1.0/(possible_positions.size()-n_obs);
-          for(int i=0;i<possible_positions.size();i++){
+          double new_prob = 1.0/(static_cast<int>(possible_positions.size())-n_obs);
+          for(size_t i=0;i<possible_positions.size();i++){
             if(grid_[possible_positions[i].x_][possible_positions[i].y_]==0) possible_probabilities[i]=new_prob;
             else possible_probabilities[i]=0;
           }
@@ -127,15 +133,15 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
     std::vector<Node> bp;
 
 		// Pheromone update based on successful ants
-    for(Ant& ant : ants_){
+    for(const Ant& ant : ants_){
 			// PrintAntPath(ant);
       if(ant.found_goal_){ // Use iff goal reached
-        if(ant.path_.size() < bpl){ // Save best path yet in this iteration
+        if(static_cast<int>(ant.path_.size()) < bpl){ // Save best path yet in this iteration
           bpl = ant.path_.size();
           bp = ant.path_;
         }
         double c = Q_/(ant.path_.size()-1); //c = cost / reward. Reward here, increased pheromone
-        for(int i=1;i<ant.path_.size();i++){ // Assuming ant can tell which way the food was based on how the phermones detereorate. Good for path planning as prevents moving in the opposite direction to path and improves convergence
+        for(size_t i=1; i < ant.path_.size(); i++){ // Assuming ant can tell which way the food was based on how the phermones detereorate. Good for path planning as prevents moving in the opposite direction to path and improves convergence
           auto it = pheromone_edges_.find(std::make_pair(ant.path_[i].id_, ant.path_[i-1].id_));
           it->second+= c;
         }
@@ -149,7 +155,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
 		last_best_path.push_back(no_path_node);
 		return last_best_path;
 	}
-  for(int i=1;i<last_best_path.size();i++) last_best_path[i].pid_ = last_best_path[i-1].id_;
+  for(size_t i=1; i < last_best_path.size(); i++) last_best_path[i].pid_ = last_best_path[i-1].id_;
   last_best_path.back().id_ = last_best_path.back().x_*grid_size_ + last_best_path.back().y_;
   return last_best_path;
 }
@@ -161,12 +167,9 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
 */
 int main(){
   int n = 11;
-  std::vector<std::vector<int>> grid(n);
-  std::vector<int> tmp(n);
-  for (int i = 0; i < n; i++){
-    grid[i] = tmp;
-  }
+	std::vector<std::vector<int>> grid(n, std::vector<int>(n));
   MakeGrid(grid);
+
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -189,4 +192,4 @@ int main(){
   PrintPath(path_vector, start, goal, grid);
   return 0;
 }
-#endif
+#endif  // BUILD_INDIVIDUAL

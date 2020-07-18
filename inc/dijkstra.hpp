@@ -7,6 +7,8 @@
 #ifndef DIJKSTRA_H
 #define DIJKSTRA_H
 
+#include <queue>
+
 #include "utils.hpp"
 
 /**
@@ -26,4 +28,4 @@ private:
   int n;
 };
 
-#endif DIJKSTRA_H
+#endif  // DIJKSTRA_H

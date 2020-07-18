@@ -3,6 +3,12 @@
 * @author vss2sn
 * @brief Contains the DStarLite class
 */
+#include <algorithm>
+#include <cmath>
+#include <iomanip>  // TODO: replace setw
+#include <iostream>
+#include <random>
+#include <thread>
 
 #include "d_star_lite.hpp"
 
@@ -22,7 +28,7 @@ void DStarLite::VectorInsertionSort(std::vector<Node>& v) const {
 }
 
 double DStarLite::GetHeuristic(const Node& s1, const Node& s2) const {
-  return abs(s1.x_ - s2.x_) + abs(s1.y_ - s2.y_);
+  return std::abs(s1.x_ - s2.x_) + std::abs(s1.y_ - s2.y_);
 }
 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
@@ -42,7 +48,7 @@ void DStarLite::PrintGRHS() const {
     std::cout << std::endl;
   }
 }
-#endif
+#endif  // CUSTOM_DEBUG_HELPER_FUNCION
 
 std::pair<double,double> DStarLite::CalculateKey(const Node& s) const {
   return std::make_pair(std::min(S_[s.x_][s.y_].first, S_[s.x_][s.y_].second
@@ -136,9 +142,12 @@ void DStarLite::UpdateVertex(const Node& u) {
   if(u!=goal_){
     std::vector<Node> succ = GetSucc(u);
     double init_min = n*n;
-    for(int i=0;i<succ.size();i++){
-      double new_min = C(u,succ[i])+S_[succ[i].x_][succ[i].y_].first;
-      if(new_min < init_min) init_min = new_min;
+    // for(size_t i=0;i<succ.size();i++){
+    //   double new_min = C(u,succ[i])+S_[succ[i].x_][succ[i].y_].first;
+    //   if(new_min < init_min) init_min = new_min;
+    // }
+    for(const auto& s : succ) {
+      init_min = std::min(init_min, S_[s.x_][s.y_].first + C(u, s));
     }
     S_[u.x_][u.y_].second = init_min;
   }
@@ -178,15 +187,21 @@ int DStarLite::ComputeShortestPath() {
     else if (S_[u.x_][u.y_].first > S_[u.x_][u.y_].second){
       S_[u.x_][u.y_].first = S_[u.x_][u.y_].second;
       std::vector<Node> pred = GetPred(u);
-      for(int i = 0;i<pred.size();i++){
-        UpdateVertex(pred[i]);
+      // for(int i = 0;i<pred.size();i++){
+      //   UpdateVertex(pred[i]);
+      // }
+      for(const auto& p : pred) {
+        UpdateVertex(p);
       }
     }
     else{
       S_[u.x_][u.y_].first = n*n;
       std::vector<Node> pred = GetPred(u);
-      for(int i = 0;i<pred.size();i++){
-        UpdateVertex(pred[i]);
+      // for(int i = 0;i<pred.size();i++){
+      //   UpdateVertex(pred[i]);
+      // }
+      for(const auto& p : pred) {
+        UpdateVertex(p);
       }
       UpdateVertex(u);
     }
@@ -237,7 +252,7 @@ std::vector<Node> DStarLite::Replan(const Node& u){
   double init_min = n*n;
   double new_min = 0;
   Node new_start = Node(start_.x_, start_.y_);
-  for(int i = 0;i<succ.size();i++){
+  for(size_t i = 0; i<succ.size(); i++){
     new_min = C(start_,succ[i])+S_[succ[i].x_][succ[i].y_].first;
     if(new_min < init_min){
       init_min = new_min;
@@ -258,7 +273,7 @@ std::vector<Node> DStarLite::Replan(const Node& u){
   GeneratePathVector();
   return ReturnInvertedVector();
 }
-#endif
+#endif  // DYNAMIC_ALGOS
 
 std::vector<Node> DStarLite::ReturnInvertedVector() const{
   std::vector<Node> inverted_path_vector = path_vector_;
@@ -344,17 +359,17 @@ void DStarLite::DisplayGrid() const {
   for(int j=0;j<n;j++) std::cout <<  "---";
   std::cout << std::endl;
 }
-#endif
+#endif  // DYNAMIC_ALGOS
 
 Node DStarLite::NextPoint() const {
-  int i = 0;
+  size_t i = 0;
   for(i = 0; i < path_vector_.size(); i++){
     if(goal_ == path_vector_[i]){
       break;
     }
   }
   while(path_vector_[i].pid_!=start_.id_){
-    for(int j = 0; j < path_vector_.size(); j++){
+    for(size_t j = 0; j < path_vector_.size(); j++){
       if(path_vector_[i].pid_ == path_vector_[j].id_){
         i=j;
         break;
@@ -385,7 +400,7 @@ void DStarLite::RunDStarLite(bool disp_inc_in){
 
     grid[current.x_][current.y_] = 4;
     if(disp_inc){
-      usleep(disp_p);
+      std::this_thread::sleep_for(disp_p);
       DisplayGrid();
     }
     if(path_vector_[0].cost_==-1){
@@ -399,14 +414,15 @@ void DStarLite::RunDStarLite(bool disp_inc_in){
   grid[start_.x_][start_.y_] = 3;
   grid[current.x_][current.y_] = 4;
   if(disp_inc) {
-    usleep(disp_p);
+    std::this_thread::sleep_for(disp_p);
     DisplayGrid();
   }
   grid[current.x_][current.y_] = 3;
   DisplayGrid();
   return;
 }
-#endif
+#endif  // DYNAMIC_ALGOS
+
 #ifdef BUILD_INDIVIDUAL
 /**
 * @brief Script main function. Generates start and end nodes as well as grid, then creates the algorithm object and calls the main algorithm function.
@@ -414,13 +430,9 @@ void DStarLite::RunDStarLite(bool disp_inc_in){
 */
 int main(){
   int n = 11;
-
-  std::vector<std::vector<int>> grid(n);
-  std::vector<int> tmp(n);
-  for (int i = 0; i < n; i++){
-    grid[i] = tmp;
-  }
+  std::vector<std::vector<int>> grid(n, std::vector<int>(n));
   MakeGrid(grid);
+
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -431,7 +443,7 @@ int main(){
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
   goal.id_ = goal.x_ * n + goal.y_;
-  start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
+  start.h_cost_ = std::abs(start.x_ - goal.x_) + std::abs(start.y_ - goal.y_);
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
@@ -445,4 +457,4 @@ int main(){
  new_d_star_lite.RunDStarLite();
   return 0;
 }
-#endif BUILD_INDIVIDUAL
+#endif  // BUILD_INDIVIDUAL

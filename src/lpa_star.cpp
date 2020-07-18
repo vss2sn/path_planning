@@ -4,6 +4,12 @@
 * @brief Contains the LPAStar class
 */
 
+#include <chrono>
+#include <iomanip>  // TODO: replace setw
+#include <iostream>
+#include <random>
+#include <thread>
+
 #include "lpa_star.hpp"
 
 void LPAStar::VectorInsertionSort(std::vector<Node>& v) const {
@@ -27,16 +33,29 @@ double LPAStar::GetHeuristic(const Node& s1, const Node& s2) const {
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void LPAStar::PrintGRHS() const {
   std::cout << "G values:" << std::endl;
-  for(int i=0;i<n;i++){
-    for(int j=0;j<n;j++){
-      std::cout<< std::setw(5) <<S_[i][j].first << ",";
+  // for(int i=0;i<n;i++){
+  //   for(int j=0;j<n;j++){
+  //     std::cout<< std::setw(5) <<S_[i][j].first << ",";
+  //   }
+  //   std::cout << std::endl;
+  // }
+  // std::cout << "RHS values:" << std::endl;
+  // for(int i=0;i<n;i++){
+  //   for(int j=0;j<n;j++){
+  //     std::cout<< std::setw(5) <<S_[i][j].second << ",";
+  //   }
+  //   std::cout << std::endl;
+  // }
+  for(const auto& row : S_){
+    for(const auto& ele : row){
+      std::cout<< std::setw(5) <<ele.first << ",";
     }
     std::cout << std::endl;
   }
   std::cout << "RHS values:" << std::endl;
-  for(int i=0;i<n;i++){
-    for(int j=0;j<n;j++){
-      std::cout<< std::setw(5) <<S_[i][j].second << ",";
+  for(const auto& row : S_){
+    for(const auto& ele : row){
+      std::cout<< std::setw(5) <<ele.second << ",";
     }
     std::cout << std::endl;
   }
@@ -51,9 +70,17 @@ std::pair<double,double> LPAStar::CalculateKey(const Node& s) const {
 
 std::vector<Node> LPAStar::GetPred(const Node& u) const {
   std::vector<Node> pred;
-  for(auto it=motions.begin();it!=motions.end(); ++it){
+  // for(auto it=motions.begin();it!=motions.end(); ++it){
+  //   // Modify to prevent points already in the queue fro  being added?
+  //   Node new_node = u + *it;
+  //   if(new_node.x_ >= n || new_node.x_ < 0 ||
+  //      new_node.y_ >= n || new_node.y_ < 0 ||
+  //      grid[new_node.x_][new_node.y_]==1) continue;
+  //    pred.push_back(new_node);
+  // }
+  for(const auto& m : motions){
     // Modify to prevent points already in the queue fro  being added?
-    Node new_node = u + *it;
+    Node new_node = u + m;
     if(new_node.x_ >= n || new_node.x_ < 0 ||
        new_node.y_ >= n || new_node.y_ < 0 ||
        grid[new_node.x_][new_node.y_]==1) continue;
@@ -64,8 +91,16 @@ std::vector<Node> LPAStar::GetPred(const Node& u) const {
 
 std::vector<Node> LPAStar::GetSucc(const Node& u) const {
   std::vector<Node> succ;
-  for(auto it=motions.begin();it!=motions.end(); ++it){
-    Node new_node = u + *it;
+  // for(auto it=motions.begin();it!=motions.end(); ++it){
+  //   Node new_node = u + *it;
+  //   if(new_node.x_ < n && new_node.x_ >= 0 && new_node.y_ < n && new_node.y_ >= 0){
+  //          if(grid[new_node.x_][new_node.y_]!=1){
+  //        succ.push_back(new_node);
+  //      }
+  //   }
+  // }
+  for(const auto& m: motions){
+    Node new_node = u + m;
     if(new_node.x_ < n && new_node.x_ >= 0 && new_node.y_ < n && new_node.y_ >= 0){
            if(grid[new_node.x_][new_node.y_]!=1){
          succ.push_back(new_node);
@@ -110,18 +145,13 @@ double LPAStar::C(const Node& s1, const Node& s2) const {
 
 void LPAStar::Init(){
   U_.clear();
+  motions = GetMotion();
+
   double n2 = n*n;
   large_num = std::make_pair(n2,n2);
 
-  motions = GetMotion();
-
-  std::vector<std::pair<double,double>> tmp(n);
-
-  std::fill(tmp.begin(), tmp.end(), large_num);
-  S_ = std::vector<std::vector<std::pair<double,double>>>(n) ;
-  for (int i = 0; i < n; i++){
-    S_[i] = tmp;
-  }
+  std::vector<std::pair<double,double>> tmp(n, large_num);
+  S_ = std::vector<std::vector<std::pair<double,double>>>(n, tmp);
 
   S_[start_.x_][start_.y_].second = 0;
   std::pair<Node, std::pair<double, double>> u_pair = std::make_pair(start_, CalculateKey(start_));
@@ -133,9 +163,12 @@ void LPAStar::UpdateVertex(const Node& u){
   if(u!=start_){
     std::vector<Node> pred = GetPred(u);
     double init_min = n*n;
-    for(int i=0;i<pred.size();i++){
-      double new_min = S_[pred[i].x_][pred[i].y_].first + C(u,pred[i]);
-      if(new_min < init_min) init_min = new_min;
+    // for(int i=0;i<pred.size();i++){
+    //   double new_min = S_[pred[i].x_][pred[i].y_].first + C(u,pred[i]);
+    //   if(new_min < init_min) init_min = new_min;
+    // }
+    for(const auto& p : pred) {
+      init_min = std::min(init_min, S_[p.x_][p.y_].first + C(u, p));
     }
     S_[u.x_][u.y_].second = init_min;
   }
@@ -170,15 +203,15 @@ int LPAStar::ComputeShortestPath(){
     if(S_[u.x_][u.y_].first > S_[u.x_][u.y_].second){
       S_[u.x_][u.y_].first = S_[u.x_][u.y_].second;
       std::vector<Node> succ = GetSucc(u);
-      for(int i = 0;i<succ.size();i++){
-        UpdateVertex(succ[i]);
+      for(const auto& s : succ) {
+        UpdateVertex(s);
       }
     }
     else{
       S_[u.x_][u.y_].first = n*n;
       std::vector<Node> succ = GetSucc(u);
-      for(int i = 0;i<succ.size();i++){
-        UpdateVertex(succ[i]);
+      for(const auto& s : succ) {
+        UpdateVertex(s);
       }
       UpdateVertex(u);
     }
@@ -217,8 +250,8 @@ std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, cons
       Node new_obs = path_vector_[rand];
       std::vector<Node> succ = GetSucc(new_obs);
       if(obs_creation) SetObs(new_obs);
-      for(int i=0;i<succ.size();i++){
-        UpdateVertex(succ[i]);
+      for(const auto& s : succ) {
+        UpdateVertex(s);
       }
       UpdateVertex(new_obs);
     }
@@ -258,7 +291,7 @@ void LPAStar::SetObs(const Node& u) {
     grid[u.x_][u.y_] = 1;
     std::cout << "Obstacle found at: " << std::endl;
     u.PrintStatus();
-    usleep(500000);
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
   }
 }
 
@@ -327,11 +360,7 @@ void LPAStar::DisplayGrid() const {
 int main(){
   int n = 11;
   bool obs_creation = true;
-  std::vector<std::vector<int>> grid(n);
-  std::vector<int> tmp(n);
-  for (int i = 0; i < n; i++){
-    grid[i] = tmp;
-  }
+  std::vector<std::vector<int>> grid(n, std::vector<int>(n));
   MakeGrid(grid);
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
@@ -347,11 +376,10 @@ int main(){
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
-  int max_iter = n;
   PrintGrid(grid);
   std::vector<Node> path_vector;
   LPAStar new_lpa_star;
   path_vector = new_lpa_star.lpa_star(grid, start, goal, n, obs_creation);
   PrintPath(path_vector, start, goal, grid);
 }
-#endif BUILD_INDIVIDUAL
+#endif  // BUILD_INDIVIDUAL

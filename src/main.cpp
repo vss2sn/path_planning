@@ -4,6 +4,9 @@
 * @brief Main file where all the algorithms can be used and tested.
 */
 
+#include <iostream>
+#include <random>
+
 #include "dijkstra.hpp"
 #include "a_star.hpp"
 #include "jump_point_search.hpp"
@@ -16,13 +19,9 @@
 
 int main(){
   int n = 21;
-
-  std::vector<std::vector<int>> grid(n);
-  std::vector<int> tmp(n);
-  for (int i = 0; i < n; i++){
-    grid[i] = tmp;
-  }
+  std::vector<std::vector<int>> grid(n, std::vector<int>(n));
   MakeGrid(grid);
+
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range

@@ -1,7 +1,6 @@
 #include "test_utils.cpp"
 
 TEST(PathPlanningTest, Test1) {
-  int n = 6;
   std::vector<std::vector<int>> grid{
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 1 , 1 , 1 , 1, 1 },

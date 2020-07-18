@@ -4,6 +4,10 @@
 * @brief Contains the RRT_Star class
 */
 
+#include <algorithm>
+#include <cmath>
+#include <random>
+
 #include "rrt_star.hpp"
 
 Node RRTStar::FindNearestPoint(Node& new_node) {
@@ -14,7 +18,7 @@ Node RRTStar::FindNearestPoint(Node& new_node) {
   double dist = (double)(n*n);
   double new_dist = (double)(n*n);
   for(it_v = point_list_.begin(); it_v != point_list_.end(); ++it_v){
-    new_dist = (double)sqrt(((double)(it_v->x_-new_node.x_)*(double)(it_v->x_-new_node.x_))
+    new_dist = (double)std::sqrt(((double)(it_v->x_-new_node.x_)*(double)(it_v->x_-new_node.x_))
                 + ((double)(it_v->y_-new_node.y_)*(double)(it_v->y_-new_node.y_)));
     if(new_dist > threshold_) continue;
     new_dist += it_v->cost_;
@@ -73,8 +77,8 @@ bool RRTStar::CheckObstacle(const Node& n_1, const Node& n_2) const {
       arr[3] = (double)it_v->x_-0.5 - slope*((double)it_v->y_-0.5) - c;
       double count = 0;
       for (int i=0;i<4;i++){
-        if(fabs(arr[i]) <= 0.000001) arr[i] = 0;
-        else count +=arr[i]/fabs(arr[i]);
+        if(std::fabs(arr[i]) <= 0.000001) arr[i] = 0;
+        else count +=arr[i]/std::fabs(arr[i]);
       }
       if(abs(count) < 3) return true;
     }
@@ -94,9 +98,9 @@ Node RRTStar::GenerateRandomNode() const {
 
 void RRTStar::Rewire(const Node& new_node) {
   std::vector<Node>::iterator it_v;
-  for(int i=0;i<near_nodes_.size(); i++){
+  for(size_t i=0;i<near_nodes_.size(); i++){
     if (near_nodes_[i].cost_ > near_nodes_dist_[i] + new_node.cost_){
-      it_v = find (point_list_.begin(), point_list_.end(), near_nodes_[i]);
+      it_v = std::find (point_list_.begin(), point_list_.end(), near_nodes_[i]);
       if (it_v != point_list_.end()){
         it_v->pid_ = new_node.id_;
         it_v->cost_ = near_nodes_dist_[i] + new_node.cost_;
@@ -138,7 +142,7 @@ std::vector<Node> RRTStar::rrt_star(std::vector<std::vector<int>>& grid, const N
     grid[new_node.x_][new_node.y_]=2;
     // Setting to 2 implies visited/considered
 
-    std::vector<Node>::iterator it_v = find (point_list_.begin(), point_list_.end(), new_node);
+    std::vector<Node>::iterator it_v = std::find (point_list_.begin(), point_list_.end(), new_node);
     if (it_v != point_list_.end() && new_node.cost_ < it_v->cost_){
       point_list_.erase(it_v);
       point_list_.push_back(new_node);
@@ -152,14 +156,14 @@ std::vector<Node> RRTStar::rrt_star(std::vector<std::vector<int>>& grid, const N
 
 bool RRTStar::CheckGoalVisible(const Node& new_node) {
   if(!CheckObstacle(new_node, goal_)){
-    double new_dist = (double)sqrt((double)((goal_.x_-new_node.x_)*(goal_.x_-new_node.x_))
+    double new_dist = (double)std::sqrt((double)((goal_.x_-new_node.x_)*(goal_.x_-new_node.x_))
                       + (double)((goal_.y_-new_node.y_)*(goal_.y_-new_node.y_)));
     if(new_dist > threshold_) return false;
     new_dist+=new_node.cost_;
     goal_.pid_ = new_node.id_;
     goal_.cost_ = new_dist;
     std::vector<Node>::iterator it_v;
-    it_v = find (point_list_.begin(), point_list_.end(), goal_);
+    it_v = std::find (point_list_.begin(), point_list_.end(), goal_);
     if(it_v!=point_list_.end() && goal_.cost_ < it_v->cost_){
       point_list_.erase(it_v);
       point_list_.push_back(goal_);
@@ -188,13 +192,9 @@ void RRTStar::CreateObstacleList(std::vector<std::vector<int>>& grid){
 */
 int main(){
   int n = 11;
-
-  std::vector<std::vector<int>> grid(n);
-  std::vector<int> tmp(n);
-  for (int i = 0; i < n; i++){
-    grid[i] = tmp;
-  }
+  std::vector<std::vector<int>> grid(n, std::vector<int>(n));
   MakeGrid(grid);
+
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
@@ -219,4 +219,4 @@ int main(){
 
   return 0;
 }
-#endif
+#endif  // BUILD_INDIVIDUAL

@@ -7,6 +7,8 @@
 #ifndef RRT_STAR_H
 #define RRT_STAR_H
 
+#include <limits>
+
 #include "utils.hpp"
 
 /**
@@ -79,4 +81,4 @@ private:
   int n = 0;
 };
 
-#endif RRT_STAR_H
+#endif  // RRT_STAR_H

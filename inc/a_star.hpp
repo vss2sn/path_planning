@@ -7,6 +7,8 @@
 #ifndef A_STAR_H
 #define A_STAR_H
 
+#include <queue>
+
 #include "utils.hpp"
 
 /**
@@ -37,4 +39,4 @@ private:
   int n;
 };
 
-#endif A_STAR_H
+#endif  // A_STAR_H

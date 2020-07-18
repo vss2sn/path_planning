@@ -1,3 +1,9 @@
+#include <algorithm>
+#include <climits>
+#include <iomanip>  // TODO: replace setw
+#include <iostream>
+#include <random>
+
 #include "genetic_algorithm.hpp"
 
 GeneticAlgorithm::GeneticAlgorithm(const int generations, const int popsize, const float c, const bool shorten_chromosome){
@@ -48,7 +54,7 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(std::vector<std::vector<in
     }
 
     paths_ = new_paths_;
-    while (paths_.size() < popsize_) CrossoverMutation();
+    while (static_cast<int>(paths_.size()) < popsize_) CrossoverMutation();
     // TODO: Consider dynamically modifying path length to move towards optimality
     for(auto& path_seen : paths_){
       int tmp_length = INT_MAX;
@@ -57,9 +63,9 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(std::vector<std::vector<in
         truepaths_.push_back(path_seen);
         if(shorten_chromosome_){
           auto tmp = start_;
-          if(path_seen.size() < tmp_length) tmp_length = path_seen.size();
+          if(static_cast<int>(path_seen.size()) < tmp_length) tmp_length = path_seen.size();
           if(tmp==goal_) tmp_length = 0;
-          for(int i=0;i<path_seen.size();i++){
+          for(size_t i=0;i<path_seen.size();i++){
             tmp = tmp + path_seen[i];
             if(tmp==goal_){
               tmp_length = i;
@@ -88,7 +94,7 @@ std::vector<Node> GeneticAlgorithm::ReturnLastPath() const { // given the way a 
     v.push_back(Node(-1,-1,-1,-1,-1,-1));
     return v;
   }
-  for(int i=0;i<truepaths_[truepaths__size-1].size(); i++){
+  for(size_t i=0;i<truepaths_[truepaths__size-1].size(); i++){
     Node tmp = current + truepaths_[truepaths__size-1][i];
     tmp.id_ = n_*tmp.x_ + tmp.y_;
     tmp.pid_ = current.id_;
@@ -106,9 +112,9 @@ std::vector<Node> GeneticAlgorithm::ReturnLastPath() const { // given the way a 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void GeneticAlgorithm::PrintChromosome(const std::vector<Node>& path) const{
   std::cout << "Chromosome: ";
-  for (auto v : path){
-    for(int i=0;i<motions_.size();i++)
-      if(v==motions_[i]) std::cout << i << " ";
+  for (const auto& v : path){
+    for(size_t i=0; i < motions_.size(); i++)
+      if(v == motions_[i]) std::cout << i << " ";
   }
   std::cout << "Fitness value: " << CalculateFitness(path) << std::endl;
 }
@@ -123,36 +129,29 @@ void GeneticAlgorithm::PrintPathOfChromosome(const std::vector<Node>& path) cons
   }
   std::cout << std::endl;
 }
-#endif
+#endif  // CUSTOM_DEBUG_HELPER_FUNCION
 
 void GeneticAlgorithm::InitialSetup(std::vector<Node>& path) const {
   int d_x = goal_.x_ - start_.x_;
   int d_y = goal_.y_ - start_.y_;
   Node dx, dy;
-  Node h = start_;
-  if(d_x>0) dx = Node(1,0);
-  else {
-    dx = Node(-1,0);
-    d_x=-d_x;
-  }
-  if(d_y>0) dy = Node(0,1);
-  else{
-    dy = Node(0,-1);
-    d_y=-d_y;
-  }
-  while(h!=goal_){
-    if(d_x > 0){
-      d_x--;
-      path.emplace_back(dx);
-      h = h + dx;
-    }
-    if(d_y > 0){
-      d_y--;
-      path.emplace_back(dy);
-      h = h + dy;
-    }
-  }
-  for(int i=path.size();i < path_length_;i++) path.emplace_back(motions_[rand()%4]);
+  if (d_x > 0) dx = Node(1,0);
+  else dx = Node(-1,0);
+  if (d_y > 0) dy = Node(0,1);
+  else dy = Node(0,-1);
+  path.resize(path_length_);
+  auto it = path.begin();
+  std::fill_n(it,
+            std::abs(d_x),
+            dx);
+  std::advance(it, std::abs(d_x));
+  std::fill_n(it,
+            std::abs(d_y),
+            dy);
+  std::advance(it, std::abs(d_y));
+  std::generate_n(it,
+                  std::distance(it, path.end()),
+                  [&](){ return motions_[rand()%4];});
 }
 
 int GeneticAlgorithm::CalculateFitness(const std::vector<Node>& path) const {
@@ -236,11 +235,10 @@ int main(){
   //Make sure start and goal are not obstacles and their ids are correctly assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
-  int max_iter = n;
   PrintGrid(grid);
   std::vector<Node> path_vector;
   GeneticAlgorithm new_genetic_algorithm;
   path_vector = new_genetic_algorithm.genetic_algorithm(grid, start, goal, 2*start.h_cost_);
   PrintPathInOrder(path_vector, start, goal, grid);
 }
-#endif BUILD_INDIVIDUAL
+#endif  // BUILD_INDIVIDUAL
