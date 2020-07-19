@@ -88,7 +88,6 @@ std::vector<Node> JumpPointSearch::jump_point_search(std::vector<std::vector<int
       return closed_list_;
     }
     grid[current.x_][current.y_] = 2; // Point opened
-    int current_cost = current.cost_;
     for(auto it = motion.begin(); it!=motion.end(); ++it){
       Node new_point;
       new_point = current + *it;
@@ -156,4 +155,4 @@ int main(){
   PrintPath(path_vector, start, goal, grid);
   return 0;
 }
-#endif BUILD_INDIVIDUAL
+#endif  // BUILD_INDIVIDUAL

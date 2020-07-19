@@ -1,6 +1,9 @@
 #ifndef JUMP_POINT_SEARCH_H
 #define JUMP_POINT_SEARCH_H
 
+#include <unordered_set>
+#include <queue>
+
 #include "utils.hpp"
 
 class JumpPointSearch{
@@ -17,4 +20,4 @@ private:
   Node start_, goal_;
   int n;
 };
-#endif JUMP_POINT_SEARCH_H
+#endif  // JUMP_POINT_SEARCH_H
