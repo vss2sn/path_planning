@@ -1,3 +1,9 @@
+/**
+* @file genetic_algorithm.cpp
+* @author vss2sn
+* @brief Contains the GeneticAlgorithm class
+*/
+
 #include <algorithm>
 #include <climits>
 #include <iomanip>  // TODO: replace setw

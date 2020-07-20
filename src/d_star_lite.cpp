@@ -3,6 +3,7 @@
 * @author vss2sn
 * @brief Contains the DStarLite class
 */
+
 #include <algorithm>
 #include <cmath>
 #include <iomanip>  // TODO: replace setw

@@ -1,3 +1,9 @@
+/**
+* @file genetic_algorithm.hpp
+* @author vss2sn
+* @brief Contains the GeneticAlgorithm class
+*/
+
 #ifndef GENETIC_ALGORITHM_H
 #define GENETIC_ALGORITHM_H
 

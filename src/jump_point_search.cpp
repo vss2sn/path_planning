@@ -1,10 +1,18 @@
+/**
+* @file jump_point_search.cpp
+* @author vss2sn
+* @brief Contains the JumpPointSearch class
+*/
+
+#include <cmath>
+
 #include "jump_point_search.hpp"
 
-Node JumpPointSearch::jump(Node& new_point, Node& motion, int id){
+Node JumpPointSearch::jump(const Node& new_point, const Node& motion, const int id) {
   Node next_point  = new_point + motion;
   next_point.id_ = n*next_point.x_+next_point.y_;
   next_point.pid_ = id;
-  next_point.h_cost_ = abs(next_point.x_ - goal_.x_) + abs(next_point.y_ - goal_.y_);
+  next_point.h_cost_ = std::abs(next_point.x_ - goal_.x_) + std::abs(next_point.y_ - goal_.y_);
   if(next_point.x_ < 0 || next_point.y_ < 0 || next_point.x_ >= n || next_point.y_ >= n || grid[next_point.x_][next_point.y_]!=0){
     return new_point;
     // return Node(-1,-1,-1,-1,-1,-1);
@@ -25,7 +33,7 @@ Node JumpPointSearch::jump(Node& new_point, Node& motion, int id){
   }
 }
 
-bool JumpPointSearch::has_forced_neighbours(Node& new_point, Node& next_point, Node& motion){
+bool JumpPointSearch::has_forced_neighbours(const Node& new_point, const Node& next_point, const Node& motion) const {
   int cn1x = new_point.x_ + motion.y_;
   int cn1y = new_point.y_ + motion.x_;
 
@@ -51,7 +59,7 @@ bool JumpPointSearch::has_forced_neighbours(Node& new_point, Node& next_point, N
 }
 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
-void JumpPointSearch::InsertionSort(std::vector<Node>& v){
+void JumpPointSearch::InsertionSort(std::vector<Node>& v) const {
    int nV = v.size();
    int i, j;
    Node key;
@@ -67,7 +75,7 @@ void JumpPointSearch::InsertionSort(std::vector<Node>& v){
 }
 #endif
 
-std::vector<Node> JumpPointSearch::jump_point_search(std::vector<std::vector<int>> &grid, Node start_in, Node goal_in){
+std::vector<Node> JumpPointSearch::jump_point_search(std::vector<std::vector<int>> &grid, const Node& start_in, const Node& goal_in){
   this->grid = grid;
   start_ = start_in;
   goal_ = goal_in;
@@ -88,9 +96,9 @@ std::vector<Node> JumpPointSearch::jump_point_search(std::vector<std::vector<int
       return closed_list_;
     }
     grid[current.x_][current.y_] = 2; // Point opened
-    for(auto it = motion.begin(); it!=motion.end(); ++it){
+    for(const auto& m : motion) { //auto it = motion.begin(); it!=motion.end(); ++it){
       Node new_point;
-      new_point = current + *it;
+      new_point = current + m;
       new_point.id_ = n*new_point.x_+new_point.y_;
       new_point.pid_ = current.id_;
       new_point.h_cost_ = abs(new_point.x_ - goal_.x_) + abs(new_point.y_ - goal_.y_);
@@ -103,7 +111,7 @@ std::vector<Node> JumpPointSearch::jump_point_search(std::vector<std::vector<int
         continue; //obstacle or visited
       }
 
-      Node jump_point = jump(new_point, *it, current.id_);
+      Node jump_point = jump(new_point, m, current.id_);
       if(jump_point.id_!=-1){
         open_list_.push(jump_point);
         if(jump_point.x_ == goal_.x_ && jump_point.y_ == goal_.y_){
