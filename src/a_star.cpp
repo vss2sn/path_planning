@@ -59,7 +59,9 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>>& grid, const Node&
         open_list_.push(new_point);
         break;
       }
-      if(new_point.x_ < 0 || new_point.y_ < 0 || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
+      if(new_point.x_ < 0 || new_point.y_ < 0 || new_point.x_ >= n || new_point.y_ >= n) {
+        continue; // Check boundaries
+      }
       if(grid[new_point.x_][new_point.y_]!=0){
         continue; //obstacle or visited
       }

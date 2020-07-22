@@ -36,7 +36,9 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(std::vector<std::vector<in
 
   // Check first path to goal
   found_ = CheckPath(path);
-  if(found_) truepaths_.push_back(path);
+  if(found_) {
+    truepaths_.push_back(path);
+  }
 
   // apply algorithm
   // Allow while loop to continue beyond path found to find optimum path
@@ -54,13 +56,18 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(std::vector<std::vector<in
     std::vector<std::vector<Node>> new_paths_;
     for(int i=0;i < paths_size; ++i){
       if(f_vals[i] <= f_val * c_) {
-        if(shorten_chromosome_) new_paths_.push_back(std::vector<Node>(paths_[i].begin(), paths_[i].begin()+path_length_)); //c provides a margin of error from best path
-        else new_paths_.push_back(paths_[i]);
+        if(shorten_chromosome_) {
+          new_paths_.push_back(std::vector<Node>(paths_[i].begin(), paths_[i].begin()+path_length_)); //c provides a margin of error from best path
+        } else {
+          new_paths_.push_back(paths_[i]);
+        }
       }
     }
 
     paths_ = new_paths_;
-    while (static_cast<int>(paths_.size()) < popsize_) CrossoverMutation();
+    while (static_cast<int>(paths_.size()) < popsize_) {
+      CrossoverMutation();
+    }
     // TODO: Consider dynamically modifying path length to move towards optimality
     for(auto& path_seen : paths_){
       int tmp_length = INT_MAX;
@@ -69,8 +76,12 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(std::vector<std::vector<in
         truepaths_.push_back(path_seen);
         if(shorten_chromosome_){
           auto tmp = start_;
-          if(static_cast<int>(path_seen.size()) < tmp_length) tmp_length = path_seen.size();
-          if(tmp==goal_) tmp_length = 0;
+          if(static_cast<int>(path_seen.size()) < tmp_length) {
+            tmp_length = path_seen.size();
+          }
+          if(tmp==goal_) {
+            tmp_length = 0;
+          }
           for(size_t i=0;i<path_seen.size();i++){
             tmp = tmp + path_seen[i];
             if(tmp==goal_){
@@ -100,13 +111,19 @@ std::vector<Node> GeneticAlgorithm::ReturnLastPath() const { // given the way a 
     v.push_back(Node(-1,-1,-1,-1,-1,-1));
     return v;
   }
-  for(size_t i=0;i<truepaths_[truepaths__size-1].size(); i++){
-    Node tmp = current + truepaths_[truepaths__size-1][i];
-    tmp.id_ = n_*tmp.x_ + tmp.y_;
-    tmp.pid_ = current.id_;
-    current = tmp;
-    v.push_back(tmp);
+  for(const auto& node : truepaths_[truepaths__size-1]) {
+    current = current + node;
+    current.pid_ = current.id_;
+    current.id_ = n_*current.x_ +current.y_;
+    v.push_back(current);
   }
+  // for(size_t i=0;i<truepaths_[truepaths__size-1].size(); i++){
+  //   Node tmp = current + truepaths_[truepaths__size-1][i];
+  //   tmp.id_ = n_*tmp.x_ + tmp.y_;
+  //   tmp.pid_ = current.id_;
+  //   current = tmp;
+  //   v.push_back(tmp);
+  // }
 
   if(v.size()==1){
     v.clear();
@@ -141,10 +158,16 @@ void GeneticAlgorithm::InitialSetup(std::vector<Node>& path) const {
   int d_x = goal_.x_ - start_.x_;
   int d_y = goal_.y_ - start_.y_;
   Node dx, dy;
-  if (d_x > 0) dx = Node(1,0);
-  else dx = Node(-1,0);
-  if (d_y > 0) dy = Node(0,1);
-  else dy = Node(0,-1);
+  if (d_x > 0) {
+    dx = Node(1, 0);
+  } else {
+    dx = Node(-1, 0);
+  }
+  if (d_y > 0) {
+    dy = Node(0, 1);
+  } else {
+    dy = Node(0, -1);
+  }
   path.resize(path_length_);
   auto it = path.begin();
   std::fill_n(it,
@@ -165,10 +188,15 @@ int GeneticAlgorithm::CalculateFitness(const std::vector<Node>& path) const {
   Node i = start_;
   for(auto& tmp : path){
     i=i+tmp;
-    if(i.x_ < 0 || i.x_ >= n_ || i.y_ < 0 || i.y_ >= n_) return INT_MAX;
-    else if(grid_[i.x_][i.y_]==1) cost += n_*abs(goal_.x_ - i.x_) + n_*abs(goal_.y_-i.y_);
-    else if(i==goal_) break;
-    else cost+=abs(goal_.x_ - i.x_) + abs(goal_.y_-i.y_); // Can add a scaling factor here
+    if(i.x_ < 0 || i.x_ >= n_ || i.y_ < 0 || i.y_ >= n_) {
+      return INT_MAX;
+    } else if(grid_[i.x_][i.y_]==1) {
+      cost += n_*abs(goal_.x_ - i.x_) + n_*abs(goal_.y_-i.y_);
+    } else if(i==goal_) {
+      break;
+    } else {
+      cost+=abs(goal_.x_ - i.x_) + abs(goal_.y_-i.y_); // Can add a scaling factor here
+    }
   }
   return cost;
 }
@@ -178,16 +206,25 @@ void GeneticAlgorithm::CrossoverMutation(){
   int p2 = rand()%paths_.size();
   std::vector<Node> child;
   int a;
-  if(paths_[p1].size() > paths_[p2].size()) a = paths_[p1].size();
-  else a = paths_[p2].size();
-  if(a > path_length_) a = path_length_;
+  if(paths_[p1].size() > paths_[p2].size()) {
+    a = paths_[p1].size();
+  } else {
+    a = paths_[p2].size();
+  }
+  if(a > path_length_) {
+    a = path_length_;
+  }
   Node current = start_;
 
   for(int i=0;i<a;i++){
     int random_int = rand()%100;
-    if(random_int<25) child.push_back(paths_[p1][i]);
-    else if(random_int<50) child.push_back(paths_[p2][i]);
-    else child.push_back(motions_[rand()%4]);
+    if(random_int<25) {
+      child.push_back(paths_[p1][i]);
+    } else if(random_int<50) {
+      child.push_back(paths_[p2][i]);
+    } else {
+      child.push_back(motions_[rand()%4]);
+    }
     auto tmp = current;
     current = current + child.back();
     // Prevents the new chromosome from going beyond the grid
@@ -205,13 +242,20 @@ void GeneticAlgorithm::CrossoverMutation(){
 // NOTE: Consider storing the point where an obstacle is encountereed and forcig that gene/motion to randomly mutate for a quicker convergence to a solution while maintaining randomness
 bool GeneticAlgorithm::CheckPath(const std::vector<Node>& path) const {
   Node current = start_;
-  if(current == goal_) return true;
-  for(auto it = path.begin(); it!=path.end();it++){
-    current = current + *it;
-    if(current==goal_) return true;
-    else if(current.x_ < 0 || current.x_ >= n_ || current.y_ < 0 || current.y_ >= n_ || grid_[current.x_][current.y_]==1) return false;
+  if (current == goal_) {
+    return true;
   }
-  if(current==goal_) return true;
+  for(const auto& node : path){
+    current = current + node;
+    if(current==goal_) {
+      return true;
+    } else if(current.x_ < 0 || current.x_ >= n_ || current.y_ < 0 || current.y_ >= n_ || grid_[current.x_][current.y_]==1) {
+      return false;
+    }
+  }
+  if(current==goal_) {
+    return true;
+  }
   return false;
 }
 

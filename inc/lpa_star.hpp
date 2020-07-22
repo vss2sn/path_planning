@@ -5,7 +5,7 @@
 */
 
 #ifndef LPA_STAR_H
-#define LPA_STAR__H
+#define LPA_STAR_H
 
 #include "utils.hpp"
 

@@ -17,19 +17,25 @@ Node JumpPointSearch::jump(const Node& new_point, const Node& motion, const int 
     return new_point;
     // return Node(-1,-1,-1,-1,-1,-1);
   }
-  if(pruned.find(next_point.id_)!=pruned.end()) pruned.insert(next_point.id_);
-  if(next_point == goal_) return next_point;
+  if(pruned.find(next_point.id_)!=pruned.end()) {
+    pruned.insert(next_point.id_);
+  }
+  if(next_point == goal_) {
+    return next_point;
+  }
   bool fn = false;
   fn = has_forced_neighbours(new_point, next_point, motion);
   if(fn){
     // std::cout << "Forced neighbours found"<<std::endl;
     return next_point;
-  }
-  else{
+  } else{
     Node jump_node = jump(next_point, motion, id);
     // Prevent over shoot
-    if(jump_node.cost_ !=-1 &&  jump_node.cost_+ jump_node.h_cost_  <= next_point.cost_ + next_point.h_cost_) return jump_node;
-    else return next_point;
+    if(jump_node.cost_ !=-1 &&  jump_node.cost_+ jump_node.h_cost_  <= next_point.cost_ + next_point.h_cost_) {
+      return jump_node;
+    } else {
+      return next_point;
+    }
   }
 }
 
@@ -48,11 +54,15 @@ bool JumpPointSearch::has_forced_neighbours(const Node& new_point, const Node& n
 
   bool a = !(cn1x < 0 || cn1y < 0 || cn1x >= n || cn1y >= n || grid[cn1x][cn1y]==1);
   bool b = !(nn1x < 0 || nn1y < 0 || nn1x >= n || nn1y >= n || grid[nn1x][nn1y]==1);
-  if(a!=b) return true;
+  if(a!=b) {
+    return true;
+  }
 
   a = !(cn2x < 0 || cn2y < 0 || cn2x >= n || cn2y >= n || grid[cn2x][cn2y]==1);
   b = !(nn2x < 0 || nn2y < 0 || nn2x >= n || nn2y >= n || grid[nn2x][nn2y]==1);
-  if(a!=b) return true;
+  if(a!=b) {
+    return true;
+  }
 
   return false;
 
@@ -106,7 +116,9 @@ std::vector<Node> JumpPointSearch::jump_point_search(std::vector<std::vector<int
         open_list_.push(new_point);
         break;
       }
-      if(new_point.x_ < 0 || new_point.y_ < 0 || new_point.x_ >= n || new_point.y_ >= n) continue; // Check boundaries
+      if(new_point.x_ < 0 || new_point.y_ < 0 || new_point.x_ >= n || new_point.y_ >= n) {
+        continue; // Check boundaries
+      }
       if(grid[new_point.x_][new_point.y_]!=0){
         continue; //obstacle or visited
       }

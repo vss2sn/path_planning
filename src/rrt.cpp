@@ -14,16 +14,26 @@ Node RRT::FindNearestPoint(Node& new_node) const {
   std::vector<Node>::const_iterator it_v;
   std::vector<Node>::const_iterator it_v_store;
   //use just distance not total cost
-  double dist = (double)(n*n);
+  double dist = static_cast<double>(n*n);
   double new_dist = dist;
   for(it_v = point_list_.begin(); it_v != point_list_.end(); ++it_v){
-    new_dist = (double)sqrt((double)(it_v->x_-new_node.x_)*(double)(it_v->x_-new_node.x_)+
-                            (double)(it_v->y_-new_node.y_)*(double)(it_v->y_-new_node.y_));
-    if(new_dist > threshold_) continue;
-    if(CheckObstacle(*it_v, new_node)) continue;
-    if(it_v->id_==new_node.id_) continue;
-    if(it_v->pid_==new_node.id_) continue;
-    if(new_dist >= dist) continue;
+    new_dist = static_cast<double>(std::sqrt(static_cast<double>(it_v->x_-new_node.x_)*static_cast<double>(it_v->x_-new_node.x_)+
+                            static_cast<double>(it_v->y_-new_node.y_)*static_cast<double>(it_v->y_-new_node.y_)));
+    if(new_dist > threshold_) {
+      continue;
+    }
+    if(CheckObstacle(*it_v, new_node)) {
+      continue;
+    }
+    if(it_v->id_==new_node.id_) {
+      continue;
+    }
+    if(it_v->pid_==new_node.id_) {
+      continue;
+    }
+    if(new_dist >= dist) {
+      continue;
+    }
     dist = new_dist;
     it_v_store = it_v;
   }
@@ -34,21 +44,29 @@ Node RRT::FindNearestPoint(Node& new_node) const {
   }
   return nearest_node;
 }
+
 bool RRT::CheckObstacle(const Node& n_1, const Node& n_2) const {
   if (n_2.y_ - n_1.y_ == 0){
     double c = n_2.y_;
-    for(auto it_v = obstacle_list_.begin(); it_v!=obstacle_list_.end(); ++it_v){
-      if(!(((n_1.x_>=it_v->x_) && (it_v->x_>= n_2.x_)) || ((n_1.x_<=it_v->x_) && (it_v->x_<= n_2.x_)))) continue;
-      if ((double)it_v->y_ == c) return true;
+    for (const auto& obs_node : obstacle_list_) {
+      if(!(((n_1.x_>=obs_node.x_) && (obs_node.x_>= n_2.x_)) || ((n_1.x_<=obs_node.x_) && (obs_node.x_<= n_2.x_)))) {
+        continue;
+      }
+      if (static_cast<double>(obs_node.y_) == c){
+        return true;
+      }
     }
   }
   else {
-    double slope = (double)(n_2.x_ - n_1.x_)/(double)(n_2.y_ - n_1.y_);
-    std::vector<Node>::iterator it_v;
-    double c = (double)n_2.x_ - slope * (double)n_2.y_;
-    for(auto it_v = obstacle_list_.begin(); it_v!=obstacle_list_.end(); ++it_v){
-      if(!(((n_1.y_>=it_v->y_) && (it_v->y_>= n_2.y_)) || ((n_1.y_<=it_v->y_) && (it_v->y_<= n_2.y_)))) continue;
-      if(!(((n_1.x_>=it_v->x_) && (it_v->x_>= n_2.x_)) || ((n_1.x_<=it_v->x_) && (it_v->x_<= n_2.x_)))) continue;
+    double slope = static_cast<double>(n_2.x_ - n_1.x_)/static_cast<double>(n_2.y_ - n_1.y_);
+    double c = static_cast<double>(n_2.x_) - slope * static_cast<double>(n_2.y_);
+    for (const auto& obs_node : obstacle_list_) {
+      if(!(((n_1.y_>=obs_node.y_) && (obs_node.y_>= n_2.y_)) || ((n_1.y_<=obs_node.y_) && (obs_node.y_<= n_2.y_)))) {
+        continue;
+      }
+      if(!(((n_1.x_>=obs_node.x_) && (obs_node.x_>= n_2.x_)) || ((n_1.x_<=obs_node.x_) && (obs_node.x_<= n_2.x_)))) {
+        continue;
+      }
       double arr[4];
       // Using properties of a point and a line here.
       // If the obtacle lies on one side of a line, substituting its edge points
@@ -63,21 +81,25 @@ bool RRT::CheckObstacle(const Node& n_1, const Node& n_2) const {
       // 0 point on side 1, 3 points on side 2, (1 point on the line, ie,
       // grazes the obstacle) the sum is 3 (0+3)
       // Hence the condition < 3
-      arr[0] = (double)it_v->x_+0.5 - slope*((double)it_v->y_+0.5) - c;
-      arr[1] = (double)it_v->x_+0.5 - slope*((double)it_v->y_-0.5) - c;
-      arr[2] = (double)it_v->x_-0.5 - slope*((double)it_v->y_+0.5) - c;
-      arr[3] = (double)it_v->x_-0.5 - slope*((double)it_v->y_-0.5) - c;
+      arr[0] = static_cast<double>(obs_node.x_)+0.5 - slope*(static_cast<double>(obs_node.y_)+0.5) - c;
+      arr[1] = static_cast<double>(obs_node.x_)+0.5 - slope*(static_cast<double>(obs_node.y_)-0.5) - c;
+      arr[2] = static_cast<double>(obs_node.x_)-0.5 - slope*(static_cast<double>(obs_node.y_)+0.5) - c;
+      arr[3] = static_cast<double>(obs_node.x_)-0.5 - slope*(static_cast<double>(obs_node.y_)-0.5) - c;
       double count = 0;
-      for (int i=0;i<4;i++){
-        if(fabs(arr[i]) <= 0.000001) arr[i] = 0;
-        else count +=arr[i]/fabs(arr[i]);
+      for(auto& a : arr) {
+        if(std::fabs(a) <= 0.000001) {
+          a = 0;
+        } else {
+          count += a/std::fabs(a);
+        }
       }
-      if(abs(count) < 3) return true;
+      if (std::abs(count) < 3) {
+        return true;
+      }
     }
   }
   return false;
 }
-
 Node RRT::GenerateRandomNode(const int n) const {
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
@@ -98,17 +120,25 @@ std::vector<Node> RRT::rrt(std::vector<std::vector<int>>& grid, const Node& star
   point_list_.push_back(start_);
   Node new_node = start_;
   grid[start_.x_][start_.y_]=2;
-  if (CheckGoalVisible(new_node)) return this->point_list_;
+  if (CheckGoalVisible(new_node)) {
+    return this->point_list_;
+  }
   int iter = 0;
   while(iter <= max_iter){
     iter++;
     new_node = GenerateRandomNode(n);
-    if (grid[new_node.x_][new_node.y_]!=0) continue;
+    if (grid[new_node.x_][new_node.y_]!=0) {
+      continue;
+    }
     Node nearest_node = FindNearestPoint(new_node);
-    if(nearest_node.id_ == -1) continue;
+    if(nearest_node.id_ == -1) {
+      continue;
+    }
     grid[new_node.x_][new_node.y_]=2;
     point_list_.push_back(new_node);
-    if (CheckGoalVisible(new_node)) return this->point_list_;
+    if (CheckGoalVisible(new_node)) {
+      return this->point_list_;
+    }
   }
   Node no_path_node(-1,-1,-1,-1,-1,-1);
   point_list_.clear();
@@ -118,7 +148,7 @@ std::vector<Node> RRT::rrt(std::vector<std::vector<int>>& grid, const Node& star
 
 bool RRT::CheckGoalVisible(const Node& new_node) {
   if(!CheckObstacle(new_node, goal_)){
-    double new_dist = (double)sqrt((double)(goal_.x_-new_node.x_)*(double)(goal_.x_-new_node.x_) + (double)(goal_.y_-new_node.y_)*(double)(goal_.y_-new_node.y_));
+    double new_dist = static_cast<double>(std::sqrt(static_cast<double>(goal_.x_-new_node.x_)*static_cast<double>(goal_.x_-new_node.x_) + static_cast<double>(goal_.y_-new_node.y_)*static_cast<double>(goal_.y_-new_node.y_)));
     if(new_dist <= threshold_){
       goal_.pid_ = new_node.id_;
       goal_.cost_ = new_dist + new_node.cost_;

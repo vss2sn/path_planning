@@ -80,6 +80,17 @@
 4. Add test of probabilistic completeness for RRT.
 5. Formalize pseudocode and add references for ACO.
 6. Add documentation for jump point search.
+7. Refactor
+  1. c++17 snytax
+  2. Constructors to use initializer list
+  3. declare const variables consts
+  4. switch to range based loops
+  5. formatting
+  6. obstacle detection for rrt and rrt star
+  7. excessive if statements
+  8. refactor to use ifs without jumps
+  9. use stl where possible
+  10. remove static casts
 
 <a name="consider"></a>
 #### Consider: ####

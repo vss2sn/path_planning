@@ -56,19 +56,26 @@ Node Node::operator-(const Node& p) const {
 // }
 
 bool Node::operator==(const Node& p) const {
-  if (this->x_ == p.x_ && this->y_ == p.y_) return true;
+  if (this->x_ == p.x_ && this->y_ == p.y_) {
+    return true;
+  }
   return false;
 }
 
 bool Node::operator!=(const Node& p) const {
-  if (this->x_ != p.x_ || this->y_ != p.y_) return true;
+  if (this->x_ != p.x_ || this->y_ != p.y_) {
+    return true;
+  }
   return false;
 }
 
 bool compare_cost::operator()(const Node& p1, const Node& p2) const {
   // Can modify this to allow tie breaks based on heuristic cost if required
-  if (p1.cost_ + p1.h_cost_ > p2.cost_ + p2.h_cost_) return true;
-  else if (p1.cost_ + p1.h_cost_ == p2.cost_ + p2.h_cost_ && p1.h_cost_ >= p2.h_cost_) return true;
+  if (p1.cost_ + p1.h_cost_ > p2.cost_ + p2.h_cost_) {
+    return true;
+  } else if (p1.cost_ + p1.h_cost_ == p2.cost_ + p2.h_cost_ && p1.h_cost_ >= p2.h_cost_) {
+    return true;
+  }
   return false;
 }
 
@@ -131,15 +138,22 @@ void PrintGrid(const std::vector<std::vector<int>>& grid){
 
   for(const auto& row : grid) {
     for(const auto& ele : row) {
-      if(ele==3) std::cout << GREEN << ele << RESET << " , ";
-      else if(ele==1) std::cout << RED << ele << RESET << " , ";
-      else if(ele==2) std::cout << BLUE << ele << RESET << " , ";
-      else std::cout << ele << " , ";
+      if(ele==3) {
+        std::cout << GREEN << ele << RESET << " , ";
+      } else if(ele==1) {
+        std::cout << RED << ele << RESET << " , ";
+      } else if(ele==2) {
+        std::cout << BLUE << ele << RESET << " , ";
+      } else {
+        std::cout << ele << " , ";
+      }
     }
     std::cout << std::endl << std::endl;
   }
 
-  for(int j=0;j<n;j++) std::cout <<  "---";
+  for (int j = 0; j < n; j++) {
+    std::cout << "---";
+  }
   std::cout << std::endl;
 }
 
@@ -155,7 +169,9 @@ void PrintPath(std::vector<Node>& path_vector, const Node& start, const Node& go
       path_vector[i].PrintStatus();
       grid[path_vector[i].x_][path_vector[i].y_] = 3;
       while(path_vector[i].id_!=start.id_){
-        if(path_vector[i].id_ == path_vector[i].pid_) break;
+        if(path_vector[i].id_ == path_vector[i].pid_) {
+          break;
+        }
         for(size_t j = 0; j < path_vector.size(); j++){
           if(path_vector[i].pid_ == path_vector[j].id_){
             i=j;
@@ -182,8 +198,9 @@ void PrintCost(const std::vector<std::vector<int>>& grid, const std::vector<Node
           break;
         }
       }
-      if(it_v == point_list.end())
-      std::cout << std::setw(10) << "  , ";
+      if(it_v == point_list.end()) {
+        std::cout << std::setw(10) << "  , ";
+      }
     }
     std::cout << std::endl << std::endl;
   }
@@ -197,7 +214,9 @@ void PrintPathInOrder(const std::vector<Node>& path_vector, const Node& start, c
   }
   std::cout << "Path (goal to start):" << std::endl;
   size_t i=0;
-  while(path_vector[i]!=goal) i++;
+  while (path_vector[i] != goal) {
+    i++;
+  }
   for(; i>0; i=i-1){
     path_vector[i].PrintStatus();
     grid[path_vector[i].x_][path_vector[i].y_]=3;

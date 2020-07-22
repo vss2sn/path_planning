@@ -59,7 +59,9 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
 		for(int j=0;j<grid_size_;j++){
 			for(auto& motion : motions_){
 				c = Node(i,j) + motion;
-				if(c.x_ >=0 && c.x_ < grid_size_ && c.y_ >=0 && c.y_ < grid_size_) pheromone_edges_.insert({std::make_pair(i*grid_size_ + j, c.x_*grid_size_ + c.y_) , 1.0});
+				if(c.x_ >=0 && c.x_ < grid_size_ && c.y_ >=0 && c.y_ < grid_size_) {
+					pheromone_edges_.insert({std::make_pair(i*grid_size_ + j, c.x_*grid_size_ + c.y_) , 1.0});
+				}
 			}
 		}
 	}
@@ -98,15 +100,22 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
             prob_sum += new_prob;
           }
         }
-        if(n_obs==static_cast<int>(possible_positions.size())) break;// Ant in a cul-de-sac
-        else if(prob_sum == 0){
+        if(n_obs==static_cast<int>(possible_positions.size())) {
+					break;// Ant in a cul-de-sac
+				} else if(prob_sum == 0){
           double new_prob = 1.0/(static_cast<int>(possible_positions.size())-n_obs);
           for(size_t i=0;i<possible_positions.size();i++){
-            if(grid_[possible_positions[i].x_][possible_positions[i].y_]==0) possible_probabilities[i]=new_prob;
-            else possible_probabilities[i]=0;
+            if(grid_[possible_positions[i].x_][possible_positions[i].y_]==0) {
+							possible_probabilities[i]=new_prob;
+						} else {
+							possible_probabilities[i]=0;
+						}
           }
-        }
-        else for(auto& p : possible_probabilities) p/=prob_sum;
+        } else {
+					for(auto& p : possible_probabilities) {
+						p/=prob_sum;
+					}
+				}
         std::discrete_distribution<> dist(possible_probabilities.begin(), possible_probabilities.end());
         ant.previous_node_ = ant.current_node_;
         ant.current_node_ = possible_positions[dist(engine)];
@@ -127,7 +136,12 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
     }
 
 		// Pheromone deterioration
-    for(auto it = pheromone_edges_.begin(); it!=pheromone_edges_.end();it++) it->second = it->second*(1-evap_rate_);
+    // for(auto it = pheromone_edges_.begin(); it!=pheromone_edges_.end();it++) {
+		// 	it->second = it->second*(1-evap_rate_);
+		// }
+		for(auto& pheromone_edge : pheromone_edges_) {
+			pheromone_edge.second *= (1-evap_rate_);
+		}
 
     int bpl = INT_MAX;
     std::vector<Node> bp;
@@ -147,7 +161,9 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
         }
       }
     }
-    if(i+1==iterations_) last_best_path = bp;
+    if(i+1==iterations_) {
+			last_best_path = bp;
+		}
   }//for every iteration loop ends here
 	if(last_best_path.empty()){
 		last_best_path.clear();
@@ -155,7 +171,9 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
 		last_best_path.push_back(no_path_node);
 		return last_best_path;
 	}
-  for(size_t i=1; i < last_best_path.size(); i++) last_best_path[i].pid_ = last_best_path[i-1].id_;
+  for(size_t i=1; i < last_best_path.size(); i++) {
+		last_best_path[i].pid_ = last_best_path[i-1].id_;
+	}
   last_best_path.back().id_ = last_best_path.back().x_*grid_size_ + last_best_path.back().y_;
   return last_best_path;
 }

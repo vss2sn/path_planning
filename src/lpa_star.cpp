@@ -83,7 +83,9 @@ std::vector<Node> LPAStar::GetPred(const Node& u) const {
     Node new_node = u + m;
     if(new_node.x_ >= n || new_node.x_ < 0 ||
        new_node.y_ >= n || new_node.y_ < 0 ||
-       grid[new_node.x_][new_node.y_]==1) continue;
+       grid[new_node.x_][new_node.y_]==1) {
+         continue;
+       }
      pred.push_back(new_node);
   }
   return pred;
@@ -102,7 +104,7 @@ std::vector<Node> LPAStar::GetSucc(const Node& u) const {
   for(const auto& m: motions){
     Node new_node = u + m;
     if(new_node.x_ < n && new_node.x_ >= 0 && new_node.y_ < n && new_node.y_ >= 0){
-           if(grid[new_node.x_][new_node.y_]!=1){
+       if(grid[new_node.x_][new_node.y_]!=1){
          succ.push_back(new_node);
        }
     }
@@ -216,7 +218,9 @@ int LPAStar::ComputeShortestPath(){
       UpdateVertex(u);
     }
   }
-  if (S_[goal_.x_][goal_.y_] ==  large_num)return -1;
+  if (S_[goal_.x_][goal_.y_] == large_num) {
+    return -1;
+  }
   return 0;
 }
 
@@ -238,7 +242,9 @@ std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, cons
     grid_in = grid;
     for(int i=0;i<n;i++){
       for(int j=0;j<n;j++){
-        if(grid_in[i][j]==2) grid_in[i][j]=0;
+        if (grid_in[i][j] == 2) {
+          grid_in[i][j] = 0;
+        }
       }
     }
     return path_vector_;
@@ -249,7 +255,9 @@ std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, cons
       int rand = distr(eng)*(path_vector_.size()/(n-1)); // Scaling along path so any point on path could become an obstacle
       Node new_obs = path_vector_[rand];
       std::vector<Node> succ = GetSucc(new_obs);
-      if(obs_creation) SetObs(new_obs);
+      if (obs_creation) {
+        SetObs(new_obs);
+      }
       for(const auto& s : succ) {
         UpdateVertex(s);
       }
@@ -263,7 +271,9 @@ std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, cons
       grid_in = grid;
       for(int i=0;i<n;i++){
         for(int j=0;j<n;j++){
-          if(grid_in[i][j]==2) grid_in[i][j]=0;
+          if (grid_in[i][j] == 2) {
+            grid_in[i][j] = 0;
+          }
         }
       }
       return path_vector_;
@@ -274,7 +284,9 @@ std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, cons
   grid_in = grid;
   for(int i=0;i<n;i++){
     for(int j=0;j<n;j++){
-      if(grid_in[i][j]==2) grid_in[i][j]=0;
+      if (grid_in[i][j] == 2) {
+        grid_in[i][j] = 0;
+      }
     }
   }
   return path_vector_;
@@ -302,8 +314,8 @@ void LPAStar::GeneratePathVector(){
   while(path_vector_[0]!=start_){
     Node u = path_vector_[0];
     grid[u.x_][u.y_]=2;
-    for(auto it=motions.begin();it!=motions.end(); ++it){
-      Node new_node = u + *it;
+    for(const auto& motion : motions){
+      Node new_node = u + motion;
       if(new_node.x_ >= n || new_node.x_ < 0 || new_node.y_ >= n || new_node.y_ < 0
          || grid[new_node.x_][new_node.y_]==1){
         continue;
