@@ -210,7 +210,7 @@ void PrintCost(const std::vector<std::vector<int>>& grid, const std::vector<Node
   }
 }
 
-void PrintPathInOrder(const std::vector<Node>& path_vector, const Node& start, const Node& goal, std::vector<std::vector<int>>& grid) {
+void PrintPathInOrder(const std::vector<Node>& path_vector, const Node& /*start*/, const Node& goal, std::vector<std::vector<int>>& grid) {
   if(path_vector[0].id_ == -1){
     std::cout << "Path not found" << std::endl;
     PrintGrid(grid);
