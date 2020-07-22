@@ -12,6 +12,9 @@
 
 #include "lpa_star.hpp"
 
+// constants
+constexpr int obs_found_pause_time = 500;  // ms
+
 void LPAStar::VectorInsertionSort(std::vector<Node>& v) const {
    int n = v.size();
    int i, j;
@@ -303,7 +306,7 @@ void LPAStar::SetObs(const Node& u) {
     grid[u.x_][u.y_] = 1;
     std::cout << "Obstacle found at: " << std::endl;
     u.PrintStatus();
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    std::this_thread::sleep_for(std::chrono::milliseconds(obs_found_pause_time));
   }
 }
 

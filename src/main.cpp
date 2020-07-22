@@ -18,7 +18,7 @@
 #include "genetic_algorithm.hpp"
 
 int main(){
-  int n = 21;
+  constexpr int n = 21;
   std::vector<std::vector<int>> grid(n, std::vector<int>(n));
   MakeGrid(grid);
 
@@ -43,12 +43,12 @@ int main(){
   std::vector<std::vector<int>> main_grid = grid;
 
   // Variables for RRT and RRTStar
-  double threshold = 2;
-  int max_iter_x_factor = 20;
+  constexpr double threshold = 2;
+  constexpr int max_iter_x_factor = 20;
 
   // Variables for Ant Colony Optimization
-  int n_ants = 10, iterations = 50;
-  float alpha = 1, beta =0.7, evap_rate = 0.3, Q = 10;
+  constexpr int n_ants = 10, iterations = 50;
+  constexpr float alpha = 1, beta =0.7, evap_rate = 0.3, Q = 10;
 
   // Resetting grid
   // Create object for the algorithm

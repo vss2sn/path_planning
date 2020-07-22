@@ -12,6 +12,8 @@
 
 #include "genetic_algorithm.hpp"
 
+constexpr int random_range_max = 100;
+
 GeneticAlgorithm::GeneticAlgorithm(const int generations, const int popsize, const float c, const bool shorten_chromosome){
   this->generations_ = generations;
   this->popsize_ = popsize;
@@ -217,10 +219,10 @@ void GeneticAlgorithm::CrossoverMutation(){
   Node current = start_;
 
   for(int i=0;i<a;i++){
-    int random_int = rand()%100;
-    if(random_int<25) {
+    int random_int = rand()%random_range_max;
+    if(random_int < random_range_max/4) {
       child.push_back(paths_[p1][i]);
-    } else if(random_int<50) {
+    } else if(random_int<random_range_max/2) {
       child.push_back(paths_[p2][i]);
     } else {
       child.push_back(motions_[rand()%4]);

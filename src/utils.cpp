@@ -10,6 +10,10 @@
 
 #include "utils.hpp"
 
+// constants
+constexpr int spacing_for_grid = 10;
+
+
 Node::Node(const int x, const int y, const double cost, const double h_cost, const int id, const int pid) {
   this->x_ = x;
   this->y_ = y;
@@ -194,12 +198,12 @@ void PrintCost(const std::vector<std::vector<int>>& grid, const std::vector<Node
     for(int j=0;j<n;j++){
       for(it_v = point_list.begin(); it_v != point_list.end(); ++it_v){
         if(i == it_v->x_ && j== it_v->y_){
-          std::cout << std::setw(10) <<it_v->cost_ << " , ";
+          std::cout << std::setw(spacing_for_grid) <<it_v->cost_ << " , ";
           break;
         }
       }
       if(it_v == point_list.end()) {
-        std::cout << std::setw(10) << "  , ";
+        std::cout << std::setw(spacing_for_grid) << "  , ";
       }
     }
     std::cout << std::endl << std::endl;

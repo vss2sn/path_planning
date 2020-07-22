@@ -10,6 +10,10 @@
 
 #include "rrt_star.hpp"
 
+// constants
+constexpr double half_grid_unit = 0.5;
+constexpr double tol_l_limit = 0.000001;
+
 Node RRTStar::FindNearestPoint(Node& new_node) {
   Node nearest_node(-1,-1,-1,-1,-1,-1);
   std::vector<Node>::const_iterator it_v;
@@ -88,13 +92,13 @@ bool RRTStar::CheckObstacle(const Node& n_1, const Node& n_2) const {
       // 0 point on side 1, 3 points on side 2, (1 point on the line, ie,
       // grazes the obstacle) the sum is 3 (0+3)
       // Hence the condition < 3
-      arr[0] = static_cast<double>(obs_node.x_)+0.5 - slope*(static_cast<double>(obs_node.y_)+0.5) - c;
-      arr[1] = static_cast<double>(obs_node.x_)+0.5 - slope*(static_cast<double>(obs_node.y_)-0.5) - c;
-      arr[2] = static_cast<double>(obs_node.x_)-0.5 - slope*(static_cast<double>(obs_node.y_)+0.5) - c;
-      arr[3] = static_cast<double>(obs_node.x_)-0.5 - slope*(static_cast<double>(obs_node.y_)-0.5) - c;
+      arr[0] = static_cast<double>(obs_node.x_)+half_grid_unit - slope*(static_cast<double>(obs_node.y_)+half_grid_unit) - c;
+      arr[1] = static_cast<double>(obs_node.x_)+half_grid_unit - slope*(static_cast<double>(obs_node.y_)-half_grid_unit) - c;
+      arr[2] = static_cast<double>(obs_node.x_)-half_grid_unit - slope*(static_cast<double>(obs_node.y_)+half_grid_unit) - c;
+      arr[3] = static_cast<double>(obs_node.x_)-half_grid_unit - slope*(static_cast<double>(obs_node.y_)-half_grid_unit) - c;
       double count = 0;
       for(auto& a : arr) {
-        if(std::fabs(a) <= 0.000001) {
+        if(std::fabs(a) <= tol_l_limit) {
           a = 0;
         } else {
           count += a/std::fabs(a);

@@ -91,7 +91,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
              && possible_position!=ant.previous_node_){
             possible_positions.push_back(possible_position);
             double new_prob = std::pow(pheromone_edges_[std::make_pair(possible_position.id_, ant.current_node_.id_)], alpha_) *
-              std::pow(1.0/std::pow(std::pow((possible_position.x_ - goal_.x_),2) +std::pow((possible_position.y_ - goal_.y_),2),0.5), beta_);
+              std::pow(1.0/std::sqrt(std::pow((possible_position.x_ - goal_.x_),2) +std::pow((possible_position.y_ - goal_.y_),2)), beta_);
 						if(grid_[possible_position.x_][possible_position.y_]==1){
 							n_obs+=1;
 							new_prob = 0;
