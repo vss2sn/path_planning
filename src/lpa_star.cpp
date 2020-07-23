@@ -255,7 +255,7 @@ std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, cons
   GeneratePathVector();
   while(iter_ < max_iter_){
     if(distr(eng) > n-2){
-      int rand = distr(eng)*(path_vector_.size()/(n-1)); // Scaling along path so any point on path could become an obstacle
+      int rand = static_cast<int>(distr(eng)*(path_vector_.size()/(n-1))); // Scaling along path so any point on path could become an obstacle
       Node new_obs = path_vector_[rand];
       std::vector<Node> succ = GetSucc(new_obs);
       if (obs_creation) {

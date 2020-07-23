@@ -65,7 +65,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
 			}
 		}
 	}
-	this->max_steps_ = std::pow(grid_size_,2)/2+grid_size_;
+	this->max_steps_ = static_cast<int>(std::pow(grid_size_,2)/2+grid_size_);  // heuristically set max steps
 
   std::random_device device;
   std::mt19937 engine(device());
@@ -82,7 +82,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
 				// Get next position
         std::vector<Node> possible_positions;
         std::vector<double> possible_probabilities;
-        float prob_sum = 0;
+        double prob_sum = 0;
         int n_obs = 0;
         for(const auto& m : motions_){
           possible_position = ant.current_node_ + m;
@@ -154,7 +154,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
           bpl = ant.path_.size();
           bp = ant.path_;
         }
-        double c = Q_/(ant.path_.size()-1); //c = cost / reward. Reward here, increased pheromone
+        double c = Q_ / static_cast<double>(ant.path_.size()-1); //c = cost / reward. Reward here, increased pheromone
         for(size_t i=1; i < ant.path_.size(); i++){ // Assuming ant can tell which way the food was based on how the phermones detereorate. Good for path planning as prevents moving in the opposite direction to path and improves convergence
           auto it = pheromone_edges_.find(std::make_pair(ant.path_[i].id_, ant.path_[i-1].id_));
           it->second+= c;

@@ -138,7 +138,7 @@ int main(){
   std::cout << "-----------------------------------------------------------------------" << std::endl;
   grid = main_grid;
   GeneticAlgorithm new_genetic_algorithm;
-  path_vector = new_genetic_algorithm.genetic_algorithm(grid, start, goal, 2*start.h_cost_);
+  path_vector = new_genetic_algorithm.genetic_algorithm(grid, start, goal, 2*static_cast<int>(start.h_cost_));
   PrintPathInOrder(path_vector, start, goal, grid);
 
   return 0;

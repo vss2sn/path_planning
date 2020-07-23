@@ -57,7 +57,7 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(std::vector<std::vector<in
     }
     std::vector<std::vector<Node>> new_paths_;
     for(int i=0;i < paths_size; ++i){
-      if(f_vals[i] <= f_val * c_) {
+      if(f_vals[i] <= f_val * static_cast<int>(c_)) {
         if(shorten_chromosome_) {
           new_paths_.push_back(std::vector<Node>(paths_[i].begin(), paths_[i].begin()+path_length_)); //c provides a margin of error from best path
         } else {
@@ -204,8 +204,8 @@ int GeneticAlgorithm::CalculateFitness(const std::vector<Node>& path) const {
 }
 
 void GeneticAlgorithm::CrossoverMutation(){
-  int p1 = rand()%paths_.size();
-  int p2 = rand()%paths_.size();
+  int p1 = static_cast<int>(rand()%paths_.size());
+  int p2 = static_cast<int>(rand()%paths_.size());
   std::vector<Node> child;
   int a;
   if(paths_[p1].size() > paths_[p2].size()) {
