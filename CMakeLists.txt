@@ -12,8 +12,18 @@ if(NOT WIN32)
   set(White       "${Esc}[37m")
 endif()
 
+string(CONCAT CLANG_TIDY_CHECKS
+  "*,"                                    # enable all1
+  "-modernize-use-trailing-return-type,"  # style-choice
+  "-fuchsia-default-arguments-calls,"     # allow use of default values in constructors
+  "-cert-msc50-cpp,"                      # rand() is good enough for the current usage
+  "-cert-msc30-c,"                        # rand() is good enough for the current usage
+  "-fuchsia-overloaded-operator"          # +, -, () overloaded for node
+)
+
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -pthread -Wall -Werror -O3" )
+set( CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=${CLANG_TIDY_CHECKS}" )
 
 include_directories( ${CMAKE_SOURCE_DIR}/inc )
 
@@ -30,7 +40,7 @@ list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
 # If building each file with it's own output, set to ON
 # If buiding single file (main.cpp) to test any/all protocols, set to OFF
 option( BUILD_INDIVIDUAL "Build each algorithm .cpp file with its own executable" OFF)
-option( TEST "Build and run tests" ON)
+option( TEST "Build and run tests" OFF)
 option( CHECK_COVERAGE "Run code coverage check" OFF)
 option( DYNAMIC_ALGOS "Build and run algorithms with obstacle detection in real time (D* Lite)" ON)
 option( CUSTOM_DEBUG_HELPER_FUNCION "Build custom debug helper functions" OFF)

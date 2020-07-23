@@ -87,7 +87,10 @@ double run_test(std::vector<std::vector<int>>& grid, const std::string& algo){
     }
   }
 
-  if(path_vector[0].cost_==-1) return -1;
+  if(path_vector[0].cost_==-1) {
+    return -1;
+  }
+
   for(const auto& p : path_vector) {
     if(compareCoordinates(p, goal)) {
       return p.cost_;
