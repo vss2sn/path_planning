@@ -17,11 +17,10 @@ constexpr int obs_found_pause_time = 500;  // ms
 
 void LPAStar::VectorInsertionSort(std::vector<Node>& v) const {
    int n = v.size();
-   int i, j;
    Node key;
-   for (i = 1; i < n; i++) {
+   for (int i = 1; i < n; i++) {
        key = v[i];
-       j = i-1;
+       int j = i-1;
        while (j >= 0 && (v[j].cost_ + v[j].h_cost_ >= key.cost_+key.h_cost_)){
            v[j+1] = v[j];
            j--;
@@ -117,11 +116,10 @@ std::vector<Node> LPAStar::GetSucc(const Node& u) const {
 
 void LPAStar::InsertionSort(){
    int nU = U_.size();
-   int i, j;
    std::pair<Node,std::pair<double,double>> key;
-   for (i = 1; i < nU; i++) {
+   for (int i = 1; i < nU; i++) {
        key = U_[i];
-       j = i-1;
+       int j = i-1;
        while (j >= 0 && (U_[j].second.first > key.second.first
                           || (U_[j].second.first == key.second.first  && U_[j].second.second >= key.second.second))){
            U_[j+1] = U_[j];

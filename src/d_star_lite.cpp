@@ -15,11 +15,10 @@
 
 void DStarLite::VectorInsertionSort(std::vector<Node>& v) const {
    int nV = v.size();
-   int i, j;
    Node key;
-   for (i = 1; i < nV; i++) {
+   for (int i = 1; i < nV; i++) {
        key = v[i];
-       j = i-1;
+       int j = i-1;
        while (j >= 0 && (v[j].cost_ + v[j].h_cost_ >= key.cost_+key.h_cost_)){
            v[j+1] = v[j];
            j--;
@@ -87,11 +86,10 @@ std::vector<Node> DStarLite::GetSucc(const Node& u) const {
 
 void DStarLite::InsertionSort(){
    int nU = U_.size();
-   int i, j;
    std::pair<Node,std::pair<double,double>> key;
-   for (i = 1; i < nU; i++) {
+   for (int i = 1; i < nU; i++) {
        key = U_[i];
-       j = i-1;
+       int  j = i-1;
        while (j >= 0 && (U_[j].second.first > key.second.first
                           || (U_[j].second.first == key.second.first  && U_[j].second.second >= key.second.second))){
            U_[j+1] = U_[j];

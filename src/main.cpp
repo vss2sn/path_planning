@@ -47,8 +47,12 @@ int main(){
   constexpr int max_iter_x_factor = 20;
 
   // Variables for Ant Colony Optimization
-  constexpr int n_ants = 10, iterations = 50;
-  constexpr float alpha = 1, beta =0.7, evap_rate = 0.3, Q = 10;
+  constexpr int n_ants = 10;
+  constexpr int iterations = 50;
+  constexpr float alpha = 1;
+  constexpr float beta =0.7;
+  constexpr float evap_rate = 0.3;
+  constexpr float Q = 10;
 
   // Resetting grid
   // Create object for the algorithm

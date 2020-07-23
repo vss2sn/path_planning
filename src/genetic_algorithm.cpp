@@ -159,17 +159,18 @@ void GeneticAlgorithm::PrintPathOfChromosome(const std::vector<Node>& path) cons
 void GeneticAlgorithm::InitialSetup(std::vector<Node>& path) const {
   int d_x = goal_.x_ - start_.x_;
   int d_y = goal_.y_ - start_.y_;
-  Node dx, dy;
-  if (d_x > 0) {
-    dx = Node(1, 0);
-  } else {
-    dx = Node(-1, 0);
-  }
-  if (d_y > 0) {
-    dy = Node(0, 1);
-  } else {
-    dy = Node(0, -1);
-  }
+  Node dx(d_x >= 0 ? 1 : -1, 0);
+  Node dy(0, d_y >= 0 ? 1 : -1);
+  // if (d_x > 0) {
+  //   dx = Node(1, 0);
+  // } else {
+  //   dx = Node(-1, 0);
+  // }
+  // if (d_y > 0) {
+  //   dy = Node(0, 1);
+  // } else {
+  //   dy = Node(0, -1);
+  // }
   path.resize(path_length_);
   auto it = path.begin();
   std::fill_n(it,
