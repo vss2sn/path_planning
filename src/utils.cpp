@@ -60,27 +60,17 @@ Node Node::operator-(const Node& p) const {
 // }
 
 bool Node::operator==(const Node& p) const {
-  if (this->x_ == p.x_ && this->y_ == p.y_) {
-    return true;
-  }
-  return false;
+  return this->x_ == p.x_ && this->y_ == p.y_;
 }
 
 bool Node::operator!=(const Node& p) const {
-  if (this->x_ != p.x_ || this->y_ != p.y_) {
-    return true;
-  }
-  return false;
+  return this->x_ != p.x_ || this->y_ != p.y_;
 }
 
 bool compare_cost::operator()(const Node& p1, const Node& p2) const {
   // Can modify this to allow tie breaks based on heuristic cost if required
-  if (p1.cost_ + p1.h_cost_ > p2.cost_ + p2.h_cost_ ||
-     (p1.cost_ + p1.h_cost_ == p2.cost_ + p2.h_cost_ && p1.h_cost_ >= p2.h_cost_)
-   ) {
-    return true;
-  }
-  return false;
+  return p1.cost_ + p1.h_cost_ > p2.cost_ + p2.h_cost_ ||
+     (p1.cost_ + p1.h_cost_ == p2.cost_ + p2.h_cost_ && p1.h_cost_ >= p2.h_cost_);
 }
 
 // Possible motions for dijkstra, A*, and similar algorithms.

@@ -256,10 +256,7 @@ bool GeneticAlgorithm::CheckPath(const std::vector<Node>& path) const {
       return false;
     }
   }
-  if(current==goal_) {
-    return true;
-  }
-  return false;
+  return current==goal_;
 }
 
 #ifdef BUILD_INDIVIDUAL

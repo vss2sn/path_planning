@@ -168,11 +168,8 @@ void DStarLite::UpdateVertex(const Node& u) {
 
 bool DStarLite::CompareKey(const std::pair<double,double>& pair_in, const Node& u) const {
   std::pair<double,double> node_key = CalculateKey(u);
-  if(pair_in.first < node_key.first ||
-    (pair_in.first == node_key.first && pair_in.second < node_key.second)) {
-    return true;
-  }
-  return false;
+  return pair_in.first < node_key.first ||
+    (pair_in.first == node_key.first && pair_in.second < node_key.second);
 }
 
 int DStarLite::ComputeShortestPath() {

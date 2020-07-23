@@ -60,11 +60,7 @@ bool JumpPointSearch::has_forced_neighbours(const Node& new_point, const Node& n
 
   a = !(cn2x < 0 || cn2y < 0 || cn2x >= n || cn2y >= n || grid[cn2x][cn2y]==1);
   b = !(nn2x < 0 || nn2y < 0 || nn2x >= n || nn2y >= n || grid[nn2x][nn2y]==1);
-  if(a!=b) {
-    return true;
-  }
-
-  return false;
+  return a!=b;
 
 }
 
