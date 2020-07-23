@@ -426,7 +426,6 @@ void DStarLite::RunDStarLite(bool disp_inc_in){
   }
   grid[current.x_][current.y_] = 3;
   DisplayGrid();
-  return;
 }
 #endif  // DYNAMIC_ALGOS
 

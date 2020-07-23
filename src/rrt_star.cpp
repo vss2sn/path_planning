@@ -20,9 +20,9 @@ Node RRTStar::FindNearestPoint(Node& new_node) {
   std::vector<Node>::const_iterator it_v;
   std::vector<Node>::const_iterator it_v_store;
   //NOTE: Use total cost not just distance
-  double dist = static_cast<double>(n*n);
+  auto dist = static_cast<double>(n*n);
   for(it_v = point_list_.begin(); it_v != point_list_.end(); ++it_v){
-    double new_dist = static_cast<double>(std::sqrt((static_cast<double>(it_v->x_-new_node.x_)*static_cast<double>(it_v->x_-new_node.x_))
+    auto new_dist = static_cast<double>(std::sqrt((static_cast<double>(it_v->x_-new_node.x_)*static_cast<double>(it_v->x_-new_node.x_))
                 + (static_cast<double>(it_v->y_-new_node.y_)*static_cast<double>(it_v->y_-new_node.y_))));
     if(new_dist > threshold_) {
       continue;
@@ -191,7 +191,7 @@ std::vector<Node> RRTStar::rrt_star(std::vector<std::vector<int>>& grid, const N
 
 bool RRTStar::CheckGoalVisible(const Node& new_node) {
   if(!CheckObstacle(new_node, goal_)){
-    double new_dist = static_cast<double>(std::sqrt(static_cast<double>((goal_.x_-new_node.x_)*(goal_.x_-new_node.x_))
+    auto new_dist = static_cast<double>(std::sqrt(static_cast<double>((goal_.x_-new_node.x_)*(goal_.x_-new_node.x_))
                       + static_cast<double>((goal_.y_-new_node.y_)*(goal_.y_-new_node.y_))));
     if(new_dist > threshold_) {
       return false;
