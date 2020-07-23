@@ -36,7 +36,7 @@ public:
   * @brief Generates a random node
   * @return Generated node
   */
-  Node GenerateRandomNode() const;
+  Node GenerateRandomNode() const ;
 
   /**
   * @brief Rewire the tree

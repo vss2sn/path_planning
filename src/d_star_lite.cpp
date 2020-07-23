@@ -13,7 +13,7 @@
 
 #include "d_star_lite.hpp"
 
-void DStarLite::VectorInsertionSort(std::vector<Node>& v) const {
+void DStarLite::VectorInsertionSort(std::vector<Node>& v) {
    int nV = v.size();
    Node key;
    for (int i = 1; i < nV; i++) {
@@ -27,7 +27,7 @@ void DStarLite::VectorInsertionSort(std::vector<Node>& v) const {
    }
 }
 
-double DStarLite::GetHeuristic(const Node& s1, const Node& s2) const {
+double DStarLite::GetHeuristic(const Node& s1, const Node& s2) {
   return std::abs(s1.x_ - s2.x_) + std::abs(s1.y_ - s2.y_);
 }
 

@@ -15,7 +15,7 @@
 // constants
 constexpr int obs_found_pause_time = 500;  // ms
 
-void LPAStar::VectorInsertionSort(std::vector<Node>& v) const {
+void LPAStar::VectorInsertionSort(std::vector<Node>& v) {
    int n = v.size();
    Node key;
    for (int i = 1; i < n; i++) {
@@ -29,7 +29,7 @@ void LPAStar::VectorInsertionSort(std::vector<Node>& v) const {
    }
 }
 
-double LPAStar::GetHeuristic(const Node& s1, const Node& s2) const {
+double LPAStar::GetHeuristic(const Node& s1, const Node& s2) {
   return abs(s1.x_ - s2.x_) + abs(s1.y_ - s2.y_);
 }
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION

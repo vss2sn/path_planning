@@ -20,7 +20,7 @@ public:
   * @param v The vector to be sorted
   * @return void
   */
-  void VectorInsertionSort(std::vector<Node>& v) const;
+  static void VectorInsertionSort(std::vector<Node>& v);
 
   /**
   * @brief Calculate and return the heuristic distance between 2 nodes
@@ -28,7 +28,7 @@ public:
   * @param s2 Node 2
   * @return Heuritic distance between the 2 nodes
   */
-  double GetHeuristic(const Node& s1, const Node& s2) const;
+  static double GetHeuristic(const Node& s1, const Node& s2);
 
   /**
   * @brief Displays the G and RHS values for the entire grid.

@@ -36,7 +36,7 @@ public:
   * @brief Generates a random node
   * @return Generated node
   */
-  Node GenerateRandomNode(const int n) const;
+  static Node GenerateRandomNode(const int n);
 
   /**
   * @brief Main algorithm of RRT

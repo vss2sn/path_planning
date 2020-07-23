@@ -38,7 +38,7 @@ void AntColony::PrintAntPath(Ant& ant) const {
 }
 #endif
 
-void AntColony::RemoveLoop(Ant& ant) const {
+void AntColony::RemoveLoop(Ant& ant) {
 	for(auto it=ant.path_.begin(); it!=ant.path_.end();++it){
 		if(*it==ant.current_node_){
 			ant.steps_ = ant.path_.end() - it;

@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cmath>
 #include <random>
+#include <vector>
 
 #include "rrt_star.hpp"
 
@@ -77,7 +78,7 @@ bool RRTStar::CheckObstacle(const Node& n_1, const Node& n_2) const {
       if(!(((n_1.x_>=obs_node.x_) && (obs_node.x_>= n_2.x_)) || ((n_1.x_<=obs_node.x_) && (obs_node.x_<= n_2.x_)))) {
         continue;
       }
-      double arr[4];
+      std::vector<double> arr(4);
       // Using properties of a point and a line here.
       // If the obtacle lies on one side of a line, substituting its edge points
       // (all obstacles are grid sqaures in this example) into the equation of

@@ -79,7 +79,7 @@ public:
 	* @return void
 	* @details Removes loops in path of an ant only when a point is revisted.
 	*/
-	void RemoveLoop(Ant& ant) const;
+	static void RemoveLoop(Ant& ant);
 
 	/**
 	* @brief Main algorithm of ant colony optimization

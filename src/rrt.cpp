@@ -70,7 +70,7 @@ bool RRT::CheckObstacle(const Node& n_1, const Node& n_2) const {
       if(!(((n_1.x_>=obs_node.x_) && (obs_node.x_>= n_2.x_)) || ((n_1.x_<=obs_node.x_) && (obs_node.x_<= n_2.x_)))) {
         continue;
       }
-      double arr[4];
+      std::vector<double> arr(4);
       // Using properties of a point and a line here.
       // If the obtacle lies on one side of a line, substituting its edge points
       // (all obstacles are grid sqaures in this example) into the equation of
@@ -103,7 +103,8 @@ bool RRT::CheckObstacle(const Node& n_1, const Node& n_2) const {
   }
   return false;
 }
-Node RRT::GenerateRandomNode(const int n) const {
+
+Node RRT::GenerateRandomNode(const int n) {
   std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n-1); // define the range
