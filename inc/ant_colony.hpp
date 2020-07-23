@@ -92,7 +92,7 @@ public:
 private:
 	std::vector<std::vector<int>> grid_;
 	std::unordered_map<std::pair<int,int>,double, pair_hash> pheromone_edges_;
-	int n_ants_, iterations_, max_steps_, grid_size_;
+	int n_ants_, iterations_, max_steps_{}, grid_size_{};
 	double alpha_, beta_, evap_rate_, Q_;
 	Node start_, goal_;
 	std::vector<Ant> ants_;

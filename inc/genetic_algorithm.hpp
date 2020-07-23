@@ -86,10 +86,10 @@ private:
   std::vector<std::vector<int>> grid_;
   std::vector<Node> motions_;
   Node start_, goal_;
-  int path_length_, n_, f_val, generation_, generations_, popsize_;
+  int path_length_{}, n_{}, f_val, generation_, generations_, popsize_;
   float c_;
   std::vector<std::vector<Node>> paths_, truepaths_;
-  bool found_, shorten_chromosome_;
+  bool found_{}, shorten_chromosome_;
 };
 
 #endif  // GENETIC_ALGORITHM_H
