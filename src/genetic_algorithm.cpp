@@ -212,18 +212,11 @@ void GeneticAlgorithm::CrossoverMutation(){
   int p1 = static_cast<int>(rand()%paths_.size());
   int p2 = static_cast<int>(rand()%paths_.size());
   std::vector<Node> child;
-  int a;
-  if(paths_[p1].size() > paths_[p2].size()) {
-    a = paths_[p1].size();
-  } else {
-    a = paths_[p2].size();
-  }
-  if(a > path_length_) {
-    a = path_length_;
-  }
-  Node current = start_;
 
-  for(int i=0;i<a;i++){
+  Node current = start_;
+  const int len = std::min( static_cast<int>(std::max(paths_[p1].size(), paths_[p2].size())),
+                            path_length_);
+  for(int i=0; i<len; i++){
     int random_int = rand()%random_range_max;
     if(random_int < random_range_max/4) {
       child.push_back(paths_[p1][i]);
