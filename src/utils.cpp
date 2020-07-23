@@ -4,7 +4,7 @@
 * @brief Contains common/commonly used funtions and classes
 */
 
-#include <iomanip>  // TODO: replace setw
+#include <iomanip>  // TODO(vss): replace setw
 #include <iostream>
 #include <random>
 
@@ -75,7 +75,7 @@ bool compare_cost::operator()(const Node& p1, const Node& p2) const {
 
 // Possible motions for dijkstra, A*, and similar algorithms.
 // Not using this for RRT & RRT* to allow random direction movements.
-// TODO: Consider adding option for motion restriction in RRT and RRT* by
+// TODO(vss): Consider adding option for motion restriction in RRT and RRT* by
 //       replacing new node with nearest node that satisfies motion constraints
 
 std::vector<Node> GetMotion(){

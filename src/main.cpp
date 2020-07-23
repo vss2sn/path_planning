@@ -7,19 +7,19 @@
 #include <iostream>
 #include <random>
 
-#include "dijkstra.hpp"
 #include "a_star.hpp"
+#include "ant_colony.hpp"
+#include "d_star_lite.hpp"
+#include "dijkstra.hpp"
+#include "genetic_algorithm.hpp"
 #include "jump_point_search.hpp"
 #include "lpa_star.hpp"
 #include "rrt.hpp"
 #include "rrt_star.hpp"
-#include "d_star_lite.hpp"
-#include "ant_colony.hpp"
-#include "genetic_algorithm.hpp"
 
 int main(){
   constexpr int n = 21;
-  std::vector<std::vector<int>> grid(n, std::vector<int>(n));
+  std::vector<std::vector<int>> grid(n, std::vector<int>(n,0));
   MakeGrid(grid);
 
   std::random_device rd; // obtain a random number from hardware

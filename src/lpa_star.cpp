@@ -5,7 +5,7 @@
 */
 
 #include <chrono>
-#include <iomanip>  // TODO: replace setw
+#include <iomanip>  // TODO(vss): replace setw
 #include <iostream>
 #include <random>
 #include <thread>

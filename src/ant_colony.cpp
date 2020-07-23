@@ -121,7 +121,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
         ant.current_node_ = possible_positions[dist(engine)];
 
 				// Removing any loops if reached previously reached point
-				// TODO: add check to count number of loops removed and stop if going into inf
+				// TODO(vss): add check to count number of loops removed and stop if going into inf
 				RemoveLoop(ant);
 
         ant.steps_++;

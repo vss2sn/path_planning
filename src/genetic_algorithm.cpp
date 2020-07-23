@@ -6,7 +6,7 @@
 
 #include <algorithm>
 #include <climits>
-#include <iomanip>  // TODO: replace setw
+#include <iomanip>  // TODO(vss): replace setw
 #include <iostream>
 #include <random>
 
@@ -70,7 +70,7 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(std::vector<std::vector<in
     while (static_cast<int>(paths_.size()) < popsize_) {
       CrossoverMutation();
     }
-    // TODO: Consider dynamically modifying path length to move towards optimality
+    // TODO(vss): Consider dynamically modifying path length to move towards optimality
     for(auto& path_seen : paths_){
       int tmp_length = INT_MAX;
       if(CheckPath(path_seen)){
