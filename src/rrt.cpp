@@ -19,9 +19,8 @@ Node RRT::FindNearestPoint(Node& new_node) const {
   std::vector<Node>::const_iterator it_v_store;
   //use just distance not total cost
   double dist = static_cast<double>(n*n);
-  double new_dist = dist;
   for(it_v = point_list_.begin(); it_v != point_list_.end(); ++it_v){
-    new_dist = static_cast<double>(std::sqrt(static_cast<double>(it_v->x_-new_node.x_)*static_cast<double>(it_v->x_-new_node.x_)+
+    double new_dist = static_cast<double>(std::sqrt(static_cast<double>(it_v->x_-new_node.x_)*static_cast<double>(it_v->x_-new_node.x_)+
                             static_cast<double>(it_v->y_-new_node.y_)*static_cast<double>(it_v->y_-new_node.y_)));
     if(new_dist > threshold_) {
       continue;

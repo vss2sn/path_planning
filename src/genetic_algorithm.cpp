@@ -59,7 +59,7 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(std::vector<std::vector<in
     for(int i=0;i < paths_size; ++i){
       if(f_vals[i] <= f_val * static_cast<int>(c_)) {
         if(shorten_chromosome_) {
-          new_paths_.push_back(std::vector<Node>(paths_[i].begin(), paths_[i].begin()+path_length_)); //c provides a margin of error from best path
+          new_paths_.emplace_back(std::vector<Node>(paths_[i].begin(), paths_[i].begin()+path_length_)); //c provides a margin of error from best path
         } else {
           new_paths_.push_back(paths_[i]);
         }
@@ -110,7 +110,7 @@ std::vector<Node> GeneticAlgorithm::ReturnLastPath() const { // given the way a 
   int truepaths__size = truepaths_.size();
   if(truepaths__size==0){
     v.clear();
-    v.push_back(Node(-1,-1,-1,-1,-1,-1));
+    v.emplace_back(Node(-1,-1,-1,-1,-1,-1));
     return v;
   }
   for(const auto& node : truepaths_[truepaths__size-1]) {
@@ -129,7 +129,7 @@ std::vector<Node> GeneticAlgorithm::ReturnLastPath() const { // given the way a 
 
   if(v.size()==1){
     v.clear();
-    v.push_back(Node(-1,-1,-1,-1,-1,-1));
+    v.emplace_back(Node(-1,-1,-1,-1,-1,-1));
   }
   return v;
 }

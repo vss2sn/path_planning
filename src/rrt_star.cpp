@@ -20,9 +20,8 @@ Node RRTStar::FindNearestPoint(Node& new_node) {
   std::vector<Node>::const_iterator it_v_store;
   //NOTE: Use total cost not just distance
   double dist = static_cast<double>(n*n);
-  double new_dist = static_cast<double>(n*n);
   for(it_v = point_list_.begin(); it_v != point_list_.end(); ++it_v){
-    new_dist = static_cast<double>(std::sqrt((static_cast<double>(it_v->x_-new_node.x_)*static_cast<double>(it_v->x_-new_node.x_))
+    double new_dist = static_cast<double>(std::sqrt((static_cast<double>(it_v->x_-new_node.x_)*static_cast<double>(it_v->x_-new_node.x_))
                 + (static_cast<double>(it_v->y_-new_node.y_)*static_cast<double>(it_v->y_-new_node.y_))));
     if(new_dist > threshold_) {
       continue;
@@ -174,7 +173,7 @@ std::vector<Node> RRTStar::rrt_star(std::vector<std::vector<int>>& grid, const N
     grid[new_node.x_][new_node.y_]=2;
     // Setting to 2 implies visited/considered
 
-    std::vector<Node>::iterator it_v = std::find (point_list_.begin(), point_list_.end(), new_node);
+    auto it_v = std::find (point_list_.begin(), point_list_.end(), new_node);
     if (it_v != point_list_.end() && new_node.cost_ < it_v->cost_){
       point_list_.erase(it_v);
       point_list_.push_back(new_node);

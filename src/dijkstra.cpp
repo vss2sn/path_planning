@@ -19,7 +19,6 @@ std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int> > &grid, const
   open_list_.push(start_);
 
   // Main loop
-  Node temp;
   while(!open_list_.empty()){
     Node current = open_list_.top();
     open_list_.pop();

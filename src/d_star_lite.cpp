@@ -161,7 +161,7 @@ void DStarLite::UpdateVertex(const Node& u) {
   }
   if(S_[u.x_][u.y_].first != S_[u.x_][u.y_].second){
     std::pair<double,double> key = CalculateKey(u);
-    U_.push_back(std::make_pair(u, key));
+    U_.emplace_back(std::make_pair(u, key));
     InsertionSort();
   }
 }

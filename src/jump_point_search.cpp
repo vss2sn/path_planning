@@ -28,15 +28,13 @@ Node JumpPointSearch::jump(const Node& new_point, const Node& motion, const int 
   if(fn){
     // std::cout << "Forced neighbours found"<<std::endl;
     return next_point;
-  } else{
-    Node jump_node = jump(next_point, motion, id);
-    // Prevent over shoot
-    if(jump_node.cost_ !=-1 &&  jump_node.cost_+ jump_node.h_cost_  <= next_point.cost_ + next_point.h_cost_) {
-      return jump_node;
-    } else {
-      return next_point;
-    }
   }
+  Node jump_node = jump(next_point, motion, id);
+  // Prevent over shoot
+  if(jump_node.cost_ !=-1 &&  jump_node.cost_+ jump_node.h_cost_  <= next_point.cost_ + next_point.h_cost_) {
+    return jump_node;
+  }
+  return next_point;
 }
 
 bool JumpPointSearch::has_forced_neighbours(const Node& new_point, const Node& next_point, const Node& motion) const {
@@ -91,7 +89,6 @@ std::vector<Node> JumpPointSearch::jump_point_search(std::vector<std::vector<int
   open_list_.push(start_);
 
   // Main loop
-  Node temp;
   while(!open_list_.empty()){
     Node current = open_list_.top();
     open_list_.pop();
