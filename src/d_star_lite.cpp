@@ -111,9 +111,7 @@ double DStarLite::C(const Node& s1, const Node& s2) const {
     // }
     return 1;
   }
-  else{
-    return n*n;
-  }
+  return n*n;
 }
 
 void DStarLite::Init(){
@@ -222,10 +220,8 @@ std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in,
     path_vector_.push_back(no_path_node);
     return path_vector_;
   }
-  else{
-    GeneratePathVector();
-    return ReturnInvertedVector();
-  }
+  GeneratePathVector();
+  return ReturnInvertedVector();
 }
 
 #ifdef DYNAMIC_ALGOS

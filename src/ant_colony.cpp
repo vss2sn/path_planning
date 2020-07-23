@@ -102,7 +102,8 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
         }
         if(n_obs==static_cast<int>(possible_positions.size())) {
 					break;// Ant in a cul-de-sac
-				} else if(prob_sum == 0){
+				}
+				if(prob_sum == 0){
           double new_prob = 1.0/(static_cast<int>(possible_positions.size())-n_obs);
           for(size_t i=0;i<possible_positions.size();i++){
             if(grid_[possible_positions[i].x_][possible_positions[i].y_]==0) {

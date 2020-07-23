@@ -141,9 +141,7 @@ double LPAStar::C(const Node& s1, const Node& s2) const {
     // }
     return 1;
   }
-  else{
-    return n*n;
-  }
+  return n*n;
 }
 
 void LPAStar::Init(){

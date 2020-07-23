@@ -193,10 +193,12 @@ int GeneticAlgorithm::CalculateFitness(const std::vector<Node>& path) const {
     i=i+tmp;
     if(i.x_ < 0 || i.x_ >= n_ || i.y_ < 0 || i.y_ >= n_) {
       return INT_MAX;
-    } else if(grid_[i.x_][i.y_]==1) {
-      cost += n_*abs(goal_.x_ - i.x_) + n_*abs(goal_.y_-i.y_);
-    } else if(i==goal_) {
+    }
+    if(i==goal_) {
       break;
+    }
+    if(grid_[i.x_][i.y_]==1) {
+      cost += n_*abs(goal_.x_ - i.x_) + n_*abs(goal_.y_-i.y_);
     } else {
       cost+=abs(goal_.x_ - i.x_) + abs(goal_.y_-i.y_); // Can add a scaling factor here
     }
@@ -252,7 +254,8 @@ bool GeneticAlgorithm::CheckPath(const std::vector<Node>& path) const {
     current = current + node;
     if(current==goal_) {
       return true;
-    } else if(current.x_ < 0 || current.x_ >= n_ || current.y_ < 0 || current.y_ >= n_ || grid_[current.x_][current.y_]==1) {
+    }
+    if(current.x_ < 0 || current.x_ >= n_ || current.y_ < 0 || current.y_ >= n_ || grid_[current.x_][current.y_]==1) {
       return false;
     }
   }
