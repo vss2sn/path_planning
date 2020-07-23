@@ -1,16 +1,16 @@
 #include <gtest/gtest.h>
 
-#include "dijkstra.hpp"
 #include "a_star.hpp"
+#include "ant_colony.hpp"
+#include "d_star_lite.hpp"
+#include "dijkstra.hpp"
+#include "genetic_algorithm.hpp"
 #include "jump_point_search.hpp"
 #include "lpa_star.hpp"
 #include "rrt.hpp"
 #include "rrt_star.hpp"
-#include "ant_colony.hpp"
-#include "d_star_lite.hpp"
-#include "genetic_algorithm.hpp"
 
-double run_test(std::vector<std::vector<int> > &grid, std::string algo){
+double run_test(std::vector<std::vector<int>>& grid, const std::string& algo){
   int n = grid.size();
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
@@ -23,13 +23,24 @@ double run_test(std::vector<std::vector<int> > &grid, std::string algo){
   grid[goal.x_][goal.y_] = 0;
 
   std::vector<Node> path_vector;
+
   // Variables for RRT and RRTStar
-  double threshold = 2;
-  int max_iter_x_factor = 20;
+  constexpr double threshold = 2;
+  constexpr int max_iter_x_factor = 20;
 
   // Variables for Ant Colony Optimization
-  int n_ants = 10, iterations = 50;
-  float alpha = 1, beta =0.7, evap_rate = 0.3, Q = 10;
+  constexpr int n_ants = 10;
+  constexpr int iterations = 50;
+  constexpr float alpha = 1;
+  constexpr float beta =0.7;
+  constexpr float evap_rate = 0.3;
+  constexpr float Q = 10;
+
+  // Variables for genetic algorithm
+  constexpr int generations = 10000;
+  constexpr int popsize = 30;
+  constexpr float c = 1.05;
+  constexpr bool shorten_chromosome = true;
 
   if(algo =="dijkstra"){
     Dijkstra new_dijkstra;
@@ -64,15 +75,23 @@ double run_test(std::vector<std::vector<int> > &grid, std::string algo){
     path_vector = new_ant_colony.ant_colony(grid, start, goal);
   }
   else if(algo == "genetic_algorithm"){
-    GeneticAlgorithm new_genetic_algorithm(10000, 30, 1.05, true);
-    path_vector = new_genetic_algorithm.genetic_algorithm(grid, start, goal, 2*start.h_cost_);
-    if(path_vector[0].id_==-1) return -1;
-    for(size_t i = 0; i < path_vector.size(); i++) if(path_vector[i] == goal) return i;
+    GeneticAlgorithm new_genetic_algorithm(generations, popsize, c, shorten_chromosome);
+    path_vector = new_genetic_algorithm.genetic_algorithm(grid, start, goal, 2*static_cast<int>(start.h_cost_));
+    if(path_vector[0].id_==-1) {
+      return -1;
+    }
+    for(size_t i = 0; i < path_vector.size(); i++) {
+      if(compareCoordinates(path_vector[i],goal)) {
+        return i;
+      }
+    }
   }
 
   if(path_vector[0].cost_==-1) return -1;
   for(const auto& p : path_vector) {
-    if(goal == p) return p.cost_;
+    if(compareCoordinates(p, goal)) {
+      return p.cost_;
+    }
   }
   return -1;
 }

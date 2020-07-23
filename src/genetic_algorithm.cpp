@@ -81,12 +81,12 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(std::vector<std::vector<in
           if(static_cast<int>(path_seen.size()) < tmp_length) {
             tmp_length = path_seen.size();
           }
-          if(tmp==goal_) {
+          if(compareCoordinates(tmp, goal_)) {
             tmp_length = 0;
           }
           for(size_t i=0;i<path_seen.size();i++){
             tmp = tmp + path_seen[i];
-            if(tmp==goal_){
+            if(compareCoordinates(tmp, goal_)){
               tmp_length = i;
               break;
             }
@@ -139,7 +139,9 @@ void GeneticAlgorithm::PrintChromosome(const std::vector<Node>& path) const{
   std::cout << "Chromosome: ";
   for (const auto& v : path){
     for(size_t i=0; i < motions_.size(); i++)
-      if(v == motions_[i]) std::cout << i << " ";
+      if(compareCoordinates(v, motions_[i])) {
+        std::cout << i << " ";
+      }
   }
   std::cout << "Fitness value: " << CalculateFitness(path) << std::endl;
 }
@@ -189,12 +191,12 @@ void GeneticAlgorithm::InitialSetup(std::vector<Node>& path) const {
 int GeneticAlgorithm::CalculateFitness(const std::vector<Node>& path) const {
   int cost = 0;
   Node i = start_;
-  for(auto& tmp : path){
-    i=i+tmp;
+  for(const auto& p : path){
+    i = i + p;
     if(i.x_ < 0 || i.x_ >= n_ || i.y_ < 0 || i.y_ >= n_) {
       return INT_MAX;
     }
-    if(i==goal_) {
+    if(compareCoordinates(i, goal_)) {
       break;
     }
     if(grid_[i.x_][i.y_]==1) {
@@ -247,19 +249,19 @@ void GeneticAlgorithm::CrossoverMutation(){
 // NOTE: Consider storing the point where an obstacle is encountereed and forcig that gene/motion to randomly mutate for a quicker convergence to a solution while maintaining randomness
 bool GeneticAlgorithm::CheckPath(const std::vector<Node>& path) const {
   Node current = start_;
-  if (current == goal_) {
+  if (compareCoordinates(current, goal_)) {
     return true;
   }
   for(const auto& node : path){
     current = current + node;
-    if(current==goal_) {
+    if(compareCoordinates(current, goal_)) {
       return true;
     }
     if(current.x_ < 0 || current.x_ >= n_ || current.y_ < 0 || current.y_ >= n_ || grid_[current.x_][current.y_]==1) {
       return false;
     }
   }
-  return current==goal_;
+  return compareCoordinates(current, goal_);
 }
 
 #ifdef BUILD_INDIVIDUAL

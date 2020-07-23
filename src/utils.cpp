@@ -59,12 +59,8 @@ Node Node::operator-(const Node& p) const {
 //   this->pid_ = p.pid_;
 // }
 
-bool Node::operator==(const Node& p) const {
-  return this->x_ == p.x_ && this->y_ == p.y_;
-}
-
-bool Node::operator!=(const Node& p) const {
-  return this->x_ != p.x_ || this->y_ != p.y_;
+bool compareCoordinates(const Node& p1, const Node& p2) {
+  return p1.x_ == p2.x_ && p1.y_ == p2.y_;
 }
 
 bool compare_cost::operator()(const Node& p1, const Node& p2) const {
@@ -159,7 +155,7 @@ void PrintPath(std::vector<Node>& path_vector, const Node& start, const Node& go
   }
   std::cout << "Path (goal to start):" << std::endl;
   for(size_t i = 0; i < path_vector.size(); i++){
-    if(goal == path_vector[i]) {
+    if(compareCoordinates(goal, path_vector[i])) {
       path_vector[i].PrintStatus();
       grid[path_vector[i].x_][path_vector[i].y_] = 3;
       while(path_vector[i].id_!=start.id_){
@@ -208,7 +204,7 @@ void PrintPathInOrder(const std::vector<Node>& path_vector, const Node& /*start*
   }
   std::cout << "Path (goal to start):" << std::endl;
   size_t i=0;
-  while (path_vector[i] != goal) {
+  while (!compareCoordinates(path_vector[i], goal)) {
     i++;
   }
   for(; i>0; i=i-1){

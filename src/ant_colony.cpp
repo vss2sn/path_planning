@@ -40,7 +40,7 @@ void AntColony::PrintAntPath(Ant& ant) const {
 
 void AntColony::RemoveLoop(Ant& ant) {
 	for(auto it=ant.path_.begin(); it!=ant.path_.end();++it){
-		if(*it==ant.current_node_){
+		if(compareCoordinates(*it, ant.current_node_)) {
 			ant.steps_ = ant.path_.end() - it;
 			ant.path_.erase(it, ant.path_.end());
 			break;
@@ -76,7 +76,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
     for(int j=0;j<n_ants_;j++){
 			// Can assign a thread to each ant if parallel required
       Ant ant(start_, j);
-      while(ant.current_node_!=goal_ && ant.steps_ < max_steps_){
+      while(!compareCoordinates(ant.current_node_, goal_) && ant.steps_ < max_steps_){
         ant.path_.push_back(ant.current_node_);
 
 				// Get next position
@@ -88,7 +88,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
           possible_position = ant.current_node_ + m;
 					possible_position.id_ = possible_position.x_*grid_size_ + possible_position.y_;
           if(possible_position.x_ >=0 && possible_position.x_ < grid_size_ && possible_position.y_ >=0 && possible_position.y_ < grid_size_
-             && possible_position!=ant.previous_node_){
+             && !compareCoordinates(possible_position,ant.previous_node_)) {
             possible_positions.push_back(possible_position);
             double new_prob = std::pow(pheromone_edges_[std::make_pair(possible_position.id_, ant.current_node_.id_)], alpha_) *
               std::pow(1.0/std::sqrt(std::pow((possible_position.x_ - goal_.x_),2) +std::pow((possible_position.y_ - goal_.y_),2)), beta_);
@@ -128,7 +128,8 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid, con
         ant.steps_++;
       }
 			// If goal found, add to path
-      if(ant.current_node_==goal_){
+
+      if(compareCoordinates(ant.current_node_, goal_)) {
 				ant.current_node_.id_ = ant.current_node_.x_*grid_size_ + ant.current_node_.y_;
         ant.path_.push_back(ant.current_node_);
         ant.found_goal_ = true;

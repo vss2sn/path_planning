@@ -161,7 +161,7 @@ void LPAStar::Init(){
 }
 
 void LPAStar::UpdateVertex(const Node& u){
-  if(u!=start_){
+  if(!compareCoordinates(u, start_)) {
     std::vector<Node> pred = GetPred(u);
     double init_min = n*n;
     // for(int i=0;i<pred.size();i++){
@@ -175,7 +175,7 @@ void LPAStar::UpdateVertex(const Node& u){
   }
   // can optimise following by using hash
   for(auto it = U_.begin(); it!=U_.end(); ++it){
-    if((*it).first == u){
+    if(compareCoordinates((*it).first, u)){
       U_.erase(it);
       break;
     }
@@ -290,7 +290,7 @@ std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>> &grid_in, cons
 
 void LPAStar::SetObs(const Node& u) {
   // PrintGrid(grid,n); // Uncomment if you want to see old and new path
-  if(u==goal_ || u==start_){
+  if(compareCoordinates(u, goal_) || compareCoordinates(u, start_)){
     std::cout << "Cannot set current start or goal as obstacle" << std::endl;
   }
   else{
@@ -307,7 +307,7 @@ void LPAStar::GeneratePathVector(){
   path_vector_.clear();
   goal_.cost_ = S_[goal_.x_][goal_.y_].second;
   path_vector_.push_back(goal_);
-  while(path_vector_[0]!=start_){
+  while(!compareCoordinates(path_vector_[0], start_)){
     Node u = path_vector_[0];
     grid[u.x_][u.y_]=2;
     for(const auto& motion : motions){
@@ -328,7 +328,7 @@ void LPAStar::GeneratePathVector(){
       }
     }
   }
-  if(path_vector_[0]==goal_){
+  if(compareCoordinates(path_vector_[0], goal_)){
     grid[goal_.x_][goal_.y_]=2;
   }
 }

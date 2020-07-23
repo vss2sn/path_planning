@@ -87,14 +87,14 @@ public:
   * @param p node
   * @return bool whether current node equals input node
   */
-  bool operator==(const Node& p) const;
+  // bool operator==(const Node& p) const;
 
   /**
   * @brief Overloading operator != for Node class
   * @param p node
   * @return bool whether current node is not equal to input node
   */
-  bool operator!=(const Node& p) const;
+  // bool operator!=(const Node& p) const;
 };
 
 /**
@@ -157,5 +157,7 @@ void MakeGrid(std::vector<std::vector<int>>& grid);
 * @return void
 */
 void PrintPathInOrder(const std::vector<Node>& path_vector, const Node& start, const Node& goal, std::vector<std::vector<int>>& grid);
+
+bool compareCoordinates(const Node& p1, const Node& p2);
 
 #endif  // UTILS_H

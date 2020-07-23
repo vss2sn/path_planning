@@ -138,7 +138,7 @@ void DStarLite::Init(){
 }
 
 void DStarLite::UpdateVertex(const Node& u) {
-  if(u!=goal_){
+  if(!compareCoordinates(u, goal_)) {
     std::vector<Node> succ = GetSucc(u);
     double init_min = n*n;
     // for(size_t i=0;i<succ.size();i++){
@@ -152,7 +152,7 @@ void DStarLite::UpdateVertex(const Node& u) {
   }
   // can optimise following by using hash
   for(auto it = U_.begin(); it!=U_.end(); ++it){
-    if((*it).first == u){
+    if(compareCoordinates((*it).first, u)) {
       U_.erase(it);
       break;
     }
@@ -226,7 +226,7 @@ std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>> &grid_in,
 
 #ifdef DYNAMIC_ALGOS
 std::vector<Node> DStarLite::SetObs(const Node& u){
-  if(u==goal_ || u==start_){
+  if(compareCoordinates(u, goal_) || compareCoordinates(u, start_)){
     std::cout << "Cannot set current start or goal as obstacle" << std::endl;
     return path_vector_;
   }
@@ -286,7 +286,7 @@ std::vector<Node> DStarLite::ReturnInvertedVector() const{
 void DStarLite::GeneratePathVector() {
   main_start_.cost_ = S_[main_start_.x_][main_start_.y_].second;
   path_vector_.push_back(main_start_);
-  while(path_vector_[0]!=goal_){
+  while(!compareCoordinates(path_vector_[0], goal_)){
     Node u = path_vector_[0];
     grid[u.x_][u.y_]=2;
     for(const auto& motion : motions){
@@ -307,7 +307,7 @@ void DStarLite::GeneratePathVector() {
       }
     }
   }
-  if(path_vector_[0]==goal_){
+  if(compareCoordinates(path_vector_[0], goal_)){
     grid[goal_.x_][goal_.y_]=2;
   }
 }
@@ -367,7 +367,7 @@ void DStarLite::DisplayGrid() const {
 Node DStarLite::NextPoint() const {
   size_t i = 0;
   for(i = 0; i < path_vector_.size(); i++){
-    if(goal_ == path_vector_[i]){
+    if(compareCoordinates(path_vector_[i], goal_)){
       break;
     }
   }
@@ -396,12 +396,12 @@ void DStarLite::RunDStarLite(bool disp_inc_in){
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<int> distr(0,n); // define the range
   Node current = path_vector_.back();
-  while(current!=goal_){
+  while(!compareCoordinates(current, goal_)){
     grid[start_.x_][start_.y_] = 3;
     UpdateStart(current);
     start_ = current;
     Node next_point = NextPoint();
-    if(distr(eng) > n-2 && next_point!=goal_) {
+    if(distr(eng) > n-2 && !compareCoordinates(next_point,goal_)) {
       SetObs(next_point);
     }
 
