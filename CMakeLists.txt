@@ -12,18 +12,18 @@ if(NOT WIN32)
   set(White       "${Esc}[37m")
 endif()
 
-string(CONCAT CLANG_TIDY_CHECKS
-  "*,"                                    # enable all1
-  "-modernize-use-trailing-return-type,"  # style-choice
-  "-fuchsia-default-arguments-calls,"     # allow use of default values in constructors
-  "-cert-msc50-cpp,"                      # rand() is good enough for the current usage
-  "-cert-msc30-c,"                        # rand() is good enough for the current usage
-  "-fuchsia-overloaded-operator"          # +, -, () overloaded for node
-)
+# string(CONCAT CLANG_TIDY_CHECKS
+#   "*,"                                    # enable all1
+#   "-modernize-use-trailing-return-type,"  # style-choice
+#   "-fuchsia-default-arguments-calls,"     # allow use of default values in constructors
+#   "-cert-msc50-cpp,"                      # rand() is good enough for the current usage
+#   "-cert-msc30-c,"                        # rand() is good enough for the current usage
+#   "-fuchsia-overloaded-operator"          # +, -, () overloaded for node
+# )
 
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -pthread -Wall -Werror -O3" )
-set( CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=${CLANG_TIDY_CHECKS}" )
+# set( CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=${CLANG_TIDY_CHECKS}" )
 
 include_directories( ${CMAKE_SOURCE_DIR}/inc )
 
