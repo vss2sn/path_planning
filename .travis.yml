@@ -11,7 +11,7 @@ before_script:
   - git submodule add https://github.com/google/googletest.git gtest
   - mkdir build
   - cd build
-  - cmake ..
+  - cmake -DTEST=ON -DCHECK_COVERAGE=ON -DDYNAMIC_ALGOS=OFF ..
 
 script:
   - make
