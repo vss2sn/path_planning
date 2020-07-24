@@ -1,7 +1,7 @@
 #include "test_utils.cpp"
 
 TEST(PathPlanningTest, Test1) {
-  int n = 8;
+  constexpr int n = 8;
   std::vector<std::vector<int>> grid_1(n, std::vector<int>(n));
   MakeGrid(grid_1);
   std::vector<std::vector<int>> grid_2 = grid_1;
