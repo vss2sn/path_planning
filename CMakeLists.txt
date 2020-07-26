@@ -1,6 +1,6 @@
 project(path_planning)
 
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.5)
 include(CMakeDependentOption)
 
 if(NOT WIN32)
@@ -13,6 +13,7 @@ if(NOT WIN32)
   set(White       "${Esc}[37m")
 endif()
 
+# For clang-tidy
 # string(CONCAT CLANG_TIDY_CHECKS
 #   "*,"                                    # enable all1
 #   "-modernize-use-trailing-return-type,"  # style-choice
@@ -21,10 +22,10 @@ endif()
 #   "-cert-msc30-c,"                        # rand() is good enough for the current usage
 #   "-fuchsia-overloaded-operator"          # +, -, () overloaded for node
 # )
+# set( CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=${CLANG_TIDY_CHECKS}" )
 
 set( CMAKE_CXX_STANDARD 17 )
 # set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -pthread -Wall -Werror -O3" )
-# set( CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=${CLANG_TIDY_CHECKS}" )
 
 include_directories( ${CMAKE_SOURCE_DIR}/inc )
 
@@ -33,7 +34,6 @@ file( GLOB LIB_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.hpp )
 file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )
 
 # Building utils.cpp as  a library as common to multiple files
-add_library( utils SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp ${LIB_HEADERS} )
 
 list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp )
 list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
@@ -59,34 +59,47 @@ if(DYNAMIC_ALGOS)
   add_definitions(-DDYNAMIC_ALGOS)
 endif(DYNAMIC_ALGOS)
 
+add_library( utils STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp ${LIB_HEADERS} )
+
 if(BUILD_INDIVIDUAL)
 
   add_definitions(-DBUILD_INDIVIDUAL)
-  message("${Blue} Individual files being built ${ColourReset}")
   foreach(test_source_file ${LIB_SOURCES})
     get_filename_component(test_output_file ${test_source_file} NAME_WE)
-    message( ${test_output_file} )
     add_executable( ${test_output_file} ${test_source_file} ${LIB_HEADERS})
     set_target_properties( ${test_output_file} PROPERTIES CXX_FLAGS "${CXX_FLAGS}  -pthread -Wall -Werror -O3 -g" )
     target_link_libraries( ${test_output_file} utils )
   endforeach(test_source_file ${LIB_SOURCES})
-  message( "${Blue}End of list ${ColourReset}" )
 
 else (BUILD_INDIVIDUAL)
 
-  add_library( algos SHARED ${LIB_SOURCES} ${LIB_HEADERS} )
+  add_library( algos STATIC ${LIB_SOURCES} ${LIB_HEADERS} )
   add_executable( main ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp ${LIB_HEADERS} )
   target_link_libraries( main utils algos)
 
+  if(CHECK_COVERAGE)
+    target_compile_options(algos PUBLIC -O0 -g --coverage)
+    if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)
+      target_link_options(algos  PUBLIC --coverage)
+    else()
+      target_link_libraries(algos PUBLIC --coverage)
+    endif()
+  else(CHECK_COVERAGE)
+    set_target_properties(main algos utils PROPERTIES CXX_FLAGS "${CXX_FLAGS}  -pthread -Wall -Werror -O3 -g")
+  endif(CHECK_COVERAGE)
+
   if (RUN_TESTS)
+    # For GTEST
+    find_package(GTest)
+    if(GTest_FOUND)
+      # Installed
+      include_directories(${GTEST_INCLUDE_DIRS})
+    else(GTest_FOUND)
+      # Using GTEST as submodule
+      include(gtest.cmake)
+    endif(GTest_FOUND)
     enable_testing()
     add_subdirectory(tests)
   endif(RUN_TESTS)
-
-  if(CHECK_COVERAGE)
-    set_target_properties( main algos utils PROPERTIES CXX_FLAGS "${CXX_FLAGS} -pthread -Wall -Werror --coverage -O0 -g" )
-  else(CHECK_COVERAGE)
-    set_target_properties( main algos utils PROPERTIES CXX_FLAGS "${CXX_FLAGS} -pthread -Wall -Werror -O3")
-  endif(CHECK_COVERAGE)
 
 endif (BUILD_INDIVIDUAL)

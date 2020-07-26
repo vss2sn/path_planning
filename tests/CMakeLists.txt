@@ -6,16 +6,6 @@ if(CHECK_COVERAGE)
   APPEND_COVERAGE_COMPILER_FLAGS()
 endif(CHECK_COVERAGE)
 
-# For GTEST
-find_package(GTest)
-if(GTest_FOUND)
-  # Installed
-  include_directories(${GTEST_INCLUDE_DIRS})
-else(GTest_FOUND)
-  # Using GTEST as submodule
-  include(gtest.cmake)
-endif(GTest_FOUND)
-
 add_definitions(-DRUN_TESTS)
 
 function(add_test_file TEST_SOURCE)
@@ -24,16 +14,8 @@ function(add_test_file TEST_SOURCE)
   set_target_properties(${test_output_file} PROPERTIES CXX_STANDARD 17)
   target_sources(${test_output_file} PRIVATE ${TEST_SOURCE})
   target_include_directories(${test_output_file} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-  target_link_libraries( ${test_output_file} ${GTEST_LIBRARIES} pthread utils algos gtest)
-  if(CHECK_COVERAGE)
-    target_link_libraries(${test_output_file} gcov)
-    SETUP_TARGET_FOR_COVERAGE_LCOV(NAME ${test_output_file}_coverage EXECUTABLE ${test_output_file} )
-    add_test(${test_output_file}_coverage ${test_output_file})
-    add_custom_command( TARGET ${test_output_file} POST_BUILD COMMAND make ${test_output_file}_coverage)
-  # run after build else need to manaully run each one to get coverage
-  else(CHECK_COVERAGE)
-    add_test(${test_output_file} ${test_output_file})
-  endif(CHECK_COVERAGE)
+  target_link_libraries( ${test_output_file} PRIVATE ${GTEST_LIBRARIES} pthread utils algos gtest)
+  add_test(${test_output_file} ${test_output_file})
 endfunction()
 
 add_test_file(${CMAKE_CURRENT_SOURCE_DIR}/src/grid1.cpp )

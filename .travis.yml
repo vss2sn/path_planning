@@ -5,20 +5,26 @@ compiler:
 
 addons:
   apt:
-    packages: lcov
+    packages:
+      lcov
+      libgtest-dev
 
 before_script:
   - git submodule add https://github.com/google/googletest.git gtest
   - mkdir build
   - cd build
-  - cmake -DRUN_TESTS=ON -DCHECK_COVERAGE=ON ..
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DRUN_TESTS=ON -DCHECK_COVERAGE=ON ..
 
 script:
   - make
+  - make test
 
 after_success:
   - git submodule deinit -f -- gtest
   - rm -rf .git/modules/gtest
   - git rm -f gtest
-  - lcov -a tests/grid1_coverage.info.cleaned -a tests/grid2_coverage.info.cleaned -a tests/grid3_coverage.info.cleaned -a tests/grid4_coverage.info.cleaned -a tests/grid5_coverage.info.cleaned -o total.info
-  - bash <(curl -s https://codecov.io/bash) -f total.info || echo "Codecov did not collect coverage reports"
+  - lcov --capture --directory . --output-file coverage_total.info
+  - lcov --remove coverage_total.info '/usr/*' --output-file coverage_total.info
+  - lcov --remove coverage_total.info 'gtest/*' --output-file coverage_total.info
+  - lcov --list coverage_total.info
+  - bash <(curl -s https://codecov.io/bash) -f coverage_total.info || echo "Codecov did not collect coverage reports"
