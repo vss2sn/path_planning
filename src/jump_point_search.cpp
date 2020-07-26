@@ -4,9 +4,13 @@
  * @brief Contains the JumpPointSearch class
  */
 
-#include "jump_point_search.hpp"
-
 #include <cmath>
+
+#ifdef BUILD_INDIVIDUAL
+#include <random>
+#endif  // BUILD_INDIVIDUAL
+
+#include "jump_point_search.hpp"
 
 Node JumpPointSearch::jump(const Node& new_point, const Node& motion,
                            const int id) {

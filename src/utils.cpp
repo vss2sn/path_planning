@@ -4,11 +4,12 @@
  * @brief Contains common/commonly used funtions and classes
  */
 
-#include "utils.hpp"
 
 #include <iomanip>  // TODO(vss): replace setw
 #include <iostream>
 #include <random>
+
+#include "utils.hpp"
 
 // constants
 constexpr int spacing_for_grid = 10;

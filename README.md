@@ -46,7 +46,7 @@
 <a name="notes_on_cmake_options"></a>
 #### Notes on CMake Options: ####
 1. To run each algorithm independently, set `BUILD_INDIVIDUAL` to `ON` (Executables created: `dijkstra`, `a_star`, etc). If you want to run all of them on the same grid, set `BUILD_INDIVIDUAL` to `OFF` (Executable created: `main`).
-2. To run tests, set `BUILD_INDIVIDUAL` to `OFF` and TEST to `ON`.
+2. To run tests, set `BUILD_INDIVIDUAL` to `OFF` and RUN_TESTS to `ON`.
 3. Set `CHECK_COVERAGE` to check code coverage.
 4. Set `DYNAMIC_ALGOS` to build the dynamic runs of LPA* and D* Lite (No tests check the dynamic runs of these algorithms in the test section; the code implementing the dynamic runs of algorithms has been excluded from the code coverage statistics above)
 5. Set `CUSTOM_DEBUG_HELPER_FUNCION` to build functions that are used primarily for debugging (excluded from code coverage)
@@ -54,13 +54,12 @@
 <a name="notes_on_tests"></a>
 #### Notes on test: ####
 1. Unit test framework set up to set algorithms under different grids. This section uses Google Test.
-2. CMake option TEST allows building tests when set when `BUILD_INDIVIDUAL` is set `OFF`.
-3. Tests set to run after main file built.
-4. Files named grid#.cpp are specific grids to check for correctness under certain conditions. gridr.cpp generates a random grid and checks whether Dijkstra, A\* and D\* Lite (without new obstacles) generate the same cost from start to end.
-5. Given the random nature of RRT, no set has been set up for it yet.
+2. CMake option RUN_TESTS allows building tests when set when `BUILD_INDIVIDUAL` is set `OFF`.
+3. The tests do not cover live runs of the D* Lite and LPAStar algorithm, reducing the code coverage value.
+4. Given the random nature of RRT, no set has been set up for it yet.
+5. Files named grid#.cpp are specific grids to check for correctness under certain conditions. gridr.cpp generates a random grid and checks whether Dijkstra, A\* and D\* Lite (without new obstacles) generate the same cost from start to end.
 6. Due to the nature of Ant Colony Optimization and accounting for the hyper parameters, the tests are run with a 20% margin above the optimal solution. Similarly for Genetic Algorithm.
 7. The test function for genetic algorithm has been modified to ensure correct functioning.
-8. The tests do not cover live runs of the D* Lite and LPAStar algorithm, reducing the code coverage value.
 
 <a name="notes_on_implementations"></a>
 #### Notes on implementations: ####

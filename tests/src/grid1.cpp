@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include "test_utils.cpp"
+#include "tests/test_utils.hpp"
 
 TEST(PathPlanningTest, Test1) {
   std::vector<std::vector<int>> grid{

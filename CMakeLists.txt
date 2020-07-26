@@ -1,6 +1,7 @@
 project(path_planning)
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16)
+include(CMakeDependentOption)
 
 if(NOT WIN32)
   string(ASCII 27 Esc)
@@ -22,7 +23,7 @@ endif()
 # )
 
 set( CMAKE_CXX_STANDARD 17 )
-set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -pthread -Wall -Werror -O3" )
+# set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -pthread -Wall -Werror -O3" )
 # set( CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=${CLANG_TIDY_CHECKS}" )
 
 include_directories( ${CMAKE_SOURCE_DIR}/inc )
@@ -40,25 +41,15 @@ list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
 # If building each file with it's own output, set to ON
 # If buiding single file (main.cpp) to test any/all protocols, set to OFF
 option( BUILD_INDIVIDUAL "Build each algorithm .cpp file with its own executable" OFF)
-option( TEST "Build and run tests" OFF)
-option( CHECK_COVERAGE "Run code coverage check" OFF)
-option( DYNAMIC_ALGOS "Build and run algorithms with obstacle detection in real time (D* Lite)" ON)
-option( CUSTOM_DEBUG_HELPER_FUNCION "Build custom debug helper functions" OFF)
-option( TRAVIS "Config for Travis CI" OFF)
-
-# Ensures dynamic runs for individual files allowed
-if(BUILD_INDIVIDUAL)
-  option( DYNAMIC_ALGOS ON)
-  option( CUSTOM_DEBUG_HELPER_FUNCION ON)
-  option( CHECK_COVERAGE OFF)
-endif(BUILD_INDIVIDUAL)
-
-# No way to check for dynamic algos as they have random obstacle generation
-# Hence removing from code coverage tests
-if(CHECK_COVERAGE)
-  option( DYNAMIC_ALGOS OFF)
-  option( CUSTOM_DEBUG_HELPER_FUNCION OFF)
-endif(CHECK_COVERAGE)
+# default OFF
+cmake_dependent_option( RUN_TESTS "Build and run tests" OFF "NOT BUILD_INDIVIDUAL" OFF)
+# default OFF, change by user input if and only if condition allows (BUILD_INDIVIDUAL=OFF)
+cmake_dependent_option( CHECK_COVERAGE "Run code coverage check" OFF "RUN_TESTS" OFF)
+# default OFF, change by user input if and only if condition allows (RUN_TESTS=ON)
+cmake_dependent_option( DYNAMIC_ALGOS "Build and run algorithms with obstacle detection in real time (D* Lite)" ON  "NOT RUN_TESTS" OFF)
+# default OFF, change by user input if and only if condition allows (RUN_TESTS=OFF)
+cmake_dependent_option( CUSTOM_DEBUG_HELPER_FUNCION "Build custom debug helper functions" OFF "NOT RUN_TESTS" OFF)
+# default OFF, change by user input if and only if condition allows (RUN_TESTS=OFF)
 
 if(CUSTOM_DEBUG_HELPER_FUNCION)
   add_definitions(-DCUSTOM_DEBUG_HELPER_FUNCION)
@@ -68,20 +59,15 @@ if(DYNAMIC_ALGOS)
   add_definitions(-DDYNAMIC_ALGOS)
 endif(DYNAMIC_ALGOS)
 
-if(TEST)
-  add_library( test_utils SHARED ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_utils.cpp ${LIB_HEADERS} )
-  list( REMOVE_ITEM LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_utils.cpp )
-endif(TEST)
-
 if(BUILD_INDIVIDUAL)
 
   add_definitions(-DBUILD_INDIVIDUAL)
   message("${Blue} Individual files being built ${ColourReset}")
   foreach(test_source_file ${LIB_SOURCES})
-    string( REPLACE ".cpp" "" test_output_file ${test_source_file} )
-    string( REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/src/" "" test_output_file ${test_output_file} )
+    get_filename_component(test_output_file ${test_source_file} NAME_WE)
     message( ${test_output_file} )
     add_executable( ${test_output_file} ${test_source_file} ${LIB_HEADERS})
+    set_target_properties( ${test_output_file} PROPERTIES CXX_FLAGS "${CXX_FLAGS}  -pthread -Wall -Werror -O3 -g" )
     target_link_libraries( ${test_output_file} utils )
   endforeach(test_source_file ${LIB_SOURCES})
   message( "${Blue}End of list ${ColourReset}" )
@@ -92,64 +78,15 @@ else (BUILD_INDIVIDUAL)
   add_executable( main ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp ${LIB_HEADERS} )
   target_link_libraries( main utils algos)
 
-  if (TEST)
+  if (RUN_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+  endif(RUN_TESTS)
 
-    # For coverage check
-
-    if(CHECK_COVERAGE)
-      LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
-      include(CodeCoverage)
-      APPEND_COVERAGE_COMPILER_FLAGS()
-    endif(CHECK_COVERAGE)
-
-    # For GTEST
-    find_package(GTest)
-    if(GTest_FOUND)
-      # Installed
-      enable_testing()
-      add_definitions(-DTEST)
-      include_directories(${GTEST_INCLUDE_DIRS})
-    else(GTest_FOUND)
-      # Using GTEST as submodule
-      enable_testing()
-      add_definitions(-DTEST)
-      include(gtest.cmake)
-    endif(GTest_FOUND)
-
-    foreach(test_source_file ${LIB_TESTS_SOURCES})
-      string( REPLACE ".cpp" "" test_output_file ${test_source_file} )
-      string( REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/tests/" "" test_output_file ${test_output_file} )
-      add_executable( ${test_output_file} ${test_source_file} ${LIB_HEADERS})
-      target_link_libraries( ${test_output_file} ${GTEST_LIBRARIES} pthread utils algos test_utils gtest)
-      add_test(${test_output_file} ${test_output_file})
-
-      if(CHECK_COVERAGE)
-        set(COVERAGE_LCOV_EXCLUDES '${CMAKE_CURRENT_SOURCE_DIR}/tests/*' # Will skew results
-                                   '/usr/*' # Gtest
-                                   '${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp' # Each tet fle is the equivalent of main
-                                   '${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp' # Only util functions that serve as helpers
-                                   '${CMAKE_CURRENT_SOURCE_DIR}/src/rrt.cpp' # No test
-                                   '${CMAKE_CURRENT_SOURCE_DIR}/inc/rrt.hpp') # No test
-        SETUP_TARGET_FOR_COVERAGE_LCOV(NAME ${test_output_file}_coverage EXECUTABLE ${test_output_file} )
-        target_link_libraries(${test_output_file} gcov)
-        add_custom_command(
-          TARGET main # Ensures tests run only after main
-          POST_BUILD
-          COMMAND make ${test_output_file}_coverage WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/)
-      endif(CHECK_COVERAGE)
-
-      add_dependencies(main ${test_output_file}) # ensure main is built after the test grids.
-
-    endforeach(test_source_file ${LIB_SOURCES})
-
-    # No need to run tests separately if check coverage is being run as that will run the tests anyway
-    if(NOT CHECK_COVERAGE)
-      add_custom_command(
-       TARGET main # Ensures tests run only after main
-       POST_BUILD
-       COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> -R "^${UNIT_TEST}$" --output-on-failures)
-    endif(NOT CHECK_COVERAGE)
-
-  endif (TEST)
+  if(CHECK_COVERAGE)
+    set_target_properties( main algos utils PROPERTIES CXX_FLAGS "${CXX_FLAGS} -pthread -Wall -Werror --coverage -O0 -g" )
+  else(CHECK_COVERAGE)
+    set_target_properties( main algos utils PROPERTIES CXX_FLAGS "${CXX_FLAGS} -pthread -Wall -Werror -O3")
+  endif(CHECK_COVERAGE)
 
 endif (BUILD_INDIVIDUAL)

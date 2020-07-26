@@ -1,6 +1,6 @@
-#include "test_utils.cpp"
+#include "tests/test_utils.hpp"
 
-TEST(PathPlanningTest, Test1) {
+TEST(PathPlanningTest,Test1) {
   std::vector<std::vector<int>> grid{
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 1 , 1 , 1 , 1, 1 },
@@ -9,8 +9,7 @@ TEST(PathPlanningTest, Test1) {
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 0 , 0 , 0 , 0, 0 }
                    } ;
-
-  std::vector<std::vector<int>> main_grid = grid;
+ std::vector<std::vector<int>> main_grid = grid;
   grid = main_grid;
   ASSERT_EQ(-1, run_test(grid, "dijkstra"));
   grid = main_grid;

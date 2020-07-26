@@ -4,13 +4,13 @@
  * @brief Contains the GeneticAlgorithm class
  */
 
-#include "genetic_algorithm.hpp"
-
 #include <algorithm>
 #include <climits>
 #include <iomanip>  // TODO(vss): replace setw
 #include <iostream>
 #include <random>
+
+#include "genetic_algorithm.hpp"
 
 constexpr int random_range_max = 100;
 

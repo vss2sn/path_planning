@@ -1,4 +1,4 @@
-#include "test_utils.cpp"
+#include "tests/test_utils.hpp"
 
 TEST(PathPlanningTest, Test1) {
   constexpr int n = 8;

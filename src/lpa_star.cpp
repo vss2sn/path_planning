@@ -4,13 +4,13 @@
  * @brief Contains the LPAStar class
  */
 
-#include "lpa_star.hpp"
-
 #include <chrono>
 #include <iomanip>  // TODO(vss): replace setw
 #include <iostream>
 #include <random>
 #include <thread>
+
+#include "lpa_star.hpp"
 
 // constants
 constexpr int obs_found_pause_time = 500;  // ms

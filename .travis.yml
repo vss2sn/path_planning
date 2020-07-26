@@ -11,7 +11,7 @@ before_script:
   - git submodule add https://github.com/google/googletest.git gtest
   - mkdir build
   - cd build
-  - cmake -DTEST=ON -DCHECK_COVERAGE=ON -DDYNAMIC_ALGOS=OFF ..
+  - cmake -DRUN_TESTS=ON -DCHECK_COVERAGE=ON ..
 
 script:
   - make
@@ -20,5 +20,5 @@ after_success:
   - git submodule deinit -f -- gtest
   - rm -rf .git/modules/gtest
   - git rm -f gtest
-  - lcov -a grid1_coverage.info.cleaned -a grid2_coverage.info.cleaned -a grid3_coverage.info.cleaned -a grid4_coverage.info.cleaned -a grid5_coverage.info.cleaned -o total.info
+  - lcov -a tests/grid1_coverage.info.cleaned -a tests/grid2_coverage.info.cleaned -a tests/grid3_coverage.info.cleaned -a tests/grid4_coverage.info.cleaned -a tests/grid5_coverage.info.cleaned -o total.info
   - bash <(curl -s https://codecov.io/bash) -f total.info || echo "Codecov did not collect coverage reports"

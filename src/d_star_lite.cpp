@@ -4,14 +4,14 @@
  * @brief Contains the DStarLite class
  */
 
-#include "d_star_lite.hpp"
-
 #include <algorithm>
 #include <cmath>
 #include <iomanip>  // TODO(vss): replace setw
 #include <iostream>
 #include <random>
 #include <thread>
+
+#include "d_star_lite.hpp"
 
 void DStarLite::VectorInsertionSort(std::vector<Node>& v) {
   int nV = v.size();

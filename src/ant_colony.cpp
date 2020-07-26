@@ -4,13 +4,13 @@
  * @brief Contains the Ant and Ant Colony class
  */
 
-#include "ant_colony.hpp"
-
 #include <chrono>
 #include <climits>
 #include <cmath>
 #include <random>
 #include <thread>
+
+#include "ant_colony.hpp"
 
 Ant::Ant(Node start, int id) {
   this->id_ = id;

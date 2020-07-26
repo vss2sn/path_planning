@@ -4,10 +4,11 @@
  * @brief Contains the RRT class
  */
 
-#include "rrt.hpp"
 
 #include <cmath>
 #include <random>
+
+#include "rrt.hpp"
 
 // constants
 constexpr double half_grid_unit = 0.5;
