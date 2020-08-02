@@ -12,7 +12,7 @@
 #include <random>
 #include <thread>
 
-#include "ant_colony.hpp"
+#include "path_planning/ant_colony.hpp"
 
 Ant::Ant(Node start, int id) {
   this->id_ = id;
@@ -137,7 +137,6 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid,
         // TODO(vss): add check to count number of loops removed and stop if
         // going into inf. Should be only 1? use hash of visited?
         RemoveLoop(ant);
-
         ant.steps_++;
       }
       ants_[j] = ant;
@@ -199,7 +198,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid,
  * @return 0
  */
 int main() {
-  int n = 30;
+  int n = 11;
   std::vector<std::vector<int>> grid(n, std::vector<int>(n));
   MakeGrid(grid);
 
@@ -223,8 +222,9 @@ int main() {
   goal.PrintStatus();
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
-  // Normally as  beta increases the solution becomes greedier. However, as the
-  // heuristic is < 1 here, reducing beta increases the value places on the
+
+  // Normally as beta increases the solution becomes greedier. However, as the
+  // heuristic is < 1 here, reducing beta increases the value placed on the
   // heuristic
   AntColony new_ant_colony(10, 1, 0.2, 0.5, 50, 10.0);
   std::vector<Node> path_vector = new_ant_colony.ant_colony(grid, start, goal);

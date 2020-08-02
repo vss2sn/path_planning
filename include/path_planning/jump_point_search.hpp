@@ -10,7 +10,7 @@
 #include <queue>
 #include <unordered_set>
 
-#include "utils.hpp"
+#include "utils/utils.hpp"
 
 class JumpPointSearch {
  public:

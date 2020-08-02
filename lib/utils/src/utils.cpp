@@ -9,7 +9,7 @@
 #include <iostream>
 #include <random>
 
-#include "utils.hpp"
+#include "utils/utils.hpp"
 
 // constants
 constexpr int spacing_for_grid = 10;

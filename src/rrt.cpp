@@ -8,7 +8,7 @@
 #include <cmath>
 #include <random>
 
-#include "rrt.hpp"
+#include "path_planning/rrt.hpp"
 
 // constants
 constexpr double half_grid_unit = 0.5;

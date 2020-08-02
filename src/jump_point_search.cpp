@@ -10,7 +10,7 @@
 #include <random>
 #endif  // BUILD_INDIVIDUAL
 
-#include "jump_point_search.hpp"
+#include "path_planning/jump_point_search.hpp"
 
 Node JumpPointSearch::jump(const Node& new_point, const Node& motion,
                            const int id) {

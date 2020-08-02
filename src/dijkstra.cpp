@@ -8,7 +8,7 @@
 #include <random>
 #endif  // BUILD_INDIVIDUAL
 
-#include "dijkstra.hpp"
+#include "path_planning/dijkstra.hpp"
 
 std::vector<Node> Dijkstra::dijkstra(std::vector<std::vector<int>>& grid,
                                      const Node& start_in,

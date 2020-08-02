@@ -10,7 +10,7 @@
 #include <iostream>
 #include <random>
 
-#include "genetic_algorithm.hpp"
+#include "path_planning/genetic_algorithm.hpp"
 
 constexpr int random_range_max = 100;
 

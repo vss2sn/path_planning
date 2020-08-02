@@ -27,16 +27,10 @@ endif()
 set( CMAKE_CXX_STANDARD 17 )
 # set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -pthread -Wall -Werror -O3" )
 
-include_directories( ${CMAKE_SOURCE_DIR}/inc )
-
+# TODO(vss2sn): Remove glob
 file( GLOB LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp )
-file( GLOB LIB_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.hpp )
-file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )
-
-# Building utils.cpp as  a library as common to multiple files
-
-list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp )
 list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
+file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )
 
 # If building each file with it's own output, set to ON
 # If buiding single file (main.cpp) to test any/all protocols, set to OFF
@@ -59,22 +53,27 @@ if(DYNAMIC_ALGOS)
   add_definitions(-DDYNAMIC_ALGOS)
 endif(DYNAMIC_ALGOS)
 
-add_library( utils STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp ${LIB_HEADERS} )
+add_subdirectory(lib)
 
 if(BUILD_INDIVIDUAL)
 
   add_definitions(-DBUILD_INDIVIDUAL)
   foreach(test_source_file ${LIB_SOURCES})
     get_filename_component(test_output_file ${test_source_file} NAME_WE)
-    add_executable( ${test_output_file} ${test_source_file} ${LIB_HEADERS})
+    add_executable( ${test_output_file} ${test_source_file})
+    target_include_directories(${test_output_file} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
     set_target_properties( ${test_output_file} PROPERTIES CXX_FLAGS "${CXX_FLAGS}  -pthread -Wall -Werror -O3 -g" )
     target_link_libraries( ${test_output_file} utils )
   endforeach(test_source_file ${LIB_SOURCES})
 
 else (BUILD_INDIVIDUAL)
 
-  add_library( algos STATIC ${LIB_SOURCES} ${LIB_HEADERS} )
-  add_executable( main ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp ${LIB_HEADERS} )
+  add_library(algos)
+  target_include_directories(algos PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+  target_sources(algos PRIVATE ${LIB_SOURCES})
+  target_link_libraries(algos utils)
+
+  add_executable( main ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
   target_link_libraries( main utils algos)
 
   if(CHECK_COVERAGE)
@@ -89,13 +88,10 @@ else (BUILD_INDIVIDUAL)
   endif(CHECK_COVERAGE)
 
   if (RUN_TESTS)
-    # For GTEST
-    find_package(GTest)
-    if(GTest_FOUND)
-      # Installed
+    find_package(GTest)  # For GTest
+    if(GTest_FOUND)  # GTestInstalled
       include_directories(${GTEST_INCLUDE_DIRS})
-    else(GTest_FOUND)
-      # Using GTEST as submodule
+    else(GTest_FOUND)  # Using GTEST as submodule
       include(gtest.cmake)
     endif(GTest_FOUND)
     enable_testing()

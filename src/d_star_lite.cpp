@@ -11,7 +11,7 @@
 #include <random>
 #include <thread>
 
-#include "d_star_lite.hpp"
+#include "path_planning/d_star_lite.hpp"
 
 void DStarLite::VectorInsertionSort(std::vector<Node>& v) {
   int nV = v.size();

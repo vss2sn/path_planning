@@ -10,7 +10,7 @@
 #include <random>
 #include <thread>
 
-#include "lpa_star.hpp"
+#include "path_planning/lpa_star.hpp"
 
 // constants
 constexpr int obs_found_pause_time = 500;  // ms

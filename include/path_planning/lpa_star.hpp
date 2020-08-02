@@ -7,7 +7,7 @@
 #ifndef LPA_STAR_H
 #define LPA_STAR_H
 
-#include "utils.hpp"
+#include "utils/utils.hpp"
 
 /**
  * @brief Class for LPAStar objects

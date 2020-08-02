@@ -9,7 +9,7 @@
 
 #include <unordered_map>
 
-#include "utils.hpp"
+#include "utils/utils.hpp"
 
 /**
  * @brief Structure to generate a hash for std::pair

@@ -1,28 +1,28 @@
 /**
- * @file rrt.hpp
+ * @file rrt_star.hpp
  * @author vss2sn
- * @brief Contains the RRT class
+ * @brief Contains the RRTStar class
  */
 
-#ifndef RRT_H
-#define RRT_H
+#ifndef RRT_STAR_H
+#define RRT_STAR_H
 
 #include <limits>
 
-#include "utils.hpp"
+#include "utils/utils.hpp"
 
 /**
- * @brief Class for RRT objects
+ * @brief Class for RRT Star objects
  */
-class RRT {
+class RRTStar {
  public:
   /**
-   * @brief Find the nearest node that has been seen by the algorithm. This does
+   * @brief Find the nearest Node that has been seen by the algorithm. This does
    * not consider cost to reach the node.
    * @param new_node Node to which the nearest node must be found
-   * @return Nearest node
+   * @return nearest node
    */
-  Node FindNearestPoint(Node& new_node) const;
+  Node FindNearestPoint(Node& new_node);
 
   /**
    * @brief Check if there is any obstacle between the 2 nodes. As this planner
@@ -37,10 +37,18 @@ class RRT {
    * @brief Generates a random node
    * @return Generated node
    */
-  static Node GenerateRandomNode(const int n);
+  Node GenerateRandomNode() const;
 
   /**
-   * @brief Main algorithm of RRT
+   * @brief Rewire the tree
+   * @param new_node Node to which other nodes will be connected if their cost
+   * decreases
+   * @return void
+   */
+  void Rewire(const Node& new_node);
+
+  /**
+   * @brief Main algorithm of RRT*
    * @param grid Main grid
    * @param start_in starting node
    * @param goal_in goal node
@@ -49,7 +57,7 @@ class RRT {
    * @param threshold_in Maximum distance per move
    * @return path vector of nodes
    */
-  std::vector<Node> rrt(
+  std::vector<Node> rrt_star(
       std::vector<std::vector<int>>& grid, const Node& start_in,
       const Node& goal_in, const int max_iter_x_factor = 500,
       const double threshold_in = std::numeric_limits<double>::infinity());
@@ -63,7 +71,7 @@ class RRT {
 
   /**
    * @brief Create the obstacle list from the input grid
-   * @param grid input grid for algorithm
+   * @param grid Input grid for algorithm
    * @return void
    */
   void CreateObstacleList(std::vector<std::vector<int>>& grid);
@@ -71,9 +79,12 @@ class RRT {
  private:
   std::vector<Node> point_list_;
   std::vector<Node> obstacle_list_;
+  std::vector<Node> near_nodes_;
+  std::vector<double> near_nodes_dist_;
   Node start_, goal_;
   double threshold_ = 1;
+  bool found_goal_ = false;
   int n = 0;
 };
 
-#endif  // RRT_H
+#endif  // RRT_STAR_H

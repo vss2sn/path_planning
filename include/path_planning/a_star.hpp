@@ -9,7 +9,7 @@
 
 #include <queue>
 
-#include "utils.hpp"
+#include "utils/utils.hpp"
 
 /**
  * @brief Class for A Star objects

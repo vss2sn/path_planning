@@ -7,7 +7,7 @@
 #ifndef GENETIC_ALGORITHM_H
 #define GENETIC_ALGORITHM_H
 
-#include "utils.hpp"
+#include "utils/utils.hpp"
 
 /**
  * @brief Class for Genetic Algorithm ojects

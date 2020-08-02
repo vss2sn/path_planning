@@ -9,7 +9,7 @@
 #include <random>
 #include <vector>
 
-#include "rrt_star.hpp"
+#include "path_planning/rrt_star.hpp"
 
 // constants
 constexpr double half_grid_unit = 0.5;

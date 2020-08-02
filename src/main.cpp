@@ -7,15 +7,15 @@
 #include <iostream>
 #include <random>
 
-#include "a_star.hpp"
-#include "ant_colony.hpp"
-#include "d_star_lite.hpp"
-#include "dijkstra.hpp"
-#include "genetic_algorithm.hpp"
-#include "jump_point_search.hpp"
-#include "lpa_star.hpp"
-#include "rrt.hpp"
-#include "rrt_star.hpp"
+#include "path_planning/a_star.hpp"
+#include "path_planning/ant_colony.hpp"
+#include "path_planning/d_star_lite.hpp"
+#include "path_planning/dijkstra.hpp"
+#include "path_planning/genetic_algorithm.hpp"
+#include "path_planning/jump_point_search.hpp"
+#include "path_planning/lpa_star.hpp"
+#include "path_planning/rrt.hpp"
+#include "path_planning/rrt_star.hpp"
 
 int main() {
   constexpr int n = 21;

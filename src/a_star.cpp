@@ -10,7 +10,7 @@
 #include <random>
 #endif  // BUILD_INDIVIDUAL
 
-#include "a_star.hpp"
+#include "path_planning/a_star.hpp"
 
 std::vector<Node> AStar::a_star(std::vector<std::vector<int>>& grid,
                                 const Node& start_in, const Node& goal_in) {
