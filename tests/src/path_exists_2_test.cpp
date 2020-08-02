@@ -2,17 +2,18 @@
 
 #include "tests/test_utils.hpp"
 
-TEST(PathPlanningTest, Test1) {
+TEST(PathPlanningTest, PathExists2) {
   std::vector<std::vector<int>> grid{
-                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
-                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-                    { 1 , 0 , 0 , 1 , 0 , 0 , 0 , 0 },
-                    { 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
-                    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
-                    { 0 , 0 , 1 , 0 , 1 , 0 , 0 , 0 },
-                    { 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 }
-                   };
+    { 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 },
+    { 1 , 0 , 0 , 0 , 1 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 },
+    { 1 , 0 , 0 , 1 , 0 , 0 , 1 , 1 },
+    { 0 , 0 , 0 , 1 , 1 , 0 , 1 , 0 },
+    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 }
+                   } ;
+
   std::vector<std::vector<int>> main_grid = grid;
   grid = main_grid;
   ASSERT_EQ(14, run_test(grid, "dijkstra"));
@@ -24,9 +25,9 @@ TEST(PathPlanningTest, Test1) {
   ASSERT_EQ(14, run_test(grid, "lpa_star"));
   // NOTE: RRT currently does not store cost. Now becomes a TODO.
   grid = main_grid;
-  ASSERT_LE(6*std::sqrt(2)+2, run_test(grid, "rrt"));
+  ASSERT_LE(trunc(7*std::sqrt(2)*100)/100, floor(run_test(grid, "rrt")));
   grid = main_grid;
-  ASSERT_EQ(6*std::sqrt(2)+2, run_test(grid, "rrtstar"));
+  ASSERT_EQ(trunc(7*std::sqrt(2)*100)/100, trunc(run_test(grid, "rrtstar")*100)/100);
   grid = main_grid;
   ASSERT_EQ(14, run_test(grid, "d_star_lite"));
   grid = main_grid;

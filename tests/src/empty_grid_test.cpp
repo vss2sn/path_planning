@@ -2,7 +2,7 @@
 
 #include "tests/test_utils.hpp"
 
-TEST(PathPlanningTest, Test1) {
+TEST(PathPlanningTest, EmptyGrid) {
   std::vector<std::vector<int>> grid{
                      { 0 , 0 , 0 },
                      { 0 , 0 , 0 },

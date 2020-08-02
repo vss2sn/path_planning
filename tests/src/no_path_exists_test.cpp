@@ -1,6 +1,6 @@
 #include "tests/test_utils.hpp"
 
-TEST(PathPlanningTest,Test1) {
+TEST(PathPlanningTest, NoPathExists) {
   std::vector<std::vector<int>> grid{
                      { 0 , 0 , 0 , 0 , 0, 0 },
                      { 0 , 1 , 1 , 1 , 1, 1 },

@@ -1,6 +1,6 @@
 #include "tests/test_utils.hpp"
 
-TEST(PathPlanningTest, Test1) {
+TEST(PathPlanningTest, RandomlyGeneratedGrid) {
   constexpr int n = 8;
   std::vector<std::vector<int>> grid_1(n, std::vector<int>(n));
   MakeGrid(grid_1);
