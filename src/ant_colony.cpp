@@ -4,9 +4,11 @@
  * @brief Contains the Ant and Ant Colony class
  */
 
+#include <algorithm>
 #include <chrono>
 #include <climits>
 #include <cmath>
+#include <iostream>
 #include <random>
 #include <thread>
 
@@ -97,46 +99,35 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid,
           possible_position = ant.current_node_ + m;
           possible_position.id_ =
               possible_position.x_ * grid_size_ + possible_position.y_;
-          if (possible_position.x_ >= 0 && possible_position.x_ < grid_size_ &&
-              possible_position.y_ >= 0 && possible_position.y_ < grid_size_ &&
-              !compareCoordinates(possible_position, ant.previous_node_)) {
-            possible_positions.push_back(possible_position);
-            double new_prob =
-                std::pow(pheromone_edges_[std::make_pair(
-                             possible_position.id_, ant.current_node_.id_)],
-                         alpha_) *
-                std::pow(
-                    1.0 / std::sqrt(
-                              std::pow((possible_position.x_ - goal_.x_), 2) +
-                              std::pow((possible_position.y_ - goal_.y_), 2)),
-                    beta_);
-            if (grid_[possible_position.x_][possible_position.y_] == 1) {
-              n_obs += 1;
-              new_prob = 0;
-            }
-            possible_probabilities.push_back(new_prob);
-            prob_sum += new_prob;
+
+          if (checkOutsideBoundary(possible_position, grid_size_) ||
+                compareCoordinates(possible_position, ant.previous_node_) ||
+                grid_[possible_position.x_][possible_position.y_] == 1) {
+                  continue;
           }
+          if(compareCoordinates(possible_position, goal_)) {
+            ant.path_.push_back(goal_);
+            ant.found_goal_ = true;
+            break;
+          }
+          possible_positions.push_back(possible_position);
+          double new_prob =
+              std::pow(pheromone_edges_[std::make_pair(
+                           possible_position.id_, ant.current_node_.id_)],
+                       alpha_) *
+              std::pow(
+                  1.0 / std::sqrt(
+                            std::pow((possible_position.x_ - goal_.x_), 2) +
+                            std::pow((possible_position.y_ - goal_.y_), 2)),
+                  beta_);
+          possible_probabilities.push_back(new_prob);
+          prob_sum += new_prob;
         }
-        if (n_obs == static_cast<int>(possible_positions.size())) {
+        if (prob_sum == 0 || ant.found_goal_) {
           break;  // Ant in a cul-de-sac
         }
-        if (prob_sum == 0) {
-          double new_prob =
-              1.0 / (static_cast<int>(possible_positions.size()) - n_obs);
-          for (size_t i = 0; i < possible_positions.size(); i++) {
-            if (grid_[possible_positions[i].x_][possible_positions[i].y_] ==
-                0) {
-              possible_probabilities[i] = new_prob;
-            } else {
-              possible_probabilities[i] = 0;
-            }
-          }
-        } else {
-          for (auto& p : possible_probabilities) {
-            p /= prob_sum;
-          }
-        }
+        std::for_each(possible_probabilities.begin(), possible_probabilities.end(),
+          [&](double& p) { p /= prob_sum; });
         std::discrete_distribution<> dist(possible_probabilities.begin(),
                                           possible_probabilities.end());
         ant.previous_node_ = ant.current_node_;
@@ -144,26 +135,15 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid,
 
         // Removing any loops if reached previously reached point
         // TODO(vss): add check to count number of loops removed and stop if
-        // going into inf
+        // going into inf. Should be only 1? use hash of visited?
         RemoveLoop(ant);
 
         ant.steps_++;
-      }
-      // If goal found, add to path
-
-      if (compareCoordinates(ant.current_node_, goal_)) {
-        ant.current_node_.id_ =
-            ant.current_node_.x_ * grid_size_ + ant.current_node_.y_;
-        ant.path_.push_back(ant.current_node_);
-        ant.found_goal_ = true;
       }
       ants_[j] = ant;
     }
 
     // Pheromone deterioration
-    // for(auto it = pheromone_edges_.begin(); it!=pheromone_edges_.end();it++)
-    // { 	it->second = it->second*(1-evap_rate_);
-    // }
     for (auto& pheromone_edge : pheromone_edges_) {
       pheromone_edge.second *= (1 - evap_rate_);
     }
@@ -173,22 +153,21 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid,
 
     // Pheromone update based on successful ants
     for (const Ant& ant : ants_) {
-      // PrintAntPath(ant);
-      if (ant.found_goal_) {  // Use iff goal reached
-        if (static_cast<int>(ant.path_.size()) <
-            bpl) {  // Save best path yet in this iteration
+      if (ant.found_goal_) {
+        // Use iff goal reached
+        if (static_cast<int>(ant.path_.size()) <bpl) {
+          // Save best path yet in this iteration
           bpl = ant.path_.size();
           bp = ant.path_;
         }
-        double c =
-            Q_ / static_cast<double>(
-                     ant.path_.size() -
-                     1);  // c = cost / reward. Reward here, increased pheromone
-        for (size_t i = 1; i < ant.path_.size();
-             i++) {  // Assuming ant can tell which way the food was based on
-                     // how the phermones detereorate. Good for path planning as
-                     // prevents moving in the opposite direction to path and
-                     // improves convergence
+
+        // c = cost / reward. Reward here, increased pheromone
+        double c = Q_ / static_cast<double>(ant.path_.size() - 1);
+        for (size_t i = 1; i < ant.path_.size(); i++) {
+          // Assuming ant can tell which way the food was based on
+          // how the phermones detereorate. Good for path planning as
+          // prevents moving in the opposite direction to path and
+          // improves convergence
           auto it = pheromone_edges_.find(
               std::make_pair(ant.path_[i].id_, ant.path_[i - 1].id_));
           it->second += c;
@@ -208,8 +187,8 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid,
   for (size_t i = 1; i < last_best_path.size(); i++) {
     last_best_path[i].pid_ = last_best_path[i - 1].id_;
   }
-  last_best_path.back().id_ =
-      last_best_path.back().x_ * grid_size_ + last_best_path.back().y_;
+  // last_best_path.back().id_ =
+  //     last_best_path.back().x_ * grid_size_ + last_best_path.back().y_;
   return last_best_path;
 }
 
@@ -220,7 +199,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid,
  * @return 0
  */
 int main() {
-  int n = 11;
+  int n = 30;
   std::vector<std::vector<int>> grid(n, std::vector<int>(n));
   MakeGrid(grid);
 
@@ -237,14 +216,17 @@ int main() {
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
   // Make sure start and goal are not obstacles and their ids are correctly
   // assigned.
+  grid[start.x_][start.y_] = 5;
+  grid[goal.x_][goal.y_] = 5;
+  PrintGrid(grid);
+  start.PrintStatus();
+  goal.PrintStatus();
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
-  PrintGrid(grid);
-
   // Normally as  beta increases the solution becomes greedier. However, as the
   // heuristic is < 1 here, reducing beta increases the value places on the
   // heuristic
-  AntColony new_ant_colony(1, 1, 0.5, 0.3, 5, 10.0);
+  AntColony new_ant_colony(10, 1, 0.2, 0.5, 50, 10.0);
   std::vector<Node> path_vector = new_ant_colony.ant_colony(grid, start, goal);
   PrintPath(path_vector, start, goal, grid);
   return 0;

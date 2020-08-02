@@ -12,34 +12,16 @@
 
 #include "a_star.hpp"
 
-#ifdef CUSTOM_DEBUG_HELPER_FUNCION
-void AStar::InsertionSort(std::vector<Node>& v) const {
-  int nV = v.size();
-  int i, j;
-  Node key;
-  for (i = 1; i < nV; i++) {
-    key = v[i];
-    j = i - 1;
-    while (j >= 0 && (v[j].cost_ + v[j].h_cost_ > key.cost_ + key.h_cost_)) {
-      v[j + 1] = v[j];
-      j--;
-    }
-    v[j + 1] = key;
-  }
-}
-#endif
-
 std::vector<Node> AStar::a_star(std::vector<std::vector<int>>& grid,
                                 const Node& start_in, const Node& goal_in) {
   start_ = start_in;
   goal_ = goal_in;
   n = grid.size();
   // Get possible motions
-  std::vector<Node> motion = GetMotion();
+  const std::vector<Node> motion = GetMotion();
   open_list_.push(start_);
 
   // Main loop
-  Node temp;
   while (!open_list_.empty()) {
     Node current = open_list_.top();
     open_list_.pop();
@@ -61,8 +43,7 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>>& grid,
         open_list_.push(new_point);
         break;
       }
-      if (new_point.x_ < 0 || new_point.y_ < 0 || new_point.x_ >= n ||
-          new_point.y_ >= n) {
+      if (checkOutsideBoundary(new_point, n)) {
         continue;  // Check boundaries
       }
       if (grid[new_point.x_][new_point.y_] != 0) {

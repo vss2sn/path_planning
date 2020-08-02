@@ -168,4 +168,5 @@ void PrintPathInOrder(const std::vector<Node>& path_vector, const Node& start,
 
 bool compareCoordinates(const Node& p1, const Node& p2);
 
+bool checkOutsideBoundary(const Node& node, const int n);
 #endif  // UTILS_H

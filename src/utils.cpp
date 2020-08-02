@@ -63,6 +63,11 @@ Node Node::operator-(const Node& p) const {
 bool compareCoordinates(const Node& p1, const Node& p2) {
   return p1.x_ == p2.x_ && p1.y_ == p2.y_;
 }
+bool checkOutsideBoundary(const Node& node, const int n) {
+  return (node.x_ < 0 || node.y_ < 0
+    || node.x_ >= n || node.y_ >= n);
+}
+
 
 bool compare_cost::operator()(const Node& p1, const Node& p2) const {
   // Can modify this to allow tie breaks based on heuristic cost if required
