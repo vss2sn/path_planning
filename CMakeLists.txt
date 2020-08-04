@@ -71,21 +71,22 @@ else (BUILD_INDIVIDUAL)
   add_library(algos)
   target_include_directories(algos PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
   target_sources(algos PRIVATE ${LIB_SOURCES})
-  target_link_libraries(algos utils)
+  target_link_libraries(algos PUBLIC utils)
 
   add_executable( main ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
-  target_link_libraries( main utils algos)
+  target_link_libraries( main PRIVATE utils algos)
 
   if(CHECK_COVERAGE)
     target_compile_options(algos PUBLIC -O0 -g --coverage)
     if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)
       target_link_options(algos  PUBLIC --coverage)
     else()
-      target_link_libraries(algos PUBLIC --coverage)
+    target_link_libraries(algos PUBLIC --coverage)
     endif()
   else(CHECK_COVERAGE)
-    set_target_properties(main algos utils PROPERTIES CXX_FLAGS "${CXX_FLAGS}  -pthread -Wall -Werror -O3 -g")
+    set_target_properties(main algos utils PROPERTIES CXX_FLAGS "${CXX_FLAGS}  -pthread -Wall -Werror -O0 -g")
   endif(CHECK_COVERAGE)
+
 
   if (RUN_TESTS)
     find_package(GTest)  # For GTest
