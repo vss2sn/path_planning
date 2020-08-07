@@ -166,6 +166,13 @@ class LPAStar {
    */
   void DisplayGrid() const;
 
+  /**
+   * @brief Removes path from grid
+   * @return void
+   */
+  void RemovePathFromGrid(std::vector<std::vector<int>>& grid_in) const;
+
+
  private:
   Node start_, goal_;
   std::vector<std::vector<std::pair<double, double>>> S_;

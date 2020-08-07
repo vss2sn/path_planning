@@ -52,7 +52,6 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(
     std::transform(
         paths_.begin(), paths_.end(), f_vals.begin(),
         [&](const std::vector<Node> &path) { return CalculateFitness(path); });
-    // TODO(vss): Is min required
     f_val = *std::min_element(f_vals.begin(), f_vals.end());
 
     std::vector<std::vector<Node>> new_paths_;
