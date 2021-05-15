@@ -1,5 +1,12 @@
 project(tests)
 
+find_package(GTest)  # For GTest
+if(GTest_FOUND)  # GTestInstalled
+  include_directories(${GTEST_INCLUDE_DIRS})
+else(GTest_FOUND)  # Using GTEST as submodule
+  include(cmake/gtest.cmake)
+endif(GTest_FOUND)
+
 if(CHECK_COVERAGE)
   LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
   include(CodeCoverage)
