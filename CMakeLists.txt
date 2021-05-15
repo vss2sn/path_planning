@@ -6,6 +6,9 @@ project(path_planning)
 cmake_minimum_required(VERSION 3.15)
 include(CMakeDependentOption)
 
+# enable repository specific options
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/RepositorySpecificOptions.cmake")
+
 # enable cache system
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Cache.cmake")
 
@@ -13,18 +16,6 @@ set(PATH_TO_MAIN "${CMAKE_CURRENT_SOURCE_DIR}/main/main.cpp")
 file( GLOB LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp )
 file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )
 
-# If building each file with it's own output, set to ON
-# If buiding single file (main.cpp) to test any/all protocols, set to OFF
-option( BUILD_INDIVIDUAL "Build each algorithm .cpp file with its own executable" OFF)
-# default OFF
-cmake_dependent_option( RUN_TESTS "Build and run tests" OFF "NOT BUILD_INDIVIDUAL" OFF)
-# default OFF, change by user input if and only if condition allows (BUILD_INDIVIDUAL=OFF)
-cmake_dependent_option( CHECK_COVERAGE "Run code coverage check" OFF "RUN_TESTS" OFF)
-# default OFF, change by user input if and only if condition allows (RUN_TESTS=ON)
-cmake_dependent_option( DYNAMIC_ALGOS "Build and run algorithms with obstacle detection in real time (D* Lite)" ON  "NOT RUN_TESTS" OFF)
-# default OFF, change by user input if and only if condition allows (RUN_TESTS=OFF)
-cmake_dependent_option( CUSTOM_DEBUG_HELPER_FUNCION "Build custom debug helper functions" OFF "NOT RUN_TESTS" OFF)
-# default OFF, change by user input if and only if condition allows (RUN_TESTS=OFF)
 
 if(CUSTOM_DEBUG_HELPER_FUNCION)
   add_definitions(-DCUSTOM_DEBUG_HELPER_FUNCION)
