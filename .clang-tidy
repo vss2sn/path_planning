@@ -1,0 +1,5 @@
+---
+Checks:          '*,-fuchsia-*,-google-*,-zircon-*,-abseil-*,-cert-msc50-cpp,-cert-msc30-c,-modernize-use-trailing-return-type,-llvm*'
+WarningsAsErrors: '*'
+HeaderFilterRegex: ''
+FormatStyle:     none
