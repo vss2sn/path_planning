@@ -16,7 +16,6 @@ set(PATH_TO_MAIN "${CMAKE_CURRENT_SOURCE_DIR}/main/main.cpp")
 file( GLOB LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp )
 file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )
 
-
 if(CUSTOM_DEBUG_HELPER_FUNCION)
   add_definitions(-DCUSTOM_DEBUG_HELPER_FUNCION)
 endif(CUSTOM_DEBUG_HELPER_FUNCION)
@@ -84,7 +83,7 @@ else (BUILD_INDIVIDUAL)
     if(GTest_FOUND)  # GTestInstalled
       include_directories(${GTEST_INCLUDE_DIRS})
     else(GTest_FOUND)  # Using GTEST as submodule
-      include(gtest.cmake)
+      include(cmake/gtest.cmake)
     endif(GTest_FOUND)
     enable_testing()
     add_subdirectory(tests)
