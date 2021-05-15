@@ -6,6 +6,8 @@ project(path_planning)
 cmake_minimum_required(VERSION 3.15)
 include(CMakeDependentOption)
 
+# enable cache system
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Cache.cmake")
 
 set(PATH_TO_MAIN "${CMAKE_CURRENT_SOURCE_DIR}/main/main.cpp")
 file( GLOB LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp )
