@@ -11,7 +11,13 @@ add_definitions(-DRUN_TESTS)
 function(add_test_file TEST_SOURCE)
   get_filename_component(test_output_file ${TEST_SOURCE} NAME_WE)
   add_executable( ${test_output_file} )
-  set_target_properties(${test_output_file} PROPERTIES CXX_STANDARD 17)
+  set_target_properties(${test_output_file}
+    PROPERTIES
+      CXX_STANDARD 20
+      CXX_STANDARD_REQUIRED YES
+      CXX_EXTENSIONS NO
+      CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -Werror -g"
+  )
   target_sources(${test_output_file} PRIVATE ${TEST_SOURCE})
   target_include_directories(${test_output_file} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
   target_link_libraries( ${test_output_file} PRIVATE ${GTEST_LIBRARIES} pthread utils algos gtest)

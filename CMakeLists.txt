@@ -1,35 +1,14 @@
+set(CMAKE_C_COMPILER "/usr/bin/gcc-10")
+set(CMAKE_CXX_COMPILER "/usr/bin/g++-10")
+
 project(path_planning)
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 include(CMakeDependentOption)
 
-if(NOT WIN32)
-  string(ASCII 27 Esc)
-  set(ColourReset "${Esc}[m")
-  set(Red         "${Esc}[31m")
-  set(Green       "${Esc}[32m")
-  set(Yellow      "${Esc}[33m")
-  set(Blue        "${Esc}[34m")
-  set(White       "${Esc}[37m")
-endif()
 
-# For clang-tidy
-# string(CONCAT CLANG_TIDY_CHECKS
-#   "*,"                                    # enable all1
-#   "-modernize-use-trailing-return-type,"  # style-choice
-#   "-fuchsia-default-arguments-calls,"     # allow use of default values in constructors
-#   "-cert-msc50-cpp,"                      # rand() is good enough for the current usage
-#   "-cert-msc30-c,"                        # rand() is good enough for the current usage
-#   "-fuchsia-overloaded-operator"          # +, -, () overloaded for node
-# )
-# set( CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=${CLANG_TIDY_CHECKS}" )
-
-set( CMAKE_CXX_STANDARD 17 )
-# set( CMAKE_CXX_FLAGS "${CXX_FLAGS} -pthread -Wall -Werror -O3" )
-
-# TODO(vss2sn): Remove glob
+set(PATH_TO_MAIN "${CMAKE_CURRENT_SOURCE_DIR}/main/main.cpp")
 file( GLOB LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp )
-list( REMOVE_ITEM LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
 file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )
 
 # If building each file with it's own output, set to ON
@@ -60,9 +39,16 @@ if(BUILD_INDIVIDUAL)
   add_definitions(-DBUILD_INDIVIDUAL)
   foreach(test_source_file ${LIB_SOURCES})
     get_filename_component(test_output_file ${test_source_file} NAME_WE)
-    add_executable( ${test_output_file} ${test_source_file})
+    add_executable( ${test_output_file})
+    target_sources(${test_output_file} PRIVATE ${test_source_file})
     target_include_directories(${test_output_file} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-    set_target_properties( ${test_output_file} PROPERTIES CXX_FLAGS "${CXX_FLAGS}  -pthread -Wall -Werror -O3 -g" )
+    set_target_properties(${test_output_file}
+      PROPERTIES
+        CXX_STANDARD 20
+        CXX_STANDARD_REQUIRED YES
+        CXX_EXTENSIONS NO
+        CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -Werror -g"
+    )
     target_link_libraries( ${test_output_file} utils )
   endforeach(test_source_file ${LIB_SOURCES})
 
@@ -72,19 +58,31 @@ else (BUILD_INDIVIDUAL)
   target_include_directories(algos PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
   target_sources(algos PRIVATE ${LIB_SOURCES})
   target_link_libraries(algos PUBLIC utils)
+  set_target_properties(algos
+    PROPERTIES
+      CXX_STANDARD 20
+      CXX_STANDARD_REQUIRED YES
+      CXX_EXTENSIONS NO
+  )
 
-  add_executable( main ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
+  add_executable( main ${PATH_TO_MAIN} )
   target_link_libraries( main PRIVATE utils algos)
 
   if(CHECK_COVERAGE)
     target_compile_options(algos PUBLIC -O0 -g --coverage)
-    if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)
-      target_link_options(algos  PUBLIC --coverage)
-    else()
-    target_link_libraries(algos PUBLIC --coverage)
-    endif()
+    target_link_options(algos  PUBLIC --coverage)
   else(CHECK_COVERAGE)
-    set_target_properties(main algos utils PROPERTIES CXX_FLAGS "${CXX_FLAGS}  -pthread -Wall -Werror -O0 -g")
+    set_target_properties(algos
+      PROPERTIES
+        CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -Werror -g"
+    )
+    set_target_properties( main
+      PROPERTIES
+        CXX_STANDARD 20
+        CXX_STANDARD_REQUIRED YES
+        CXX_EXTENSIONS NO
+        CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -Werror -g"
+    )
   endif(CHECK_COVERAGE)
 
 
