@@ -1,4 +1,4 @@
-/**
+  /**
  * @file ant_colony.cpp
  * @author vss2sn
  * @brief Contains the Ant and Ant Colony class
@@ -45,7 +45,7 @@ void AntColony::PrintAntPath(Ant& ant) const {
 
 void AntColony::RemoveLoop(Ant& ant) {
   for (auto it = ant.path_.begin(); it != ant.path_.end(); ++it) {
-    if (compareCoordinates(*it, ant.current_node_)) {
+    if (CompareCoordinates(*it, ant.current_node_)) {
       ant.steps_ = ant.path_.end() - it;
       ant.path_.erase(it, ant.path_.end());
       break;
@@ -86,7 +86,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid,
     for (int j = 0; j < n_ants_; j++) {
       // Can assign a thread to each ant if parallel required
       Ant ant(start_, j);
-      while (!compareCoordinates(ant.current_node_, goal_) &&
+      while (!CompareCoordinates(ant.current_node_, goal_) &&
              ant.steps_ < max_steps_) {
         ant.path_.push_back(ant.current_node_);
 
@@ -101,11 +101,11 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid,
               possible_position.x_ * grid_size_ + possible_position.y_;
 
           if (checkOutsideBoundary(possible_position, grid_size_) ||
-                compareCoordinates(possible_position, ant.previous_node_) ||
+                CompareCoordinates(possible_position, ant.previous_node_) ||
                 grid_[possible_position.x_][possible_position.y_] == 1) {
                   continue;
           }
-          if(compareCoordinates(possible_position, goal_)) {
+          if(CompareCoordinates(possible_position, goal_)) {
             ant.path_.push_back(goal_);
             ant.found_goal_ = true;
             break;

@@ -26,7 +26,7 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>>& grid,
     Node current = open_list_.top();
     open_list_.pop();
     current.id_ = current.x_ * n + current.y_;
-    if (compareCoordinates(current, goal_)) {
+    if (CompareCoordinates(current, goal_)) {
       closed_list_.push_back(current);
       grid[current.x_][current.y_] = 2;
       return closed_list_;
@@ -39,7 +39,7 @@ std::vector<Node> AStar::a_star(std::vector<std::vector<int>>& grid,
       new_point.pid_ = current.id_;
       new_point.h_cost_ =
           std::abs(new_point.x_ - goal_.x_) + std::abs(new_point.y_ - goal_.y_);
-      if (compareCoordinates(new_point, goal_)) {
+      if (CompareCoordinates(new_point, goal_)) {
         open_list_.push(new_point);
         break;
       }

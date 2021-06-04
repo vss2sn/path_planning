@@ -139,7 +139,7 @@ void RRTStar::Rewire(const Node& new_node) {
     if (near_nodes_[i].cost_ > near_nodes_dist_[i] + new_node.cost_) {
       it_v = std::find_if(point_list_.begin(), point_list_.end(),
                           [&](const Node& node) {
-                            return compareCoordinates(node, near_nodes_[i]);
+                            return CompareCoordinates(node, near_nodes_[i]);
                           });
       if (it_v != point_list_.end()) {
         it_v->pid_ = new_node.id_;
@@ -193,7 +193,7 @@ std::vector<Node> RRTStar::rrt_star(std::vector<std::vector<int>>& grid,
 
     auto it_v = std::find_if(
         point_list_.begin(), point_list_.end(),
-        [&](const Node& node) { return compareCoordinates(node, new_node); });
+        [&](const Node& node) { return CompareCoordinates(node, new_node); });
     if (it_v != point_list_.end() && new_node.cost_ < it_v->cost_) {
       point_list_.erase(it_v);
       point_list_.push_back(new_node);
@@ -224,7 +224,7 @@ bool RRTStar::CheckGoalVisible(const Node& new_node) {
     std::vector<Node>::iterator it_v;
     it_v = std::find_if(
         point_list_.begin(), point_list_.end(),
-        [&](const Node& node) { return compareCoordinates(node, new_node); });
+        [&](const Node& node) { return CompareCoordinates(node, new_node); });
     if (it_v != point_list_.end() && goal_.cost_ < it_v->cost_) {
       point_list_.erase(it_v);
       point_list_.push_back(goal_);

@@ -99,12 +99,12 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(
           if (static_cast<int>(path_seen.size()) < tmp_length) {
             tmp_length = path_seen.size();
           }
-          if (compareCoordinates(tmp, goal_)) {
+          if (CompareCoordinates(tmp, goal_)) {
             tmp_length = 0;
           }
           for (size_t i = 0; i < path_seen.size(); i++) {
             tmp = tmp + path_seen[i];
-            if (compareCoordinates(tmp, goal_)) {
+            if (CompareCoordinates(tmp, goal_)) {
               tmp_length = i;
               break;
             }
@@ -155,7 +155,7 @@ void GeneticAlgorithm::CheckIfNodesInPathAreAcceptable(
   for (const auto &motion : path) {
     bool found = false;
     for (const auto &m : motions_) {
-      if (compareCoordinates(m, motion)) {
+      if (CompareCoordinates(m, motion)) {
         found = true;
         break;
       }
@@ -171,7 +171,7 @@ void GeneticAlgorithm::PrintChromosome(const std::vector<Node> &path) const {
   std::cout << "Chromosome: ";
   for (const auto &v : path) {
     for (size_t i = 0; i < motions_.size(); i++)
-      if (compareCoordinates(v, motions_[i])) {
+      if (CompareCoordinates(v, motions_[i])) {
         std::cout << i << " ";
       }
   }
@@ -215,7 +215,7 @@ int GeneticAlgorithm::CalculateFitness(const std::vector<Node> &path) const {
     if (i.x_ < 0 || i.x_ >= n_ || i.y_ < 0 || i.y_ >= n_) {
       return std::numeric_limits<int>::max();
     }
-    if (compareCoordinates(i, goal_)) {
+    if (CompareCoordinates(i, goal_)) {
       break;
     }
     if (grid_[i.x_][i.y_] == 1) {
@@ -308,12 +308,12 @@ std::vector<Node> GeneticAlgorithm::Crossover() const {
 // while maintaining randomness
 bool GeneticAlgorithm::CheckPath(const std::vector<Node> &path) const {
   Node current = start_;
-  if (compareCoordinates(current, goal_)) {
+  if (CompareCoordinates(current, goal_)) {
     return true;
   }
   for (const auto &node : path) {
     current = current + node;
-    if (compareCoordinates(current, goal_)) {
+    if (CompareCoordinates(current, goal_)) {
       return true;
     }
     if (checkOutsideBoundary(current, n_) ||
@@ -321,7 +321,7 @@ bool GeneticAlgorithm::CheckPath(const std::vector<Node> &path) const {
       return false;
     }
   }
-  return compareCoordinates(current, goal_);
+  return CompareCoordinates(current, goal_);
 }
 
 #ifdef BUILD_INDIVIDUAL

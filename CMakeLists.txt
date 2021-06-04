@@ -33,7 +33,7 @@ if(BUILD_INDIVIDUAL)
         CXX_EXTENSIONS NO
         CXX_FLAGS "${CMAKE_CXX_FLAGS}"
     )
-    target_compile_options (${test_output_file} PUBLIC -O0 -Wall -Werror -g)
+    target_compile_options (${test_output_file} PUBLIC -O0   -g)
     target_link_libraries( ${test_output_file} utils )
   endforeach(SOURCE_FILE_file ${LIB_SOURCES})
 
@@ -60,14 +60,14 @@ else (BUILD_INDIVIDUAL)
   else(CHECK_COVERAGE)
     set_target_properties(algos
       PROPERTIES
-        CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -Werror -g"
+        CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0   -g"
     )
     set_target_properties(main
       PROPERTIES
         CXX_STANDARD 20
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
-        CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -Werror -g"
+        CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0   -g"
     )
   endif(CHECK_COVERAGE)
 

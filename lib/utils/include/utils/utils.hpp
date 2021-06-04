@@ -7,6 +7,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <queue>
+#include <unordered_set>
 #include <vector>
 
 #define BLACK "\x1b[1;30m"
@@ -89,7 +91,7 @@ class Node {
    * @param p node
    * @return bool whether current node equals input node
    */
-  // bool operator==(const Node& p) const;
+  bool operator==(const Node& p) const;
 
   /**
    * @brief Overloading operator != for Node class
@@ -135,7 +137,7 @@ void PrintGrid(const std::vector<std::vector<int>>& grid);
  * @param grid Modify this grid
  * @return void
  */
-void PrintPath(std::vector<Node>& path_vector, const Node& start_,
+void PrintPath(const std::vector<Node>& path_vector, const Node& start_,
                const Node& goal_, std::vector<std::vector<int>>& grid);
 
 /**
@@ -166,7 +168,98 @@ void MakeGrid(std::vector<std::vector<int>>& grid);
 void PrintPathInOrder(const std::vector<Node>& path_vector, const Node& start,
                       const Node& goal, std::vector<std::vector<int>>& grid);
 
-bool compareCoordinates(const Node& p1, const Node& p2);
+/**
+ * @brief compare coordinates between 2 nodes
+ * @param p1 node 1
+ * @param p2 node 2
+ * @return whether the two nodes are for the same coordinates
+ */
+bool CompareCoordinates(const Node& p1, const Node& p2);
 
+/**
+ * @brief checks whether the node is outside the boundary of the grid
+ * @param node node who's coordinates are to be checked
+ * @param n size of the grid
+ * @return whether the node is outside the boundary of the grid
+ */
 bool checkOutsideBoundary(const Node& node, const int n);
+
+template<>
+class std::greater<Node> {
+public:
+  bool operator () (const Node& n1, const Node& n2) const {
+    return n1.cost_ > n2.cost_;
+  }
+};
+
+template<>
+class std::hash<Node> {
+public:
+  size_t operator () (const Node& n) const {
+    return std::hash<int>()(n.x_) ^ std::hash<int>()(n.y_);
+  }
+};
+
+/**
+ * @brief The idea behind this class is to create a structure similar to a
+ * priority queue that allows elements to be removed from the middle of the
+ * queue as well, rather than just the top
+ */
+template<typename T, typename T2 = std::greater<T>, typename T3 = std::hash<T>>
+class LazyPQ {
+public:
+
+  void clear() {
+    s.clear();
+    while(!pq.empty()) {
+      pq.pop();
+    }
+  }
+
+  void insert(const T& t) {
+    pq.push(t);
+    s.insert(t);
+  }
+
+  void pop() {
+    while(!pq.empty() && s.find(pq.top()) == s.end()) {
+      pq.pop();
+    }
+    if (s.empty()) {
+      return;
+    }
+    s.erase(pq.top());
+    pq.pop();
+    // The loop below allows top() to be const without making the
+    // std::priority_queue mutable
+    while(!pq.empty() && s.find(pq.top()) == s.end()) {
+      pq.pop();
+    }
+  }
+
+  const T& top() const {
+    return pq.top();
+  }
+
+  size_t size() const {
+    return s.size();
+  }
+
+  bool empty() const {
+    return s.empty();
+  }
+
+  bool isElementInStruct(const T& t) const {
+    return s.find(t) != s.end();
+  }
+
+  void remove(const T& t) {
+    s.erase(t);
+  }
+
+private:
+  std::priority_queue<T, std::vector<T>, T2> pq;
+  std::unordered_set<T, T3> s;
+};
+
 #endif  // UTILS_H

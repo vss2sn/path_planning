@@ -27,7 +27,7 @@ Node JumpPointSearch::jump(const Node& new_point, const Node& motion,
   if (pruned.find(next_point.id_) != pruned.end()) {
     pruned.insert(next_point.id_);
   }
-  if (compareCoordinates(next_point, goal_)) {
+  if (CompareCoordinates(next_point, goal_)) {
     return next_point;
   }
   bool fn = false;
@@ -108,7 +108,7 @@ std::vector<Node> JumpPointSearch::jump_point_search(
     Node current = open_list_.top();
     open_list_.pop();
     current.id_ = current.x_ * n + current.y_;
-    if (compareCoordinates(current, goal_)) {
+    if (CompareCoordinates(current, goal_)) {
       closed_list_.push_back(current);
       grid[current.x_][current.y_] = 2;
       return closed_list_;
@@ -122,7 +122,7 @@ std::vector<Node> JumpPointSearch::jump_point_search(
       new_point.pid_ = current.id_;
       new_point.h_cost_ =
           abs(new_point.x_ - goal_.x_) + abs(new_point.y_ - goal_.y_);
-      if (compareCoordinates(new_point, goal_)) {
+      if (CompareCoordinates(new_point, goal_)) {
         open_list_.push(new_point);
         break;
       }
@@ -137,7 +137,7 @@ std::vector<Node> JumpPointSearch::jump_point_search(
       Node jump_point = jump(new_point, m, current.id_);
       if (jump_point.id_ != -1) {
         open_list_.push(jump_point);
-        if (compareCoordinates(jump_point, goal_)) {
+        if (CompareCoordinates(jump_point, goal_)) {
           closed_list_.push_back(current);
           closed_list_.push_back(jump_point);
           grid[jump_point.x_][jump_point.y_] = 2;

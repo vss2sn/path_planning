@@ -51,16 +51,11 @@ Node Node::operator-(const Node& p) const {
   return tmp;
 }
 
-// void Node::operator=(const Node& p) {
-//   this->x_ = p.x_;
-//   this->y_ = p.y_;
-//   this->cost_ = p.cost_;
-//   this->h_cost_ = p.h_cost_;
-//   this->id_ = p.id_;
-//   this->pid_ = p.pid_;
-// }
+bool Node::operator==(const Node& p) const {
+  return this->x_ == p.x_ && this->y_ == p.y_;
+}
 
-bool compareCoordinates(const Node& p1, const Node& p2) {
+bool CompareCoordinates(const Node& p1, const Node& p2) {
   return p1.x_ == p2.x_ && p1.y_ == p2.y_;
 }
 bool checkOutsideBoundary(const Node& node, const int n) {
@@ -154,7 +149,7 @@ void PrintGrid(const std::vector<std::vector<int>>& grid) {
   std::cout << '\n';
 }
 
-void PrintPath(std::vector<Node>& path_vector, const Node& start,
+void PrintPath(const std::vector<Node>& path_vector, const Node& start,
                const Node& goal, std::vector<std::vector<int>>& grid) {
   if (path_vector[0].id_ == -1) {
     std::cout << "No path exists" << '\n';
@@ -163,7 +158,7 @@ void PrintPath(std::vector<Node>& path_vector, const Node& start,
   }
   std::cout << "Path (goal to start):" << '\n';
   for (size_t i = 0; i < path_vector.size(); i++) {
-    if (compareCoordinates(goal, path_vector[i])) {
+    if (CompareCoordinates(goal, path_vector[i])) {
       path_vector[i].PrintStatus();
       grid[path_vector[i].x_][path_vector[i].y_] = 3;
       while (path_vector[i].id_ != start.id_) {
@@ -215,7 +210,7 @@ void PrintPathInOrder(const std::vector<Node>& path_vector,
   }
   std::cout << "Path (goal to start):" << '\n';
   size_t i = 0;
-  while (!compareCoordinates(path_vector[i], goal)) {
+  while (!CompareCoordinates(path_vector[i], goal)) {
     i++;
   }
   for (; i > 0; i = i - 1) {

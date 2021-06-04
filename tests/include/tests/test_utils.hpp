@@ -87,7 +87,7 @@ double run_test(std::vector<std::vector<int>>& grid, const std::string& algo){
       return -1;
     }
     for(size_t i = 0; i < path_vector.size(); i++) {
-      if(compareCoordinates(path_vector[i],goal)) {
+      if(CompareCoordinates(path_vector[i],goal)) {
         return i;
       }
     }
@@ -98,7 +98,7 @@ double run_test(std::vector<std::vector<int>>& grid, const std::string& algo){
   }
 
   for(const auto& p : path_vector) {
-    if(compareCoordinates(p, goal)) {
+    if(CompareCoordinates(p, goal)) {
       return p.cost_;
     }
   }

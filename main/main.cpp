@@ -9,7 +9,7 @@
 
 #include "path_planning/a_star.hpp"
 #include "path_planning/ant_colony.hpp"
-#include "path_planning/d_star_lite.hpp"
+// #include "path_planning/d_star_lite.hpp"
 #include "path_planning/dijkstra.hpp"
 #include "path_planning/genetic_algorithm.hpp"
 #include "path_planning/jump_point_search.hpp"
