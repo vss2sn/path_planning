@@ -1,15 +1,15 @@
 #include "path_planning/d_star_lite.hpp"
 
+#include <algorithm>
+#include <chrono>
 #include <cmath>
+#include <thread>
 
 #ifdef BUILD_INDIVIDUAL
 #include <random>
 #endif  // BUILD_INDIVIDUAL
 
-#include <chrono>
-#include <thread>
-
-constexpr int pause_time = 250;
+constexpr int pause_time = 250;  // milliseconds
 
 bool DStarLite::IsObstacle(const Node& n) const {
   return grid_[n.x_][n.y_] == 1;

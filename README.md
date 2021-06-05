@@ -80,8 +80,11 @@
 5. Formalize pseudocode and add references for ACO.
 6. Add documentation for jump point search.
 7. Refactor
+8. Stop using -1 as error code (ie modernize)
 
 <a name="consider"></a>
 #### Consider: ####
 1. Adding namespace to each header file.
 2. Inheriting node class into each file that requires a modified node (such as A* with heuristic cost, etc).
+3. Passing in motion primitives
+4. Refactor the print path function
