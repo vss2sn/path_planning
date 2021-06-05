@@ -1,5 +1,5 @@
-set(CMAKE_C_COMPILER "/usr/bin/gcc-10")
-set(CMAKE_CXX_COMPILER "/usr/bin/g++-10")
+# set(CMAKE_C_COMPILER "/usr/bin/gcc-10")
+# set(CMAKE_CXX_COMPILER "/usr/bin/g++-10")
 
 project(path_planning)
 

@@ -1,4 +1,4 @@
-dist: xenial
+dist: focal
 
 language: cpp
 
@@ -12,12 +12,12 @@ addons:
     packages:
       - lcov
       - libgtest-dev
-      - gcc-7
-      - g++-7
+      - gcc-10
+      - g++-10
 
 before_script:
-  - export CC=gcc-7
-  - export CXX=g++-7
+  - export CC=gcc-10
+  - export CXX=g++-10
   - git submodule add https://github.com/google/googletest.git gtest
   - mkdir build
   - cd build
