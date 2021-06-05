@@ -1,8 +1,10 @@
-  /**
+/**
  * @file ant_colony.cpp
  * @author vss2sn
  * @brief Contains the Ant and Ant Colony class
  */
+
+#include "path_planning/ant_colony.hpp"
 
 #include <algorithm>
 #include <chrono>
@@ -11,8 +13,6 @@
 #include <iostream>
 #include <random>
 #include <thread>
-
-#include "path_planning/ant_colony.hpp"
 
 Ant::Ant(Node start, int id) {
   this->id_ = id;
@@ -101,24 +101,24 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid,
               possible_position.x_ * grid_size_ + possible_position.y_;
 
           if (checkOutsideBoundary(possible_position, grid_size_) ||
-                CompareCoordinates(possible_position, ant.previous_node_) ||
-                grid_[possible_position.x_][possible_position.y_] == 1) {
-                  continue;
+              CompareCoordinates(possible_position, ant.previous_node_) ||
+              grid_[possible_position.x_][possible_position.y_] == 1) {
+            continue;
           }
-          if(CompareCoordinates(possible_position, goal_)) {
+          if (CompareCoordinates(possible_position, goal_)) {
             ant.path_.push_back(goal_);
             ant.found_goal_ = true;
             break;
           }
           possible_positions.push_back(possible_position);
           double new_prob =
-              std::pow(pheromone_edges_[std::make_pair(
-                           possible_position.id_, ant.current_node_.id_)],
+              std::pow(pheromone_edges_[std::make_pair(possible_position.id_,
+                                                       ant.current_node_.id_)],
                        alpha_) *
               std::pow(
-                  1.0 / std::sqrt(
-                            std::pow((possible_position.x_ - goal_.x_), 2) +
-                            std::pow((possible_position.y_ - goal_.y_), 2)),
+                  1.0 /
+                      std::sqrt(std::pow((possible_position.x_ - goal_.x_), 2) +
+                                std::pow((possible_position.y_ - goal_.y_), 2)),
                   beta_);
           possible_probabilities.push_back(new_prob);
           prob_sum += new_prob;
@@ -126,8 +126,9 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid,
         if (prob_sum == 0 || ant.found_goal_) {
           break;  // Ant in a cul-de-sac
         }
-        std::for_each(possible_probabilities.begin(), possible_probabilities.end(),
-          [&](double& p) { p /= prob_sum; });
+        std::for_each(possible_probabilities.begin(),
+                      possible_probabilities.end(),
+                      [&](double& p) { p /= prob_sum; });
         std::discrete_distribution<> dist(possible_probabilities.begin(),
                                           possible_probabilities.end());
         ant.previous_node_ = ant.current_node_;
@@ -154,7 +155,7 @@ std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid,
     for (const Ant& ant : ants_) {
       if (ant.found_goal_) {
         // Use iff goal reached
-        if (static_cast<int>(ant.path_.size()) <bpl) {
+        if (static_cast<int>(ant.path_.size()) < bpl) {
           // Save best path yet in this iteration
           bpl = ant.path_.size();
           bp = ant.path_;

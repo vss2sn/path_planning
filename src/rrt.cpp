@@ -4,11 +4,10 @@
  * @brief Contains the RRT class
  */
 
+#include "path_planning/rrt.hpp"
 
 #include <cmath>
 #include <random>
-
-#include "path_planning/rrt.hpp"
 
 // constants
 constexpr double half_grid_unit = 0.5;

@@ -87,14 +87,14 @@ class GeneticAlgorithm {
    * as some random changes. Applied to every chromosome in paths.
    * @return new potential path
    */
-  std::vector<Node> Crossover() const ;
+  std::vector<Node> Crossover() const;
 
   /**
    * @brief Mutation function to create that alters one of the paths found to
    * create a new path
    * @return new potential path
    */
-  std::vector<Node> Mutate() const ;
+  std::vector<Node> Mutate() const;
 
   /**
    * @brief Checks whether path is valid or not.
@@ -104,7 +104,8 @@ class GeneticAlgorithm {
   bool CheckPath(const std::vector<Node>& path) const;
 
   /**
-   * @brief Checks whether every node in the path is an acceptable motion primitive
+   * @brief Checks whether every node in the path is an acceptable motion
+   * primitive
    * @param path Each chromosome represents a path by a sequence of moves.
    * @return void
    */
@@ -114,7 +115,8 @@ class GeneticAlgorithm {
   std::vector<std::vector<int>> grid_;
   const std::vector<Node> motions_;
   Node start_, goal_;
-  int path_length_{}, n_{}, f_val = std::numeric_limits<int>::max(), generation_, generations_, popsize_;
+  int path_length_{}, n_{}, f_val = std::numeric_limits<int>::max(),
+                            generation_, generations_, popsize_;
   float c_;
   std::vector<std::vector<Node>> paths_, truepaths_;
   bool found_{}, shorten_chromosome_;

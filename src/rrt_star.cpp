@@ -4,12 +4,12 @@
  * @brief Contains the RRT_Star class
  */
 
+#include "path_planning/rrt_star.hpp"
+
 #include <algorithm>
 #include <cmath>
 #include <random>
 #include <vector>
-
-#include "path_planning/rrt_star.hpp"
 
 // constants
 constexpr double half_grid_unit = 0.5;

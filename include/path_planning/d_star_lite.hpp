@@ -8,19 +8,20 @@
 #define D_STAR_LITE_H
 
 #include <iostream>
-#include <unordered_set>
 #include <unordered_map>
+#include <unordered_set>
+
 #include "utils/utils.hpp"
 
 struct Key {
   double first;
   double second;
 
-  bool operator < (const Key& k) const {
+  bool operator<(const Key& k) const {
     return first < k.first || (first == k.first && second < k.second);
   }
 
-  bool operator > (const Key& k) const {
+  bool operator>(const Key& k) const {
     return first > k.first || (first == k.first && second > k.second);
   }
 };
@@ -29,46 +30,42 @@ struct NodeKeyPair {
   Node node;
   Key key;
 
-  bool operator==(const NodeKeyPair& nkp) const {
-    return node == nkp.node;
-  }
+  bool operator==(const NodeKeyPair& nkp) const { return node == nkp.node; }
 };
 
-template<>
+template <>
 class std::greater<Key> {
-public:
-  bool operator () (const NodeKeyPair& nk1, const NodeKeyPair& nk2) const {
+ public:
+  bool operator()(const NodeKeyPair& nk1, const NodeKeyPair& nk2) const {
     return nk1.key > nk2.key;
   }
 };
 
-
-template<>
+template <>
 class std::greater<NodeKeyPair> {
-public:
-  bool operator () (const NodeKeyPair& nk1, const NodeKeyPair& nk2) const {
+ public:
+  bool operator()(const NodeKeyPair& nk1, const NodeKeyPair& nk2) const {
     return nk1.key > nk2.key;
   }
 };
 
-template<>
+template <>
 class std::hash<NodeKeyPair> {
-public:
-  size_t operator () (const NodeKeyPair& nkp) const {
+ public:
+  size_t operator()(const NodeKeyPair& nkp) const {
     return std::hash<Node>()(nkp.node);
   }
 };
 
 class DStarLite {
-public:
-  std::vector<Node> 
-    Plan(const std::vector<std::vector<int>>& grid,
-         const Node& start,
-         const Node& goal,
-         const bool create_random_obstacles = false,
-         const std::unordered_map<int, std::vector<Node>> time_discovered_obstacles = {}
-       );
-private:
+ public:
+  std::vector<Node> Plan(const std::vector<std::vector<int>>& grid,
+                         const Node& start, const Node& goal,
+                         const bool create_random_obstacles = false,
+                         const std::unordered_map<int, std::vector<Node>>
+                             time_discovered_obstacles = {});
+
+ private:
   Key CalculateKey(const Node& s) const;
   std::vector<Node> GetPred(const Node& u) const;
   std::vector<Node> GetSucc(const Node& u) const;

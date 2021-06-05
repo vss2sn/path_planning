@@ -1,6 +1,6 @@
 #include "path_planning/d_star_lite.hpp"
-#include <cmath>
 
+#include <cmath>
 
 #ifdef BUILD_INDIVIDUAL
 #include <random>
@@ -16,13 +16,15 @@ bool DStarLite::IsObstacle(const Node& n) const {
 }
 
 double DStarLite::H(const Node& n1, const Node& n2) const {
-  return 1; //std::sqrt(std::pow(n1.x_ - n2.x_, 2) + std::pow(n1.y_ - n2.y_, 2));
+  return 1;  // std::sqrt(std::pow(n1.x_ - n2.x_, 2) + std::pow(n1.y_ - n2.y_,
+             // 2));
 }
 
 std::vector<Node> DStarLite::GetNeighbours(const Node& u) const {
   std::vector<Node> neighbours;
   for (const auto& m : motions_) {
-    if (const auto neighbour = u + m; !checkOutsideBoundary(neighbour, grid_.size())) {
+    if (const auto neighbour = u + m;
+        !checkOutsideBoundary(neighbour, grid_.size())) {
       neighbours.push_back(neighbour);
     }
   }
@@ -41,24 +43,26 @@ double DStarLite::C(const Node& s1, const Node& s2) const {
   if (IsObstacle(s1) || IsObstacle(s2)) {
     return std::numeric_limits<double>::max();
   }
-  const Node delta{s2.x_-s1.x_, s2.y_-s1.y_};
-  return std::find_if(std::begin(motions_), std::end(motions_), [&delta](const Node& motion) { return CompareCoordinates(motion, delta); })->cost_;
+  const Node delta{s2.x_ - s1.x_, s2.y_ - s1.y_};
+  return std::find_if(std::begin(motions_), std::end(motions_),
+                      [&delta](const Node& motion) {
+                        return CompareCoordinates(motion, delta);
+                      })
+      ->cost_;
 }
 
 Key DStarLite::CalculateKey(const Node& s) const {
-  return Key {
-    std::min(g_[s.x_][s.y_], rhs_[s.x_][s.y_] + H(start_, s) + k_m_),
-    std::min(g_[s.x_][s.y_], rhs_[s.x_][s.y_])
-  };
+  return Key{std::min(g_[s.x_][s.y_], rhs_[s.x_][s.y_] + H(start_, s) + k_m_),
+             std::min(g_[s.x_][s.y_], rhs_[s.x_][s.y_])};
 }
 
 std::vector<std::vector<double>> DStarLite::CreateGrid(const int n) {
-  return std::vector<std::vector<double>>
-    (n, std::vector<double>(n, std::numeric_limits<double>::max()));
+  return std::vector<std::vector<double>>(
+      n, std::vector<double>(n, std::numeric_limits<double>::max()));
 }
 
 void DStarLite::Initialize() {
-  motions_ =  GetMotion();
+  motions_ = GetMotion();
   time_step_ = 0;
   U_.clear();
   k_m_ = 0;
@@ -73,7 +77,8 @@ void DStarLite::UpdateVertex(const Node& u) {
     rhs_[u.x_][u.y_] = std::numeric_limits<double>::max();
     const auto successors = GetSucc(u);
     for (const auto& sprime : successors) {
-      rhs_[u.x_][u.y_] = std::min(rhs_[u.x_][u.y_], C(u, sprime) + g_[sprime.x_][sprime.y_]);
+      rhs_[u.x_][u.y_] =
+          std::min(rhs_[u.x_][u.y_], C(u, sprime) + g_[sprime.x_][sprime.y_]);
     }
   }
   if (U_.isElementInStruct({u, {}})) {
@@ -85,7 +90,8 @@ void DStarLite::UpdateVertex(const Node& u) {
 }
 
 void DStarLite::ComputeShortestPath() {
-  while (!U_.empty() && U_.top().key < CalculateKey(start_) || (rhs_[start_.x_][start_.y_] != g_[start_.x_][start_.y_])) {
+  while (!U_.empty() && U_.top().key < CalculateKey(start_) ||
+         (rhs_[start_.x_][start_.y_] != g_[start_.x_][start_.y_])) {
     k_old_ = U_.top().key;
     const Node u = U_.top().node;
     U_.pop();
@@ -108,11 +114,18 @@ void DStarLite::ComputeShortestPath() {
 
 std::vector<Node> DStarLite::DetectChanges() {
   std::vector<Node> obstacles;
-  if (time_discovered_obstacles_.find(time_step_) != time_discovered_obstacles_.end()) {
-    const auto discovered_obstacles_at_time = time_discovered_obstacles_[time_step_];
-    for (const auto& discovered_obstacle_at_time : discovered_obstacles_at_time) {
-      if (!((start_.x_ == discovered_obstacle_at_time.x_ && start_.y_ == discovered_obstacle_at_time.y_) || (goal_.x_ == discovered_obstacle_at_time.x_ && goal_.y_ == discovered_obstacle_at_time.y_))) {
-        grid_[discovered_obstacle_at_time.x_][discovered_obstacle_at_time.y_] = 1;
+  if (time_discovered_obstacles_.find(time_step_) !=
+      time_discovered_obstacles_.end()) {
+    const auto discovered_obstacles_at_time =
+        time_discovered_obstacles_[time_step_];
+    for (const auto& discovered_obstacle_at_time :
+         discovered_obstacles_at_time) {
+      if (!((start_.x_ == discovered_obstacle_at_time.x_ &&
+             start_.y_ == discovered_obstacle_at_time.y_) ||
+            (goal_.x_ == discovered_obstacle_at_time.x_ &&
+             goal_.y_ == discovered_obstacle_at_time.y_))) {
+        grid_[discovered_obstacle_at_time.x_][discovered_obstacle_at_time.y_] =
+            1;
         obstacles.push_back(discovered_obstacle_at_time);
       }
     }
@@ -120,7 +133,8 @@ std::vector<Node> DStarLite::DetectChanges() {
   if (create_random_obstacles_) {
     const int x = rand() % n_;
     const int y = rand() % n_;
-    if (!((start_.x_ == x && start_.y_ == y) || (goal_.x_ == x && goal_.y_ == y))) {
+    if (!((start_.x_ == x && start_.y_ == y) ||
+          (goal_.x_ == x && goal_.y_ == y))) {
       grid_[x][y] = 1;
       obstacles.emplace_back(Node(x, y));
     }
@@ -128,13 +142,11 @@ std::vector<Node> DStarLite::DetectChanges() {
   return obstacles;
 }
 
-std::vector<Node> DStarLite::Plan (
-  const std::vector<std::vector<int>>& grid,
-  const Node& start,
-  const Node& goal,
-  const bool create_random_obstacles,
-  const std::unordered_map<int, std::vector<Node>> time_discovered_obstacles
-) {
+std::vector<Node> DStarLite::Plan(
+    const std::vector<std::vector<int>>& grid, const Node& start,
+    const Node& goal, const bool create_random_obstacles,
+    const std::unordered_map<int, std::vector<Node>>
+        time_discovered_obstacles) {
   grid_ = grid;
   n_ = grid_.size();
   start_ = start;
@@ -147,7 +159,7 @@ std::vector<Node> DStarLite::Plan (
   auto last = start_;
   Initialize();
   ComputeShortestPath();
-  while(!CompareCoordinates(start_, goal_)) {
+  while (!CompareCoordinates(start_, goal_)) {
     time_step_++;
     if (g_[start_.x_][start_.y_] == std::numeric_limits<double>::max()) {
       path.clear();
@@ -157,7 +169,11 @@ std::vector<Node> DStarLite::Plan (
     }
     const auto successors = GetSucc(start_);
     // double calculateion, to optimize
-    start_ = *std::min_element(std::begin(successors), std::end(successors), [this](const auto& n1, const auto& n2) { return C(start_, n1) + g_[n1.x_][n1.y_] < C(start_, n2) + g_[n2.x_][n2.y_] ; });
+    start_ = *std::min_element(std::begin(successors), std::end(successors),
+                               [this](const auto& n1, const auto& n2) {
+                                 return C(start_, n1) + g_[n1.x_][n1.y_] <
+                                        C(start_, n2) + g_[n2.x_][n2.y_];
+                               });
     path.push_back(start_);
     grid_[start_.x_][start_.y_] = 3;
     std::this_thread::sleep_for(std::chrono::milliseconds(pause_time));
@@ -176,11 +192,15 @@ std::vector<Node> DStarLite::Plan (
   path[0].cost_ = 0;
   for (int i = 1; i < path.size(); i++) {
     path[i].id_ = path[i].x_ * n_ + path[i].y_;
-    const auto delta = Node(path[i].x_ - path[i-1].x_, path[i].y_ - path[i-1].y_);
-    path[i].cost_ = path[i-1].cost_ +
+    const auto delta =
+        Node(path[i].x_ - path[i - 1].x_, path[i].y_ - path[i - 1].y_);
+    path[i].cost_ = path[i - 1].cost_ +
                     std::find_if(std::begin(motions_), std::end(motions_),
-                      [&delta](const Node& motion) { return CompareCoordinates(motion, delta); } )->cost_;
-    path[i].pid_ = path[i-1].id_;
+                                 [&delta](const Node& motion) {
+                                   return CompareCoordinates(motion, delta);
+                                 })
+                        ->cost_;
+    path[i].pid_ = path[i - 1].id_;
   }
   return path;
 }
@@ -214,15 +234,15 @@ int main() {
   grid[goal.x_][goal.y_] = 0;
 
   const bool create_random_obstacles = true;
-  const std::unordered_map<int, std::vector<Node>> time_discovered_obstacles {
-    {1, {Node(1, 1)}},
-    {2, {Node(2, 2)}},
-    {3, {Node(5, 5)}},
-    {4, {Node(6, 6), Node(7,6)}}
-  };
+  const std::unordered_map<int, std::vector<Node>> time_discovered_obstacles{
+      {1, {Node(1, 1)}},
+      {2, {Node(2, 2)}},
+      {3, {Node(5, 5)}},
+      {4, {Node(6, 6), Node(7, 6)}}};
 
   DStarLite d_star_lite;
-  const auto [path_found, path_vector] = d_star_lite.Plan(grid, start, goal, create_random_obstacles, time_discovered_obstacles);
+  const auto [path_found, path_vector] = d_star_lite.Plan(
+      grid, start, goal, create_random_obstacles, time_discovered_obstacles);
   return 0;
 }
 #endif  // BUILD_INDIVIDUAL

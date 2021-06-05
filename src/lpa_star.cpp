@@ -3,6 +3,8 @@
  * @author vss2sn
  * @brief Contains the LPAStar class
  */
+#include "path_planning/lpa_star.hpp"
+
 #include <algorithm>
 #include <chrono>
 #include <iomanip>  // TODO(vss): replace setw
@@ -10,18 +12,16 @@
 #include <random>
 #include <thread>
 
-#include "path_planning/lpa_star.hpp"
-
 // constants
 constexpr int obs_found_pause_time = 500;  // ms
 
 void LPAStar::VectorInsertionSort(std::vector<Node>& v) {
-  for(auto it = v.begin(); it != v.end(); ++it) {
-    auto const insertion_point = std::upper_bound(v.begin(), it, *it,
-    [&](const Node& lhs, const Node& rhs) {
-      return lhs.cost_ + lhs.h_cost_ < rhs.cost_ + rhs.h_cost_;
-    });
-    std::rotate(insertion_point, it, it+1);
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    auto const insertion_point = std::upper_bound(
+        v.begin(), it, *it, [&](const Node& lhs, const Node& rhs) {
+          return lhs.cost_ + lhs.h_cost_ < rhs.cost_ + rhs.h_cost_;
+        });
+    std::rotate(insertion_point, it, it + 1);
   }
 }
 
@@ -80,20 +80,20 @@ std::vector<Node> LPAStar::GetSucc(const Node& u) const {
 
 void LPAStar::InsertionSort() {
   typedef std::pair<Node, std::pair<double, double>> lazy_type;
-  for(auto it = U_.begin(); it != U_.end(); ++it) {
-    auto upper_bound = std::upper_bound(U_.begin(), it, *it,
-      [&](const lazy_type& lhs, const lazy_type& rhs) {
-        return lhs.second.first < rhs.second.first ||
-        (lhs.second.first == rhs.second.first &&
-          lhs.second.second < rhs.second.second);
-      });
+  for (auto it = U_.begin(); it != U_.end(); ++it) {
+    auto upper_bound = std::upper_bound(
+        U_.begin(), it, *it, [&](const lazy_type& lhs, const lazy_type& rhs) {
+          return lhs.second.first < rhs.second.first ||
+                 (lhs.second.first == rhs.second.first &&
+                  lhs.second.second < rhs.second.second);
+        });
     std::rotate(upper_bound, it, it + 1);
   }
 }
 
 double LPAStar::C(const Node& s1, const Node& s2) const {
-  if (!checkOutsideBoundary(s1, n) && !checkOutsideBoundary(s2, n) && grid[s1.x_][s1.y_] != 1 &&
-      grid[s2.x_][s2.y_] != 1) {
+  if (!checkOutsideBoundary(s1, n) && !checkOutsideBoundary(s2, n) &&
+      grid[s1.x_][s1.y_] != 1 && grid[s2.x_][s2.y_] != 1) {
     // Node diff = s2-s1;
     // for(auto it = motions.begin(); it!=motions.end(); ++it){
     //   if(diff == *it){
@@ -235,9 +235,9 @@ std::vector<Node> LPAStar::lpa_star(std::vector<std::vector<int>>& grid_in,
 }
 
 void LPAStar::RemovePathFromGrid(std::vector<std::vector<int>>& grid_in) const {
-  for(auto& row: grid_in) {
-    for(auto& ele : row) {
-      if(ele == 2) {
+  for (auto& row : grid_in) {
+    for (auto& ele : row) {
+      if (ele == 2) {
         ele = 0;
       }
     }
@@ -268,7 +268,8 @@ void LPAStar::GeneratePathVector() {
     grid[u.x_][u.y_] = 2;
     for (const auto& motion : motions) {
       Node new_node = u + motion;
-      if (checkOutsideBoundary(new_node, n) || grid[new_node.x_][new_node.y_] == 1) {
+      if (checkOutsideBoundary(new_node, n) ||
+          grid[new_node.x_][new_node.y_] == 1) {
         continue;
       }
       if (new_node.x_ < n && new_node.x_ >= 0 && new_node.y_ < n &&
