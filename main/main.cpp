@@ -129,7 +129,9 @@ int main() {
   grid = main_grid;
   DStarLite d_star_lite;
   path_vector = d_star_lite.Plan(grid, start, goal, true);
-  PrintPath(path_vector, start, goal, grid);
+  // NOTE: The PrintPath function will not be to show the updated grid for the
+  //       live run of D* Lite including obstacles discovered during execution.
+  // PrintPath(path_vector, start, goal, grid);
 
   // clang-format off
   std::cout << "-----------------------------------------------------------------------------" << '\n'

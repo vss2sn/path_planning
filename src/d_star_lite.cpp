@@ -156,6 +156,7 @@ std::vector<Node> DStarLite::Plan(
   std::vector<Node> path;
   path.push_back(start_);
   grid_[start_.x_][start_.y_] = 3;
+  PrintGrid(grid_);
   auto last = start_;
   Initialize();
   ComputeShortestPath();
@@ -241,8 +242,10 @@ int main() {
       {4, {Node(6, 6), Node(7, 6)}}};
 
   DStarLite d_star_lite;
-  const auto [path_found, path_vector] = d_star_lite.Plan(
+  const std::vector<Node> path_vector = d_star_lite.Plan(
       grid, start, goal, create_random_obstacles, time_discovered_obstacles);
+  start.PrintStatus();
+  goal.PrintStatus();
   return 0;
 }
 #endif  // BUILD_INDIVIDUAL

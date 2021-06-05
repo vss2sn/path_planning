@@ -37,6 +37,16 @@ struct Key {
   bool operator>(const Key& k) const {
     return first > k.first || (first == k.first && second > k.second);
   }
+
+  /**
+   * @brief Overload == operator for comparison
+   * @param k key to be compared
+   * @return result of comparison
+   */
+  bool operator==(const Key& k) const {
+    return first == k.first && second == k.second;
+  }
+
 };
 
 /**
@@ -51,9 +61,10 @@ struct NodeKeyPair {
    * @param node key pair to be compared wth current node key pair
    * @return <return_description>
    * @details Compares whether the node in the struct has the same coordinates
-   *          as the node from the one passed in
+   *          as the node from the one passed in as well as whether it has the
+   *          same key
    */
-  bool operator==(const NodeKeyPair& nkp) const { return node == nkp.node; }
+  bool operator==(const NodeKeyPair& nkp) const { return node == nkp.node && key == nkp.key; }
 };
 
 template <>
