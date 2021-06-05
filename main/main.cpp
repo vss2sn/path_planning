@@ -9,7 +9,7 @@
 
 #include "path_planning/a_star.hpp"
 #include "path_planning/ant_colony.hpp"
-// #include "path_planning/d_star_lite.hpp"
+#include "path_planning/d_star_lite.hpp"
 #include "path_planning/dijkstra.hpp"
 #include "path_planning/genetic_algorithm.hpp"
 #include "path_planning/jump_point_search.hpp"
@@ -127,25 +127,10 @@ int main() {
             << "-------------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
-  DStarLite new_d_star_lite;
-  path_vector = new_d_star_lite.d_star_lite(grid, start, goal);
-  PrintPath(path_vector, start, goal, grid);
-
-#ifdef DYNAMIC_ALGOS
-  // clang-format off
-  std::cout << "----------------------------------------------------------------------" << '\n'
-            << "--------------------- ALGORITHM: D* Lite Live Run ---------------------" << '\n'
-            << "----------------------------------------------------------------------" << '\n';
-  // clang-format on
-  // NOTE: Make sure the function d_star_lite(grid, start, goal) is called
-  // before calling RunDStarLite()
-  new_d_star_lite.RunDStarLite();  // NOTE: Pass false to RunDStarLite if the
-  // incremental updated position of the bot is not to be displayed as it moves
-  // NOTE: D* Lite currently does not return a path vector as the
-  // returned path vector changes every replan. However, the path traversed is
-  // set as 3 in the grid and displayed. 4 displays current location of bot in
-  // the live run
-#endif
+  DStarLite d_star_lite;
+  const auto [path_found, d_star_lite_path_vector] = d_star_lite.Plan(grid, start, goal, true);
+  // TODO: refactor PrintPath as will not work with D* Lite's path vector
+  // PrintPath(d_star_lite_path_vector, start, goal, grid);
 
   // clang-format off
   std::cout << "-----------------------------------------------------------------------------" << '\n'

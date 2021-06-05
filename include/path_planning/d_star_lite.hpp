@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include <unordered_set>
-
+#include <unordered_map>
 #include "utils/utils.hpp"
 
 struct Key {
@@ -59,12 +59,15 @@ public:
   }
 };
 
-class DStarLiteRefactor {
+class DStarLite {
 public:
   std::tuple<bool, std::vector<Node>>
     Plan(const std::vector<std::vector<int>>& grid,
          const Node& start,
-         const Node& goal);
+         const Node& goal,
+         const bool create_random_obstacles = false,
+         const std::unordered_map<int, std::vector<Node>> time_discovered_obstacles = {}
+       );
 private:
   Key CalculateKey(const Node& s) const;
   std::vector<Node> GetPred(const Node& u) const;
@@ -83,6 +86,7 @@ private:
   std::vector<std::vector<int>> grid_;
   std::vector<std::vector<double>> rhs_;
   std::vector<std::vector<double>> g_;
+  std::unordered_map<int, std::vector<Node>> time_discovered_obstacles_;
   // std::unordered_map<int, std::vector<Node>> discovered_obstacles;
   std::vector<Node> motions_;
   LazyPQ<NodeKeyPair> U_;
@@ -90,6 +94,8 @@ private:
   double k_m_;
   Key k_old_;
   int n_;
+  int time_step_ = 0;
+  bool create_random_obstacles_;
 };
 
 #endif  // D_STAR_LITE_H
