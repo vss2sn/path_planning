@@ -80,25 +80,24 @@ class Node {
   Node operator-(const Node& p) const;
 
   /**
-   * @brief Overloading operator = for Node class
-   * @param p node
-   * @return void
-   */
-  // void operator=(const Node& p);
-
-  /**
    * @brief Overloading operator == for Node class
    * @param p node
    * @return bool whether current node equals input node
    */
   bool operator==(const Node& p) const;
+};
 
-  /**
-   * @brief Overloading operator != for Node class
-   * @param p node
-   * @return bool whether current node is not equal to input node
-   */
-  // bool operator!=(const Node& p) const;
+/**
+ * @brief Hash for node struct
+ * @param n node for which the hash is to be calculated
+ * @return hash value calculated
+ */
+template<>
+class std::hash<Node> {
+public:
+  size_t operator () (const Node& n) const {
+    return std::hash<int>()(n.x_) ^ std::hash<int>()(n.y_);
+  }
 };
 
 /**
@@ -184,22 +183,6 @@ bool CompareCoordinates(const Node& p1, const Node& p2);
  */
 bool checkOutsideBoundary(const Node& node, const int n);
 
-template<>
-class std::greater<Node> {
-public:
-  bool operator () (const Node& n1, const Node& n2) const {
-    return n1.cost_ > n2.cost_;
-  }
-};
-
-template<>
-class std::hash<Node> {
-public:
-  size_t operator () (const Node& n) const {
-    return std::hash<int>()(n.x_) ^ std::hash<int>()(n.y_);
-  }
-};
-
 /**
  * @brief The idea behind this class is to create a structure similar to a
  * priority queue that allows elements to be removed from the middle of the
@@ -209,6 +192,10 @@ template<typename T, typename T2 = std::greater<T>, typename T3 = std::hash<T>>
 class LazyPQ {
 public:
 
+  /**
+   * @brief Clear the LazyPQ
+   * @return void
+   */
   void clear() {
     s.clear();
     while(!pq.empty()) {
@@ -216,11 +203,19 @@ public:
     }
   }
 
+  /**
+   * @brief Insert into the LazyPQ
+   * @return void
+   */
   void insert(const T& t) {
     pq.push(t);
     s.insert(t);
   }
 
+  /**
+   * @brief pop the top element from the LazyPQ
+   * @return void
+   */
   void pop() {
     while(!pq.empty() && s.find(pq.top()) == s.end()) {
       pq.pop();
@@ -237,24 +232,46 @@ public:
     }
   }
 
+  /**
+   * @brief Returns the top element of the LazyPQ
+   * @return reference to the top value in the LazyPQ
+   */
   const T& top() const {
     return pq.top();
   }
 
+  /**
+   * @brief Number of elements in the LazyPQ
+   * @return void
+   */
   size_t size() const {
     return s.size();
   }
 
+  /**
+   * @brief Checks whether the LazyPQ is empty
+   * @return bool whether the LazyPQ is empty
+   */
   bool empty() const {
     return s.empty();
   }
 
+  /**
+   * @brief Checks whether the element is in the LazyPQ
+   * @return bool whether the element is in the LazyPQ
+   */
   bool isElementInStruct(const T& t) const {
     return s.find(t) != s.end();
   }
 
+  /**
+   * @brief Remove an element from the LazyPQ if it exists
+   * @returnvoid
+   */
   void remove(const T& t) {
-    s.erase(t);
+    if (s.find(t) != s.end()) {
+      s.erase(t);
+    }
   }
 
 private:
