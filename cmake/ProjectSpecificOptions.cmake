@@ -1,5 +1,7 @@
 # If building each file with it's own output, set to ON
 # If buiding single file (main.cpp) to test any/all protocols, set to OFF
+
+# allow dependent options in CMake
 include(CMakeDependentOption)
 
 option( BUILD_INDIVIDUAL "Build each algorithm .cpp file with its own executable" OFF)

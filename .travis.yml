@@ -12,12 +12,8 @@ addons:
     packages:
       - lcov
       - libgtest-dev
-      - gcc-10
-      - g++-10
 
 before_script:
-  - export CC=gcc-10
-  - export CXX=g++-10
   - git submodule add https://github.com/google/googletest.git gtest
   - mkdir build
   - cd build

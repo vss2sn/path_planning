@@ -1,13 +1,39 @@
-# set(CMAKE_C_COMPILER "/usr/bin/gcc-10")
-# set(CMAKE_CXX_COMPILER "/usr/bin/g++-10")
-
-project(path_planning)
-
 cmake_minimum_required(VERSION 3.15)
-include(CMakeDependentOption)
+project(path_planning CXX)
+
+include(cmake/StandardProjectSettings.cmake)
+include(cmake/PreventInSourceBuilds.cmake)
+
+# Link this 'library' to set the c++ standard / compile-time options requested
+add_library(project_options INTERFACE)
+target_compile_features(project_options INTERFACE cxx_std_17)
+
+if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+  option(ENABLE_BUILD_WITH_TIME_TRACE "Enable -ftime-trace to generate time tracing .json files on clang" OFF)
+  if(ENABLE_BUILD_WITH_TIME_TRACE)
+    target_compile_options(project_options INTERFACE -ftime-trace)
+  endif()
+endif()
+
+# Link this 'library' to use the warnings specified in CompilerWarnings.cmake
+add_library(project_warnings INTERFACE)
+
+# enable cache system
+include(cmake/Cache.cmake)
+
+# standard compiler warnings
+include(cmake/CompilerWarnings.cmake)
+set_project_warnings(project_warnings)
+
+# sanitizer options if supported by compiler
+include(cmake/Sanitizers.cmake)
+enable_sanitizers(project_options)
+
+# allow for static analysis options
+include(cmake/StaticAnalyzers.cmake)
 
 # enable repository specific options
-include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/RepositorySpecificOptions.cmake")
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/ProjectSpecificOptions.cmake")
 
 # enable cache system
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Cache.cmake")
@@ -19,56 +45,28 @@ file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )
 add_subdirectory(lib)
 
 if(BUILD_INDIVIDUAL)
-
   add_definitions(-DBUILD_INDIVIDUAL)
-  foreach(SOURCE_FILE_file ${LIB_SOURCES})
-    get_filename_component(test_output_file ${SOURCE_FILE_file} NAME_WE)
-    add_executable( ${test_output_file})
-    target_include_directories(${test_output_file} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-    target_sources(${test_output_file} PRIVATE ${SOURCE_FILE_file})
-    set_target_properties(${test_output_file}
-      PROPERTIES
-        CXX_STANDARD 20
-        CXX_STANDARD_REQUIRED YES
-        CXX_EXTENSIONS NO
-        CXX_FLAGS "${CMAKE_CXX_FLAGS}"
-    )
-    target_compile_options (${test_output_file} PUBLIC -O0   -g)
-    target_link_libraries( ${test_output_file} utils )
-  endforeach(SOURCE_FILE_file ${LIB_SOURCES})
-
+  foreach(file ${LIB_SOURCES})
+    get_filename_component(ouput_file ${file} NAME_WE)
+    add_executable( ${ouput_file})
+    target_include_directories(${ouput_file} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    target_sources(${ouput_file} PRIVATE ${file})
+    target_compile_options (${ouput_file}  PRIVATE -O3)
+    target_link_libraries( ${ouput_file} PRIVATE utils project_options project_warnings )
+  endforeach(file ${LIB_SOURCES})
 else (BUILD_INDIVIDUAL)
-
   add_library(algos)
   target_include_directories(algos PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
   target_sources(algos PRIVATE ${LIB_SOURCES})
-  target_link_libraries(algos PUBLIC utils)
-  set_target_properties(algos
-    PROPERTIES
-      CXX_STANDARD 20
-      CXX_STANDARD_REQUIRED YES
-      CXX_EXTENSIONS NO
-      CXX_FLAGS "${CMAKE_CXX_FLAGS}"
-  )
-
-  add_executable( main ${PATH_TO_MAIN} )
-  target_link_libraries( main PRIVATE utils algos)
-
+  target_link_libraries(algos PUBLIC utils PRIVATE project_options project_warnings)
+  add_executable( main ${CMAKE_CURRENT_SOURCE_DIR}/main/main.cpp)
+  target_compile_options (main  PRIVATE -O3)
+  target_link_libraries( main PRIVATE utils algos project_options project_warnings )
   if(CHECK_COVERAGE)
     target_compile_options(algos PUBLIC -O0 -g --coverage)
     target_link_options(algos  PUBLIC --coverage)
   else(CHECK_COVERAGE)
-    set_target_properties(algos
-      PROPERTIES
-        CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0   -g"
-    )
-    set_target_properties(main
-      PROPERTIES
-        CXX_STANDARD 20
-        CXX_STANDARD_REQUIRED YES
-        CXX_EXTENSIONS NO
-        CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0   -g"
-    )
+    target_compile_options (algos PRIVATE -O3)
   endif(CHECK_COVERAGE)
 
   if (RUN_TESTS)

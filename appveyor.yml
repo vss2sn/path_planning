@@ -1,0 +1,10 @@
+# TODO: Correct and update
+image: Ubuntu
+clone_folder: c:\projects\path_planning
+build:
+- bash:
+    mkdir build
+    cd build
+    cmake ..
+    make -j
+    make test
