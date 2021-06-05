@@ -61,7 +61,7 @@ public:
 
 class DStarLite {
 public:
-  std::tuple<bool, std::vector<Node>>
+  std::vector<Node> 
     Plan(const std::vector<std::vector<int>>& grid,
          const Node& start,
          const Node& goal,

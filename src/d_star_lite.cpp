@@ -128,7 +128,7 @@ std::vector<Node> DStarLite::DetectChanges() {
   return obstacles;
 }
 
-std::tuple<bool, std::vector<Node>> DStarLite::Plan (
+std::vector<Node> DStarLite::Plan (
   const std::vector<std::vector<int>>& grid,
   const Node& start,
   const Node& goal,
@@ -150,7 +150,10 @@ std::tuple<bool, std::vector<Node>> DStarLite::Plan (
   while(!CompareCoordinates(start_, goal_)) {
     time_step_++;
     if (g_[start_.x_][start_.y_] == std::numeric_limits<double>::max()) {
-      return {false, path};
+      path.clear();
+      path.push_back(start);
+      path.back().cost_ = -1;
+      return path;
     }
     const auto successors = GetSucc(start_);
     // double calculateion, to optimize
@@ -168,7 +171,18 @@ std::tuple<bool, std::vector<Node>> DStarLite::Plan (
     }
     PrintGrid(grid_);
   }
-  return {true, path};
+  path[0].id_ = path[0].x_ * n_ + path[0].y_;
+  path[0].pid_ = path[0].id_;
+  path[0].cost_ = 0;
+  for (int i = 1; i < path.size(); i++) {
+    path[i].id_ = path[i].x_ * n_ + path[i].y_;
+    const auto delta = Node(path[i].x_ - path[i-1].x_, path[i].y_ - path[i-1].y_);
+    path[i].cost_ = path[i-1].cost_ +
+                    std::find_if(std::begin(motions_), std::end(motions_),
+                      [&delta](const Node& motion) { return CompareCoordinates(motion, delta); } )->cost_;
+    path[i].pid_ = path[i-1].id_;
+  }
+  return path;
 }
 
 #ifdef BUILD_INDIVIDUAL

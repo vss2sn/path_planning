@@ -74,7 +74,7 @@ double run_test(std::vector<std::vector<int>>& grid, const std::string& algo){
   }
   else if(algo == "d_star_lite"){
     DStarLite new_d_star_lite;
-    path_vector = new_d_star_lite.d_star_lite(grid, start, goal);
+    path_vector = new_d_star_lite.Plan(grid, start, goal);
   }
   else if(algo == "ant_colony"){
     AntColony new_ant_colony(n_ants, alpha, beta, evap_rate, iterations, Q);

@@ -128,9 +128,8 @@ int main() {
   // clang-format on
   grid = main_grid;
   DStarLite d_star_lite;
-  const auto [path_found, d_star_lite_path_vector] = d_star_lite.Plan(grid, start, goal, true);
-  // TODO: refactor PrintPath as will not work with D* Lite's path vector
-  // PrintPath(d_star_lite_path_vector, start, goal, grid);
+  path_vector = d_star_lite.Plan(grid, start, goal, true);
+  PrintPath(path_vector, start, goal, grid);
 
   // clang-format off
   std::cout << "-----------------------------------------------------------------------------" << '\n'
