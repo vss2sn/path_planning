@@ -33,7 +33,7 @@ Node JumpPointSearch::jump(const Node& new_point, const Node& motion,
   bool fn = false;
   fn = has_forced_neighbours(new_point, next_point, motion);
   if (fn) {
-    // std::cout << "Forced neighbours found"<<std::endl;
+    // std::cout << "Forced neighbours found"<<'\n';
     return next_point;
   }
   Node jump_node = jump(next_point, motion, id);

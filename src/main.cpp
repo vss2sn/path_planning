@@ -60,9 +60,9 @@ int main() {
   // Run algorithm
   // Print the final grid using the path_vector
   // clang-format off
-  std::cout << "--------------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITHM: DIJKSTRA ---------------------" << std::endl;
-  std::cout << "--------------------------------------------------------------" << std::endl;
+  std::cout << "--------------------------------------------------------------" << '\n'
+            << "--------------------- ALGORITHM: DIJKSTRA ---------------------" << '\n'
+            << "--------------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
   Dijkstra new_dijkstra;
@@ -70,9 +70,9 @@ int main() {
   PrintPath(path_vector, start, goal, grid);
 
   // clang-format off
-  std::cout << "--------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITHM: A* ---------------------" << std::endl;
-  std::cout << "--------------------------------------------------------" << std::endl;
+  std::cout << "--------------------------------------------------------" << '\n'
+            << "--------------------- ALGORITHM: A* ---------------------" << '\n'
+            << "--------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
   AStar new_a_star;
@@ -80,9 +80,9 @@ int main() {
   PrintPath(path_vector, start, goal, grid);
 
   // clang-format off
-  std::cout << "-----------------------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITHM: Jump Point Search ---------------------" << std::endl;
-  std::cout << "-----------------------------------------------------------------------" << std::endl;
+  std::cout << "-----------------------------------------------------------------------" << '\n';
+  std::cout << "--------------------- ALGORITHM: Jump Point Search ---------------------" << '\n';
+  std::cout << "-----------------------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
   JumpPointSearch new_jump_point_search;
@@ -90,9 +90,9 @@ int main() {
   PrintPath(path_vector, start, goal, grid);
 
   // clang-format off
-  std::cout << "--------------------------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITHM: Lifeling Planning A* ---------------------" << std::endl;
-  std::cout << "--------------------------------------------------------------------------" << std::endl;
+  std::cout << "--------------------------------------------------------------------------" << '\n'
+            << "--------------------- ALGORITHM: Lifeling Planning A* ---------------------" << '\n'
+            << "--------------------------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
   LPAStar new_lpa_star;
@@ -101,9 +101,9 @@ int main() {
   PrintPath(path_vector, start, goal, grid);
 
   // clang-format off
-  std::cout << "---------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITHM: RRT ---------------------" << std::endl;
-  std::cout << "---------------------------------------------------------" << std::endl;
+  std::cout << "---------------------------------------------------------" << '\n'
+            << "--------------------- ALGORITHM: RRT ---------------------" << '\n'
+            << "---------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
   RRT new_rrt;
@@ -111,9 +111,9 @@ int main() {
   PrintPath(path_vector, start, goal, grid);
 
   // clang-format off
-  std::cout << "----------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITHM: RRT* ---------------------" << std::endl;
-  std::cout << "----------------------------------------------------------" << std::endl;
+  std::cout << "----------------------------------------------------------" << '\n';
+  std::cout << "--------------------- ALGORITHM: RRT* ---------------------" << '\n';
+  std::cout << "----------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
   RRTStar new_rrt_star;
@@ -122,9 +122,9 @@ int main() {
   PrintPath(path_vector, start, goal, grid);
 
   // clang-format off
-  std::cout << "-------------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITHM: D* Lite ---------------------" << std::endl;
-  std::cout << "-------------------------------------------------------------" << std::endl;
+  std::cout << "-------------------------------------------------------------" << '\n'
+            << "--------------------- ALGORITHM: D* Lite ---------------------" << '\n'
+            << "-------------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
   DStarLite new_d_star_lite;
@@ -133,9 +133,9 @@ int main() {
 
 #ifdef DYNAMIC_ALGOS
   // clang-format off
-  std::cout << "----------------------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITHM: D* Lite Live Run ---------------------" << std::endl;
-  std::cout << "----------------------------------------------------------------------" << std::endl;
+  std::cout << "----------------------------------------------------------------------" << '\n'
+            << "--------------------- ALGORITHM: D* Lite Live Run ---------------------" << '\n'
+            << "----------------------------------------------------------------------" << '\n';
   // clang-format on
   // NOTE: Make sure the function d_star_lite(grid, start, goal) is called
   // before calling RunDStarLite()
@@ -148,9 +148,9 @@ int main() {
 #endif
 
   // clang-format off
-  std::cout << "-----------------------------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITHM: Ant Colony Optimization ---------------------" << std::endl;
-  std::cout << "-----------------------------------------------------------------------------" << std::endl;
+  std::cout << "-----------------------------------------------------------------------------" << '\n'
+            << "--------------------- ALGORITHM: Ant Colony Optimization ---------------------" << '\n'
+            << "-----------------------------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
   AntColony new_ant_colony(n_ants, alpha, beta, evap_rate, iterations, Q);
@@ -158,9 +158,9 @@ int main() {
   PrintPath(path_vector, start, goal, grid);
 
   // clang-format off
-  std::cout << "-----------------------------------------------------------------------" << std::endl;
-  std::cout << "--------------------- ALGORITHM: Genetic Algorithm ---------------------" << std::endl;
-  std::cout << "-----------------------------------------------------------------------" << std::endl;
+  std::cout << "-----------------------------------------------------------------------" << '\n'
+            << "--------------------- ALGORITHM: Genetic Algorithm ---------------------" << '\n'
+            << "-----------------------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
   GeneticAlgorithm new_genetic_algorithm;

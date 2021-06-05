@@ -33,19 +33,19 @@ double DStarLite::GetHeuristic(const Node& s1, const Node& s2) {
 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void DStarLite::PrintGRHS() const {
-  std::cout << "G values:" << std::endl;
+  std::cout << "G values:" << '\n';
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
       std::cout << std::setw(5) << S_[i][j].first << ",";
     }
-    std::cout << std::endl;
+    std::cout << '\n';
   }
-  std::cout << "RHS values:" << std::endl;
+  std::cout << "RHS values:" << '\n';
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
       std::cout << std::setw(5) << S_[i][j].second << ",";
     }
-    std::cout << std::endl;
+    std::cout << '\n';
   }
 }
 #endif  // CUSTOM_DEBUG_HELPER_FUNCION
@@ -231,11 +231,11 @@ std::vector<Node> DStarLite::d_star_lite(std::vector<std::vector<int>>& grid_in,
 #ifdef DYNAMIC_ALGOS
 std::vector<Node> DStarLite::SetObs(const Node& u) {
   if (compareCoordinates(u, goal_) || compareCoordinates(u, start_)) {
-    std::cout << "Cannot set current start or goal as obstacle" << std::endl;
+    std::cout << "Cannot set current start or goal as obstacle" << '\n';
     return path_vector_;
   }
   grid[u.x_][u.y_] = 1;
-  std::cout << "Obstacle found at: " << std::endl;
+  std::cout << "Obstacle found at: " << '\n';
   u.PrintStatus();
   DisplayGrid();
   return Replan(u);
@@ -321,7 +321,7 @@ void DStarLite::GeneratePathVector() {
 std::vector<Node> DStarLite::UpdateStart(const Node& start_in) {
   // Prevent teleportations
   if (path_vector_[0].cost_ == -1) {
-    std::cout << "Teleport disabled." << std::endl;
+    std::cout << "Teleport disabled." << '\n';
     return path_vector_;
   }
   // If no path found to goal from current start, not movement from start will
@@ -336,16 +336,16 @@ std::vector<Node> DStarLite::UpdateStart(const Node& start_in) {
 }
 
 void DStarLite::DisplayGrid() const {
-  std::cout << "Grid: " << std::endl;
-  std::cout << "1. Points not considered ---> 0" << std::endl;
-  std::cout << "2. Obstacles             ---> 1" << std::endl;
-  std::cout << "3. Points considered     ---> 2" << std::endl;
-  std::cout << "4. Points in final path  ---> 3" << std::endl;
-  std::cout << "5. Current point         ---> 4" << std::endl;
+  std::cout << "Grid: " << '\n'
+            << "1. Points not considered ---> 0" << '\n'
+            << "2. Obstacles             ---> 1" << '\n'
+            << "3. Points considered     ---> 2" << '\n'
+            << "4. Points in final path  ---> 3" << '\n'
+            << "5. Current point         ---> 4" << '\n';
   for (int j = 0; j < n; j++) {
     std::cout << "---";
   }
-  std::cout << std::endl;
+  std::cout << '\n';
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
       if (grid[i][j] == 3) {
@@ -360,12 +360,12 @@ void DStarLite::DisplayGrid() const {
         std::cout << grid[i][j] << " , ";
       }
     }
-    std::cout << std::endl << std::endl;
+    std::cout << '\n' << '\n';
   }
   for (int j = 0; j < n; j++) {
     std::cout << "---";
   }
-  std::cout << std::endl;
+  std::cout << '\n';
 }
 #endif  // DYNAMIC_ALGOS
 
@@ -394,7 +394,7 @@ Node DStarLite::NextPoint() const {
 void DStarLite::RunDStarLite(bool disp_inc_in) {
   disp_inc = disp_inc_in;
   if (path_vector_[0].cost_ == -1) {
-    std::cout << "No path" << std::endl;
+    std::cout << "No path" << '\n';
     return;  // No path
   }
   std::random_device rd;   // obtain a random number from hardware
@@ -417,7 +417,7 @@ void DStarLite::RunDStarLite(bool disp_inc_in) {
     }
     if (path_vector_[0].cost_ == -1) {
       DisplayGrid();  // Shows path traversed and current point
-      std::cout << "No path" << std::endl;
+      std::cout << "No path" << '\n';
       return;  // No path
     }
     start_ = current;

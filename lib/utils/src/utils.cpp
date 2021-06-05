@@ -25,15 +25,15 @@ Node::Node(const int x, const int y, const double cost, const double h_cost,
 }
 
 void Node::PrintStatus() const {
-  std::cout << "--------------" << std::endl
-            << "Node          :" << std::endl
-            << "x             : " << x_ << std::endl
-            << "y             : " << y_ << std::endl
-            << "Cost          : " << cost_ << std::endl
-            << "Heuristic cost: " << h_cost_ << std::endl
-            << "Id            : " << id_ << std::endl
-            << "Pid           : " << pid_ << std::endl
-            << "--------------" << std::endl;
+  std::cout << "--------------" << '\n'
+            << "Node          :" << '\n'
+            << "x             : " << x_ << '\n'
+            << "y             : " << y_ << '\n'
+            << "Cost          : " << cost_ << '\n'
+            << "Heuristic cost: " << h_cost_ << '\n'
+            << "Id            : " << id_ << '\n'
+            << "Pid           : " << pid_ << '\n'
+            << "--------------" << '\n';
 }
 
 Node Node::operator+(const Node& p) const {
@@ -114,15 +114,15 @@ void MakeGrid(std::vector<std::vector<int>>& grid) {
 
 void PrintGrid(const std::vector<std::vector<int>>& grid) {
   int n = grid.size();
-  std::cout << "Grid: " << std::endl;
-  std::cout << "1. Points not considered ---> 0" << std::endl;
-  std::cout << "2. Obstacles             ---> 1" << std::endl;
-  std::cout << "3. Points considered     ---> 2" << std::endl;
-  std::cout << "4. Points in final path  ---> 3" << std::endl;
+  std::cout << "Grid: " << '\n'
+            << "1. Points not considered ---> 0" << '\n'
+            << "2. Obstacles             ---> 1" << '\n'
+            << "3. Points considered     ---> 2" << '\n'
+            << "4. Points in final path  ---> 3" << '\n';
   for (int j = 0; j < n; j++) {
     std::cout << "---";
   }
-  std::cout << std::endl;
+  std::cout << '\n';
   // for(int i=0;i<n;i++){
   //   for(int j=0;j<n;j++){
   //     if(grid[i][j]==3) std::cout << GREEN << grid[i][j] << RESET << " , ";
@@ -130,7 +130,7 @@ void PrintGrid(const std::vector<std::vector<int>>& grid) {
   //     "; else if(grid[i][j]==2) std::cout << BLUE << grid[i][j] << RESET << "
   //     , "; else std::cout << grid[i][j] << " , ";
   //   }
-  //   std::cout << std::endl << std::endl;
+  //   std::cout << '\n' << '\n';
   // }
 
   for (const auto& row : grid) {
@@ -145,23 +145,23 @@ void PrintGrid(const std::vector<std::vector<int>>& grid) {
         std::cout << ele << " , ";
       }
     }
-    std::cout << std::endl << std::endl;
+    std::cout << '\n' << '\n';
   }
 
   for (int j = 0; j < n; j++) {
     std::cout << "---";
   }
-  std::cout << std::endl;
+  std::cout << '\n';
 }
 
 void PrintPath(std::vector<Node>& path_vector, const Node& start,
                const Node& goal, std::vector<std::vector<int>>& grid) {
   if (path_vector[0].id_ == -1) {
-    std::cout << "No path exists" << std::endl;
+    std::cout << "No path exists" << '\n';
     PrintGrid(grid);
     return;
   }
-  std::cout << "Path (goal to start):" << std::endl;
+  std::cout << "Path (goal to start):" << '\n';
   for (size_t i = 0; i < path_vector.size(); i++) {
     if (compareCoordinates(goal, path_vector[i])) {
       path_vector[i].PrintStatus();
@@ -201,7 +201,7 @@ void PrintCost(const std::vector<std::vector<int>>& grid,
         std::cout << std::setw(spacing_for_grid) << "  , ";
       }
     }
-    std::cout << std::endl << std::endl;
+    std::cout << '\n' << '\n';
   }
 }
 
@@ -209,11 +209,11 @@ void PrintPathInOrder(const std::vector<Node>& path_vector,
                       const Node& /*start*/, const Node& goal,
                       std::vector<std::vector<int>>& grid) {
   if (path_vector[0].id_ == -1) {
-    std::cout << "Path not found" << std::endl;
+    std::cout << "Path not found" << '\n';
     PrintGrid(grid);
     return;
   }
-  std::cout << "Path (goal to start):" << std::endl;
+  std::cout << "Path (goal to start):" << '\n';
   size_t i = 0;
   while (!compareCoordinates(path_vector[i], goal)) {
     i++;

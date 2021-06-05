@@ -46,7 +46,7 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(
   // Allow while loop to continue beyond path found to find optimum path
   // while(found_ == false && generation_ <=generations_){
   while (generation_ <= generations_) {
-    // std::cout << "Generation: "<< generation_ << std::endl;
+    // std::cout << "Generation: "<< generation_ << '\n';
     int paths_size = paths_.size();
     std::vector<int> f_vals(paths_size);
     std::transform(
@@ -116,8 +116,8 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(
     }
     generation_++;
   }
-  std::cout << "True paths: " << truepaths_.size() << std::endl;
-  // if(!truepaths_.empty())std::cout << "True paths: " << std::endl;
+  std::cout << "True paths: " << truepaths_.size() << '\n';
+  // if(!truepaths_.empty())std::cout << "True paths: " << '\n';
   // for(int i=0;i<truepaths_.size();i++) PrintPathOfChromosome(truepaths_[i]);
   return ReturnLastPath();
 }
@@ -175,7 +175,7 @@ void GeneticAlgorithm::PrintChromosome(const std::vector<Node> &path) const {
         std::cout << i << " ";
       }
   }
-  std::cout << "Fitness value: " << CalculateFitness(path) << std::endl;
+  std::cout << "Fitness value: " << CalculateFitness(path) << '\n';
 }
 
 void GeneticAlgorithm::PrintPathOfChromosome(
@@ -187,7 +187,7 @@ void GeneticAlgorithm::PrintPathOfChromosome(
     tmp = tmp + v;
     std::cout << "(" << tmp.x_ << "," << tmp.y_ << ")" << std::setw(3);
   }
-  std::cout << std::endl;
+  std::cout << '\n';
 }
 #endif  // CUSTOM_DEBUG_HELPER_FUNCION
 

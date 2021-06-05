@@ -30,19 +30,19 @@ double LPAStar::GetHeuristic(const Node& s1, const Node& s2) {
 }
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void LPAStar::PrintGRHS() const {
-  std::cout << "G values:" << std::endl;
+  std::cout << "G values:" << '\n';
   for (const auto& row : S_) {
     for (const auto& ele : row) {
       std::cout << std::setw(5) << ele.first << ",";
     }
-    std::cout << std::endl;
+    std::cout << '\n';
   }
-  std::cout << "RHS values:" << std::endl;
+  std::cout << "RHS values:" << '\n';
   for (const auto& row : S_) {
     for (const auto& ele : row) {
       std::cout << std::setw(5) << ele.second << ",";
     }
-    std::cout << std::endl;
+    std::cout << '\n';
   }
 }
 #endif
@@ -247,12 +247,12 @@ void LPAStar::RemovePathFromGrid(std::vector<std::vector<int>>& grid_in) const {
 void LPAStar::SetObs(const Node& u) {
   // PrintGrid(grid,n); // Uncomment if you want to see old and new path
   if (compareCoordinates(u, goal_) || compareCoordinates(u, start_)) {
-    std::cout << "Cannot set current start or goal as obstacle" << std::endl;
+    std::cout << "Cannot set current start or goal as obstacle" << '\n';
   } else {
-    std::cout << "Current grid and path: " << std::endl;
+    std::cout << "Current grid and path: " << '\n';
     PrintGrid(grid);
     grid[u.x_][u.y_] = 1;
-    std::cout << "Obstacle found at: " << std::endl;
+    std::cout << "Obstacle found at: " << '\n';
     u.PrintStatus();
     std::this_thread::sleep_for(
         std::chrono::milliseconds(obs_found_pause_time));
@@ -291,16 +291,16 @@ void LPAStar::GeneratePathVector() {
 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
 void LPAStar::DisplayGrid() const {
-  std::cout << "Grid: " << std::endl;
-  std::cout << "1. Points not considered ---> 0" << std::endl;
-  std::cout << "2. Obstacles             ---> 1" << std::endl;
-  std::cout << "3. Points considered     ---> 2" << std::endl;
-  std::cout << "4. Points in final path  ---> 3" << std::endl;
-  std::cout << "5. Current point         ---> 4" << std::endl;
+  std::cout << "Grid: " << '\n'
+            << "1. Points not considered ---> 0" << '\n'
+            << "2. Obstacles             ---> 1" << '\n'
+            << "3. Points considered     ---> 2" << '\n'
+            << "4. Points in final path  ---> 3" << '\n'
+            << "5. Current point         ---> 4" << '\n';
   for (int j = 0; j < n; j++) {
     std::cout << "---";
   }
-  std::cout << std::endl;
+  std::cout << '\n';
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
       if (grid[i][j] == 3)
@@ -314,10 +314,10 @@ void LPAStar::DisplayGrid() const {
       else
         std::cout << grid[i][j] << " , ";
     }
-    std::cout << std::endl << std::endl;
+    std::cout << '\n' << '\n';
   }
   for (int j = 0; j < n; j++) std::cout << "---";
-  std::cout << std::endl;
+  std::cout << '\n';
 }
 #endif
 
