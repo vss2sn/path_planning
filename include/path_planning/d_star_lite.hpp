@@ -47,6 +47,14 @@ struct Key {
     return first == k.first && second == k.second;
   }
 
+  /**
+   * @brief Overload != operator for comparison
+   * @param k key to be compared
+   * @return result of comparison
+   */
+  bool operator!=(const Key& k) const {
+    return !(first == k.first && second == k.second);
+  }
 };
 
 /**
@@ -56,30 +64,23 @@ struct Key {
 struct NodeKeyPair {
   Node node;
   Key key;
-  /**
-   * @brief Overload operator == for unordered_set
-   * @param node key pair to be compared wth current node key pair
-   * @return <return_description>
-   * @details Compares whether the node in the struct has the same coordinates
-   *          as the node from the one passed in as well as whether it has the
-   *          same key
-   */
-  bool operator==(const NodeKeyPair& nkp) const { return node == nkp.node && key == nkp.key; }
 };
 
-template <>
-class std::greater<Key> {
- public:
-  /**
-   * @brief Overload () operator for std::greater to use for comparison by
-   *        priority queue
-   * @param nk1 node key pair 1
-   * @param nk1 node key pair 2
-   * @return result of comparison
-   * @details Compares the key values
-   */
-  bool operator()(const NodeKeyPair& nk1, const NodeKeyPair& nk2) const {
-    return nk1.key > nk2.key;
+struct CompareNodeKeyPairKeys {
+  bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
+    return nkp1.key == nkp2.key;
+  }
+};
+
+struct CompareNodeKeyPairCoordinates {
+  bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
+    return CompareCoordinates(nkp1.node, nkp2.node);
+  }
+};
+
+struct CompareNodeKeyPairCoordinatesAndKeys {
+  bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
+    return CompareCoordinates(nkp1.node, nkp2.node) && nkp1.key == nkp2.key;
   }
 };
 
@@ -110,6 +111,67 @@ class std::hash<NodeKeyPair> {
   size_t operator()(const NodeKeyPair& nkp) const {
     return std::hash<Node>()(nkp.node);
   }
+};
+
+/**
+ * @brief The idea behind this class is to create a structure similar to a
+ * priority queue that allows elements to be removed from the middle of the
+ * queue as well, rather than just the top
+ */
+class LazyPQ {
+public:
+
+  /**
+   * @brief Clear the LazyPQ
+   * @return void
+   */
+  void clear();
+
+  /**
+   * @brief Insert into the LazyPQ
+   * @return void
+   */
+  void insert(const NodeKeyPair& t);
+
+  /**
+   * @brief pop the top element from the LazyPQ
+   * @return void
+   */
+  void pop();
+
+  /**
+   * @brief Returns the top element of the LazyPQ
+   * @return reference to the top value in the LazyPQ
+   */
+  const NodeKeyPair& top() const;
+
+  /**
+   * @brief Number of elements in the LazyPQ
+   * @return void
+   */
+  size_t size() const;
+
+  /**
+   * @brief Checks whether the LazyPQ is empty
+   * @return bool whether the LazyPQ is empty
+   */
+  bool empty() const;
+
+  /**
+   * @brief Checks whether the element is in the LazyPQ
+   * @return bool whether the element is in the LazyPQ
+   */
+  bool isElementInStruct(const NodeKeyPair& t) const;
+
+  /**
+   * @brief Remove an element from the LazyPQ if it exists
+   * @returnvoid
+   */
+  void remove(const NodeKeyPair& t);
+
+private:
+  std::priority_queue<NodeKeyPair, std::vector<NodeKeyPair>, std::greater<NodeKeyPair>> pq;
+  std::unordered_set<NodeKeyPair, std::hash<NodeKeyPair>, CompareNodeKeyPairCoordinates> s; // Needs to just compare the coordinates and
 };
 
 class DStarLite {
@@ -252,7 +314,7 @@ class DStarLite {
   std::vector<std::vector<double>> g_;
   std::unordered_map<int, std::vector<Node>> time_discovered_obstacles_;
   std::vector<Node> motions_;
-  LazyPQ<NodeKeyPair> U_;
+  LazyPQ U_;
   Node start_, goal_, last_;
   double k_m_;
   Key k_old_;

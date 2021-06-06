@@ -9,7 +9,82 @@
 #include <random>
 #endif  // BUILD_INDIVIDUAL
 
-constexpr int pause_time = 250;  // milliseconds
+constexpr int pause_time = 200;  // milliseconds
+
+void LazyPQ::clear() {
+  s.clear();
+  while(!pq.empty()) {
+    pq.pop();
+  }
+}
+
+void LazyPQ::insert(const NodeKeyPair& t) {
+  if(auto p = s.insert(t); !p.second) {
+    s.erase(t);
+    s.insert(t);
+  }
+  pq.push(t);
+}
+
+void LazyPQ::pop() {
+  while(!pq.empty()) {
+    if (const auto it = s.find(pq.top()); it == s.end()) { // Element been removed from set
+      pq.pop();
+    } else if (it != s.end() && pq.top().key != it->key) { // Element has been updated in set with new key, and inserted already into pq with new value
+      pq.pop();
+    } else if (it != s.end() && pq.top().key == it->key) { // Found an elelment that is in set and priority queue
+      break;
+    }
+  }
+  if (s.empty()) {
+    return;
+  }
+  s.erase(pq.top());
+  pq.pop();
+  // The loop below allows top() to be const without making the
+  // std::priority_queue mutable
+  while(!pq.empty()) {
+    if (const auto it = s.find(pq.top()); it == s.end()) { // Element been removed from set
+      pq.pop();
+    } else if (it != s.end() && pq.top().key != it->key) { // Element has been updated in set with new key, and inserted already into pq with new value
+      pq.pop();
+    } else if (it != s.end() && pq.top().key == it->key) { // Found an elelment that is in set and priority queue
+      break;
+    }
+  }
+}
+
+const NodeKeyPair& LazyPQ::top() const {
+  return pq.top();
+}
+
+size_t LazyPQ::size() const {
+  return s.size();
+}
+
+bool LazyPQ::empty() const {
+  return s.empty();
+}
+
+bool LazyPQ::isElementInStruct(const NodeKeyPair& t) const {
+  return s.find(t) != s.end();
+}
+
+void LazyPQ::remove(const NodeKeyPair& t) {
+  if (s.find(t) != s.end()) {
+    s.erase(t);
+  }
+  // Ensure top() is const
+  while(!pq.empty()) {
+    if (const auto it = s.find(pq.top()); it == s.end()) { // Element been removed from set
+      pq.pop();
+    } else if (it != s.end() && pq.top().key != it->key) { // Element has been updated in set with new key, and inserted already into pq with new value
+      pq.pop();
+    } else if (it != s.end() && pq.top().key == it->key) { // Found an elelment that is in set and priority queue
+      break;
+    }
+  }
+}
 
 bool DStarLite::IsObstacle(const Node& n) const {
   return grid_[n.x_][n.y_] == 1;
@@ -166,6 +241,7 @@ std::vector<Node> DStarLite::Plan(
       path.clear();
       path.push_back(start);
       path.back().cost_ = -1;
+      std::cout << "The path has been blocked" << '\n';
       return path;
     }
     const auto successors = GetSucc(start_);
@@ -186,6 +262,7 @@ std::vector<Node> DStarLite::Plan(
       }
       ComputeShortestPath();
     }
+    start_.PrintStatus();
     PrintGrid(grid_);
   }
   path[0].id_ = path[0].x_ * n_ + path[0].y_;
@@ -239,7 +316,7 @@ int main() {
       {1, {Node(1, 1)}},
       {2, {Node(2, 2)}},
       {3, {Node(5, 5)}},
-      {4, {Node(6, 6), Node(7, 6)}}};
+      {4, {Node(6, 6), Node(7, 7), Node(8, 8), Node(9, 9), Node(10, 10), Node(7, 6)}}};
 
   DStarLite d_star_lite;
   const std::vector<Node> path_vector = d_star_lite.Plan(

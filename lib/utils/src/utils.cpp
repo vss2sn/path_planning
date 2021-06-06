@@ -107,48 +107,6 @@ void MakeGrid(std::vector<std::vector<int>>& grid) {
   }
 }
 
-void PrintGrid(const std::vector<std::vector<int>>& grid) {
-  int n = grid.size();
-  std::cout << "Grid: " << '\n'
-            << "1. Points not considered ---> 0" << '\n'
-            << "2. Obstacles             ---> 1" << '\n'
-            << "3. Points considered     ---> 2" << '\n'
-            << "4. Points in final path  ---> 3" << '\n';
-  for (int j = 0; j < n; j++) {
-    std::cout << "---";
-  }
-  std::cout << '\n';
-  // for(int i=0;i<n;i++){
-  //   for(int j=0;j<n;j++){
-  //     if(grid[i][j]==3) std::cout << GREEN << grid[i][j] << RESET << " , ";
-  //     else if(grid[i][j]==1) std::cout << RED << grid[i][j] << RESET << " ,
-  //     "; else if(grid[i][j]==2) std::cout << BLUE << grid[i][j] << RESET << "
-  //     , "; else std::cout << grid[i][j] << " , ";
-  //   }
-  //   std::cout << '\n' << '\n';
-  // }
-
-  for (const auto& row : grid) {
-    for (const auto& ele : row) {
-      if (ele == 3) {
-        std::cout << GREEN << ele << RESET << " , ";
-      } else if (ele == 1) {
-        std::cout << RED << ele << RESET << " , ";
-      } else if (ele == 2) {
-        std::cout << BLUE << ele << RESET << " , ";
-      } else {
-        std::cout << ele << " , ";
-      }
-    }
-    std::cout << '\n' << '\n';
-  }
-
-  for (int j = 0; j < n; j++) {
-    std::cout << "---";
-  }
-  std::cout << '\n';
-}
-
 void PrintPath(const std::vector<Node>& path_vector, const Node& start,
                const Node& goal, std::vector<std::vector<int>>& grid) {
   if (path_vector[0].id_ == -1) {

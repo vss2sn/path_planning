@@ -7,6 +7,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <iostream>
 #include <queue>
 #include <unordered_set>
 #include <vector>
@@ -122,13 +123,6 @@ struct compare_cost {
 std::vector<Node> GetMotion();
 
 /**
- * @brief Prints the grid passed
- * @param grid Modify this grid
- * @return void
- */
-void PrintGrid(const std::vector<std::vector<int>>& grid);
-
-/**
  * @brief Prints the grid passed, highlighting the path taken
  * @param path_vector the path vector
  * @param start_ start node
@@ -183,100 +177,42 @@ bool CompareCoordinates(const Node& p1, const Node& p2);
  */
 bool checkOutsideBoundary(const Node& node, const int n);
 
-/**
- * @brief The idea behind this class is to create a structure similar to a
- * priority queue that allows elements to be removed from the middle of the
- * queue as well, rather than just the top
- */
-template<typename T, typename T2 = std::greater<T>, typename T3 = std::hash<T>>
-class LazyPQ {
-public:
-
-  /**
-   * @brief Clear the LazyPQ
-   * @return void
-   */
-  void clear() {
-    s.clear();
-    while(!pq.empty()) {
-      pq.pop();
+template<typename T,
+         typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type
+        >
+void PrintGrid(const std::vector<std::vector<T>>& grid) {
+  int n = grid.size();
+  std::cout << "Grid: " << '\n'
+            << "1. Points not considered ---> 0" << '\n'
+            << "2. Obstacles             ---> 1" << '\n'
+            << "3. Points considered     ---> 2" << '\n'
+            << "4. Points in final path  ---> 3" << '\n';
+  for (int j = 0; j < n; j++) {
+    std::cout << "---";
+  }
+  std::cout << '\n';
+  for (const auto& row : grid) {
+    for (const auto& ele : row) {
+      if (ele == 3) {
+        std::cout << GREEN << ele << RESET << " , ";
+      } else if (ele == 1) {
+        std::cout << RED << ele << RESET << " , ";
+      } else if (ele == 2) {
+        std::cout << BLUE << ele << RESET << " , ";
+      } else if( ele == std::numeric_limits<double>::max()) {
+        std::cout << YELLOW << "I" << RESET << " , ";
+      } else {
+        std::cout << ele << " , ";
+      }
     }
+    std::cout << '\n' << '\n';
   }
 
-  /**
-   * @brief Insert into the LazyPQ
-   * @return void
-   */
-  void insert(const T& t) {
-    pq.push(t);
-    s.insert(t);
+  for (int j = 0; j < n; j++) {
+    std::cout << "---";
   }
+  std::cout << '\n';
+}
 
-  /**
-   * @brief pop the top element from the LazyPQ
-   * @return void
-   */
-  void pop() {
-    while(!pq.empty() && s.find(pq.top()) == s.end()) {
-      pq.pop();
-    }
-    if (s.empty()) {
-      return;
-    }
-    s.erase(pq.top());
-    pq.pop();
-    // The loop below allows top() to be const without making the
-    // std::priority_queue mutable
-    while(!pq.empty() && s.find(pq.top()) == s.end()) {
-      pq.pop();
-    }
-  }
-
-  /**
-   * @brief Returns the top element of the LazyPQ
-   * @return reference to the top value in the LazyPQ
-   */
-  const T& top() const {
-    return pq.top();
-  }
-
-  /**
-   * @brief Number of elements in the LazyPQ
-   * @return void
-   */
-  size_t size() const {
-    return s.size();
-  }
-
-  /**
-   * @brief Checks whether the LazyPQ is empty
-   * @return bool whether the LazyPQ is empty
-   */
-  bool empty() const {
-    return s.empty();
-  }
-
-  /**
-   * @brief Checks whether the element is in the LazyPQ
-   * @return bool whether the element is in the LazyPQ
-   */
-  bool isElementInStruct(const T& t) const {
-    return s.find(t) != s.end();
-  }
-
-  /**
-   * @brief Remove an element from the LazyPQ if it exists
-   * @returnvoid
-   */
-  void remove(const T& t) {
-    if (s.find(t) != s.end()) {
-      s.erase(t);
-    }
-  }
-
-private:
-  std::priority_queue<T, std::vector<T>, T2> pq;
-  std::unordered_set<T, T3> s;
-};
 
 #endif  // UTILS_H
