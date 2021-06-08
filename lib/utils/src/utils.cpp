@@ -77,20 +77,20 @@ bool compare_cost::operator()(const Node& p1, const Node& p2) const {
 //       replacing new node with nearest node that satisfies motion constraints
 
 std::vector<Node> GetMotion() {
-  Node down(0, 1, 1, 0, 0, 0);
-  Node up(0, -1, 1, 0, 0, 0);
-  Node left(-1, 0, 1, 0, 0, 0);
-  Node right(1, 0, 1, 0, 0, 0);
-  std::vector<Node> v;
-  v.push_back(down);
-  v.push_back(up);
-  v.push_back(left);
-  v.push_back(right);
+  return {
+    Node(0, 1, 1, 0, 0, 0),
+    Node(1, 0, 1, 0, 0, 0),
+    Node(0, -1, 1, 0, 0, 0),
+    Node(-1, 0, 1, 0, 0, 0)
+    // Node(1, 1, sqrt(2), 0, 0, 0),
+    // Node(1, -1, sqrt(2), 0, 0, 0),
+    // Node(-1, 1, sqrt(2), 0, 0, 0),
+    // Node(-1, -1, sqrt(2), 0, 0, 0)
+  };
   // NOTE: Add diagonal movements for A* and D* only after the heuristics in the
   // algorithms have been modified. Refer to README.md. The heuristics currently
   // implemented are based on Manhattan distance and dwill not account for
   // diagonal/ any other motions
-  return v;
 }
 
 void MakeGrid(std::vector<std::vector<int>>& grid) {

@@ -80,7 +80,7 @@
 5. Formalize pseudocode and add references for ACO.
 6. Add documentation for jump point search.
 7. Refactor
-8. Stop using -1 as error code (ie modernize)
+8. Stop using -1 as error code (i.e. modernize)
 
 <a name="consider"></a>
 #### Consider: ####
