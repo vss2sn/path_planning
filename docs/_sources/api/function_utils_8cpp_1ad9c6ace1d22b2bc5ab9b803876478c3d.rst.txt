@@ -1,0 +1,13 @@
+.. _exhale_function_utils_8cpp_1ad9c6ace1d22b2bc5ab9b803876478c3d:
+
+Function PrintPathInOrder(const std::vector<Node>&, const Node&, const Node&, std::vector<std::vector<int>>&)
+=============================================================================================================
+
+- Defined in :ref:`file_lib_utils_src_utils.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: PrintPathInOrder(const std::vector<Node>&, const Node&, const Node&, std::vector<std::vector<int>>&)

@@ -1,0 +1,16 @@
+.. _exhale_struct_structCompareNodeKeyPairCoordinates:
+
+Struct CompareNodeKeyPairCoordinates
+====================================
+
+- Defined in :ref:`file_include_path_planning_d_star_lite.hpp`
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: CompareNodeKeyPairCoordinates
+   :members:
+   :protected-members:
+   :undoc-members:

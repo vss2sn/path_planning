@@ -3,7 +3,7 @@
 Class RRT
 =========
 
-- Defined in :ref:`file_inc_rrt.hpp`
+- Defined in :ref:`file_include_path_planning_rrt.hpp`
 
 
 Class Documentation

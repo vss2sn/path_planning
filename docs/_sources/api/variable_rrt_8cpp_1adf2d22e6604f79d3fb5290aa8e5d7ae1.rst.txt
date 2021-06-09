@@ -1,0 +1,13 @@
+.. _exhale_variable_rrt_8cpp_1adf2d22e6604f79d3fb5290aa8e5d7ae1:
+
+Variable half_grid_unit
+=======================
+
+- Defined in :ref:`file_src_rrt.cpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: half_grid_unit

@@ -1,0 +1,61 @@
+
+.. _file_include_path_planning_lpa_star.hpp:
+
+File lpa_star.hpp
+=================
+
+
+Contains the :ref:`exhale_class_classLPAStar` class. 
+
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``include/path_planning/lpa_star.hpp``)
+---------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_include_path_planning_lpa_star.hpp.rst
+
+
+
+Detailed Description
+--------------------
+
+vss2sn 
+
+
+
+
+
+
+Includes
+--------
+
+
+- ``utils/utils.hpp`` (:ref:`file_lib_utils_include_utils_utils.hpp`)
+
+
+
+Included By
+-----------
+
+
+- :ref:`file_main_main.cpp`
+
+- :ref:`file_src_lpa_star.cpp`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classLPAStar`
+

@@ -1,0 +1,11 @@
+.. _dir_path_planning:
+
+
+Directory planning
+==================
+
+
+*Directory path:* ``path_planning``
+
+
+

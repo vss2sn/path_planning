@@ -1,0 +1,13 @@
+.. _exhale_function_utils_8hpp_1a667f2f0837580a493eedc1e53baa45e0:
+
+Function PrintCost(const std::vector<std::vector<int>>&, const std::vector<Node>&)
+==================================================================================
+
+- Defined in :ref:`file_lib_utils_include_utils_utils.hpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: PrintCost(const std::vector<std::vector<int>>&, const std::vector<Node>&)

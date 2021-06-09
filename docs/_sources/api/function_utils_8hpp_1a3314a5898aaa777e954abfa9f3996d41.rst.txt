@@ -1,9 +1,9 @@
 .. _exhale_function_utils_8hpp_1a3314a5898aaa777e954abfa9f3996d41:
 
-Function GetMotion
-==================
+Function GetMotion()
+====================
 
-- Defined in :ref:`file_inc_utils.hpp`
+- Defined in :ref:`file_lib_utils_include_utils_utils.hpp`
 
 
 Function Documentation

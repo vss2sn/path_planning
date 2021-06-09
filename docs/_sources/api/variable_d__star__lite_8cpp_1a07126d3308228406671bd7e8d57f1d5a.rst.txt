@@ -1,0 +1,13 @@
+.. _exhale_variable_d__star__lite_8cpp_1a07126d3308228406671bd7e8d57f1d5a:
+
+Variable pause_time
+===================
+
+- Defined in :ref:`file_src_d_star_lite.cpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: pause_time

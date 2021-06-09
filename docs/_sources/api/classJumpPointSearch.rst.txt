@@ -1,0 +1,16 @@
+.. _exhale_class_classJumpPointSearch:
+
+Class JumpPointSearch
+=====================
+
+- Defined in :ref:`file_include_path_planning_jump_point_search.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: JumpPointSearch
+   :members:
+   :protected-members:
+   :undoc-members:

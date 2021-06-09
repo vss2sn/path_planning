@@ -1,0 +1,157 @@
+
+.. _program_listing_file_include_path_planning_d_star_lite.hpp:
+
+Program Listing for File d_star_lite.hpp
+========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_include_path_planning_d_star_lite.hpp>` (``include/path_planning/d_star_lite.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef D_STAR_LITE_H
+   #define D_STAR_LITE_H
+   
+   #include <iostream>
+   #include <unordered_map>
+   #include <unordered_set>
+   
+   #include "utils/utils.hpp"
+   
+   struct Key {
+     double first;
+     double second;
+   
+     bool operator<(const Key& k) const {
+       return first < k.first || (first == k.first && second < k.second);
+     }
+   
+     bool operator>(const Key& k) const {
+       return first > k.first || (first == k.first && second > k.second);
+     }
+   
+     bool operator==(const Key& k) const {
+       return first == k.first && second == k.second;
+     }
+   
+     bool operator!=(const Key& k) const {
+       return !(first == k.first && second == k.second);
+     }
+   };
+   
+   struct NodeKeyPair {
+     Node node;
+     Key key;
+   };
+   
+   struct CompareNodeKeyPairKeys {
+     bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
+       return nkp1.key == nkp2.key;
+     }
+   };
+   
+   struct CompareNodeKeyPairCoordinates {
+     bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
+       return CompareCoordinates(nkp1.node, nkp2.node);
+     }
+   };
+   
+   struct CompareNodeKeyPairCoordinatesAndKeys {
+     bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
+       return CompareCoordinates(nkp1.node, nkp2.node) && nkp1.key == nkp2.key;
+     }
+   };
+   
+   template <>
+   class std::greater<NodeKeyPair> {
+    public:
+     bool operator()(const NodeKeyPair& nk1, const NodeKeyPair& nk2) const {
+       return nk1.key > nk2.key;
+     }
+   };
+   
+   template <>
+   class std::hash<NodeKeyPair> {
+    public:
+     size_t operator()(const NodeKeyPair& nkp) const {
+       return std::hash<Node>()(nkp.node);
+     }
+   };
+   
+   class LazyPQ {
+   public:
+   
+     void clear();
+   
+     void insert(const NodeKeyPair& t);
+   
+     void pop();
+   
+     const NodeKeyPair& top() const;
+   
+     size_t size() const;
+   
+     bool empty() const;
+   
+     bool isElementInStruct(const NodeKeyPair& t) const;
+   
+     void remove(const NodeKeyPair& t);
+   
+   private:
+     std::priority_queue<NodeKeyPair, std::vector<NodeKeyPair>, std::greater<NodeKeyPair>> pq;
+     std::unordered_set<NodeKeyPair, std::hash<NodeKeyPair>, CompareNodeKeyPairCoordinates> s; // Needs to just compare the coordinates and
+   };
+   
+   class DStarLite {
+    public:
+     std::vector<Node> Plan(const std::vector<std::vector<int>>& grid,
+                            const Node& start, const Node& goal,
+                            const bool create_random_obstacles = false,
+                            const std::unordered_map<int, std::vector<Node>>
+                                time_discovered_obstacles = {});
+   
+    private:
+     Key CalculateKey(const Node& s) const;
+   
+     std::vector<Node> GetPred(const Node& u) const;
+   
+     std::vector<Node> GetSucc(const Node& u) const;
+   
+     std::vector<Node> GetNeighbours(const Node& u) const;
+   
+     double C(const Node& s1, const Node& s2) const;
+   
+     void Initialize();
+   
+     void UpdateVertex(const Node& u);
+   
+     bool CompareKey(const Key& p1, const Key& p2) const;
+   
+     void ComputeShortestPath();
+   
+     std::vector<Node> DetectChanges();
+   
+     bool IsObstacle(const Node& n) const;
+   
+     double H(const Node& n1, const Node& n2) const;
+   
+   
+     std::vector<std::vector<double>> CreateGrid(const int n);
+   
+     std::vector<std::vector<int>> grid_;
+     std::vector<std::vector<double>> rhs_;
+     std::vector<std::vector<double>> g_;
+     std::unordered_map<int, std::vector<Node>> time_discovered_obstacles_;
+     std::vector<Node> motions_;
+     LazyPQ U_;
+     Node start_, goal_, last_;
+     double k_m_;
+     Key k_old_;
+     int n_;
+     int time_step_ = 0;
+     bool create_random_obstacles_;
+   };
+   
+   #endif  // D_STAR_LITE_H

@@ -1,0 +1,13 @@
+.. _exhale_function_utils_8hpp_1a48dbe0e3b6273a8ffb14d1adc77411db:
+
+Function CompareCoordinates(const Node&, const Node&)
+=====================================================
+
+- Defined in :ref:`file_lib_utils_include_utils_utils.hpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: CompareCoordinates(const Node&, const Node&)

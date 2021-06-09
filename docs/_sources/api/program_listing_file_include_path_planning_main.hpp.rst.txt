@@ -1,0 +1,21 @@
+
+.. _program_listing_file_include_path_planning_main.hpp:
+
+Program Listing for File main.hpp
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_include_path_planning_main.hpp>` (``include/path_planning/main.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef BUILD_INDIVIDUAL  // Only to make sure main is is included in
+                             // documentation
+   #ifndef RUN_TESTS  // Only to make sure main is is included in documentation
+   
+   int main();
+   
+   #endif  // BUILD_INDIVIDUAL
+   #endif  // RUN_TESTS

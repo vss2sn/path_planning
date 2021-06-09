@@ -1,0 +1,13 @@
+.. _exhale_function_utils_8cpp_1a3314a5898aaa777e954abfa9f3996d41:
+
+Function GetMotion()
+====================
+
+- Defined in :ref:`file_lib_utils_src_utils.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: GetMotion()

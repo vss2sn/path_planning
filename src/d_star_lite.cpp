@@ -206,7 +206,7 @@ std::vector<Node> DStarLite::DetectChanges() {
       }
     }
   }
-  if (create_random_obstacles_) {
+  if (create_random_obstacles_ && rand() > 1.0/static_cast<double>(n_)) {
     const int x = rand() % n_;
     const int y = rand() % n_;
     if (!((start_.x_ == x && start_.y_ == y) ||

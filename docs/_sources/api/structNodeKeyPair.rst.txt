@@ -1,0 +1,16 @@
+.. _exhale_struct_structNodeKeyPair:
+
+Struct NodeKeyPair
+==================
+
+- Defined in :ref:`file_include_path_planning_d_star_lite.hpp`
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: NodeKeyPair
+   :members:
+   :protected-members:
+   :undoc-members:
