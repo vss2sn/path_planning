@@ -17,6 +17,7 @@
 #include "path_planning/rrt_star.hpp"
 
 double run_test(std::vector<std::vector<int>>& grid, const std::string& algo){
+  PrintGrid(grid);
   int n = grid.size();
   Node start(0,0,0,0,0,0);
   start.id_ = start.x_ * n + start.y_;
