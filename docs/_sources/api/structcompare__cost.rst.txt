@@ -3,7 +3,7 @@
 Struct compare_cost
 ===================
 
-- Defined in :ref:`file_inc_utils.hpp`
+- Defined in :ref:`file_lib_utils_include_utils_utils.hpp`
 
 
 Struct Documentation

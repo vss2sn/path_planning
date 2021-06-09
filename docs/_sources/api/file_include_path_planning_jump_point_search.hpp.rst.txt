@@ -1,0 +1,65 @@
+
+.. _file_include_path_planning_jump_point_search.hpp:
+
+File jump_point_search.hpp
+==========================
+
+
+Contains the :ref:`exhale_class_classJumpPointSearch` class. 
+
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``include/path_planning/jump_point_search.hpp``)
+------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_include_path_planning_jump_point_search.hpp.rst
+
+
+
+Detailed Description
+--------------------
+
+vss2sn 
+
+
+
+
+
+
+Includes
+--------
+
+
+- ``queue``
+
+- ``unordered_set``
+
+- ``utils/utils.hpp`` (:ref:`file_lib_utils_include_utils_utils.hpp`)
+
+
+
+Included By
+-----------
+
+
+- :ref:`file_main_main.cpp`
+
+- :ref:`file_src_jump_point_search.cpp`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classJumpPointSearch`
+

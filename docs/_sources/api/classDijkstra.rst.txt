@@ -3,7 +3,7 @@
 Class Dijkstra
 ==============
 
-- Defined in :ref:`file_inc_dijkstra.hpp`
+- Defined in :ref:`file_include_path_planning_dijkstra.hpp`
 
 
 Class Documentation

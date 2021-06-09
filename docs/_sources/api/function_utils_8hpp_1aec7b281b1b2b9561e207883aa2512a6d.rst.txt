@@ -1,0 +1,13 @@
+.. _exhale_function_utils_8hpp_1aec7b281b1b2b9561e207883aa2512a6d:
+
+Function PrintPath(const std::vector<Node>&, const Node&, const Node&, std::vector<std::vector<int>>&)
+======================================================================================================
+
+- Defined in :ref:`file_lib_utils_include_utils_utils.hpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: PrintPath(const std::vector<Node>&, const Node&, const Node&, std::vector<std::vector<int>>&)

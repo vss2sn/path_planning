@@ -1,0 +1,16 @@
+.. _exhale_class_classstd_1_1hash_3_01Node_01_4:
+
+Template Class hash< Node >
+===========================
+
+- Defined in :ref:`file_lib_utils_include_utils_utils.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: std::hash< Node >
+   :members:
+   :protected-members:
+   :undoc-members:

@@ -3,7 +3,7 @@
 Class DStarLite
 ===============
 
-- Defined in :ref:`file_inc_d_star_lite.hpp`
+- Defined in :ref:`file_include_path_planning_d_star_lite.hpp`
 
 
 Class Documentation

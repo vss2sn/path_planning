@@ -1,0 +1,74 @@
+
+.. _program_listing_file_include_path_planning_lpa_star.hpp:
+
+Program Listing for File lpa_star.hpp
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_include_path_planning_lpa_star.hpp>` (``include/path_planning/lpa_star.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef LPA_STAR_H
+   #define LPA_STAR_H
+   
+   #include "utils/utils.hpp"
+   
+   class LPAStar {
+    public:
+     static void VectorInsertionSort(std::vector<Node>& v);
+   
+     static double GetHeuristic(const Node& s1, const Node& s2);
+   
+     void PrintGRHS() const;
+   
+     std::pair<double, double> CalculateKey(const Node& s) const;
+   
+     std::vector<Node> GetPred(const Node& u) const;
+   
+     std::vector<Node> GetSucc(const Node& u) const;
+   
+     void InsertionSort();
+   
+     double C(const Node& s1, const Node& s2) const;
+   
+     void Init();
+   
+     void UpdateVertex(const Node& u);
+   
+     bool CompareKey(const std::pair<double, double>& pair_in,
+                     const Node& u) const;
+   
+     int ComputeShortestPath();
+   
+     std::vector<Node> lpa_star(std::vector<std::vector<int>>& grid_in,
+                                const Node& start_in, const Node& goal_in,
+                                const int max_iter_in,
+                                const bool obs_creation = true);
+   
+     std::vector<Node> Replan(const Node& u);
+   
+     void SetObs(const Node& u);
+   
+     void GeneratePathVector();
+   
+     std::vector<Node> UpdateStart(const Node& start_in) const;
+   
+     void DisplayGrid() const;
+   
+     void RemovePathFromGrid(std::vector<std::vector<int>>& grid_in) const;
+   
+    private:
+     Node start_, goal_;
+     std::vector<std::vector<std::pair<double, double>>> S_;
+     std::vector<std::pair<Node, std::pair<double, double>>> U_;
+     std::vector<Node> motions;
+     int n, iter_ = 0, max_iter_;
+     std::vector<Node> path_vector_;
+     std::pair<double, double> large_num;
+     std::vector<std::vector<int>> grid;
+   };
+   
+   #endif  // LPA_STAR_H

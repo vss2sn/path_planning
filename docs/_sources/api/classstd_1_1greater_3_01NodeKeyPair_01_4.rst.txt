@@ -1,0 +1,16 @@
+.. _exhale_class_classstd_1_1greater_3_01NodeKeyPair_01_4:
+
+Template Class greater< NodeKeyPair >
+=====================================
+
+- Defined in :ref:`file_include_path_planning_d_star_lite.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: std::greater< NodeKeyPair >
+   :members:
+   :protected-members:
+   :undoc-members:

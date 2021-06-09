@@ -1,0 +1,52 @@
+
+.. _file_src_jump_point_search.cpp:
+
+File jump_point_search.cpp
+==========================
+
+|exhale_lsh| :ref:`Parent directory <dir_src>` (``src``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+Contains the :ref:`exhale_class_classJumpPointSearch` class. 
+
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``src/jump_point_search.cpp``)
+------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_src_jump_point_search.cpp.rst
+
+
+
+Detailed Description
+--------------------
+
+vss2sn 
+
+
+
+
+
+
+Includes
+--------
+
+
+- ``cmath``
+
+- ``path_planning/jump_point_search.hpp`` (:ref:`file_include_path_planning_jump_point_search.hpp`)
+
+
+
+
+

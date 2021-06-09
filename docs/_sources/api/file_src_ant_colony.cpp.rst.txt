@@ -1,0 +1,64 @@
+
+.. _file_src_ant_colony.cpp:
+
+File ant_colony.cpp
+===================
+
+|exhale_lsh| :ref:`Parent directory <dir_src>` (``src``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+Contains the :ref:`exhale_class_classAnt` and :ref:`exhale_class_classAnt` Colony class. 
+
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``src/ant_colony.cpp``)
+-----------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_src_ant_colony.cpp.rst
+
+
+
+Detailed Description
+--------------------
+
+vss2sn 
+
+
+
+
+
+
+Includes
+--------
+
+
+- ``algorithm`` (:ref:`file_src_genetic_algorithm.cpp`)
+
+- ``chrono``
+
+- ``climits``
+
+- ``cmath``
+
+- ``iostream``
+
+- ``path_planning/ant_colony.hpp`` (:ref:`file_include_path_planning_ant_colony.hpp`)
+
+- ``random``
+
+- ``thread``
+
+
+
+
+

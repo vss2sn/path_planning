@@ -3,7 +3,7 @@
 Class GeneticAlgorithm
 ======================
 
-- Defined in :ref:`file_inc_genetic_algorithm.hpp`
+- Defined in :ref:`file_include_path_planning_genetic_algorithm.hpp`
 
 
 Class Documentation

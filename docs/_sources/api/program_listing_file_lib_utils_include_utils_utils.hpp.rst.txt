@@ -1,0 +1,123 @@
+
+.. _program_listing_file_lib_utils_include_utils_utils.hpp:
+
+Program Listing for File utils.hpp
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_lib_utils_include_utils_utils.hpp>` (``lib/utils/include/utils/utils.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef UTILS_H
+   #define UTILS_H
+   
+   #include <iostream>
+   #include <queue>
+   #include <unordered_set>
+   #include <vector>
+   
+   #define BLACK "\x1b[1;30m"
+   #define RED "\x1b[1;31m"
+   #define GREEN "\x1b[1;32m"
+   #define YELLOW "\x1b[1;33m"
+   #define BLUE "\x1b[1;34m"
+   #define MAGENTA "\x1b[1;35m"
+   #define CYAN "\x1b[1;36m"
+   #define WHITE "\x1b[1;37m"
+   #define RESET "\x1b[1;0m"
+   
+   class Node {
+     // Variables used here are constantly accessed and checked; leaving public for
+     // now.
+    public:
+     int x_;
+     int y_;
+     int id_;
+     int pid_;
+     double cost_;
+     double h_cost_;
+   
+     Node(const int x = 0, const int y = 0, const double cost = 0,
+          const double h_cost = 0, const int id = 0, const int pid = 0);
+   
+     void PrintStatus() const;
+   
+     Node operator+(const Node& p) const;
+   
+     Node operator-(const Node& p) const;
+   
+     bool operator==(const Node& p) const;
+   };
+   
+   template<>
+   class std::hash<Node> {
+   public:
+     size_t operator () (const Node& n) const {
+       return std::hash<int>()(n.x_) ^ std::hash<int>()(n.y_);
+     }
+   };
+   
+   struct compare_cost {
+     bool operator()(const Node& p1, const Node& p2) const;
+   };
+   
+   std::vector<Node> GetMotion();
+   
+   void PrintPath(const std::vector<Node>& path_vector, const Node& start_,
+                  const Node& goal_, std::vector<std::vector<int>>& grid);
+   
+   void PrintCost(const std::vector<std::vector<int>>& grid,
+                  const std::vector<Node>& point_list);
+   
+   void MakeGrid(std::vector<std::vector<int>>& grid);
+   void PrintPathInOrder(const std::vector<Node>& path_vector, const Node& start,
+                         const Node& goal, std::vector<std::vector<int>>& grid);
+   
+   bool CompareCoordinates(const Node& p1, const Node& p2);
+   
+   bool checkOutsideBoundary(const Node& node, const int n);
+   
+   template<typename T,
+            typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type
+           >
+   void PrintGrid(const std::vector<std::vector<T>>& grid) {
+     int n = grid.size();
+     std::cout << "Grid: " << '\n'
+               << "1. Points not considered ---> 0" << '\n'
+               << "2. Obstacles             ---> 1" << '\n'
+               << "3. Points considered     ---> 2" << '\n'
+               << "4. Points in final path  ---> 3" << '\n';
+     for (int j = 0; j < n; j++) {
+       std::cout << "---";
+     }
+     std::cout << '\n';
+     for (const auto& row : grid) {
+       for (const auto& ele : row) {
+         if (ele == 1) {
+           std::cout << RED << ele << RESET << " , ";
+         } else if (ele == 2) {
+           std::cout << BLUE << ele << RESET << " , ";
+         } else if (ele == 3) {
+           std::cout << GREEN << ele << RESET << " , ";
+         } else if (ele == 4) {
+           std::cout << YELLOW << ele << RESET << " , ";
+         } else if( ele == std::numeric_limits<double>::max()) {
+           std::cout << CYAN << "I" << RESET << " , ";
+         } else {
+           std::cout << ele << " , ";
+         }
+       }
+       std::cout << '\n' << '\n';
+     }
+   
+     for (int j = 0; j < n; j++) {
+       std::cout << "---";
+     }
+     std::cout << '\n';
+   }
+   
+   
+   #endif  // UTILS_H

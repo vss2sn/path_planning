@@ -1,9 +1,9 @@
 .. _exhale_function_utils_8hpp_1ad8afc8a6d98fae87fffe3ad0621eaf4b:
 
-Function MakeGrid
-=================
+Function MakeGrid(std::vector<std::vector<int>>&)
+=================================================
 
-- Defined in :ref:`file_inc_utils.hpp`
+- Defined in :ref:`file_lib_utils_include_utils_utils.hpp`
 
 
 Function Documentation

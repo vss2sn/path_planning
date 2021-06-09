@@ -1,0 +1,16 @@
+.. _exhale_class_classLazyPQ:
+
+Class LazyPQ
+============
+
+- Defined in :ref:`file_include_path_planning_d_star_lite.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: LazyPQ
+   :members:
+   :protected-members:
+   :undoc-members:

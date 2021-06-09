@@ -1,0 +1,13 @@
+.. _exhale_variable_lpa__star_8cpp_1ac5de1508be41d2871871f512d90d2ec3:
+
+Variable obs_found_pause_time
+=============================
+
+- Defined in :ref:`file_src_lpa_star.cpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: obs_found_pause_time

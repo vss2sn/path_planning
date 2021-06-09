@@ -3,7 +3,7 @@
 Class AStar
 ===========
 
-- Defined in :ref:`file_inc_a_star.hpp`
+- Defined in :ref:`file_include_path_planning_a_star.hpp`
 
 
 Class Documentation

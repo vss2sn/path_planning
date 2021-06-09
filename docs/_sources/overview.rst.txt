@@ -1,0 +1,20 @@
+.. _overview:
+
+================================================================================
+Overview
+================================================================================
+
+This repository contains a collection of implementations of path planning algorithms in C++.
+
+The idea behind this repository is to provide simple and efficient implementations of the algorithms on a grid to facilitate learning.
+
+The algorithms currently implemented are:
+  1. Dijkstra's algorithm
+  2. AStar (A*) algorithm
+  3. Jump Point Search for grid based search (Modified for 4 way motion; no diagonal motion).
+  4. Lifelong Planning AStar (LPA*) algorithm
+  5. DStarLite (D* Lite) algorithm
+  6. RRT algorithm
+  7. RRTStar (RRT*) algorithm
+  8. Ant Colony Optimization algorithm (ACO)
+  9. Genetic algorithm (GA)

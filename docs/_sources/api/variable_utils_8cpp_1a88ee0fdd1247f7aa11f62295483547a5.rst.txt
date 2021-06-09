@@ -1,0 +1,13 @@
+.. _exhale_variable_utils_8cpp_1a88ee0fdd1247f7aa11f62295483547a5:
+
+Variable spacing_for_grid
+=========================
+
+- Defined in :ref:`file_lib_utils_src_utils.cpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: spacing_for_grid
