@@ -14,16 +14,6 @@
 // constants
 constexpr int spacing_for_grid = 10;
 
-Node::Node(const int x, const int y, const double cost, const double h_cost,
-           const int id, const int pid) {
-  this->x_ = x;
-  this->y_ = y;
-  this->cost_ = cost;
-  this->h_cost_ = h_cost;
-  this->id_ = id;
-  this->pid_ = pid;
-}
-
 void Node::PrintStatus() const {
   std::cout << "--------------" << '\n'
             << "Node          :" << '\n'
@@ -69,6 +59,9 @@ bool compare_cost::operator()(const Node& p1, const Node& p2) const {
   return p1.cost_ + p1.h_cost_ > p2.cost_ + p2.h_cost_ ||
          (p1.cost_ + p1.h_cost_ == p2.cost_ + p2.h_cost_ &&
           p1.h_cost_ >= p2.h_cost_);
+}
+bool compare_coordinates::operator()(const Node& p1, const Node& p2)  const {
+  return p1.x_ == p2.x_ && p1.y_ == p2.y_;
 }
 
 // Possible motions for dijkstra, A*, and similar algorithms.

@@ -39,14 +39,14 @@ class Node {
   int x_;
   /** \brief y coordinate */
   int y_;
-  /** \brief Node id */
-  int id_;
-  /** \brief Node's parent's id */
-  int pid_;
   /** \brief cost to reach this node */
   double cost_;
   /** \brief heuristic cost to reach the goal */
   double h_cost_;
+  /** \brief Node id */
+  int id_;
+  /** \brief Node's parent's id */
+  int pid_;
 
   /**
    * @brief Constructor for Node class
@@ -58,7 +58,13 @@ class Node {
    * @param pid Node's parent's id
    */
   Node(const int x = 0, const int y = 0, const double cost = 0,
-       const double h_cost = 0, const int id = 0, const int pid = 0);
+       const double h_cost = 0, const int id = 0, const int pid = 0) :
+       x_(x), y_(y), cost_(cost), h_cost_(h_cost), id_(id), pid_(pid) {}
+
+  Node& operator=(const Node&) = default;
+  Node& operator=(Node&&) = default;
+  Node(const Node&) = default;
+  Node(Node&&) = default;
 
   /**
    * @brief Prints the values of the variables in the node
@@ -101,11 +107,35 @@ public:
   }
 };
 
+
+class NodeIdAsHash {
+public:
+  size_t operator () (const Node& n) const {
+    return n.id_;
+  }
+};
+
+
 /**
  * @brief Struct created to encapsulate function compare cost between 2 nodes.
  * Used in with multiple algorithms and classes
  */
 struct compare_cost {
+  /**
+   * @brief Compare cost between 2 nodes
+   * @param p1 Node 1
+   * @param p2 Node 2
+   * @return Returns whether cost to get to node 1 is greater than the cost to
+   * get to node 2
+   */
+  bool operator()(const Node& p1, const Node& p2) const;
+};
+
+/**
+ * @brief Struct created to encapsulate function compare cost between 2 nodes.
+ * Used in with multiple algorithms and classes
+ */
+struct compare_coordinates {
   /**
    * @brief Compare cost between 2 nodes
    * @param p1 Node 1
