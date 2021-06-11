@@ -42,7 +42,9 @@ set(PATH_TO_MAIN "${CMAKE_CURRENT_SOURCE_DIR}/main/main.cpp")
 file( GLOB LIB_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/a_star.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/dijkstra.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/rrt_star.cpp  
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/rrt_star.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/rrt.cpp  
+
  )
 file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )
 
