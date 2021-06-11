@@ -1,8 +1,18 @@
 /**
  * @file rrt_star.h
  * @author vss2sn
- * @brief Contains the RRT_Star class
+ * @brief Contains the RRTStar class
  */
+
+/*
+NOTE:
+Midway through refactor
+Trying to make rewire more efficient as well as allow rewire to be iteratively
+called on all nodes. SO if a node's value cahnges call reqire on all nodes
+within the  threshold amd see whether they need to be rewired
+Nodes ill now need to maintain a list of neighbours that have been seen to
+easily iterate over all neighbours to update them
+*/
 
 #include "path_planning/rrt_star.hpp"
 
@@ -13,69 +23,50 @@
 
 // constants
 constexpr double half_grid_unit = 0.5;
-constexpr double tol_l_limit = 0.000001;
+constexpr double precision_limit = 0.000001;
 
-Node RRTStar::FindNearestPoint(Node& new_node) {
-  Node nearest_node(-1, -1, -1, -1, -1, -1);
-  std::vector<Node>::const_iterator it_v;
-  std::vector<Node>::const_iterator it_v_store;
-  // NOTE: Use total cost not just distance
-  auto dist = static_cast<double>(n * n);
-  for (it_v = point_list_.begin(); it_v != point_list_.end(); ++it_v) {
-    auto new_dist = static_cast<double>(
-        std::sqrt((static_cast<double>(it_v->x_ - new_node.x_) *
-                   static_cast<double>(it_v->x_ - new_node.x_)) +
-                  (static_cast<double>(it_v->y_ - new_node.y_) *
-                   static_cast<double>(it_v->y_ - new_node.y_))));
-    if (new_dist > threshold_) {
-      continue;
-    }
-    new_dist += it_v->cost_;
+std::tuple<bool, Node> RRTStar::FindNearestPoint(Node& new_node) {
+  bool found = false;
+  Node nearest_node;
+  near_nodes_.insert({new_node, {}});
+  new_node.cost_ = std::numeric_limits<double>::max();
+  for (const auto node : point_list_) {
+    if (auto new_dist = std::sqrt(std::pow(node.x_ - new_node.x_, 2) +
+                              std::pow(node.y_ - new_node.y_, 2));
+        new_dist <= threshold_ && !IsAnyObstacleInPath(node, new_node) &&
+        !CompareCoordinates(node, new_node)
+        && node.pid_ != new_node.id_ ) {
 
-    if (CheckObstacle(*it_v, new_node)) {
-      continue;
+      near_nodes_[new_node].push_back(node);
+      near_nodes_[node].push_back(new_node);
+      found = true;
+      if (new_dist + node.cost_< new_node.cost_) {
+        nearest_node = node;
+        new_node.pid_ = nearest_node.id_;
+        new_node.cost_ = new_dist + node.cost_;
+
+      }
     }
-    if (it_v->id_ == new_node.id_) {
-      continue;
-    }
-    // The nearest nodes are stored while searching for the nearest node to
-    // speed up th rewire process
-    near_nodes_.push_back(*it_v);
-    near_nodes_dist_.push_back(new_dist);
-    if (it_v->pid_ == new_node.id_) {
-      continue;
-    }
-    if (new_dist >= dist) {
-      continue;
-    }
-    dist = new_dist;
-    it_v_store = it_v;
   }
-  if (dist != n * n) {
-    nearest_node = *it_v_store;
-    new_node.pid_ = nearest_node.id_;
-    new_node.cost_ = dist;
+  if (!found) {
+    near_nodes_.erase(new_node);
   }
-  return nearest_node;
+  return {found, nearest_node};
 }
 
-bool RRTStar::CheckObstacle(const Node& n_1, const Node& n_2) const {
+bool RRTStar::IsAnyObstacleInPath(const Node& n_1, const Node& n_2) const {
   if (n_2.y_ - n_1.y_ == 0) {
-    double c = n_2.y_;
+    const double c = n_2.y_;
     for (const auto& obs_node : obstacle_list_) {
-      if (!(((n_1.x_ >= obs_node.x_) && (obs_node.x_ >= n_2.x_)) ||
+      if (obs_node.y_ == c &&
+          ((n_1.x_ >= obs_node.x_) && (obs_node.x_ >= n_2.x_) ||
             ((n_1.x_ <= obs_node.x_) && (obs_node.x_ <= n_2.x_)))) {
-        continue;
-      }
-      if (static_cast<double>(obs_node.y_) == c) {
         return true;
       }
     }
   } else {
-    double slope = static_cast<double>(n_2.x_ - n_1.x_) /
-                   static_cast<double>(n_2.y_ - n_1.y_);
-    double c =
-        static_cast<double>(n_2.x_) - slope * static_cast<double>(n_2.y_);
+    const double slope = static_cast<double>(n_2.x_ - n_1.x_) / (n_2.y_ - n_1.y_);
+    const double c = n_2.x_ - slope * n_2.y_;
     for (const auto& obs_node : obstacle_list_) {
       if (!(((n_1.y_ >= obs_node.y_) && (obs_node.y_ >= n_2.y_)) ||
             ((n_1.y_ <= obs_node.y_) && (obs_node.y_ <= n_2.y_)))) {
@@ -99,17 +90,17 @@ bool RRTStar::CheckObstacle(const Node& n_1, const Node& n_2) const {
       // 0 point on side 1, 3 points on side 2, (1 point on the line, ie,
       // grazes the obstacle) the sum is 3 (0+3)
       // Hence the condition < 3
-      arr[0] = static_cast<double>(obs_node.x_) + half_grid_unit -
-               slope * (static_cast<double>(obs_node.y_) + half_grid_unit) - c;
-      arr[1] = static_cast<double>(obs_node.x_) + half_grid_unit -
-               slope * (static_cast<double>(obs_node.y_) - half_grid_unit) - c;
-      arr[2] = static_cast<double>(obs_node.x_) - half_grid_unit -
-               slope * (static_cast<double>(obs_node.y_) + half_grid_unit) - c;
-      arr[3] = static_cast<double>(obs_node.x_) - half_grid_unit -
-               slope * (static_cast<double>(obs_node.y_) - half_grid_unit) - c;
+      arr[0] = obs_node.x_ + half_grid_unit -
+               slope * (obs_node.y_ + half_grid_unit) - c;
+      arr[1] = obs_node.x_ + half_grid_unit -
+               slope * (obs_node.y_ - half_grid_unit) - c;
+      arr[2] = obs_node.x_ - half_grid_unit -
+               slope * (obs_node.y_ + half_grid_unit) - c;
+      arr[3] = obs_node.x_ - half_grid_unit -
+               slope * (obs_node.y_ - half_grid_unit) - c;
       double count = 0;
       for (auto& a : arr) {
-        if (std::fabs(a) <= tol_l_limit) {
+        if (std::fabs(a) <= precision_limit) {
           a = 0;
         } else {
           count += a / std::fabs(a);
@@ -126,125 +117,119 @@ bool RRTStar::CheckObstacle(const Node& n_1, const Node& n_2) const {
 Node RRTStar::GenerateRandomNode() const {
   std::random_device rd;   // obtain a random number from hardware
   std::mt19937 eng(rd());  // seed the generator
-  std::uniform_int_distribution<int> distr(0, n - 1);  // define the range
-  int x = distr(eng);
-  int y = distr(eng);
-  Node new_node(x, y, 0, 0, n * x + y, 0);
-  return new_node;
+  std::uniform_int_distribution<int> distr(0, n_ - 1);  // define the range
+  const int x = distr(eng);
+  const int y = distr(eng);
+  return Node(x, y, 0, 0, n_ * x + y, 0);
 }
 
 void RRTStar::Rewire(const Node& new_node) {
-  std::vector<Node>::iterator it_v;
-  for (size_t i = 0; i < near_nodes_.size(); i++) {
-    if (near_nodes_[i].cost_ > near_nodes_dist_[i] + new_node.cost_) {
-      it_v = std::find_if(point_list_.begin(), point_list_.end(),
-                          [&](const Node& node) {
-                            return CompareCoordinates(node, near_nodes_[i]);
-                          });
-      if (it_v != point_list_.end()) {
-        it_v->pid_ = new_node.id_;
-        it_v->cost_ = near_nodes_dist_[i] + new_node.cost_;
-      }
+  Node new_node_in_point_list = *point_list_.find(new_node);
+  for (const auto& neighbour_coords_node : near_nodes_[new_node_in_point_list]) {
+    Node neighbour = *point_list_.find(neighbour_coords_node);
+    if (const auto dist = std::sqrt(std::pow(neighbour.x_ - new_node_in_point_list.x_, 2) +
+                                    std::pow(neighbour.y_ - new_node_in_point_list.y_, 2));
+        neighbour.cost_ > dist + new_node_in_point_list.cost_ && neighbour.id_ != new_node_in_point_list.id_) {
+      neighbour.pid_ = new_node_in_point_list.id_;
+      neighbour.cost_ = dist + new_node_in_point_list.cost_;
+      point_list_.erase(neighbour);
+      point_list_.insert(neighbour);
+      Rewire(neighbour);
     }
   }
-  near_nodes_.clear();
-  near_nodes_dist_.clear();
 }
 
-std::vector<Node> RRTStar::rrt_star(std::vector<std::vector<int>>& grid,
-                                    const Node& start_in, const Node& goal_in,
-                                    int max_iter_x_factor,
-                                    double threshold_in) {
-  start_ = start_in;
-  goal_ = goal_in;
-  n = grid.size();
-  threshold_ = threshold_in;
-  int max_iter = max_iter_x_factor * n * n;
-  CreateObstacleList(grid);
-  point_list_.push_back(start_);
-  grid[start_.x_][start_.y_] = 2;
-  int iter = 0;
-  Node new_node = start_;
+std::tuple<bool, std::vector<Node>> RRTStar::Plan(const Node& start_in, const Node& goal_in) {
+  start = start_in;
+  goal = goal_in;
+  grid_ = original_grid_;
+  int max_iterations = max_iter_x_factor_ * n_ * n_;
+  CreateObstacleList();
+  point_list_.insert(start);
+  grid_[start.x_][start.y_] = 3;
+  int iteration = 0;
+  Node new_node = start;
+  bool found_goal = false;
   if (CheckGoalVisible(new_node)) {
-    found_goal_ = true;
+    found_goal = true;
   }
-  while (true) {
-    iter++;
-    if (iter > max_iter) {
-      if (!found_goal_) {
-        Node no_path_node(-1, -1, -1, -1, -1, -1);
-        point_list_.clear();
-        point_list_.push_back(no_path_node);
-      }
-      return point_list_;
-    }
+  while (iteration < max_iterations) {
+    iteration++;
     new_node = GenerateRandomNode();
-    if (grid[new_node.x_][new_node.y_] == 1) {
-      continue;
-    }
-    // Go back to beginning of loop if point is an obstacle
-    Node nearest_node = FindNearestPoint(new_node);
-    if (nearest_node.id_ == -1) {
-      continue;
-    }
-    // Go back to beginning of loop if no near neighbour
-    grid[new_node.x_][new_node.y_] = 2;
-    // Setting to 2 implies visited/considered
 
-    auto it_v = std::find_if(
-        point_list_.begin(), point_list_.end(),
-        [&](const Node& node) { return CompareCoordinates(node, new_node); });
-    if (it_v != point_list_.end() && new_node.cost_ < it_v->cost_) {
-      point_list_.erase(it_v);
-      point_list_.push_back(new_node);
-    } else if (it_v == point_list_.end()) {
-      point_list_.push_back(new_node);
+    // Go back to beginning of loop if point already considered
+    if (grid_[new_node.x_][new_node.y_] != 0) {
+      continue;
     }
+
+    // Go back to beginning of loop if no near neighbour
+    const auto [found_nearest_point, nearest_node] = FindNearestPoint(new_node);
+    if (!found_nearest_point) {
+      continue;
+    }
+
+    // Setting to 2 implies visited/considered
+    grid_[new_node.x_][new_node.y_] = 2;
+    point_list_.insert(new_node);
     Rewire(new_node);  // Rewire
     if (CheckGoalVisible(new_node)) {
-      found_goal_ = true;
+      found_goal = true;
     }
-    // Check if goal is visible
+
   }
+  if (!found_goal) {
+    return {false, {}};
+  }
+  // PrintGrid(grid_);
+  return {true, CreatePath()};
 }
 
 bool RRTStar::CheckGoalVisible(const Node& new_node) {
-  if (!CheckObstacle(new_node, goal_)) {
-    auto new_dist = static_cast<double>(
-        std::sqrt(static_cast<double>((goal_.x_ - new_node.x_) *
-                                      (goal_.x_ - new_node.x_)) +
-                  static_cast<double>((goal_.y_ - new_node.y_) *
-                                      (goal_.y_ - new_node.y_))));
-    if (new_dist > threshold_) {
-      return false;
-    }
-    new_dist += new_node.cost_;
-    goal_.pid_ = new_node.id_;
-    goal_.cost_ = new_dist;
-    std::vector<Node>::iterator it_v;
-    it_v = std::find_if(
-        point_list_.begin(), point_list_.end(),
-        [&](const Node& node) { return CompareCoordinates(node, new_node); });
-    if (it_v != point_list_.end() && goal_.cost_ < it_v->cost_) {
-      point_list_.erase(it_v);
-      point_list_.push_back(goal_);
-    } else if (it_v == point_list_.end()) {
-      point_list_.push_back(goal_);
+  auto dist = std::sqrt(std::pow(goal.x_ - new_node.x_, 2) + std::pow(goal.y_ - new_node.y_, 2));
+  if (dist > threshold_) {
+    return false;
+  }
+  if (CompareCoordinates(goal, new_node)) {
+    return true;
+  }
+  if (!IsAnyObstacleInPath(new_node, goal)) {
+    if (auto it = point_list_.find(goal); it != point_list_.end() && it->cost_ > dist + new_node.cost_) {
+      auto goal_in_point_list = goal;
+      goal_in_point_list.cost_ = dist + new_node.cost_;
+      goal_in_point_list.pid_= new_node.id_;
+      point_list_.erase(goal_in_point_list);
+      point_list_.insert(goal_in_point_list);
+    } else if (it == point_list_.end()) {
+      auto goal_in_point_list = goal;
+      goal_in_point_list.cost_ = dist + new_node.cost_;
+      goal_in_point_list.pid_= new_node.id_;
+      point_list_.insert(goal_in_point_list);
     }
     return true;
   }
   return false;
 }
 
-void RRTStar::CreateObstacleList(std::vector<std::vector<int>>& grid) {
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n; j++) {
-      if (grid[i][j] == 1) {
-        Node obs(i, j, 0, 0, i * n + j, 0);
+void RRTStar::CreateObstacleList() {
+  for (int i = 0; i < n_; i++) {
+    for (int j = 0; j < n_; j++) {
+      if (grid_[i][j] == 1) {
+        Node obs(i, j, 0, 0, i * n_ + j, 0);
         obstacle_list_.push_back(obs);
       }
     }
   }
+}
+
+std::vector<Node> RRTStar::CreatePath() {
+  std::vector<Node> path;
+  Node current = *point_list_.find(goal);
+  while(!CompareCoordinates(current, start)) {
+    path.push_back(current);
+    current = *point_list_.find(Node(current.pid_ / n_, current.pid_ % n_, 0, 0, current.pid_));
+  }
+  path.push_back(current);
+  return path;
 }
 
 #ifdef BUILD_INDIVIDUAL
@@ -274,12 +259,11 @@ int main() {
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
   PrintGrid(grid);
+  start.PrintStatus();
+  goal.PrintStatus();
 
-  RRTStar new_rrt_star;
-  double threshold = 2;
-  int max_iter_x_factor = 20;
-  std::vector<Node> path_vector =
-      new_rrt_star.rrt_star(grid, start, goal, max_iter_x_factor, threshold);
+  RRTStar new_rrt_star(grid);
+  const auto [found_path, path_vector] = new_rrt_star.Plan(start, goal);
   PrintPath(path_vector, start, goal, grid);
 
   return 0;
