@@ -5,6 +5,9 @@
  */
 
 #include <cmath>
+#include <queue>
+#include <unordered_set>
+#include <vector>
 
 #ifdef BUILD_INDIVIDUAL
 #include <random>
@@ -12,51 +15,62 @@
 
 #include "path_planning/a_star.hpp"
 
-std::vector<Node> AStar::a_star(std::vector<std::vector<int>>& grid,
-                                const Node& start_in, const Node& goal_in) {
-  start_ = start_in;
-  goal_ = goal_in;
-  n = grid.size();
-  // Get possible motions
+std::tuple<bool, std::vector<Node>> AStar::Plan(const Node& start, const Node& goal) {
+  grid_ = original_grid_;
+  std::priority_queue<Node, std::vector<Node>, compare_cost> open_list;
+  std::unordered_set<Node, NodeIdAsHash, compare_coordinates> closed_list;
+
   const std::vector<Node> motion = GetMotion();
-  open_list_.push(start_);
+  open_list.push(start);
 
   // Main loop
-  while (!open_list_.empty()) {
-    Node current = open_list_.top();
-    open_list_.pop();
-    current.id_ = current.x_ * n + current.y_;
-    if (CompareCoordinates(current, goal_)) {
-      closed_list_.push_back(current);
-      grid[current.x_][current.y_] = 2;
-      return closed_list_;
+  while (!open_list.empty()) {
+    Node current = open_list.top();
+    open_list.pop();
+    current.id_ = current.x_ * n_ + current.y_;
+    if (CompareCoordinates(current, goal)) {
+      closed_list.insert(current);
+      grid_[current.x_][current.y_] = 2;
+      return {true, ConvertClosedListToPath(closed_list, start, goal)};
     }
-    grid[current.x_][current.y_] = 2;  // Point opened
+    grid_[current.x_][current.y_] = 2;  // Point opened
     for (const auto& m : motion) {
-      Node new_point;
-      new_point = current + m;
-      new_point.id_ = n * new_point.x_ + new_point.y_;
+      Node new_point = current + m;
+      new_point.id_ = n_ * new_point.x_ + new_point.y_;
       new_point.pid_ = current.id_;
       new_point.h_cost_ =
-          std::abs(new_point.x_ - goal_.x_) + std::abs(new_point.y_ - goal_.y_);
-      if (CompareCoordinates(new_point, goal_)) {
-        open_list_.push(new_point);
+          std::abs(new_point.x_ - goal.x_) + std::abs(new_point.y_ - goal.y_);
+      if (CompareCoordinates(new_point, goal)) {
+        open_list.push(new_point);
         break;
       }
-      if (checkOutsideBoundary(new_point, n)) {
+      if (checkOutsideBoundary(new_point, n_)) {
         continue;  // Check boundaries
       }
-      if (grid[new_point.x_][new_point.y_] != 0) {
+      if (grid_[new_point.x_][new_point.y_] != 0) {
         continue;  // obstacle or visited
       }
-      open_list_.push(new_point);
+      open_list.push(new_point);
     }
-    closed_list_.push_back(current);
+    closed_list.insert(current);
   }
-  closed_list_.clear();
-  Node no_path_node(-1, -1, -1, -1, -1, -1);
-  closed_list_.push_back(no_path_node);
-  return closed_list_;
+  return {false, {}};
+}
+
+std::vector<Node> AStar::ConvertClosedListToPath(std::unordered_set<Node, NodeIdAsHash, compare_coordinates>& closed_list, const Node& start, const Node& goal) {
+  auto current = *closed_list.find(goal);
+  std::vector<Node> path;
+  while (!CompareCoordinates(current, start)) {
+    path.push_back(current);
+    if (const auto it = closed_list.find(Node(current.pid_ / n_, current.pid_ % n_, 0, 0, current.pid_)); it != closed_list.end()) {
+      current = *it;
+    } else {
+      std::cout << "Error in calculating path \n";
+      return {};
+    }
+  }
+  path.push_back(start);
+  return path;
 }
 
 #ifdef BUILD_INDIVIDUAL
@@ -87,8 +101,8 @@ int main() {
   grid[goal.x_][goal.y_] = 0;
   PrintGrid(grid);
 
-  AStar new_a_star;
-  std::vector<Node> path_vector = new_a_star.a_star(grid, start, goal);
+  AStar new_a_star(grid);
+  const auto [path_found, path_vector] = new_a_star.Plan(start, goal);
 
   PrintPath(path_vector, start, goal, grid);
   return 0;

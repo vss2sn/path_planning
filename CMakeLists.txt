@@ -39,7 +39,7 @@ include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/ProjectSpecificOptions.cmake")
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Cache.cmake")
 
 set(PATH_TO_MAIN "${CMAKE_CURRENT_SOURCE_DIR}/main/main.cpp")
-file( GLOB LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp )
+file( GLOB LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/a_star.cpp )
 file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )
 
 add_subdirectory(lib)

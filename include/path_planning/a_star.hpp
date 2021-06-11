@@ -8,14 +8,17 @@
 #define A_STAR_H
 
 #include <queue>
-
+#include "path_planning/planner.hpp"
 #include "utils/utils.hpp"
 
 /**
  * @brief Class for A Star objects
  */
-class AStar {
+class AStar : public Planner {
  public:
+
+   AStar(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
+
   /**
    * @brief Main algorithm of A*
    * @param grid Main grid
@@ -23,24 +26,10 @@ class AStar {
    * @param goal_in goal node
    * @return vector of path
    */
-  std::vector<Node> a_star(std::vector<std::vector<int>>& grid,
-                           const Node& start_in, const Node& goal_in);
+  std::tuple<bool, std::vector<Node>> Plan(const Node& start_in, const Node& goal_in) override;
 
-  /**
-   * @brief Using insertion sort to sort the vector list that maintains the
-   * priority queue. Good for a mostly sorted queue. Sort called afterevery
-   * insertion to maintain queue. Not using standard queue as iterating over is
-   * not allowed.
-   * @param v Vector to be sorted
-   * @return void
-   */
-  void InsertionSort(std::vector<Node>& v) const;
-
- private:
-  std::priority_queue<Node, std::vector<Node>, compare_cost> open_list_;
-  std::vector<Node> closed_list_;
-  Node start_, goal_;
-  int n;
+private:
+  std::vector<Node> ConvertClosedListToPath(std::unordered_set<Node, NodeIdAsHash, compare_coordinates>& closed_list, const Node& start, const Node& goal);
 };
 
 #endif  // A_STAR_H
