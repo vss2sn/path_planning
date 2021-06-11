@@ -8,25 +8,27 @@
 #define DIJKSTRA_H
 
 #include <queue>
-
+#include "path_planning/planner.hpp"
 #include "utils/utils.hpp"
 
 /**
  * @brief Class for Dijkstra objects
  */
-class Dijkstra {
+class Dijkstra : public Planner {
  public:
-  /**
-   * @brief Main algorithm of Dijstra.
-   */
-  std::vector<Node> dijkstra(std::vector<std::vector<int>>& grid,
-                             const Node& start_in, const Node& goal_in);
+   Dijkstra(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
+
+   /**
+    * @brief Main algorithm of A*
+    * @param grid Main grid
+    * @param start_in start node
+    * @param goal_in goal node
+    * @return vector of path
+    */
+   std::tuple<bool, std::vector<Node>> Plan(const Node& start_in, const Node& goal_in) override;
 
  private:
-  std::priority_queue<Node, std::vector<Node>, compare_cost> open_list_;
-  std::vector<Node> closed_list_;
-  Node start_, goal_;
-  int n;
+   std::vector<Node> ConvertClosedListToPath(std::unordered_set<Node, NodeIdAsHash, compare_coordinates>& closed_list, const Node& start, const Node& goal);
 };
 
 #endif  // DIJKSTRA_H
