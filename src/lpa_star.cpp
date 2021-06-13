@@ -3,14 +3,6 @@
  * @author vss2sn
  * @brief Contains the LPAStar class
  */
-#include "path_planning/lpa_star.hpp"
-
-#include <algorithm>
-#include <chrono>
-#include <iomanip>  // TODO(vss): replace setw
-#include <iostream>
-#include <random>
-#include <thread>
 
 #include "path_planning/lpa_star.hpp"
 
@@ -18,6 +10,7 @@
 #include <chrono>
 #include <cmath>
 #include <thread>
+#include <tuple>
 
 #ifdef BUILD_INDIVIDUAL
 #include <random>
@@ -98,6 +91,12 @@ void LazyPQ::remove(const NodeKeyPair& t) {
       break;
     }
   }
+}
+
+void LPAStar::SetDynamicObstacles(const bool create_random_obstacles,
+  const std::unordered_map<int, std::vector<Node>>& time_discovered_obstacles) {
+   create_random_obstacles_ = create_random_obstacles;
+   time_discovered_obstacles_ = time_discovered_obstacles;
 }
 
 bool LPAStar::IsObstacle(const Node& n) const {
@@ -234,6 +233,7 @@ void LPAStar::ClearPathDisplay(const std::vector<Node>& path) {
       grid_[node.x_][node.y_] = 2; // It's been explored, but no longer a path
     }
   }
+  grid_[start_.x_][start_.y_] = 3;
 }
 
 void LPAStar::UpdatePathDisplay(const std::vector<Node>& path) {
@@ -264,34 +264,27 @@ std::vector<Node> LPAStar::GetNewPath() {
   return path;
 }
 
-std::vector<Node> LPAStar::Plan(
-    const std::vector<std::vector<int>>& grid, const Node& start,
-    const Node& goal, const bool create_random_obstacles,
-    const std::unordered_map<int, std::vector<Node>>
-        time_discovered_obstacles) {
-  grid_ = grid;
-  n_ = grid_.size();
+std::tuple<bool, std::vector<Node>> LPAStar::Plan(const Node& start, const Node& goal)  {
+  grid_ = original_grid_;
   start_ = start;
   goal_ = goal;
-  create_random_obstacles_ = create_random_obstacles;
-  time_discovered_obstacles_ = time_discovered_obstacles;
   std::vector<Node> path;
   path.push_back(start_);
   grid_[start_.x_][start_.y_] = 3;
   PrintGrid(grid_);
   Initialize();
-  size_t interation = 0;
   while (time_step_ < max_time_step_) {
     ComputeShortestPath();
     if (g_[goal_.x_][goal_.y_] == std::numeric_limits<double>::max()) {
+      ClearPathDisplay(path);
+      PrintGrid(grid_);
       std::cout << "No path exists" << '\n';
-      return {};
+      return {false, {}};
     }
     ClearPathDisplay(path);
     path = GetNewPath();
     UpdatePathDisplay(path);
     PrintGrid(grid_);
-    std::this_thread::sleep_for(std::chrono::milliseconds(pause_time));
     time_step_++;
 
 #ifndef RUN_TESTS
@@ -302,10 +295,10 @@ std::vector<Node> LPAStar::Plan(
       for (const auto node : changed_nodes) {
         UpdateVertex(node);
       }
-      std::cout << "Out of compute shortest path" << '\n';
     }
   }
-  return path;
+  PrintGrid(grid_);
+  return {true, path};
 }
 
 #ifdef BUILD_INDIVIDUAL
@@ -323,8 +316,8 @@ int main() {
   std::mt19937 eng(rd());  // seed the generator
   std::uniform_int_distribution<int> distr(0, n - 1);  // define the range
 
-  Node start(0, 0, 0, 0, 0, 0);
-  Node goal(5,5, 0, 0, 0, 0);
+  Node start(distr(eng), distr(eng), 0, 0, 0, 0);
+  Node goal(distr(eng), distr(eng), 0, 0, 0, 0);
 
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -340,15 +333,15 @@ int main() {
   const bool create_random_obstacles = false;
   const std::unordered_map<int, std::vector<Node>> time_discovered_obstacles
   {
-    {1, {Node(1, 1), Node(1, 0), Node(0, 1)}},
+    {1, {Node(1, 1)}},
     {2, {Node(2, 2)}},
     {3, {Node(5, 5)}},
     {4, {Node(6, 6), Node(7, 7), Node(8, 8), Node(9, 9), Node(10, 10), Node(7, 6)}}
   };
 
-  LPAStar lpa_star;
-  const std::vector<Node> path_vector = lpa_star.Plan(
-      grid, start, goal, create_random_obstacles, time_discovered_obstacles);
+  LPAStar lpa_star(grid);
+  lpa_star.SetDynamicObstacles(create_random_obstacles, time_discovered_obstacles);
+  const auto [found_path, path_vector] = lpa_star.Plan(start, goal);
   return 0;
 }
 #endif  // BUILD_INDIVIDUAL

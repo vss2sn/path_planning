@@ -10,8 +10,10 @@
 #include <iostream>
 #include <unordered_map>
 #include <unordered_set>
+#include <tuple>
 
 #include "utils/utils.hpp"
+#include "path_planning/planner.hpp"
 
 /**
  * @brief Stcut to hold key values for nodes used in D* Lite
@@ -174,8 +176,15 @@ private:
   std::unordered_set<NodeKeyPair, std::hash<NodeKeyPair>, CompareNodeKeyPairCoordinates> s; // Needs to just compare the coordinates and
 };
 
-class LPAStar {
+class LPAStar : public Planner {
  public:
+
+   LPAStar(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
+
+   void SetDynamicObstacles(const bool create_random_obstacles = false,
+                            const std::unordered_map<int, std::vector<Node>>&
+                              time_discovered_obstacles = {});
+
   /**
    * @brief Main function running the D* lite algorithm.
             Creates a path to be followed
@@ -190,11 +199,7 @@ class LPAStar {
    *        times
    * @return The path taken
    */
-  std::vector<Node> Plan(const std::vector<std::vector<int>>& grid,
-                         const Node& start, const Node& goal,
-                         const bool create_random_obstacles = false,
-                         const std::unordered_map<int, std::vector<Node>>
-                             time_discovered_obstacles = {});
+  std::tuple<bool, std::vector<Node>> Plan(const Node& start, const Node& goal) override;
 
  private:
    /**
@@ -313,17 +318,15 @@ class LPAStar {
   std::vector<Node> GetNewPath();
   void UpdatePathDisplay(const std::vector<Node>& path);
 
-  std::vector<std::vector<int>> grid_;
   std::vector<std::vector<double>> rhs_;
   std::vector<std::vector<double>> g_;
-  std::unordered_map<int, std::vector<Node>> time_discovered_obstacles_;
+  std::unordered_map<int, std::vector<Node>> time_discovered_obstacles_ = {};
   std::vector<Node> motions_;
   LazyPQ U_;
-  Node start_, goal_, last_;
-  int n_;
-  int time_step_ = 0;
-  int max_time_step_ = 10;
-  bool create_random_obstacles_;
+  Node start_, goal_;
+  size_t time_step_ = 0;
+  size_t max_time_step_ = 10;
+  bool create_random_obstacles_ = false;
 };
 
 #endif  // LPA_STAR_H
