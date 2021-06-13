@@ -125,7 +125,7 @@ double DStarLite::C(const Node& s1, const Node& s2) const {
 }
 
 Key DStarLite::CalculateKey(const Node& s) const {
-  return Key{std::min(g_[s.x_][s.y_], rhs_[s.x_][s.y_] + H(start_, s) + k_m_),
+  return Key{std::min(g_[s.x_][s.y_], rhs_[s.x_][s.y_]) + H(start_, s) + k_m_,
              std::min(g_[s.x_][s.y_], rhs_[s.x_][s.y_])};
 }
 
