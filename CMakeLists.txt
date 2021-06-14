@@ -44,7 +44,8 @@ file( GLOB LIB_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/dijkstra.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/rrt_star.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/rrt.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/lpa_star.cpp  
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/lpa_star.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/d_star_lite.cpp  
 
  )
 file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )

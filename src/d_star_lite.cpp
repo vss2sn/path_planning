@@ -218,17 +218,17 @@ std::vector<Node> DStarLite::DetectChanges() {
   return obstacles;
 }
 
-std::vector<Node> DStarLite::Plan(
-    const std::vector<std::vector<int>>& grid, const Node& start,
-    const Node& goal, const bool create_random_obstacles,
-    const std::unordered_map<int, std::vector<Node>>
-        time_discovered_obstacles) {
-  grid_ = grid;
-  n_ = grid_.size();
+void DStarLite::SetDynamicObstacles(const bool create_random_obstacles,
+  const std::unordered_map<int, std::vector<Node>>& time_discovered_obstacles) {
+   create_random_obstacles_ = create_random_obstacles;
+   time_discovered_obstacles_ = time_discovered_obstacles;
+}
+
+std::tuple<bool, std::vector<Node>> DStarLite::Plan(const Node& start,
+    const Node& goal) {
+  grid_ = original_grid_;
   start_ = start;
   goal_ = goal;
-  create_random_obstacles_ = create_random_obstacles;
-  time_discovered_obstacles_ = time_discovered_obstacles;
   std::vector<Node> path;
   path.push_back(start_);
   grid_[start_.x_][start_.y_] = 4;
@@ -243,7 +243,7 @@ std::vector<Node> DStarLite::Plan(
       path.push_back(start);
       path.back().cost_ = -1;
       std::cout << "The path has been blocked" << '\n';
-      return path;
+      return {false, path};
     }
     const auto successors = GetSucc(start_);
     // double calculation, to optimize
@@ -284,7 +284,7 @@ std::vector<Node> DStarLite::Plan(
                         ->cost_;
     path[i].pid_ = path[i - 1].id_;
   }
-  return path;
+  return {true, path};
 }
 
 #ifdef BUILD_INDIVIDUAL
@@ -324,9 +324,9 @@ int main() {
     {4, {Node(6, 6), Node(7, 7), Node(8, 8), Node(9, 9), Node(10, 10), Node(7, 6)}}
   };
 
-  DStarLite d_star_lite;
-  const std::vector<Node> path_vector = d_star_lite.Plan(
-      grid, start, goal, create_random_obstacles, time_discovered_obstacles);
+  DStarLite d_star_lite(grid);
+  d_star_lite.SetDynamicObstacles(create_random_obstacles, time_discovered_obstacles);
+  const auto [found_path, path_vector] = d_star_lite.Plan(start, goal);
   return 0;
 }
 #endif  // BUILD_INDIVIDUAL

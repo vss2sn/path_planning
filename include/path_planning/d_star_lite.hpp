@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "path_planning/planner.hpp"
 #include "utils/utils.hpp"
 
 /**
@@ -174,9 +175,15 @@ private:
   std::unordered_set<NodeKeyPair, std::hash<NodeKeyPair>, CompareNodeKeyPairCoordinates> s; // Needs to just compare the coordinates and
 };
 
-class DStarLite {
+class DStarLite : public Planner {
  public:
-  /**
+   DStarLite(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
+
+   void SetDynamicObstacles(const bool create_random_obstacles = false,
+                            const std::unordered_map<int, std::vector<Node>>&
+                              time_discovered_obstacles = {});
+
+   /**
    * @brief Main function running the D* lite algorithm.
             Creates a path to be followed
             Steps trought the path in increments of 1 step along the path,
@@ -190,11 +197,7 @@ class DStarLite {
    *        times
    * @return The path taken
    */
-  std::vector<Node> Plan(const std::vector<std::vector<int>>& grid,
-                         const Node& start, const Node& goal,
-                         const bool create_random_obstacles = false,
-                         const std::unordered_map<int, std::vector<Node>>
-                             time_discovered_obstacles = {});
+   std::tuple<bool, std::vector<Node>> Plan(const Node& start, const Node& goal) override;
 
  private:
    /**
@@ -309,7 +312,6 @@ class DStarLite {
    */
   std::vector<std::vector<double>> CreateGrid(const int n);
 
-  std::vector<std::vector<int>> grid_;
   std::vector<std::vector<double>> rhs_;
   std::vector<std::vector<double>> g_;
   std::unordered_map<int, std::vector<Node>> time_discovered_obstacles_;
@@ -318,7 +320,6 @@ class DStarLite {
   Node start_, goal_, last_;
   double k_m_;
   Key k_old_;
-  int n_;
   int time_step_ = 0;
   bool create_random_obstacles_;
 };
