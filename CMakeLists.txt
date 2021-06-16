@@ -46,7 +46,8 @@ file( GLOB LIB_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/rrt.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/lpa_star.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/d_star_lite.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/ant_colony.cpp  
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ant_colony.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/genetic_algorithm.cpp 
 
  )
 file( GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp )

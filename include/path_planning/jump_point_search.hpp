@@ -12,11 +12,9 @@
 
 #include "utils/utils.hpp"
 
-class JumpPointSearch {
+class JumpPointSearch : public Planner {
  public:
-  std::vector<Node> jump_point_search(std::vector<std::vector<int>>& grid,
-                                      const Node& start_in,
-                                      const Node& goal_in);
+  std::vector<Node> Plan (const Node& start, const Node& goal);
   void InsertionSort(std::vector<Node>& v) const;
   bool has_forced_neighbours(const Node& new_point, const Node& next_point,
                              const Node& motion) const;

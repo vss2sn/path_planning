@@ -15,64 +15,71 @@
 constexpr int random_range_max = 100;
 constexpr int inverted_probabilty_mutate = 10;
 
-GeneticAlgorithm::GeneticAlgorithm(const int generations, const int popsize,
-                                   const float c, const bool shorten_chromosome)
-    : generations_(generations),
-      popsize_(popsize),
-      c_(c),
-      generation_(0),
-      shorten_chromosome_(shorten_chromosome),
-      motions_(GetMotion()) {}
+void GeneticAlgorithm::SetParams(const int generations, const int popsize,
+                      const float c, const bool shorten_chromosome,
+                      const int path_length) {
+  generations_ = generations;
+  popsize_ = popsize;
+  c_ = c;
+  shorten_chromosome_ = shorten_chromosome;
+  path_length_ = path_length;
+  motions_ = GetMotion();
+}
 
-std::vector<Node> GeneticAlgorithm::genetic_algorithm(
-    std::vector<std::vector<int>> &grid, const Node &start, const Node &goal,
-    int path_length) {
-  this->grid_ = grid;
-  this->start_ = start;
-  this->goal_ = goal;
-  this->path_length_ = path_length;
-  n_ = grid_.size();
-
+std::tuple<bool, std::vector<Node>> GeneticAlgorithm::Plan(const Node &start,
+                                                           const Node &goal) {
+// std::cout << __LINE__ << '\n';
+  int generation = 0;
+  start_ = start;
+  goal_ = goal;
+  grid_ = original_grid_;
+// std::cout << __LINE__ << '\n';
   // Create initial chromosome
-  std::vector<Node> path = GenerateSimplePath();
-  paths_.push_back(path);
+  std::vector<Node> initial_path = GenerateSimplePath();
+  paths_.push_back(initial_path);
 
   // Check first path to goal
-  if (CheckPath(path)) {
-    truepaths_.push_back(path);
+  if (CheckPath(initial_path)) {
+    truepaths_.push_back(initial_path);
   }
-
-  // apply algorithm
+// std::cout << __LINE__ << '\n';
   // Allow while loop to continue beyond path found to find optimum path
-  // while(found_ == false && generation_ <=generations_){
-  while (generation_ <= generations_) {
-    // std::cout << "Generation: "<< generation_ << '\n';
-    int paths_size = paths_.size();
-    std::vector<int> f_vals(paths_size);
-    std::transform(
-        paths_.begin(), paths_.end(), f_vals.begin(),
-        [&](const std::vector<Node> &path) { return CalculateFitness(path); });
-    f_val = *std::min_element(f_vals.begin(), f_vals.end());
+  while (generation <= generations_) {
+    // std::cout << __LINE__ << '\n';
 
+    size_t paths_size = paths_.size();
+    std::vector<int> f_vals(paths_size);
+    std::transform(paths_.begin(), paths_.end(), f_vals.begin(),
+        [&](const std::vector<Node> &path) { return CalculateFitness(path); });
+        // std::cout << __LINE__ << '\n';
+
+    f_val = *std::min_element(f_vals.begin(), f_vals.end());
     std::vector<std::vector<Node>> new_paths_;
-    for (int i = 0; i < paths_size; ++i) {
+    // std::cout << __LINE__ << '\n';
+    for (int i = 0; i < paths_.size(); ++i) {
       // c provides a margin of error from best path
-      if (f_vals[i] <= static_cast<int>(static_cast<double>(f_val * c_))) {
+      if (f_vals[i] <= f_val * c_) {
         if (shorten_chromosome_) {
-          new_paths_.emplace_back(std::vector<Node>(
-              paths_[i].begin(), paths_[i].begin() + path_length_));
+          // std::cout << __LINE__ << '\n';
+          const int len = std::min(paths_[i].size(), path_length_);
+          // std::cout << __LINE__ << '\n';
+
+          new_paths_.emplace_back(std::vector<Node>(paths_[i].begin(),
+            std::next(paths_[i].begin(), len)));
+            // std::cout << __LINE__ << '\n';
 
         } else {
           new_paths_.push_back(paths_[i]);
         }
       }
     }
-
+    // std::cout << __LINE__ << '\n';
     if (new_paths_.size() > 0) {
       std::swap(paths_, new_paths_);
     }
-    if (static_cast<int>(paths_.size()) < popsize_) {
-      while (static_cast<int>(paths_.size()) < popsize_) {
+    // std::cout << __LINE__ << '\n';
+    if (paths_.size() < popsize_) {
+      while (paths_.size() < popsize_) {
         if (rand() % inverted_probabilty_mutate == 0) {
           paths_.emplace_back(Mutate());
         } else {
@@ -85,7 +92,8 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(
 
     // TODO(vss): Consider dynamically modifying path length to move towards
     // optimality
-    for (auto &path_seen : paths_) {
+    // std::cout << __LINE__ << '\n';
+    for (const auto &path_seen : paths_) {
       int tmp_length = std::numeric_limits<int>::max();
       if (CheckPath(path_seen)) {
         found_ = true;
@@ -94,9 +102,10 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(
         } else {
           truepaths_.push_back(path_seen);
         }
+        // std::cout << __LINE__ << '\n';
         if (shorten_chromosome_) {
           auto tmp = start_;
-          if (static_cast<int>(path_seen.size()) < tmp_length) {
+          if (path_seen.size() < tmp_length) {
             tmp_length = path_seen.size();
           }
           if (CompareCoordinates(tmp, goal_)) {
@@ -112,41 +121,44 @@ std::vector<Node> GeneticAlgorithm::genetic_algorithm(
           path_length_ = tmp_length;
         }
       }
+      // std::cout << __LINE__ << '\n';
       // PrintChromosome(path_seen);
     }
-    generation_++;
+    // std::cout << __LINE__ << '\n';
+    generation++;
   }
-  std::cout << "True paths: " << truepaths_.size() << '\n';
+  // std::cout << __LINE__ << '\n';
+
+  // std::cout << "True paths: " << truepaths_.size() << '\n';
   // if(!truepaths_.empty())std::cout << "True paths: " << '\n';
   // for(int i=0;i<truepaths_.size();i++) PrintPathOfChromosome(truepaths_[i]);
-  return ReturnLastPath();
+  const auto node_path = ReturnLastPath();
+  return {!node_path.empty(), node_path};
 }
 
 std::vector<Node> GeneticAlgorithm::ReturnLastPath() const {
-  std::vector<Node> v;
   if (truepaths_.empty()) {
-    v.emplace_back(Node(-1, -1, -1, -1, -1, -1));
-    return v;
+    return {};
   }
 
-  int best_cost = std::numeric_limits<int>::max();
   std::vector<int> f_vals(truepaths_.size());
   std::transform(truepaths_.begin(), truepaths_.end(), f_vals.begin(),
                  f_vals.begin(),
-                 [&](const std::vector<Node> &path, int /* f_vals_v */) {
+                 [&](const std::vector<Node> &path, const int /* f_vals_v */) {
                    return CalculateFitness(path);
                  });
-  int best_path_index = std::distance(
+  const int best_path_index = std::distance(
       f_vals.begin(), std::min_element(f_vals.begin(), f_vals.end()));
-  v.push_back(start_);
+  std::vector<Node> node_path;
+  node_path.push_back(start_);
   Node current = start_;
   for (const auto &motion : truepaths_[best_path_index]) {
     current = current + motion;
-    current.pid_ = current.id_;
+    current.pid_ = node_path.back().id_;
     current.id_ = n_ * current.x_ + current.y_;
-    v.push_back(current);
+    node_path.push_back(current);
   }
-  return v;
+  return node_path;
 }
 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
@@ -266,9 +278,8 @@ std::vector<Node> GeneticAlgorithm::Crossover() const {
   int p1 = static_cast<int>(rand() % paths_.size());
   int p2 = static_cast<int>(rand() % paths_.size());
 
-  const int len =
-      std::max(static_cast<int>(std::max(paths_[p1].size(), paths_[p2].size())),
-               path_length_);
+  const size_t len =
+      std::max(std::max(paths_[p1].size(), paths_[p2].size()), path_length_);
   std::vector<Node> child;
   child.reserve(len);
 
@@ -316,8 +327,10 @@ bool GeneticAlgorithm::CheckPath(const std::vector<Node> &path) const {
     if (CompareCoordinates(current, goal_)) {
       return true;
     }
-    if (checkOutsideBoundary(current, n_) ||
-        grid_[current.x_][current.y_] == 1) {
+    if (checkOutsideBoundary(current, n_)) {
+      return false;
+    }
+    if(grid_[current.x_][current.y_] == 1) {
       return false;
     }
   }
@@ -326,19 +339,32 @@ bool GeneticAlgorithm::CheckPath(const std::vector<Node> &path) const {
 
 #ifdef BUILD_INDIVIDUAL
 int main() {
-  int n = 10;
+  int n = 11;
 
   std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
   MakeGrid(grid);
+  // std::vector<std::vector<int>> grid {
+  //   {0 , 0 , 0 , 1 , 0 , 0 , 0 , 1 , 0 , 0} ,
+  //   {0 , 0 , 0 , 0 , 1 , 1 , 0 , 1 , 1 , 0} ,
+  //   {0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 1 , 0} ,
+  //   {0 , 0 , 0 , 1 , 0 , 0 , 0 , 1 , 1 , 0} ,
+  //   {0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 0} ,
+  //   {0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0} ,
+  //   {1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0} ,
+  //   {0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 1} ,
+  //   {0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 0} ,
+  //   {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0}
+  // };
 
   std::random_device rd;   // obtain a random number from hardware
   std::mt19937 eng(rd());  // seed the generator
   std::uniform_int_distribution<int> distr(0, n - 1);  // define the range
 
+  // Node start(3, 5, 0, 0, 0, 0);
+  // Node goal(3, 4, 0, 0, 0, 0);
+
   Node start(distr(eng), distr(eng), 0, 0, 0, 0);
   Node goal(distr(eng), distr(eng), 0, 0, 0, 0);
-  // Node start(0,0,0,0,0,0);
-  // Node goal(n-1,n-1,0,0,0,0);
 
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -348,11 +374,14 @@ int main() {
   // assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+  start.PrintStatus();
+  goal.PrintStatus();
   PrintGrid(grid);
-  std::vector<Node> path_vector;
-  GeneticAlgorithm new_genetic_algorithm;
-  path_vector = new_genetic_algorithm.genetic_algorithm(grid, start, goal,
-                                                        4 * start.h_cost_);
+
+  GeneticAlgorithm new_genetic_algorithm(grid);
+  new_genetic_algorithm.SetParams(10000, 30, 1.05, true, 4 * start.h_cost_);
+  const auto [path_found, path_vector] = new_genetic_algorithm.Plan(start, goal);
+  // std::cout << __LINE__ << '\n';
   PrintPathInOrder(path_vector, start, goal, grid);
 }
 #endif  // BUILD_INDIVIDUAL
