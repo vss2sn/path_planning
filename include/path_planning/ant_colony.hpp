@@ -8,49 +8,36 @@
 #define ANT_COLONY_H
 
 #include <unordered_map>
+#include <tuple>
 
+#include "path_planning/planner.hpp"
 #include "utils/utils.hpp"
-
-/**
- * @brief Structure to generate a hash for std::pair
- * @details This allows the use of pairs in data structures that use a hash,
- * such as unordered_map/set
- */
-struct pair_hash {
-  /**
-   * @brief Function used to generate hash for keys
-   * @param pair pair of values
-   * @return generated hash value
-   */
-  template <class T1, class T2>
-  std::size_t operator()(const std::pair<T1, T2>& pair) const {
-    return std::hash<T1>()(pair.first) ^ std::hash<T2>()(pair.second);
-  }
-};
 
 /**
  * @brief Class for Ant objects
  */
-class Ant {
- public:
+struct Ant {
   /**
    * @brief Constructor to create a new ant
    * @param start Start node of ant
    * @param id Ant id
    * @return no return value
    */
-  Ant(Node start = Node(0, 0), int id = 0);
-  std::vector<Node> path_;
+  Ant(const Node& start = Node(), const int id = 0) :
+    id_(id), current_node_(start), previous_node_(Node(-1, -1)) {}
+
   bool found_goal_ = false;
+  int id_;
+  int steps_ = 0;
   Node current_node_;
   Node previous_node_;
-  int steps_ = 0, id_;
+  std::vector<Node> path_;
 };
 
 /**
  * @brief Class for Ant Colony objects
  */
-class AntColony {
+class AntColony : public Planner {
  public:
   /**
    * @brief Constructor for set up of Ant Colony class
@@ -65,9 +52,11 @@ class AntColony {
    * @param Q Constant multiplication factor for the cost/reward function
    * @return no return value
    */
-  AntColony(const int n_ants = 10, const double alpha = 0.5,
-            const double beta = 0.5, const double evap_rate = 0.5,
-            const int iterations = 10, const double Q = 10.0);
+   AntColony(const std::vector<std::vector<int>>& grid) : Planner(grid) {}
+
+  void SetParams(const int n_ants = 10, const double alpha = 1, const double beta = 0.2,
+                 const double evap_rate = 0.5, const double Q = 10,
+                 const int iterations = 50);
 
   /**
    * @brief Prints the path taken by the ant.
@@ -77,7 +66,7 @@ class AntColony {
    * function in utils.cpp. It can be used to print incomplete paths as well, as
    * long as the end point and start point are specified.
    */
-  void PrintAntPath(Ant& ant) const;
+  void PrintAntPath(const Ant& ant) const;
 
   /**
    * @brief Removes loops in path
@@ -94,17 +83,19 @@ class AntColony {
    * @param goal goal node
    * @return best path within last iteration of the ant colony
    */
-  std::vector<Node> ant_colony(std::vector<std::vector<int>>& grid,
-                               const Node& start, const Node& goal);
+  std::tuple<bool, std::vector<Node>> Plan(const Node& start, const Node& goal) override;
 
  private:
-  std::vector<std::vector<int>> grid_;
-  std::unordered_map<std::pair<int, int>, double, pair_hash> pheromone_edges_;
-  int n_ants_, iterations_, max_steps_{}, grid_size_{};
-  double alpha_, beta_, evap_rate_, Q_;
+  int n_ants_ = 10;
+  double alpha_ = 1;
+  double beta_ = 0.2;
+  double evap_rate_ = 0.5;
+  double Q_ = 10;
+  int iterations_ = 50;
   Node start_, goal_;
   std::vector<Ant> ants_;
   std::vector<Node> motions_;
+  std::unordered_map<std::pair<int, int>, double, pair_hash> pheromone_edges_;
 };
 
 #endif  // ANT_COLONY_H
