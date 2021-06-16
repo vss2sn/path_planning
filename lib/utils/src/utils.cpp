@@ -102,7 +102,7 @@ void MakeGrid(std::vector<std::vector<int>>& grid) {
 
 void PrintPath(const std::vector<Node>& path_vector, const Node& start,
                const Node& goal, std::vector<std::vector<int>>& grid) {
-  if (path_vector[0].id_ == -1) {
+  if (path_vector.empty()) {
     std::cout << "No path exists" << '\n';
     PrintGrid(grid);
     return;

@@ -246,5 +246,21 @@ void PrintGrid(const std::vector<std::vector<T>>& grid) {
   std::cout << '\n';
 }
 
+/**
+ * @brief Structure to generate a hash for std::pair
+ * @details This allows the use of pairs in data structures that use a hash,
+ * such as unordered_map/set
+ */
+struct pair_hash {
+  /**
+   * @brief Function used to generate hash for keys
+   * @param pair pair of values
+   * @return generated hash value
+   */
+  template <class T1, class T2>
+  std::size_t operator()(const std::pair<T1, T2>& pair) const {
+    return std::hash<T1>()(pair.first) ^ std::hash<T2>()(pair.second);
+  }
+};
 
 #endif  // UTILS_H
