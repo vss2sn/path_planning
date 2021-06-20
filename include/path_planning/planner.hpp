@@ -1,3 +1,12 @@
+/**
+ * @file planner.hpp
+ * @author vss2sn
+ * @brief Contains the abstract planner class
+ */
+
+#ifndef PLANNER_HPP
+#define PLANNER_HPP
+
 #include <utils/utils.hpp>
 
 #include <vector>
@@ -64,3 +73,5 @@ protected:
   const std::vector<std::vector<int>> original_grid_;
   const int n_;
 };
+
+#endif  // PLANNER_HPP

@@ -40,7 +40,6 @@ int main() {
   PrintGrid(grid);
 
   // Store points after algorithm has run
-  std::vector<Node> path_vector;
   std::vector<std::vector<int>> main_grid = grid;
 
   // Variables for RRT and RRTStar
@@ -59,15 +58,18 @@ int main() {
   // Create object for the algorithm
   // Run algorithm
   // Print the final grid using the path_vector
+
   // clang-format off
   std::cout << "--------------------------------------------------------------" << '\n'
             << "--------------------- ALGORITHM: DIJKSTRA ---------------------" << '\n'
             << "--------------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
-  Dijkstra new_dijkstra;
-  path_vector = new_dijkstra.dijkstra(grid, start, goal);
-  PrintPath(path_vector, start, goal, grid);
+  Dijkstra dijkstra(grid);
+  {
+    const auto [path_found, path_vector] = dijkstra.Plan(start, goal);
+    PrintPath(path_vector, start, goal, grid);
+  }
 
   // clang-format off
   std::cout << "--------------------------------------------------------" << '\n'
@@ -75,9 +77,11 @@ int main() {
             << "--------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
-  AStar new_a_star;
-  path_vector = new_a_star.a_star(grid, start, goal);
-  PrintPath(path_vector, start, goal, grid);
+  AStar a_star(grid);
+  {
+    const auto [path_found, path_vector] = a_star.Plan(start, goal);
+    PrintPath(path_vector, start, goal, grid);
+  }
 
   // clang-format off
   std::cout << "-----------------------------------------------------------------------" << '\n';
@@ -85,9 +89,11 @@ int main() {
   std::cout << "-----------------------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
-  JumpPointSearch new_jump_point_search;
-  path_vector = new_jump_point_search.jump_point_search(grid, start, goal);
-  PrintPath(path_vector, start, goal, grid);
+  JumpPointSearch jump_point_search(grid);
+  {
+    const auto [path_found, path_vector] = jump_point_search.Plan(start, goal);
+    PrintPath(path_vector, start, goal, grid);
+  }
 
   // clang-format off
   std::cout << "--------------------------------------------------------------------------" << '\n'
@@ -95,10 +101,14 @@ int main() {
             << "--------------------------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
-  LPAStar new_lpa_star;
-  path_vector.clear();
-  path_vector = new_lpa_star.lpa_star(grid, start, goal, n, true);
-  PrintPath(path_vector, start, goal, grid);
+  LPAStar lpa_star(grid);
+  {
+    const auto [path_found, path_vector] = lpa_star.Plan(start, goal);
+    PrintPath(path_vector, start, goal, grid);
+  }
+  // NOTE: The PrintPath function will not be to show the updated grid for the
+  //       live run of LPA* including obstacles discovered during execution.
+
 
   // clang-format off
   std::cout << "---------------------------------------------------------" << '\n'
@@ -106,9 +116,11 @@ int main() {
             << "---------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
-  RRT new_rrt;
-  path_vector = new_rrt.rrt(grid, start, goal, max_iter_x_factor, threshold);
-  PrintPath(path_vector, start, goal, grid);
+  RRT rrt(grid);
+  {
+    const auto [path_found, path_vector] = rrt.Plan(start, goal);
+    PrintPath(path_vector, start, goal, grid);
+  }
 
   // clang-format off
   std::cout << "----------------------------------------------------------" << '\n';
@@ -116,10 +128,11 @@ int main() {
   std::cout << "----------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
-  RRTStar new_rrt_star;
-  path_vector =
-      new_rrt_star.rrt_star(grid, start, goal, max_iter_x_factor, threshold);
-  PrintPath(path_vector, start, goal, grid);
+  RRTStar rrt_star(grid);
+  {
+    const auto [path_found, path_vector] = rrt_star.Plan(start, goal);
+    PrintPath(path_vector, start, goal, grid);
+  }
 
   // clang-format off
   std::cout << "-------------------------------------------------------------" << '\n'
@@ -127,11 +140,13 @@ int main() {
             << "-------------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
-  DStarLite d_star_lite;
-  path_vector = d_star_lite.Plan(grid, start, goal, true);
+  DStarLite d_star_lite(grid);
+  {
+    const auto [path_found, path_vector] = d_star_lite.Plan(start, goal);
+    PrintPath(path_vector, start, goal, grid);
+  }
   // NOTE: The PrintPath function will not be to show the updated grid for the
   //       live run of D* Lite including obstacles discovered during execution.
-  // PrintPath(path_vector, start, goal, grid);
 
   // clang-format off
   std::cout << "-----------------------------------------------------------------------------" << '\n'
@@ -139,9 +154,12 @@ int main() {
             << "-----------------------------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
-  AntColony new_ant_colony(n_ants, alpha, beta, evap_rate, iterations, Q);
-  path_vector = new_ant_colony.ant_colony(grid, start, goal);
-  PrintPath(path_vector, start, goal, grid);
+  AntColony ant_colony(grid);
+  ant_colony.SetParams(n_ants, alpha, beta, evap_rate, iterations, Q);
+  {
+    const auto [path_found, path_vector] = ant_colony.Plan(start, goal);
+    PrintPath(path_vector, start, goal, grid);
+  }
 
   // clang-format off
   std::cout << "-----------------------------------------------------------------------" << '\n'
@@ -149,10 +167,11 @@ int main() {
             << "-----------------------------------------------------------------------" << '\n';
   // clang-format on
   grid = main_grid;
-  GeneticAlgorithm new_genetic_algorithm;
-  path_vector = new_genetic_algorithm.genetic_algorithm(
-      grid, start, goal, 2 * static_cast<int>(start.h_cost_));
-  PrintPathInOrder(path_vector, start, goal, grid);
+  GeneticAlgorithm genetic_algorithm(grid);
+  {
+    const auto [path_found, path_vector] = genetic_algorithm.Plan(start, goal);
+    PrintPathInOrder(path_vector, start, goal, grid);
+  }
 
   return 0;
 }

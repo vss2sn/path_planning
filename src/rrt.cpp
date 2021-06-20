@@ -59,8 +59,8 @@ bool RRT::IsAnyObstacleInPath(const Node& n_1, const Node& n_2) const {
     const double c = n_2.y_;
     for (const auto& obs_node : obstacle_list_) {
       if (obs_node.y_ == c &&
-          ((n_1.x_ >= obs_node.x_) && (obs_node.x_ >= n_2.x_) ||
-            ((n_1.x_ <= obs_node.x_) && (obs_node.x_ <= n_2.x_)))) {
+          (((n_1.x_ >= obs_node.x_) && (obs_node.x_ >= n_2.x_)) ||
+           ((n_1.x_ <= obs_node.x_) && (obs_node.x_ <= n_2.x_)))) {
         return true;
       }
     }
