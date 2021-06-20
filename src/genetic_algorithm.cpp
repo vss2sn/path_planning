@@ -23,7 +23,6 @@ void GeneticAlgorithm::SetParams(const int generations, const int popsize,
   c_ = c;
   shorten_chromosome_ = shorten_chromosome;
   path_length_ = path_length;
-  motions_ = GetMotion();
 }
 
 std::tuple<bool, std::vector<Node>> GeneticAlgorithm::Plan(const Node &start,
@@ -32,6 +31,7 @@ std::tuple<bool, std::vector<Node>> GeneticAlgorithm::Plan(const Node &start,
   start_ = start;
   goal_ = goal;
   grid_ = original_grid_;
+  motions_ = GetMotion();
 
   // Create initial chromosome
   std::vector<Node> initial_path = GenerateSimplePath();
@@ -326,32 +326,44 @@ bool GeneticAlgorithm::CheckPath(const std::vector<Node> &path) const {
 
 #ifdef BUILD_INDIVIDUAL
 int main() {
-  int n = 11;
+  // int n = 11;
 
-  std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
-  MakeGrid(grid);
-  // std::vector<std::vector<int>> grid {
-  //   {0 , 0 , 0 , 1 , 0 , 0 , 0 , 1 , 0 , 0} ,
-  //   {0 , 0 , 0 , 0 , 1 , 1 , 0 , 1 , 1 , 0} ,
-  //   {0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 1 , 0} ,
-  //   {0 , 0 , 0 , 1 , 0 , 0 , 0 , 1 , 1 , 0} ,
-  //   {0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 0} ,
-  //   {0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0} ,
-  //   {1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0} ,
-  //   {0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 1} ,
-  //   {0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 0} ,
-  //   {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0}
-  // };
+  // std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
+  // MakeGrid(grid);
+  std::vector<std::vector<int>> grid {
+    { 0 , 1 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 1 , 3 , 3 , 1 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 },
+    { 3 , 3 , 3 , 1 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 },
+    { 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 , 0 , 0 },
+    { 3 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 1 , 0 , 0 , 0 , 1 , 0 , 1 , 0 , 1 , 0 , 0 },
+    { 3 , 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 },
+    { 3 , 3 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+    { 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 3 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 },
+    { 3 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 , 0 , 1 , 0 },
+    { 3 , 1 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 3 , 3 , 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 3 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 1 , 0 , 3 , 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+    { 0 , 1 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 1 , 0 , 0 , 1 , 0 }
+  };
+  int n = grid.size();
 
   std::random_device rd;   // obtain a random number from hardware
   std::mt19937 eng(rd());  // seed the generator
   std::uniform_int_distribution<int> distr(0, n - 1);  // define the range
 
-  // Node start(3, 5, 0, 0, 0, 0);
-  // Node goal(3, 4, 0, 0, 0, 0);
+  Node start(19, 3, 0, 0, 0, 0);
+  Node goal(2, 3, 0, 0, 0, 0);
 
-  Node start(distr(eng), distr(eng), 0, 0, 0, 0);
-  Node goal(distr(eng), distr(eng), 0, 0, 0, 0);
+  // Node start(distr(eng), distr(eng), 0, 0, 0, 0);
+  // Node goal(distr(eng), distr(eng), 0, 0, 0, 0);
 
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;

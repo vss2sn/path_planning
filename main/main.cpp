@@ -168,6 +168,7 @@ int main() {
   // clang-format on
   grid = main_grid;
   GeneticAlgorithm genetic_algorithm(grid);
+  new_genetic_algorithm.SetParams(10000, 30, 1.05, true, 4 * start.h_cost_);
   {
     const auto [path_found, path_vector] = genetic_algorithm.Plan(start, goal);
     PrintPathInOrder(path_vector, start, goal, grid);
