@@ -217,18 +217,20 @@ int main() {
   start.pid_ = start.x_ * n + start.y_;
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
+
   // Make sure start and goal are not obstacles and their ids are correctly
   // assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
-  PrintGrid(grid);
+
   start.PrintStatus();
   goal.PrintStatus();
+
+  PrintGrid(grid);
 
   RRT new_rrt(grid);
   const auto [found_path, path_vector] = new_rrt.Plan(start, goal);
   PrintPath(path_vector, start, goal, grid);
-
   return 0;
 }
 #endif  // BUILD_INDIVIDUAL

@@ -81,7 +81,7 @@ std::vector<Node> AStar::ConvertClosedListToPath(std::unordered_set<Node, NodeId
  */
 int main() {
   int n = 11;
-  std::vector<std::vector<int>> grid(n, std::vector<int>(n));
+  std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
   MakeGrid(grid);
 
   std::random_device rd;   // obtain a random number from hardware
@@ -95,10 +95,15 @@ int main() {
   start.pid_ = start.x_ * n + start.y_;
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
+
   // Make sure start and goal are not obstacles and their ids are correctly
   // assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+
+  start.PrintStatus();
+  goal.PrintStatus();
+
   PrintGrid(grid);
 
   AStar new_a_star(grid);

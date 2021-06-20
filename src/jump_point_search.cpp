@@ -133,13 +133,9 @@ std::tuple<bool, std::vector<Node>> JumpPointSearch::Plan (const Node& start, co
 #ifdef BUILD_INDIVIDUAL
 int main() {
   int n = 11;
-
-  std::vector<std::vector<int>> grid(n);
-  std::vector<int> tmp(n);
-  for (int i = 0; i < n; i++) {
-    grid[i] = tmp;
-  }
+  std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
   MakeGrid(grid);
+
   std::random_device rd;   // obtain a random number from hardware
   std::mt19937 eng(rd());  // seed the generator
   std::uniform_int_distribution<int> distr(0, n - 1);  // define the range
@@ -155,6 +151,10 @@ int main() {
   // assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+
+  start.PrintStatus();
+  goal.PrintStatus();
+
   PrintGrid(grid);
 
   JumpPointSearch new_jump_point_search(grid);

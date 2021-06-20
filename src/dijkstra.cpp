@@ -72,16 +72,11 @@ std::vector<Node> Dijkstra::ConvertClosedListToPath(std::unordered_set<Node, Nod
 }
 
 #ifdef BUILD_INDIVIDUAL
-/**
- * @brief Script main function. Generates start and end nodes as well as grid,
- * then creates the algorithm object and calls the main algorithm function.
- * @return 0
- */
 int main() {
   int n = 11;
-  std::vector<std::vector<int>> grid(n, std::vector<int>(n));
+  std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
   MakeGrid(grid);
-  
+
   std::random_device rd;   // obtain a random number from hardware
   std::mt19937 eng(rd());  // seed the generator
   std::uniform_int_distribution<int> distr(0, n - 1);  // define the range
@@ -97,13 +92,15 @@ int main() {
   // assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
+
+  start.PrintStatus();
+  goal.PrintStatus();
+
   PrintGrid(grid);
 
   Dijkstra new_dijkstra(grid);
   const auto [path_found, path_vector] = new_dijkstra.Plan(start, goal);
-
   PrintPath(path_vector, start, goal, grid);
-
   return 0;
 }
 #endif  // BUILD_INDIVIDUAL
