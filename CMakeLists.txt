@@ -79,6 +79,7 @@ else (BUILD_INDIVIDUAL)
   endif(CHECK_COVERAGE)
 
   if (RUN_TESTS)
+    add_definitions(-DRUN_TESTS)
     file(GLOB LIB_TESTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
     enable_testing()
     add_subdirectory(tests)

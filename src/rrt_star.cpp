@@ -179,16 +179,17 @@ std::tuple<bool, std::vector<Node>> RRTStar::Plan(const Node& start, const Node&
   if (!found_goal) {
     return {false, {}};
   }
-  // PrintGrid(grid_);
   return {true, CreatePath()};
 }
 
 bool RRTStar::CheckGoalVisible(const Node& new_node) {
-  auto dist = std::sqrt(std::pow(goal_.x_ - new_node.x_, 2) + std::pow(goal_.y_ - new_node.y_, 2));
+  const auto dist = std::sqrt(std::pow(goal_.x_ - new_node.x_, 2) + std::pow(goal_.y_ - new_node.y_, 2));
   if (dist > threshold_) {
     return false;
   }
   if (CompareCoordinates(goal_, new_node)) {
+    point_list_.erase(new_node);
+    point_list_.insert(new_node);
     return true;
   }
   if (!IsAnyObstacleInPath(new_node, goal_)) {

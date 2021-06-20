@@ -4,6 +4,9 @@
  * @brief Contains the test utils
  */
 
+#ifndef TEST_UTILS
+#define TEST_UTILS
+
 #include <gtest/gtest.h>
 
 #include "path_planning/a_star.hpp"
@@ -96,3 +99,5 @@ double run_test(std::vector<std::vector<int>>& grid, const std::string& algo){
   }
   return -1;
 }
+
+#endif  // TEST_UTILS
