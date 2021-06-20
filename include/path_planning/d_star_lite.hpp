@@ -25,7 +25,7 @@ class DStarLite : public Planner {
     * @param grid the grid on which the planner is to plan
     * @return no return value
     */
-   DStarLite(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
+   explicit DStarLite(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
 
    /**
     * @brief Sets the time discovered obstacles and the option that allows
@@ -156,7 +156,7 @@ class DStarLite : public Planner {
    * @param n2 node 2
    * @return the heuristic cost of travelling from one node 1 to node 2
    */
-  double H(const Node& n1, const Node& n2) const;
+  static double H(const Node& n1, const Node& n2);
 
 
   /**
@@ -169,14 +169,14 @@ class DStarLite : public Planner {
 
   std::vector<std::vector<double>> rhs_;
   std::vector<std::vector<double>> g_;
-  std::unordered_map<int, std::vector<Node>> time_discovered_obstacles_;
-  std::vector<Node> motions_;
+  std::unordered_map<int, std::vector<Node>> time_discovered_obstacles_{};
+  std::vector<Node> motions_{};
   LazyPQ U_;
   Node start_, goal_, last_;
-  double k_m_;
-  Key k_old_;
+  double k_m_ = 0;
+  Key k_old_{0, 0};
   int time_step_ = 0;
-  bool create_random_obstacles_;
+  bool create_random_obstacles_ = false;
 };
 
 #endif  // D_STAR_LITE_H

@@ -24,7 +24,7 @@ class JumpPointSearch : public Planner {
     * @param grid the grid on which the planner is to plan
     * @return no return value
     */
-  JumpPointSearch (const std::vector<std::vector<int>>& grid) : Planner(grid) {};
+  explicit JumpPointSearch (const std::vector<std::vector<int>>& grid) : Planner(grid) {};
 
   /**
    * @brief Jump Point Search algorithm implementation

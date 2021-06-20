@@ -45,7 +45,7 @@ class AntColony : public Planner {
     * @param grid the grid on which the planner is to plan
     * @return no return value
     */
-   AntColony(const std::vector<std::vector<int>>& grid) : Planner(grid) {}
+   explicit AntColony(const std::vector<std::vector<int>>& grid) : Planner(grid) {}
 
    /**
    * @brief Constructor for set up of Ant Colony class

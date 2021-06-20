@@ -271,13 +271,13 @@ std::vector<Node> GeneticAlgorithm::Crossover() const {
   child.reserve(len);
 
   Node current = start_;
-  Node motion = motions_[static_cast<int>(rand() % motions_.size())];
 
   int index = 0;
   int attempt_count = 0;
 
   while (index < len) {
     int random_int = rand() % random_range_max;
+    Node motion;
     if (random_int < random_range_max / 4 && paths_[p1].size() > index) {
       motion = paths_[p1][index];
     } else if (random_int < random_range_max / 2 && paths_[p2].size() > index) {

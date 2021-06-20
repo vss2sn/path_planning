@@ -22,7 +22,7 @@ class AStar : public Planner {
     * @param grid the grid on which the planner is to plan
     * @return no return value
     */
-   AStar(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
+   explicit AStar(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {} 
 
   /**
    * @brief A* algorithm implementation

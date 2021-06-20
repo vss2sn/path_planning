@@ -23,7 +23,7 @@ class GeneticAlgorithm : public Planner {
     * @param grid the grid on which the planner is to plan
     * @return no return value
     */
-  GeneticAlgorithm(const std::vector<std::vector<int>>& grid) : Planner (grid) {};
+  explicit GeneticAlgorithm(const std::vector<std::vector<int>>& grid) : Planner (grid) {};
 
   /**
    * @brief Set params for the planner

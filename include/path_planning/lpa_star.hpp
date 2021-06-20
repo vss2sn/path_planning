@@ -26,7 +26,7 @@ class LPAStar : public Planner {
     * @param grid the grid on which the planner is to plan
     * @return no return value
     */
-   LPAStar(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
+   explicit LPAStar(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
 
    /**
     * @brief Sets the time discovered obstacles and the option that allows
@@ -157,7 +157,7 @@ class LPAStar : public Planner {
    * @param n2 node 2
    * @return the heuristic cost of travelling from one node 1 to node 2
    */
-  double H(const Node& n1, const Node& n2) const;
+  static double H(const Node& n1, const Node& n2);
 
 
   /**

@@ -22,7 +22,7 @@ class Dijkstra : public Planner {
     * @param grid the grid on which the planner is to plan
     * @return no return value
     */
-   Dijkstra(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
+   explicit Dijkstra(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
 
    /**
     * @brief Dijkstra algorithm implementation

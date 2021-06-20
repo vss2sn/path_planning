@@ -28,7 +28,7 @@ public:
    * @param grid the grid on which the planner is to plan
    * @return no return value
    */
-  RRTStar(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
+  explicit RRTStar(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
 
   /**
    * @brief RRT* algorithm implementation
@@ -86,7 +86,7 @@ private:
   std::vector<Node> CreatePath();
 
  private:
-  Node start, goal;
+  Node start_, goal_;
   std::unordered_set<Node, NodeIdAsHash, compare_coordinates> point_list_;  // TODO: set up in cstor
   std::unordered_map<Node, std::vector<Node>>  near_nodes_;
   std::vector<Node> obstacle_list_;

@@ -28,7 +28,7 @@ bool LPAStar::IsObstacle(const Node& n) const {
   return grid_[n.x_][n.y_] == 1;
 }
 
-double LPAStar::H(const Node& n1, const Node& n2) const {
+double LPAStar::H(const Node& n1, const Node& n2) {
   return  std::sqrt(std::pow(n1.x_ - n2.x_, 2) + std::pow(n1.y_ - n2.y_, 2));
 }
 
