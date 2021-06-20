@@ -15,7 +15,8 @@
 
 #include "path_planning/a_star.hpp"
 
-std::tuple<bool, std::vector<Node>> AStar::Plan(const Node& start, const Node& goal) {
+std::tuple<bool, std::vector<Node>> AStar::Plan(const Node& start,
+                                                const Node& goal) {
   grid_ = original_grid_;
   std::priority_queue<Node, std::vector<Node>, compare_cost> open_list;
   std::unordered_set<Node, NodeIdAsHash, compare_coordinates> closed_list;
@@ -57,12 +58,16 @@ std::tuple<bool, std::vector<Node>> AStar::Plan(const Node& start, const Node& g
   return {false, {}};
 }
 
-std::vector<Node> AStar::ConvertClosedListToPath(std::unordered_set<Node, NodeIdAsHash, compare_coordinates>& closed_list, const Node& start, const Node& goal) {
+std::vector<Node> AStar::ConvertClosedListToPath(
+    std::unordered_set<Node, NodeIdAsHash, compare_coordinates>& closed_list,
+    const Node& start, const Node& goal) {
   auto current = *closed_list.find(goal);
   std::vector<Node> path;
   while (!CompareCoordinates(current, start)) {
     path.push_back(current);
-    if (const auto it = closed_list.find(Node(current.pid_ / n_, current.pid_ % n_, 0, 0, current.pid_)); it != closed_list.end()) {
+    if (const auto it = closed_list.find(
+            Node(current.pid_ / n_, current.pid_ % n_, 0, 0, current.pid_));
+        it != closed_list.end()) {
       current = *it;
     } else {
       std::cout << "Error in calculating path \n";

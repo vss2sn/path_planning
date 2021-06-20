@@ -8,44 +8,43 @@
 #define RRT_H
 
 #include <limits>
-#include <unordered_map>
 #include <tuple>
+#include <unordered_map>
 #include <vector>
 
-
 #include "path_planning/planner.hpp"
-
 #include "utils/utils.hpp"
 
 /**
  * @brief Class for objects that plan using the RRT algorithm
  */
 class RRT : public Planner {
-public:
-
+ public:
   /**
    * @brief Constructor
    * @param grid the grid on which the planner is to plan
    * @return no return value
    */
-  explicit RRT(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
+  explicit RRT(std::vector<std::vector<int>> grid) : Planner(std::move(grid)) {}
 
   /**
    * @brief RRT algorithm implementation
    * @param start start node
    * @param goal goal node
-   * @return tuple contatining a bool as to whether a path was found, and the path
+   * @return tuple contatining a bool as to whether a path was found, and the
+   * path
    */
-  std::tuple<bool, std::vector<Node>> Plan(const Node& start, const Node& goal) override;
+  std::tuple<bool, std::vector<Node>> Plan(const Node& start,
+                                           const Node& goal) override;
 
-private:
+ private:
   /**
    * @brief Find the nearest Node that has been seen by the algorithm. This does
    * not consider cost to reach the node.
    * @param new_node Node to which the nearest node must be found
    * @return nearest node
    */
-   std::tuple<bool, Node> FindNearestPoint(Node& new_node);
+  std::tuple<bool, Node> FindNearestPoint(Node& new_node);
 
   /**
    * @brief Check if there is any obstacle between the 2 nodes. As this planner
@@ -79,11 +78,12 @@ private:
 
  private:
   Node start_, goal_;
-  std::unordered_set<Node, NodeIdAsHash, compare_coordinates> point_list_;  // TODO: set up in cstor
-  std::unordered_map<Node, std::vector<Node>>  near_nodes_;
+  std::unordered_set<Node, NodeIdAsHash, compare_coordinates>
+      point_list_;  // TODO: set up in cstor
+  std::unordered_map<Node, std::vector<Node>> near_nodes_;
   std::vector<Node> obstacle_list_;
-  double threshold_ = 1.5; // TODO: set up in cstor
-  int max_iter_x_factor_ = 500; // TODO: set up in cstor
+  double threshold_ = 1.5;       // TODO: set up in cstor
+  int max_iter_x_factor_ = 500;  // TODO: set up in cstor
 };
 
 #endif  // RRT_H

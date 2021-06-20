@@ -8,59 +8,61 @@
 #define LPA_STAR_H
 
 #include <iostream>
+#include <tuple>
 #include <unordered_map>
 #include <unordered_set>
-#include <tuple>
 
-#include "utils/utils.hpp"
 #include "path_planning/planner.hpp"
+#include "utils/utils.hpp"
 
 /**
  * @brief Class for objects that plan using the LPA* algorithm
  */
 class LPAStar : public Planner {
  public:
+  /**
+   * @brief Constructor
+   * @param grid the grid on which the planner is to plan
+   * @return no return value
+   */
+  explicit LPAStar(std::vector<std::vector<int>> grid)
+      : Planner(std::move(grid)) {}
 
-   /**
-    * @brief Constructor
-    * @param grid the grid on which the planner is to plan
-    * @return no return value
-    */
-   explicit LPAStar(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
+  /**
+   * @brief Sets the time discovered obstacles and the option that allows
+            the creation of random obstacles
+   * @param create_random_obstacles should random obstacles be created during
+    *       execution
+   * @param time_discovered_obstacles obstacles to be discovered at specific
+   *        times
+   * @return void
+   * @details Set separately from the plan function to allow this to persist
+              between calls to Plan()
+   */
+  void SetDynamicObstacles(const bool create_random_obstacles = false,
+                           const std::unordered_map<int, std::vector<Node>>&
+                               time_discovered_obstacles = {});
 
-   /**
-    * @brief Sets the time discovered obstacles and the option that allows
-             the creation of random obstacles
-    * @param create_random_obstacles should random obstacles be created during
-     *       execution
-    * @param time_discovered_obstacles obstacles to be discovered at specific
-    *        times
-    * @return void
-    * @details Set separately from the plan function to allow this to persist
-               between calls to Plan()
-    */
-   void SetDynamicObstacles(const bool create_random_obstacles = false,
-                            const std::unordered_map<int, std::vector<Node>>&
-                              time_discovered_obstacles = {});
-
-   /**
-    * @brief LPA* algorithm implementation
-    * @param start start node
-    * @param goal goal node
-    * @return tuple contatining a bool as to whether a path was found, and the path
-    * @details Creates a path to be followed
-               Steps through time in increments of 1 time step
-               Checks for discovered obstacles
-               Replans as necessary
-    */
-  std::tuple<bool, std::vector<Node>> Plan(const Node& start, const Node& goal) override;
+  /**
+   * @brief LPA* algorithm implementation
+   * @param start start node
+   * @param goal goal node
+   * @return tuple contatining a bool as to whether a path was found, and the
+   path
+   * @details Creates a path to be followed
+              Steps through time in increments of 1 time step
+              Checks for discovered obstacles
+              Replans as necessary
+   */
+  std::tuple<bool, std::vector<Node>> Plan(const Node& start,
+                                           const Node& goal) override;
 
  private:
-   /**
-    * @brief Calculate the values of the key for a given node
-    * @param s Node for whicht eh key values are to be calculated
-    * @return Key containing values for s
-    */
+  /**
+   * @brief Calculate the values of the key for a given node
+   * @param s Node for whicht eh key values are to be calculated
+   * @return Key containing values for s
+   */
   Key CalculateKey(const Node& s) const;
 
   /**
@@ -159,7 +161,6 @@ class LPAStar : public Planner {
    */
   static double H(const Node& n1, const Node& n2);
 
-
   /**
    * @brief Create a square grid of size n and set each value to
    *        std::numeric_limits<double>::max()
@@ -167,7 +168,6 @@ class LPAStar : public Planner {
    * @return grid created
    */
   std::vector<std::vector<double>> CreateGrid(const int n);
-
 
   void ClearPathDisplay(const std::vector<Node>& path);
   std::vector<Node> GetNewPath();

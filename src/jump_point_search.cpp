@@ -22,7 +22,7 @@ Node JumpPointSearch::jump(const Node& new_point, const Node& motion,
   if (next_point.x_ < 0 || next_point.y_ < 0 || next_point.x_ >= n_ ||
       next_point.y_ >= n_ || grid_[next_point.x_][next_point.y_] != 0) {
     // return new_point;
-    return Node(-1,-1,-1,-1,-1,-1);
+    return Node(-1, -1, -1, -1, -1, -1);
   }
   if (pruned.find(next_point.id_) != pruned.end()) {
     pruned.insert(next_point.id_);
@@ -46,8 +46,8 @@ Node JumpPointSearch::jump(const Node& new_point, const Node& motion,
 }
 
 bool JumpPointSearch::HasForcedNeighbours(const Node& new_point,
-                                            const Node& next_point,
-                                            const Node& motion) const {
+                                          const Node& next_point,
+                                          const Node& motion) const {
   int cn1x = new_point.x_ + motion.y_;
   int cn1y = new_point.y_ + motion.x_;
 
@@ -70,12 +70,13 @@ bool JumpPointSearch::HasForcedNeighbours(const Node& new_point,
 
   a = !(cn2x < 0 || cn2y < 0 || cn2x >= n_ || cn2y >= n_ ||
         grid_[cn2x][cn2y] == 1);
-  b = !(nn2x < 0 || nn2y < 0 || nn2x >= n_   || nn2y >= n_ ||
+  b = !(nn2x < 0 || nn2y < 0 || nn2x >= n_ || nn2y >= n_ ||
         grid_[nn2x][nn2y] == 1);
   return a != b;
 }
 
-std::tuple<bool, std::vector<Node>> JumpPointSearch::Plan (const Node& start, const Node& goal) {
+std::tuple<bool, std::vector<Node>> JumpPointSearch::Plan(const Node& start,
+                                                          const Node& goal) {
   grid_ = original_grid_;
   start_ = start;
   goal_ = goal;
@@ -158,7 +159,8 @@ int main() {
   PrintGrid(grid);
 
   JumpPointSearch new_jump_point_search(grid);
-  const auto [path_found, path_vector] = new_jump_point_search.Plan(start, goal);
+  const auto [path_found, path_vector] =
+      new_jump_point_search.Plan(start, goal);
 
   PrintPath(path_vector, start, goal, grid);
   return 0;

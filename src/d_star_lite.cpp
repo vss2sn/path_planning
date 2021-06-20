@@ -16,7 +16,7 @@ bool DStarLite::IsObstacle(const Node& n) const {
 }
 
 double DStarLite::H(const Node& n1, const Node& n2) {
-  return  std::sqrt(std::pow(n1.x_ - n2.x_, 2) + std::pow(n1.y_ - n2.y_, 2));
+  return std::sqrt(std::pow(n1.x_ - n2.x_, 2) + std::pow(n1.y_ - n2.y_, 2));
 }
 
 std::vector<Node> DStarLite::GetNeighbours(const Node& u) const {
@@ -46,7 +46,8 @@ double DStarLite::C(const Node& s1, const Node& s2) const {
   return std::find_if(std::begin(motions_), std::end(motions_),
                       [&delta](const Node& motion) {
                         return CompareCoordinates(motion, delta);
-                      })->cost_;
+                      })
+      ->cost_;
 }
 
 Key DStarLite::CalculateKey(const Node& s) const {
@@ -131,7 +132,7 @@ std::vector<Node> DStarLite::DetectChanges() {
       }
     }
   }
-  if (create_random_obstacles_ && rand() > 1.0/static_cast<double>(n_)) {
+  if (create_random_obstacles_ && rand() > 1.0 / static_cast<double>(n_)) {
     const int x = rand() % n_;
     const int y = rand() % n_;
     if (!((start_.x_ == x && start_.y_ == y) ||
@@ -143,14 +144,16 @@ std::vector<Node> DStarLite::DetectChanges() {
   return obstacles;
 }
 
-void DStarLite::SetDynamicObstacles(const bool create_random_obstacles,
-  const std::unordered_map<int, std::vector<Node>>& time_discovered_obstacles) {
-   create_random_obstacles_ = create_random_obstacles;
-   time_discovered_obstacles_ = time_discovered_obstacles;
+void DStarLite::SetDynamicObstacles(
+    const bool create_random_obstacles,
+    const std::unordered_map<int, std::vector<Node>>&
+        time_discovered_obstacles) {
+  create_random_obstacles_ = create_random_obstacles;
+  time_discovered_obstacles_ = time_discovered_obstacles;
 }
 
 std::tuple<bool, std::vector<Node>> DStarLite::Plan(const Node& start,
-    const Node& goal) {
+                                                    const Node& goal) {
   grid_ = original_grid_;
   start_ = start;
   goal_ = goal;
@@ -246,16 +249,17 @@ int main() {
   goal.PrintStatus();
 
   const bool create_random_obstacles = false;
-  const std::unordered_map<int, std::vector<Node>> time_discovered_obstacles
-  {
-    {1, {Node(1, 1)}},
-    {2, {Node(2, 2)}},
-    {3, {Node(5, 5)}},
-    {4, {Node(6, 6), Node(7, 7), Node(8, 8), Node(9, 9), Node(10, 10), Node(7, 6)}}
-  };
+  const std::unordered_map<int, std::vector<Node>> time_discovered_obstacles{
+      {1, {Node(1, 1)}},
+      {2, {Node(2, 2)}},
+      {3, {Node(5, 5)}},
+      {4,
+       {Node(6, 6), Node(7, 7), Node(8, 8), Node(9, 9), Node(10, 10),
+        Node(7, 6)}}};
 
   DStarLite d_star_lite(grid);
-  d_star_lite.SetDynamicObstacles(create_random_obstacles, time_discovered_obstacles);
+  d_star_lite.SetDynamicObstacles(create_random_obstacles,
+                                  time_discovered_obstacles);
   const auto [found_path, path_vector] = d_star_lite.Plan(start, goal);
   PrintPath(path_vector, start, goal, grid);
   return 0;

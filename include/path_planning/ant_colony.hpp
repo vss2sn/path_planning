@@ -7,8 +7,8 @@
 #ifndef ANT_COLONY_H
 #define ANT_COLONY_H
 
-#include <unordered_map>
 #include <tuple>
+#include <unordered_map>
 
 #include "path_planning/planner.hpp"
 #include "utils/utils.hpp"
@@ -23,8 +23,8 @@ struct Ant {
    * @param id Ant id
    * @return no return value
    */
-  Ant(const Node& start = Node(), const int id = 0) :
-    id_(id), current_node_(start), previous_node_(Node(-1, -1)) {}
+  Ant(const Node& start = Node(), const int id = 0)
+      : id_(id), current_node_(start), previous_node_(Node(-1, -1)) {}
 
   bool found_goal_ = false;
   int id_;
@@ -39,15 +39,15 @@ struct Ant {
  */
 class AntColony : public Planner {
  public:
+  /**
+   * @brief Constructor
+   * @param grid the grid on which the planner is to plan
+   * @return no return value
+   */
+  explicit AntColony(const std::vector<std::vector<int>>& grid)
+      : Planner(grid) {}
 
-   /**
-    * @brief Constructor
-    * @param grid the grid on which the planner is to plan
-    * @return no return value
-    */
-   explicit AntColony(const std::vector<std::vector<int>>& grid) : Planner(grid) {}
-
-   /**
+  /**
    * @brief Constructor for set up of Ant Colony class
    * @param n_ants number of ants yo be created in every iterations
    * @param alpha value of exponent for the use of the pheromone trails in
@@ -60,9 +60,9 @@ class AntColony : public Planner {
    * @param Q Constant multiplication factor for the cost/reward function
    * @return no return value
    */
-  void SetParams(const int n_ants = 10, const double alpha = 1, const double beta = 0.2,
-                 const double evap_rate = 0.5, const double Q = 10,
-                 const int iterations = 50);
+  void SetParams(const int n_ants = 10, const double alpha = 1,
+                 const double beta = 0.2, const double evap_rate = 0.5,
+                 const double Q = 10, const int iterations = 50);
 
   /**
    * @brief Prints the path taken by the ant.
@@ -86,9 +86,11 @@ class AntColony : public Planner {
    * @brief Ant Colony algorithm implementation
    * @param start start node
    * @param goal goal node
-   * @return tuple contatining a bool as to whether a path was found, and the path
+   * @return tuple contatining a bool as to whether a path was found, and the
+   * path
    */
-  std::tuple<bool, std::vector<Node>> Plan(const Node& start, const Node& goal) override;
+  std::tuple<bool, std::vector<Node>> Plan(const Node& start,
+                                           const Node& goal) override;
 
  private:
   int n_ants_ = 10;

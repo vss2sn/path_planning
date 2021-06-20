@@ -32,19 +32,16 @@ std::tuple<bool, Node> RRT::FindNearestPoint(Node& new_node) {
   new_node.cost_ = std::numeric_limits<double>::max();
   for (const auto node : point_list_) {
     if (auto new_dist = std::sqrt(std::pow(node.x_ - new_node.x_, 2) +
-                              std::pow(node.y_ - new_node.y_, 2));
+                                  std::pow(node.y_ - new_node.y_, 2));
         new_dist <= threshold_ && !IsAnyObstacleInPath(node, new_node) &&
-        !CompareCoordinates(node, new_node)
-        && node.pid_ != new_node.id_ ) {
-
+        !CompareCoordinates(node, new_node) && node.pid_ != new_node.id_) {
       near_nodes_[new_node].push_back(node);
       near_nodes_[node].push_back(new_node);
       found = true;
-      if (new_dist + node.cost_< new_node.cost_) {
+      if (new_dist + node.cost_ < new_node.cost_) {
         nearest_node = node;
         new_node.pid_ = nearest_node.id_;
         new_node.cost_ = new_dist + node.cost_;
-
       }
     }
   }
@@ -57,14 +54,16 @@ std::tuple<bool, Node> RRT::FindNearestPoint(Node& new_node) {
 bool RRT::IsAnyObstacleInPath(const Node& n_1, const Node& n_2) const {
   if (n_2.y_ - n_1.y_ == 0) {
     const double c = n_2.y_;
-    return std::any_of(std::begin(obstacle_list_), std::end(obstacle_list_),
-                    [&c, &n_1, &n_2](const auto& obs_node){return
-                        obs_node.y_ == c &&
-                        ((n_1.x_ >= obs_node.x_ && obs_node.x_ >= n_2.x_) ||
-                         (n_1.x_ <= obs_node.x_ && obs_node.x_ <= n_2.x_));
-                    });
+    return std::any_of(
+        std::begin(obstacle_list_), std::end(obstacle_list_),
+        [&c, &n_1, &n_2](const auto& obs_node) {
+          return obs_node.y_ == c &&
+                 ((n_1.x_ >= obs_node.x_ && obs_node.x_ >= n_2.x_) ||
+                  (n_1.x_ <= obs_node.x_ && obs_node.x_ <= n_2.x_));
+        });
   } else {
-    const double slope = static_cast<double>(n_2.x_ - n_1.x_) / (n_2.y_ - n_1.y_);
+    const double slope =
+        static_cast<double>(n_2.x_ - n_1.x_) / (n_2.y_ - n_1.y_);
     const double c = n_2.x_ - slope * n_2.y_;
     for (const auto& obs_node : obstacle_list_) {
       if (!(((n_1.y_ >= obs_node.y_) && (obs_node.y_ >= n_2.y_)) ||
@@ -122,7 +121,8 @@ Node RRT::GenerateRandomNode() const {
   return Node(x, y, 0, 0, n_ * x + y, 0);
 }
 
-std::tuple<bool, std::vector<Node>> RRT::Plan(const Node& start, const Node& goal) {
+std::tuple<bool, std::vector<Node>> RRT::Plan(const Node& start,
+                                              const Node& goal) {
   start_ = start;
   goal_ = goal;
   grid_ = original_grid_;
@@ -162,12 +162,14 @@ std::tuple<bool, std::vector<Node>> RRT::Plan(const Node& start, const Node& goa
 }
 
 bool RRT::CheckGoalVisible(const Node& new_node) {
-  auto dist = std::sqrt(std::pow(goal_.x_ - new_node.x_, 2) + std::pow(goal_.y_ - new_node.y_, 2));
+  auto dist = std::sqrt(std::pow(goal_.x_ - new_node.x_, 2) +
+                        std::pow(goal_.y_ - new_node.y_, 2));
   if (dist > threshold_) {
     return false;
   }
   if (!IsAnyObstacleInPath(new_node, goal_)) {
-    point_list_.emplace(goal_.x_, goal_.y_, dist + new_node.cost_, 0, n_*goal_.x_ + goal_.y_, new_node.id_);
+    point_list_.emplace(goal_.x_, goal_.y_, dist + new_node.cost_, 0,
+                        n_ * goal_.x_ + goal_.y_, new_node.id_);
     return true;
   }
   return false;
@@ -187,9 +189,10 @@ void RRT::CreateObstacleList() {
 std::vector<Node> RRT::CreatePath() {
   std::vector<Node> path;
   Node current = *point_list_.find(goal_);
-  while(!CompareCoordinates(current, start_)) {
+  while (!CompareCoordinates(current, start_)) {
     path.push_back(current);
-    current = *point_list_.find(Node(current.pid_ / n_, current.pid_ % n_, 0, 0, current.pid_));
+    current = *point_list_.find(
+        Node(current.pid_ / n_, current.pid_ % n_, 0, 0, current.pid_));
   }
   path.push_back(current);
   return path;

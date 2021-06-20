@@ -17,13 +17,13 @@
  */
 class GeneticAlgorithm : public Planner {
  public:
-
-   /**
-    * @brief Constructor
-    * @param grid the grid on which the planner is to plan
-    * @return no return value
-    */
-  explicit GeneticAlgorithm(const std::vector<std::vector<int>>& grid) : Planner (grid) {};
+  /**
+   * @brief Constructor
+   * @param grid the grid on which the planner is to plan
+   * @return no return value
+   */
+  explicit GeneticAlgorithm(const std::vector<std::vector<int>>& grid)
+      : Planner(grid){};
 
   /**
    * @brief Set params for the planner
@@ -43,9 +43,11 @@ class GeneticAlgorithm : public Planner {
    * @brief Genetic Algorithm implementation
    * @param start start node
    * @param goal goal node
-   * @return tuple contatining a bool as to whether a path was found, and the path
+   * @return tuple contatining a bool as to whether a path was found, and the
+   * path
    */
-  std::tuple<bool, std::vector<Node>> Plan(const Node& start, const Node& goal) override;
+  std::tuple<bool, std::vector<Node>> Plan(const Node& start,
+                                           const Node& goal) override;
 
   /**
    * @brief Returns the last valid path within an iteration

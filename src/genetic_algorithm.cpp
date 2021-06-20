@@ -16,8 +16,8 @@ constexpr int random_range_max = 100;
 constexpr int inverted_probabilty_mutate = 10;
 
 void GeneticAlgorithm::SetParams(const int generations, const int popsize,
-                      const float c, const bool shorten_chromosome,
-                      const int path_length) {
+                                 const float c, const bool shorten_chromosome,
+                                 const int path_length) {
   generations_ = generations;
   popsize_ = popsize;
   c_ = c;
@@ -46,7 +46,8 @@ std::tuple<bool, std::vector<Node>> GeneticAlgorithm::Plan(const Node &start,
   while (generation <= generations_) {
     size_t paths_size = paths_.size();
     std::vector<int> f_vals(paths_size);
-    std::transform(paths_.begin(), paths_.end(), f_vals.begin(),
+    std::transform(
+        paths_.begin(), paths_.end(), f_vals.begin(),
         [&](const std::vector<Node> &path) { return CalculateFitness(path); });
 
     f_val = *std::min_element(f_vals.begin(), f_vals.end());
@@ -57,8 +58,8 @@ std::tuple<bool, std::vector<Node>> GeneticAlgorithm::Plan(const Node &start,
       if (f_vals[i] <= f_val * c_) {
         if (shorten_chromosome_) {
           const int len = std::min(paths_[i].size(), path_length_);
-          new_paths_.emplace_back(std::vector<Node>(paths_[i].begin(),
-            std::next(paths_[i].begin(), len)));
+          new_paths_.emplace_back(std::vector<Node>(
+              paths_[i].begin(), std::next(paths_[i].begin(), len)));
         } else {
           new_paths_.push_back(paths_[i]);
         }
@@ -317,7 +318,7 @@ bool GeneticAlgorithm::CheckPath(const std::vector<Node> &path) const {
     if (checkOutsideBoundary(current, n_)) {
       return false;
     }
-    if(grid_[current.x_][current.y_] == 1) {
+    if (grid_[current.x_][current.y_] == 1) {
       return false;
     }
   }
@@ -354,7 +355,8 @@ int main() {
 
   GeneticAlgorithm new_genetic_algorithm(grid);
   new_genetic_algorithm.SetParams(10000, 30, 1.05, true, 4 * start.h_cost_);
-  const auto [path_found, path_vector] = new_genetic_algorithm.Plan(start, goal);
+  const auto [path_found, path_vector] =
+      new_genetic_algorithm.Plan(start, goal);
   PrintPathInOrder(path_vector, start, goal, grid);
 }
 #endif  // BUILD_INDIVIDUAL

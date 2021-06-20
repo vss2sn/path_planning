@@ -38,19 +38,19 @@ void AntColony::RemoveLoop(Ant& ant) {
   }
 }
 
-void AntColony::SetParams(const int n_ants, const double alpha, const double beta,
-               const double evap_rate, const double Q,
-               const int iterations) {
-   n_ants_ = n_ants;
-   alpha_= alpha;
-   beta_ = beta;
-   evap_rate_ = evap_rate;
-   Q_ = Q;
-   iterations_ =iterations;
+void AntColony::SetParams(const int n_ants, const double alpha,
+                          const double beta, const double evap_rate,
+                          const double Q, const int iterations) {
+  n_ants_ = n_ants;
+  alpha_ = alpha;
+  beta_ = beta;
+  evap_rate_ = evap_rate;
+  Q_ = Q;
+  iterations_ = iterations;
 }
 
 std::tuple<bool, std::vector<Node>> AntColony::Plan(const Node& start,
-                                               const Node& goal) {
+                                                    const Node& goal) {
   grid_ = original_grid_;
   start_ = start;  // Make sure start has id
   goal_ = goal;
@@ -87,7 +87,6 @@ std::tuple<bool, std::vector<Node>> AntColony::Plan(const Node& start,
       Ant ant(start_, j);
       while (!CompareCoordinates(ant.current_node_, goal_) &&
              ant.steps_ < max_steps) {
-
         ant.path_.push_back(ant.current_node_);
 
         // Get next position
@@ -99,13 +98,12 @@ std::tuple<bool, std::vector<Node>> AntColony::Plan(const Node& start,
           possible_position.id_ =
               possible_position.x_ * n_ + possible_position.y_;
 
-          if (checkOutsideBoundary(possible_position, n_)){
+          if (checkOutsideBoundary(possible_position, n_)) {
             continue;
           }
 
           if (CompareCoordinates(possible_position, ant.previous_node_) ||
               grid_[possible_position.x_][possible_position.y_] == 1) {
-
             continue;
           }
 
@@ -181,7 +179,8 @@ std::tuple<bool, std::vector<Node>> AntColony::Plan(const Node& start,
           // how the phermones detereorate. Good for path planning as
           // prevents moving in the opposite direction to path and
           // improves convergence
-          // std::cout << ant.path_[i_ant].id_ << ' ' <<  ant.path_[i_ant - 1].id_ << '\n';
+          // std::cout << ant.path_[i_ant].id_ << ' ' <<  ant.path_[i_ant -
+          // 1].id_ << '\n';
           auto it = pheromone_edges_.find(
               std::make_pair(ant.path_[i_ant].id_, ant.path_[i_ant - 1].id_));
           it->second += c;
