@@ -31,60 +31,51 @@ double run_test(std::vector<std::vector<int>>& grid, const std::string& algo){
 
   std::vector<Node> path_vector;
 
-  // Variables for RRT and RRTStar
-  constexpr double threshold = 2;
-  constexpr int max_iter_x_factor = 20;
-
-  // Variables for Ant Colony Optimization
-  constexpr int n_ants = 10;
-  constexpr int iterations = 50;
-  constexpr float alpha = 1;
-  constexpr float beta =0.7;
-  constexpr float evap_rate = 0.3;
-  constexpr float Q = 10;
-
-  // Variables for genetic algorithm
-  constexpr int generations = 10000;
-  constexpr int popsize = 30;
-  constexpr float c = 1.05;
-  constexpr bool shorten_chromosome = true;
-
   if(algo =="dijkstra"){
-    Dijkstra new_dijkstra;
-    path_vector = new_dijkstra.dijkstra(grid, start, goal);
+    Dijkstra dijkstra(grid);
+    const auto [path_found, path] = dijkstra.Plan(start, goal);
+    path_vector = path;
   }
   else if(algo == "a_star"){
-    AStar new_a_star;
-    path_vector = new_a_star.a_star(grid, start, goal);
+    AStar a_star(grid);
+    const auto [path_found, path] = a_star.Plan(start, goal);
+    path_vector = path;
   }
   else if(algo == "jump_point_search"){
-    JumpPointSearch new_jump_point_search;
-    path_vector = new_jump_point_search.jump_point_search(grid, start, goal);
+    JumpPointSearch jump_point_search(grid);
+    const auto [path_found, path] = jump_point_search.Plan(start, goal);
+    path_vector = path;
   }
   else if(algo == "lpa_star"){
-    LPAStar new_lpa_star;
-    path_vector = new_lpa_star.lpa_star(grid, start, goal, 1, false);
+    LPAStar lpa_star(grid);
+    const auto [path_found, path] = lpa_star.Plan(start, goal);
+    path_vector = path;
   }
   else if(algo=="rrt"){
-    RRT new_rrt;
-    path_vector = new_rrt.rrt(grid, start, goal, max_iter_x_factor, threshold);
+    RRT rrt(grid);
+    const auto [path_found, path] = rrt.Plan(start, goal);
+    path_vector = path;
   }
   else if(algo=="rrtstar"){
-    RRTStar new_rrt_star;
-    path_vector = new_rrt_star.rrt_star(grid, start, goal, max_iter_x_factor, threshold);
+    RRTStar rrt_star(grid);
+    const auto [path_found, path] = rrt_star.Plan(start, goal);
+    path_vector = path;
   }
   else if(algo == "d_star_lite"){
-    DStarLite new_d_star_lite;
-    path_vector = new_d_star_lite.Plan(grid, start, goal);
+    DStarLite d_star_lite(grid);
+    const auto [path_found, path] = d_star_lite.Plan(start, goal);
+    path_vector = path;
   }
   else if(algo == "ant_colony"){
-    AntColony new_ant_colony(n_ants, alpha, beta, evap_rate, iterations, Q);
-    path_vector = new_ant_colony.ant_colony(grid, start, goal);
+    AntColony ant_colony(grid);
+    const auto [path_found, path] = ant_colony.Plan(start, goal);
+    path_vector = path;
   }
   else if(algo == "genetic_algorithm"){
-    GeneticAlgorithm new_genetic_algorithm(generations, popsize, c, shorten_chromosome);
-    path_vector = new_genetic_algorithm.genetic_algorithm(grid, start, goal, 2*static_cast<int>(start.h_cost_));
-    if(path_vector[0].id_==-1) {
+    GeneticAlgorithm genetic_algorithm(grid);
+    const auto [path_found, path] = genetic_algorithm.Plan(start, goal);
+    path_vector = path;
+    if(path_vector.empty()) {
       return -1;
     }
     for(size_t i = 0; i < path_vector.size(); i++) {
@@ -94,7 +85,7 @@ double run_test(std::vector<std::vector<int>>& grid, const std::string& algo){
     }
   }
 
-  if(path_vector[0].cost_==-1) {
+  if(path_vector.empty()) {
     return -1;
   }
 

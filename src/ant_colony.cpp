@@ -45,7 +45,6 @@ void AntColony::SetParams(const int n_ants, const double alpha, const double bet
    evap_rate_ = evap_rate;
    Q_ = Q;
    iterations_ =iterations;
-   ants_ = std::vector<Ant>(n_ants_);
 }
 
 std::tuple<bool, std::vector<Node>> AntColony::Plan(const Node& start,
@@ -54,6 +53,7 @@ std::tuple<bool, std::vector<Node>> AntColony::Plan(const Node& start,
   start_ = start;  // Make sure start has id
   goal_ = goal;
   motions_ = GetMotion();
+  ants_ = std::vector<Ant>(n_ants_);
 
   for (int i = 0; i < n_; i++) {
     for (int j = 0; j < n_; j++) {
@@ -199,6 +199,9 @@ std::tuple<bool, std::vector<Node>> AntColony::Plan(const Node& start,
     last_best_path[i].pid_ = last_best_path[i - 1].id_;
   }
 
+  for (const auto& node : last_best_path) {
+    node.PrintStatus();
+  }
   return {true, last_best_path};
 }
 
@@ -209,16 +212,16 @@ std::tuple<bool, std::vector<Node>> AntColony::Plan(const Node& start,
  * @return 0
  */
 int main() {
-  int n = 11;
-  std::vector<std::vector<int>> grid(n, std::vector<int>(n));
-  MakeGrid(grid);
-
-  std::random_device rd;   // obtain a random number from hardware
-  std::mt19937 eng(rd());  // seed the generator
-  std::uniform_int_distribution<int> distr(0, n - 1);  // define the range
+  int n = 3;
+  std::vector<std::vector<int>> grid {
+    {0, 0, 0},
+    {0, 0, 0},
+    {0, 0, 0}
+  };
+  // MakeGrid(grid);
 
   Node start(0,0, 0, 0, 0, 0);
-  Node goal(distr(eng), distr(eng), 0, 0, 0, 0);
+  Node goal(2, 2, 0, 0, 0, 0);
 
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -228,14 +231,13 @@ int main() {
   // assigned.
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
-  grid[1][1] = 1;
-  grid[1][0] = 1;
-  grid[0][1] = 1;
+  // grid[1][1] = 1;
+  // grid[1][0] = 1;
+  // grid[0][1] = 1;
   // grid[1][1] = 1;
   // grid[1][1] = 1;
   PrintGrid(grid);
-  start.PrintStatus();
-  goal.PrintStatus();
+
   grid[start.x_][start.y_] = 0;
   grid[goal.x_][goal.y_] = 0;
 
@@ -243,9 +245,8 @@ int main() {
   // heuristic is < 1 here, reducing beta increases the value placed on the
   // heuristic
   AntColony new_ant_colony(grid);
-  new_ant_colony.SetParams(10, 1, 0.2, 0.5, 10, 50);
+  // new_ant_colony.SetParams(10, 1, 0.2, 0.5, 10, 50);
   const auto [found_path, path_vector] = new_ant_colony.Plan(start, goal);
-  std::cout << "OUT" << '\n';
   PrintPath(path_vector, start, goal, grid);
   return 0;
 }

@@ -182,10 +182,17 @@ std::vector<Node> LPAStar::GetNewPath() {
         min_node = new_node;
       }
     }
+    min_node.id_ = min_node.x_ * n_ + min_node.y_;
+    path.back().pid_ = min_node.id_;
     current = min_node;
     path.push_back(current);
   }
-  path.push_back(current);
+
+  const auto path_cost = path.back().cost_;
+  for (auto& node : path) {
+    node.cost_ = path_cost - node.cost_;
+  }
+  path.back().pid_ = path.back().id_;
   return path;
 }
 
@@ -222,6 +229,10 @@ std::tuple<bool, std::vector<Node>> LPAStar::Plan(const Node& start, const Node&
       }
     }
   }
+  for (const auto& node : path) {
+    node.PrintStatus();
+  }
+  // path[0].pid_ = path[0].id_;
   PrintGrid(grid_);
   return {true, path};
 }
@@ -234,15 +245,21 @@ std::tuple<bool, std::vector<Node>> LPAStar::Plan(const Node& start, const Node&
  */
 int main() {
   int n = 11;
-  std::vector<std::vector<int>> grid(n, std::vector<int>(n));
-  MakeGrid(grid);
+  // std::vector<std::vector<int>> grid(n, std::vector<int>(n));
+  // MakeGrid(grid);
+
+  std::vector<std::vector<int>> grid {
+    {0, 0, 0},
+    {0, 0, 0},
+    {0, 0, 0}
+  };
 
   std::random_device rd;   // obtain a random number from hardware
   std::mt19937 eng(rd());  // seed the generator
   std::uniform_int_distribution<int> distr(0, n - 1);  // define the range
 
-  Node start(distr(eng), distr(eng), 0, 0, 0, 0);
-  Node goal(distr(eng), distr(eng), 0, 0, 0, 0);
+  Node start(0, 0, 0, 0, 0, 0);
+  Node goal(2, 2, 0, 0, 0, 0);
 
   start.id_ = start.x_ * n + start.y_;
   start.pid_ = start.x_ * n + start.y_;
@@ -258,15 +275,19 @@ int main() {
   const bool create_random_obstacles = false;
   const std::unordered_map<int, std::vector<Node>> time_discovered_obstacles
   {
-    {1, {Node(1, 1)}},
-    {2, {Node(2, 2)}},
-    {3, {Node(5, 5)}},
-    {4, {Node(6, 6), Node(7, 7), Node(8, 8), Node(9, 9), Node(10, 10), Node(7, 6)}}
+    // {1, {Node(1, 1)}},
+    // {2, {Node(2, 2)}},
+    // {3, {Node(5, 5)}},
+    // {4, {Node(6, 6), Node(7, 7), Node(8, 8), Node(9, 9), Node(10, 10), Node(7, 6)}}
   };
 
   LPAStar lpa_star(grid);
   lpa_star.SetDynamicObstacles(create_random_obstacles, time_discovered_obstacles);
   const auto [found_path, path_vector] = lpa_star.Plan(start, goal);
+  std::cout << path_vector.size() << '\n';
+  for (const auto& node : path_vector) {
+    node.PrintStatus();
+  }
   return 0;
 }
 #endif  // BUILD_INDIVIDUAL
