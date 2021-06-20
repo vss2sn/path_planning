@@ -15,7 +15,7 @@
 #include "utils/utils.hpp"
 
 /**
- * @brief Stcut to hold key values for nodes used in D* Lite
+ * @brief Struct to hold key values for nodes used in D* Lite
  */
 struct Key {
   double first;
@@ -67,19 +67,51 @@ struct NodeKeyPair {
   Key key;
 };
 
+/**
+ * Struct to check whether the 2 node key pairs are equal
+ */
 struct CompareNodeKeyPairKeys {
+  /**
+   * @brief Overload () operator to check whether the 2 node key pairs are equal
+   * @param nkp1 Node key pair 1
+   * @param nkp2 Node key pair 2
+   * @return whether the 2 node key pairs are equal
+   */
   bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
     return nkp1.key == nkp2.key;
   }
 };
 
+/**
+ * Struct to check whether the nodes of the 2 node key pairs have the same
+ * coordinates
+ */
 struct CompareNodeKeyPairCoordinates {
+
+  /**
+   * @brief Overload () operator to check whether the 2 node key pairs are equal
+   * @param nkp1 Node key pair 1
+   * @param nkp2 Node key pair 2
+   * @return whether the nodes of the 2 node key pairs have the same
+   */
   bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
     return CompareCoordinates(nkp1.node, nkp2.node);
   }
 };
 
+/**
+ * Struct to check whether the nodes of the 2 node key pairs have the same
+ * coordinates and the key values are equal
+ */
 struct CompareNodeKeyPairCoordinatesAndKeys {
+  /**
+   * @brief Overload () operator to check whether the nodes of the 2 node key
+   * pairs have the same coordinates and the key values are equal
+   * @param nkp1 Node key pair 1
+   * @param nkp2 Node key pair 2
+   * @return whether the nodes of the 2 node key pairs have the same coordinates
+   * and the key values are equal
+   */
   bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
     return CompareCoordinates(nkp1.node, nkp2.node) && nkp1.key == nkp2.key;
   }
@@ -92,7 +124,7 @@ class std::greater<NodeKeyPair> {
     * @brief Overload () operator for std::greater to use for comparison by
     *        priority queue
     * @param nk1 node key pair 1
-    * @param nk1 node key pair 2
+    * @param nk2 node key pair 2
     * @return result of comparison
     * @details Compares the key values
     */
@@ -106,7 +138,7 @@ class std::hash<NodeKeyPair> {
  public:
   /**
    * @brief Hash function for the node key pair
-   * @param nkp node key pair who's jas is to be calculated
+   * @param nkp node key pair who's hash is to be calculated
    * @return hash value
    */
   size_t operator()(const NodeKeyPair& nkp) const {
@@ -166,7 +198,7 @@ public:
 
   /**
    * @brief Remove an element from the LazyPQ if it exists
-   * @returnvoid
+   * @return void
    */
   void remove(const NodeKeyPair& t);
 
@@ -175,28 +207,44 @@ private:
   std::unordered_set<NodeKeyPair, std::hash<NodeKeyPair>, CompareNodeKeyPairCoordinates> s; // Needs to just compare the coordinates and
 };
 
+/**
+ * @brief Class for objects that plan using the D* Lite algorithm
+ */
 class DStarLite : public Planner {
  public:
+
+   /**
+    * @brief Constructor
+    * @param grid the grid on which the planner is to plan
+    * @return no return value
+    */
    DStarLite(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
 
+   /**
+    * @brief Sets the time discovered obstacles and the option that allows
+             the creation of random obstacles
+    * @param create_random_obstacles should random obstacles be created during
+     *       execution
+    * @param time_discovered_obstacles obstacles to be discovered at specific
+    *        times
+    * @return void
+    * @details Set separately from the plan function to allow this to persist
+               between calls to Plan()
+    */
    void SetDynamicObstacles(const bool create_random_obstacles = false,
                             const std::unordered_map<int, std::vector<Node>>&
                               time_discovered_obstacles = {});
 
    /**
-   * @brief Main function running the D* lite algorithm.
-            Creates a path to be followed
-            Steps trought the path in increments of 1 step along the path,
-            rerouting as necessary
-   * @param grid Grid on which the plan is to be made
-   * @param start Start node
-   * @param goal Goal node
-   * @param create_random_obstacles should random obstacles be created during
-    *       execution
-   * @param time_discovered_obstacles obstacles to be discovered at specific
-   *        times
-   * @return The path taken
-   */
+    * @brief D* Lite algorithm implementation
+    * @param start start node
+    * @param goal goal node
+    * @return tuple contatining a bool as to whether a path was found, and the path
+    * @details Creates a path to be followed
+               Steps through the path in increments of 1 time step
+               Checks for discovered obstacles
+               Replans as necessary
+    */
    std::tuple<bool, std::vector<Node>> Plan(const Node& start, const Node& goal) override;
 
  private:
@@ -227,7 +275,7 @@ class DStarLite : public Planner {
 
   /**
    * @brief Returns all the neighours for a given node
-   * @param Node for which neighbours are to be found
+   * @param u Node for which neighbours are to be found
    * @return neighbours
    * @details all nodes that can be reached by use of a single motion primitive
    */
@@ -298,7 +346,7 @@ class DStarLite : public Planner {
   /**
    * @brief Heuristic function based on D* Lite algorithm
    * @param n1 node 1
-   * @param 21 node 2
+   * @param n2 node 2
    * @return the heuristic cost of travelling from one node 1 to node 2
    */
   double H(const Node& n1, const Node& n2) const;

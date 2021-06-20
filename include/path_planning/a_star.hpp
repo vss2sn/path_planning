@@ -12,21 +12,25 @@
 #include "utils/utils.hpp"
 
 /**
- * @brief Class for A Star objects
+ * @brief Class for objects that plan using the A* algorithm
  */
 class AStar : public Planner {
  public:
 
+   /**
+    * @brief Constructor
+    * @param grid the grid on which the planner is to plan
+    * @return no return value
+    */
    AStar(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
 
   /**
-   * @brief Main algorithm of A*
-   * @param grid Main grid
-   * @param start_in start node
-   * @param goal_in goal node
-   * @return vector of path
+   * @brief A* algorithm implementation
+   * @param start start node
+   * @param goal goal node
+   * @return tuple contatining a bool as to whether a path was found, and the path
    */
-  std::tuple<bool, std::vector<Node>> Plan(const Node& start_in, const Node& goal_in) override;
+  std::tuple<bool, std::vector<Node>> Plan(const Node& start, const Node& goal) override;
 
 private:
   std::vector<Node> ConvertClosedListToPath(std::unordered_set<Node, NodeIdAsHash, compare_coordinates>& closed_list, const Node& start, const Node& goal);

@@ -28,12 +28,11 @@ void GeneticAlgorithm::SetParams(const int generations, const int popsize,
 
 std::tuple<bool, std::vector<Node>> GeneticAlgorithm::Plan(const Node &start,
                                                            const Node &goal) {
-// std::cout << __LINE__ << '\n';
   int generation = 0;
   start_ = start;
   goal_ = goal;
   grid_ = original_grid_;
-// std::cout << __LINE__ << '\n';
+
   // Create initial chromosome
   std::vector<Node> initial_path = GenerateSimplePath();
   paths_.push_back(initial_path);
@@ -42,42 +41,34 @@ std::tuple<bool, std::vector<Node>> GeneticAlgorithm::Plan(const Node &start,
   if (CheckPath(initial_path)) {
     truepaths_.push_back(initial_path);
   }
-// std::cout << __LINE__ << '\n';
+
   // Allow while loop to continue beyond path found to find optimum path
   while (generation <= generations_) {
-    // std::cout << __LINE__ << '\n';
-
     size_t paths_size = paths_.size();
     std::vector<int> f_vals(paths_size);
     std::transform(paths_.begin(), paths_.end(), f_vals.begin(),
         [&](const std::vector<Node> &path) { return CalculateFitness(path); });
-        // std::cout << __LINE__ << '\n';
 
     f_val = *std::min_element(f_vals.begin(), f_vals.end());
     std::vector<std::vector<Node>> new_paths_;
-    // std::cout << __LINE__ << '\n';
+
     for (int i = 0; i < paths_.size(); ++i) {
       // c provides a margin of error from best path
       if (f_vals[i] <= f_val * c_) {
         if (shorten_chromosome_) {
-          // std::cout << __LINE__ << '\n';
           const int len = std::min(paths_[i].size(), path_length_);
-          // std::cout << __LINE__ << '\n';
-
           new_paths_.emplace_back(std::vector<Node>(paths_[i].begin(),
             std::next(paths_[i].begin(), len)));
-            // std::cout << __LINE__ << '\n';
-
         } else {
           new_paths_.push_back(paths_[i]);
         }
       }
     }
-    // std::cout << __LINE__ << '\n';
+
     if (new_paths_.size() > 0) {
       std::swap(paths_, new_paths_);
     }
-    // std::cout << __LINE__ << '\n';
+
     if (paths_.size() < popsize_) {
       while (paths_.size() < popsize_) {
         if (rand() % inverted_probabilty_mutate == 0) {
@@ -92,7 +83,6 @@ std::tuple<bool, std::vector<Node>> GeneticAlgorithm::Plan(const Node &start,
 
     // TODO(vss): Consider dynamically modifying path length to move towards
     // optimality
-    // std::cout << __LINE__ << '\n';
     for (const auto &path_seen : paths_) {
       int tmp_length = std::numeric_limits<int>::max();
       if (CheckPath(path_seen)) {
@@ -102,7 +92,6 @@ std::tuple<bool, std::vector<Node>> GeneticAlgorithm::Plan(const Node &start,
         } else {
           truepaths_.push_back(path_seen);
         }
-        // std::cout << __LINE__ << '\n';
         if (shorten_chromosome_) {
           auto tmp = start_;
           if (path_seen.size() < tmp_length) {
@@ -121,17 +110,15 @@ std::tuple<bool, std::vector<Node>> GeneticAlgorithm::Plan(const Node &start,
           path_length_ = tmp_length;
         }
       }
-      // std::cout << __LINE__ << '\n';
       // PrintChromosome(path_seen);
     }
-    // std::cout << __LINE__ << '\n';
     generation++;
   }
-  // std::cout << __LINE__ << '\n';
 
   // std::cout << "True paths: " << truepaths_.size() << '\n';
   // if(!truepaths_.empty())std::cout << "True paths: " << '\n';
   // for(int i=0;i<truepaths_.size();i++) PrintPathOfChromosome(truepaths_[i]);
+
   const auto node_path = ReturnLastPath();
   return {!node_path.empty(), node_path};
 }
@@ -370,6 +357,7 @@ int main() {
   start.pid_ = start.x_ * n + start.y_;
   goal.id_ = goal.x_ * n + goal.y_;
   start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
+
   // Make sure start and goal are not obstacles and their ids are correctly
   // assigned.
   grid[start.x_][start.y_] = 0;
@@ -381,7 +369,6 @@ int main() {
   GeneticAlgorithm new_genetic_algorithm(grid);
   new_genetic_algorithm.SetParams(10000, 30, 1.05, true, 4 * start.h_cost_);
   const auto [path_found, path_vector] = new_genetic_algorithm.Plan(start, goal);
-  // std::cout << __LINE__ << '\n';
   PrintPathInOrder(path_vector, start, goal, grid);
 }
 #endif  // BUILD_INDIVIDUAL

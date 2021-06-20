@@ -35,11 +35,19 @@ struct Ant {
 };
 
 /**
- * @brief Class for Ant Colony objects
+ * @brief Class for objects that plan using the Ant Colony algorithm
  */
 class AntColony : public Planner {
  public:
-  /**
+
+   /**
+    * @brief Constructor
+    * @param grid the grid on which the planner is to plan
+    * @return no return value
+    */
+   AntColony(const std::vector<std::vector<int>>& grid) : Planner(grid) {}
+
+   /**
    * @brief Constructor for set up of Ant Colony class
    * @param n_ants number of ants yo be created in every iterations
    * @param alpha value of exponent for the use of the pheromone trails in
@@ -52,8 +60,6 @@ class AntColony : public Planner {
    * @param Q Constant multiplication factor for the cost/reward function
    * @return no return value
    */
-   AntColony(const std::vector<std::vector<int>>& grid) : Planner(grid) {}
-
   void SetParams(const int n_ants = 10, const double alpha = 1, const double beta = 0.2,
                  const double evap_rate = 0.5, const double Q = 10,
                  const int iterations = 50);
@@ -77,11 +83,10 @@ class AntColony : public Planner {
   static void RemoveLoop(Ant& ant);
 
   /**
-   * @brief Main algorithm of ant colony optimization
-   * @param grid Main grid
+   * @brief Ant Colony algorithm implementation
    * @param start start node
    * @param goal goal node
-   * @return best path within last iteration of the ant colony
+   * @return tuple contatining a bool as to whether a path was found, and the path
    */
   std::tuple<bool, std::vector<Node>> Plan(const Node& start, const Node& goal) override;
 

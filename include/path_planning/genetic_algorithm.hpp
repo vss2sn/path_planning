@@ -13,32 +13,37 @@
 #include "utils/utils.hpp"
 
 /**
- * @brief Class for Genetic Algorithm ojects
+ * @brief Class for objects that plan using the Genetic algorithm
  */
 class GeneticAlgorithm : public Planner {
  public:
-  /**
-   * @brief Constructr to set up Genetic Algorithm object
-   * @param generations number of generations of genetic algorithms
-   * @param popsize size of population in each generation
-   * @param c multiplicative value for fitness criteria for path
-   * selection/elimination
-   * @param shorten_chromosome reduce size of chomosome based on best path
-   * @return no return value
-   */
+
+   /**
+    * @brief Constructor
+    * @param grid the grid on which the planner is to plan
+    * @return no return value
+    */
   GeneticAlgorithm(const std::vector<std::vector<int>>& grid) : Planner (grid) {};
 
+  /**
+   * @brief Set params for the planner
+   * @param generations number of generations that the algorithm goes through
+   * @param popsize number of individuals within a signle generation
+   * @param c cmargin of error from best path
+   * @param shorten_chromosome shorten the chromosome if the goal is found
+                                before the path length reaches its maximum value
+   * @param path_length maximum path length
+   * @return no return value
+   */
   void SetParams(const int generations = 10000, const int popsize = 30,
                  const float c = 1.05, const bool shorten_chromosome = false,
                  const int path_length = 30);
 
   /**
-   * @brief Main algorithm of genertic algorithm
-   * @param grid Main grid
+   * @brief Genetic Algorithm implementation
    * @param start start node
    * @param goal goal node
-   * @param path_length length of path (chromosome size)
-   * @return best path within last iteration of the algorithm
+   * @return tuple contatining a bool as to whether a path was found, and the path
    */
   std::tuple<bool, std::vector<Node>> Plan(const Node& start, const Node& goal) override;
 
@@ -47,6 +52,7 @@ class GeneticAlgorithm : public Planner {
    * @return last valid path
    */
   std::vector<Node> ReturnLastPath() const;
+
   // given the way a genetic algorithm decreases fitness values, the last path
   // is likely ot be the best. Can reorder ased on actual fitness values if
   // required.

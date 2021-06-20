@@ -1,5 +1,5 @@
 /**
- * @file rrt_star.h
+ * @file rrt_star.cpp
  * @author vss2sn
  * @brief Contains the RRTStar class
  */

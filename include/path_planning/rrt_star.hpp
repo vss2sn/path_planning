@@ -18,21 +18,25 @@
 #include "utils/utils.hpp"
 
 /**
- * @brief Class for RRT Star objects
+ * @brief Class for objects that plan using the RRT* algorithm
  */
 class RRTStar : public Planner {
 public:
 
+  /**
+   * @brief Constructor
+   * @param grid the grid on which the planner is to plan
+   * @return no return value
+   */
   RRTStar(std::vector<std::vector<int>> grid) : Planner (std::move(grid)) {}
 
- /**
-  * @brief Main algorithm of A*
-  * @param grid Main grid
-  * @param start_in start node
-  * @param goal_in goal node
-  * @return vector of path
-  */
-  std::tuple<bool, std::vector<Node>> Plan(const Node& start_in, const Node& goal_in) override;
+  /**
+   * @brief RRT* algorithm implementation
+   * @param start start node
+   * @param goal goal node
+   * @return tuple contatining a bool as to whether a path was found, and the path
+   */
+  std::tuple<bool, std::vector<Node>> Plan(const Node& start, const Node& goal) override;
 
 private:
   /**

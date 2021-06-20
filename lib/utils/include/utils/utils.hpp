@@ -61,11 +61,6 @@ class Node {
        const double h_cost = 0, const int id = 0, const int pid = 0) :
        x_(x), y_(y), cost_(cost), h_cost_(h_cost), id_(id), pid_(pid) {}
 
-  Node& operator=(const Node&) = default;
-  Node& operator=(Node&&) = default;
-  Node(const Node&) = default;
-  Node(Node&&) = default;
-
   /**
    * @brief Prints the values of the variables in the node
    * @return void
@@ -96,20 +91,33 @@ class Node {
 
 /**
  * @brief Hash for node struct
- * @param n node for which the hash is to be calculated
- * @return hash value calculated
  */
 template<>
 class std::hash<Node> {
 public:
+
+  /**
+   * @brief Overlaod () operator to calculate the hash of a Node
+   * @param n Node for which the hash is to be calculated
+   * @return hash value
+   */
   size_t operator () (const Node& n) const {
     return std::hash<int>()(n.x_) ^ std::hash<int>()(n.y_);
   }
 };
 
-
+/**
+ * @brief Hash for node struct that returns node id
+ */
 class NodeIdAsHash {
 public:
+
+  /**
+   * @brief Overlaod () operator to calculate the hash of a Node
+   * @param n Node for which the hash is to be calculated
+   * @return hash value
+   * @details the hash returned is the node id
+   */
   size_t operator () (const Node& n) const {
     return n.id_;
   }

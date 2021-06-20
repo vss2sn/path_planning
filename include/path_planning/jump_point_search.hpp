@@ -13,13 +13,31 @@
 
 #include "utils/utils.hpp"
 
+/**
+ * @brief Class for objects that plan using the jump point search algorithm
+ */
 class JumpPointSearch : public Planner {
  public:
+
+   /**
+    * @brief Constructor
+    * @param grid the grid on which the planner is to plan
+    * @return no return value
+    */
   JumpPointSearch (const std::vector<std::vector<int>>& grid) : Planner(grid) {};
+
+  /**
+   * @brief Jump Point Search algorithm implementation
+   * @param start start node
+   * @param goal goal node
+   * @return tuple contatining a bool as to whether a path was found, and the path
+   */
   std::tuple<bool, std::vector<Node>> Plan (const Node& start, const Node& goal) override;
-  void InsertionSort(std::vector<Node>& v) const;
-  bool has_forced_neighbours(const Node& new_point, const Node& next_point,
+
+
+  bool HasForcedNeighbours(const Node& new_point, const Node& next_point,
                              const Node& motion) const;
+
   Node jump(const Node& new_point, const Node& motion, const int id);
 
  private:

@@ -31,7 +31,7 @@ Node JumpPointSearch::jump(const Node& new_point, const Node& motion,
     return next_point;
   }
   bool fn = false;
-  fn = has_forced_neighbours(new_point, next_point, motion);
+  fn = HasForcedNeighbours(new_point, next_point, motion);
   if (fn) {
     // std::cout << "Forced neighbours found"<<'\n';
     return next_point;
@@ -45,7 +45,7 @@ Node JumpPointSearch::jump(const Node& new_point, const Node& motion,
   return next_point;
 }
 
-bool JumpPointSearch::has_forced_neighbours(const Node& new_point,
+bool JumpPointSearch::HasForcedNeighbours(const Node& new_point,
                                             const Node& next_point,
                                             const Node& motion) const {
   int cn1x = new_point.x_ + motion.y_;
@@ -74,23 +74,6 @@ bool JumpPointSearch::has_forced_neighbours(const Node& new_point,
         grid_[nn2x][nn2y] == 1);
   return a != b;
 }
-
-#ifdef CUSTOM_DEBUG_HELPER_FUNCION
-void JumpPointSearch::InsertionSort(std::vector<Node>& v) const {
-  int nV = v.size();
-  int i, j;
-  Node key;
-  for (i = 1; i < nV; i++) {
-    key = v[i];
-    j = i - 1;
-    while (j >= 0 && (v[j].cost_ + v[j].h_cost_ > key.cost_ + key.h_cost_)) {
-      v[j + 1] = v[j];
-      j--;
-    }
-    v[j + 1] = key;
-  }
-}
-#endif
 
 std::tuple<bool, std::vector<Node>> JumpPointSearch::Plan (const Node& start, const Node& goal) {
   grid_ = original_grid_;
