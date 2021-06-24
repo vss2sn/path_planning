@@ -68,17 +68,17 @@ Key LPAStar::CalculateKey(const Node& s) const {
              std::min(g_[s.x_][s.y_], rhs_[s.x_][s.y_])};
 }
 
-std::vector<std::vector<double>> LPAStar::CreateGrid(const int n) {
+std::vector<std::vector<double>> LPAStar::CreateGrid() {
   return std::vector<std::vector<double>>(
-      n, std::vector<double>(n, std::numeric_limits<double>::max()));
+      n_, std::vector<double>(n_, std::numeric_limits<double>::max()));
 }
 
 void LPAStar::Initialize() {
   motions_ = GetMotion();
   time_step_ = 0;
   U_.clear();
-  rhs_ = CreateGrid(n_);
-  g_ = CreateGrid(n_);
+  rhs_ = CreateGrid();
+  g_ = CreateGrid();
   rhs_[start_.x_][start_.y_] = 0;
   U_.insert(NodeKeyPair{start_, CalculateKey(start_)});
 }
@@ -246,7 +246,7 @@ std::tuple<bool, std::vector<Node>> LPAStar::Plan(const Node& start,
  * @return 0
  */
 int main() {
-  int n = 11;
+  constexpr int n = 11;
   std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
   MakeGrid(grid);
 

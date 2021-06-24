@@ -16,7 +16,7 @@ constexpr int random_range_max = 100;
 constexpr int inverted_probabilty_mutate = 10;
 
 void GeneticAlgorithm::SetParams(const int generations, const int popsize,
-                                 const float c, const bool shorten_chromosome,
+                                 const double c, const bool shorten_chromosome,
                                  const int path_length) {
   generations_ = generations;
   popsize_ = popsize;
@@ -66,7 +66,7 @@ std::tuple<bool, std::vector<Node>> GeneticAlgorithm::Plan(const Node &start,
       }
     }
 
-    if (new_paths_.size() > 0) {
+    if (!new_paths_.empty()) {
       std::swap(paths_, new_paths_);
     }
 
@@ -327,7 +327,7 @@ bool GeneticAlgorithm::CheckPath(const std::vector<Node> &path) const {
 
 #ifdef BUILD_INDIVIDUAL
 int main() {
-  int n = 11;
+  constexpr int n = 11;
   std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
   MakeGrid(grid);
 
@@ -353,8 +353,15 @@ int main() {
 
   PrintGrid(grid);
 
+  constexpr int generations = 10000;
+  constexpr int popsize = 30;
+  constexpr double c = 1.05;
+  constexpr bool shorten_chromosome = true;
+  constexpr int path_length_x_factor = 4;
+
   GeneticAlgorithm new_genetic_algorithm(grid);
-  new_genetic_algorithm.SetParams(10000, 30, 1.05, true, 4 * start.h_cost_);
+  new_genetic_algorithm.SetParams(generations, popsize, c, shorten_chromosome,
+    static_cast<int>(path_length_x_factor * start.h_cost_));
   const auto [path_found, path_vector] =
       new_genetic_algorithm.Plan(start, goal);
   PrintPathInOrder(path_vector, start, goal, grid);

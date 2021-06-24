@@ -49,10 +49,17 @@ int main() {
   // Variables for Ant Colony Optimization
   constexpr int n_ants = 10;
   constexpr int iterations = 50;
-  constexpr float alpha = 1;
-  constexpr float beta = 0.7;
-  constexpr float evap_rate = 0.3;
-  constexpr float Q = 10;
+  constexpr double alpha = 1;
+  constexpr double beta = 0.7;
+  constexpr double evap_rate = 0.3;
+  constexpr double Q = 10;
+
+  // Variables for Genetic Algorithm
+  constexpr int generations = 10000;
+  constexpr int popsize = 30;
+  constexpr double c = 1.05;
+  constexpr bool shorten_chromosome = true;
+  constexpr int path_length_x_factor = 4;
 
   // Resetting grid
   // Create object for the algorithm
@@ -117,6 +124,7 @@ int main() {
   // clang-format on
   grid = main_grid;
   RRT rrt(grid);
+  rrt.SetParams(threshold, max_iter_x_factor);
   {
     const auto [path_found, path_vector] = rrt.Plan(start, goal);
     PrintPath(path_vector, start, goal, grid);
@@ -129,6 +137,7 @@ int main() {
   // clang-format on
   grid = main_grid;
   RRTStar rrt_star(grid);
+  rrt_star.SetParams(threshold, max_iter_x_factor);
   {
     const auto [path_found, path_vector] = rrt_star.Plan(start, goal);
     PrintPath(path_vector, start, goal, grid);
@@ -168,7 +177,8 @@ int main() {
   // clang-format on
   grid = main_grid;
   GeneticAlgorithm genetic_algorithm(grid);
-  genetic_algorithm.SetParams(10000, 30, 1.05, true, 4 * start.h_cost_);
+  genetic_algorithm.SetParams(generations, popsize, c, shorten_chromosome,
+    static_cast<int>(path_length_x_factor * start.h_cost_));
   {
     const auto [path_found, path_vector] = genetic_algorithm.Plan(start, goal);
     PrintPathInOrder(path_vector, start, goal, grid);

@@ -72,7 +72,7 @@ std::tuple<bool, std::vector<Node>> AntColony::Plan(const Node& start,
   }
 
   // heuristically set max steps
-  const int max_steps = std::pow(n_, 2) / 2 + n_;
+  const int max_steps = n_ * n_ / 2 + n_;
 
   std::random_device device;
   std::mt19937 engine(device());
@@ -213,7 +213,7 @@ std::tuple<bool, std::vector<Node>> AntColony::Plan(const Node& start,
  * @return 0
  */
 int main() {
-  int n = 11;
+  constexpr int n = 11;
   std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
   MakeGrid(grid);
 

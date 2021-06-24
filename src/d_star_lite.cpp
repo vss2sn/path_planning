@@ -55,9 +55,9 @@ Key DStarLite::CalculateKey(const Node& s) const {
              std::min(g_[s.x_][s.y_], rhs_[s.x_][s.y_])};
 }
 
-std::vector<std::vector<double>> DStarLite::CreateGrid(const int n) {
+std::vector<std::vector<double>> DStarLite::CreateGrid() {
   return std::vector<std::vector<double>>(
-      n, std::vector<double>(n, std::numeric_limits<double>::max()));
+      n_, std::vector<double>(n_, std::numeric_limits<double>::max()));
 }
 
 void DStarLite::Initialize() {
@@ -65,8 +65,8 @@ void DStarLite::Initialize() {
   time_step_ = 0;
   U_.clear();
   k_m_ = 0;
-  rhs_ = CreateGrid(n_);
-  g_ = CreateGrid(n_);
+  rhs_ = CreateGrid();
+  g_ = CreateGrid();
   rhs_[goal_.x_][goal_.y_] = 0;
   U_.insert(NodeKeyPair{goal_, CalculateKey(goal_)});
 }
@@ -224,7 +224,7 @@ std::tuple<bool, std::vector<Node>> DStarLite::Plan(const Node& start,
  * @return 0
  */
 int main() {
-  int n = 11;
+  constexpr int n = 11;
   std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
   MakeGrid(grid);
 

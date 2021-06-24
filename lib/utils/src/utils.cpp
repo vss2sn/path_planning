@@ -190,11 +190,13 @@ void LazyPQ::insert(const NodeKeyPair& t) {
 
 void LazyPQ::pop() {
   while(!pq.empty()) {
-    if (const auto it = s.find(pq.top()); it == s.end()) { // Element been removed from set
+    if (const auto it = s.find(pq.top()); it == s.end() ||
+        (it != s.end() && pq.top().key != it->key)) {
+      // Element been removed from set OR
+      // Element has been updated in set with new key, and inserted already into pq with new value
       pq.pop();
-    } else if (it != s.end() && pq.top().key != it->key) { // Element has been updated in set with new key, and inserted already into pq with new value
-      pq.pop();
-    } else if (it != s.end() && pq.top().key == it->key) { // Found an elelment that is in set and priority queue
+    } else if (it != s.end() && pq.top().key == it->key) {
+      // Found an elelment that is in set and priority queue
       break;
     }
   }
@@ -206,11 +208,13 @@ void LazyPQ::pop() {
   // The loop below allows top() to be const without making the
   // std::priority_queue mutable
   while(!pq.empty()) {
-    if (const auto it = s.find(pq.top()); it == s.end()) { // Element been removed from set
+    if (const auto it = s.find(pq.top()); it == s.end() ||
+        (it != s.end() && pq.top().key != it->key)) {
+      // Element been removed from set OR
+      // Element has been updated in set with new key, and inserted already into pq with new value
       pq.pop();
-    } else if (it != s.end() && pq.top().key != it->key) { // Element has been updated in set with new key, and inserted already into pq with new value
-      pq.pop();
-    } else if (it != s.end() && pq.top().key == it->key) { // Found an elelment that is in set and priority queue
+    } else if (it != s.end() && pq.top().key == it->key) {
+      // Found an elelment that is in set and priority queue
       break;
     }
   }
@@ -238,9 +242,10 @@ void LazyPQ::remove(const NodeKeyPair& t) {
   }
   // Ensure top() is const
   while(!pq.empty()) {
-    if (const auto it = s.find(pq.top()); it == s.end()) { // Element been removed from set
-      pq.pop();
-    } else if (it != s.end() && pq.top().key != it->key) { // Element has been updated in set with new key, and inserted already into pq with new value
+    if (const auto it = s.find(pq.top()); it == s.end() ||
+        (it != s.end() && pq.top().key != it->key)) {
+      // Element been removed from set OR
+      // Element has been updated in set with new key, and inserted already into pq with new value
       pq.pop();
     } else if (it != s.end() && pq.top().key == it->key) { // Found an elelment that is in set and priority queue
       break;

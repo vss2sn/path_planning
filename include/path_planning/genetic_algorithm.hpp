@@ -36,7 +36,7 @@ class GeneticAlgorithm : public Planner {
    * @return no return value
    */
   void SetParams(const int generations = 10000, const int popsize = 30,
-                 const float c = 1.05, const bool shorten_chromosome = false,
+                 const double c = 1.05, const bool shorten_chromosome = false,
                  const int path_length = 30);
 
   /**
@@ -128,7 +128,7 @@ class GeneticAlgorithm : public Planner {
   int f_val = std::numeric_limits<int>::max();
   int generations_ = 10000;
   int popsize_ = 30;
-  float c_ = 1.05;
+  double c_ = 1.05;
   std::vector<std::vector<Node>> paths_;
   std::vector<std::vector<Node>> truepaths_;
   bool found_ = false;

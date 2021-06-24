@@ -78,14 +78,6 @@ double run_test(std::vector<std::vector<int>>& grid, const std::string& algo){
     GeneticAlgorithm genetic_algorithm(grid);
     const auto [path_found, path] = genetic_algorithm.Plan(start, goal);
     path_vector = path;
-    if(path_vector.empty()) {
-      return -1;
-    }
-    for(size_t i = 0; i < path_vector.size(); i++) {
-      if(CompareCoordinates(path_vector[i],goal)) {
-        return i;
-      }
-    }
   }
 
   if(path_vector.empty()) {

@@ -27,6 +27,9 @@ class RRT : public Planner {
    */
   explicit RRT(std::vector<std::vector<int>> grid) : Planner(std::move(grid)) {}
 
+  void SetParams(const int threshold = 2, const int max_iter_x_factor = 20);
+
+
   /**
    * @brief RRT algorithm implementation
    * @param start start node

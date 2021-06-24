@@ -61,52 +61,54 @@ bool RRT::IsAnyObstacleInPath(const Node& n_1, const Node& n_2) const {
                  ((n_1.x_ >= obs_node.x_ && obs_node.x_ >= n_2.x_) ||
                   (n_1.x_ <= obs_node.x_ && obs_node.x_ <= n_2.x_));
         });
-  } else {
-    const double slope =
-        static_cast<double>(n_2.x_ - n_1.x_) / (n_2.y_ - n_1.y_);
-    const double c = n_2.x_ - slope * n_2.y_;
-    for (const auto& obs_node : obstacle_list_) {
-      if (!(((n_1.y_ >= obs_node.y_) && (obs_node.y_ >= n_2.y_)) ||
-            ((n_1.y_ <= obs_node.y_) && (obs_node.y_ <= n_2.y_)))) {
-        continue;
+  }
+
+  const double slope =
+      static_cast<double>(n_2.x_ - n_1.x_) / (n_2.y_ - n_1.y_);
+  const double c = n_2.x_ - slope * n_2.y_;
+
+  // TODO: Cache this
+  for (const auto& obs_node : obstacle_list_) {
+    if (!(((n_1.y_ >= obs_node.y_) && (obs_node.y_ >= n_2.y_)) ||
+          ((n_1.y_ <= obs_node.y_) && (obs_node.y_ <= n_2.y_)))) {
+      continue;
+    }
+    if (!(((n_1.x_ >= obs_node.x_) && (obs_node.x_ >= n_2.x_)) ||
+          ((n_1.x_ <= obs_node.x_) && (obs_node.x_ <= n_2.x_)))) {
+      continue;
+    }
+    std::vector<double> arr(4);
+    // Using properties of a point and a line here.
+    // If the obtacle lies on one side of a line, substituting its edge points
+    // (all obstacles are grid sqaures in this example) into the equation of
+    // the line passing through the coordinated of the two nodes under
+    // consideration will lead to all four resulting values having the same
+    // sign. Hence if their sum of the value/abs(value) is 4 the obstacle is
+    // not in the way. If a single point is touched ie the substitution leads
+    // ot a value under 10^-7, it is set to 0. Hence the obstacle has
+    // 1 point on side 1, 3 points on side 2, the sum is 2 (-1+3)
+    // 2 point on side 1, 2 points on side 2, the sum is 0 (-2+2)
+    // 0 point on side 1, 3 points on side 2, (1 point on the line, ie,
+    // grazes the obstacle) the sum is 3 (0+3)
+    // Hence the condition < 3
+    arr[0] = obs_node.x_ + half_grid_unit -
+             slope * (obs_node.y_ + half_grid_unit) - c;
+    arr[1] = obs_node.x_ + half_grid_unit -
+             slope * (obs_node.y_ - half_grid_unit) - c;
+    arr[2] = obs_node.x_ - half_grid_unit -
+             slope * (obs_node.y_ + half_grid_unit) - c;
+    arr[3] = obs_node.x_ - half_grid_unit -
+             slope * (obs_node.y_ - half_grid_unit) - c;
+    double count = 0;
+    for (auto& a : arr) {
+      if (std::fabs(a) <= precision_limit) {
+        a = 0;
+      } else {
+        count += a / std::fabs(a);
       }
-      if (!(((n_1.x_ >= obs_node.x_) && (obs_node.x_ >= n_2.x_)) ||
-            ((n_1.x_ <= obs_node.x_) && (obs_node.x_ <= n_2.x_)))) {
-        continue;
-      }
-      std::vector<double> arr(4);
-      // Using properties of a point and a line here.
-      // If the obtacle lies on one side of a line, substituting its edge points
-      // (all obstacles are grid sqaures in this example) into the equation of
-      // the line passing through the coordinated of the two nodes under
-      // consideration will lead to all four resulting values having the same
-      // sign. Hence if their sum of the value/abs(value) is 4 the obstacle is
-      // not in the way. If a single point is touched ie the substitution leads
-      // ot a value under 10^-7, it is set to 0. Hence the obstacle has
-      // 1 point on side 1, 3 points on side 2, the sum is 2 (-1+3)
-      // 2 point on side 1, 2 points on side 2, the sum is 0 (-2+2)
-      // 0 point on side 1, 3 points on side 2, (1 point on the line, ie,
-      // grazes the obstacle) the sum is 3 (0+3)
-      // Hence the condition < 3
-      arr[0] = obs_node.x_ + half_grid_unit -
-               slope * (obs_node.y_ + half_grid_unit) - c;
-      arr[1] = obs_node.x_ + half_grid_unit -
-               slope * (obs_node.y_ - half_grid_unit) - c;
-      arr[2] = obs_node.x_ - half_grid_unit -
-               slope * (obs_node.y_ + half_grid_unit) - c;
-      arr[3] = obs_node.x_ - half_grid_unit -
-               slope * (obs_node.y_ - half_grid_unit) - c;
-      double count = 0;
-      for (auto& a : arr) {
-        if (std::fabs(a) <= precision_limit) {
-          a = 0;
-        } else {
-          count += a / std::fabs(a);
-        }
-      }
-      if (std::abs(count) < 3) {
-        return true;
-      }
+    }
+    if (std::abs(count) < 3) {
+      return true;
     }
   }
   return false;
@@ -198,6 +200,12 @@ std::vector<Node> RRT::CreatePath() {
   return path;
 }
 
+void RRT::SetParams(const int threshold, const int max_iter_x_factor) {
+  threshold_ = threshold;
+  max_iter_x_factor_ = max_iter_x_factor;
+}
+
+
 #ifdef BUILD_INDIVIDUAL
 /**
  * @brief Script main function. Generates start and end nodes as well as grid,
@@ -205,7 +213,7 @@ std::vector<Node> RRT::CreatePath() {
  * @return 0
  */
 int main() {
-  int n = 11;
+  constexpr int n = 11;
   std::vector<std::vector<int>> grid(n, std::vector<int>(n));
   MakeGrid(grid);
 
@@ -231,7 +239,11 @@ int main() {
 
   PrintGrid(grid);
 
+  constexpr double threshold = 2;
+  constexpr int max_iter_x_factor = 20;
+
   RRT new_rrt(grid);
+  new_rrt.SetParams(threshold, max_iter_x_factor);
   const auto [found_path, path_vector] = new_rrt.Plan(start, goal);
   PrintPath(path_vector, start, goal, grid);
   return 0;

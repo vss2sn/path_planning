@@ -164,10 +164,9 @@ class LPAStar : public Planner {
   /**
    * @brief Create a square grid of size n and set each value to
    *        std::numeric_limits<double>::max()
-   * @param n length of side
    * @return grid created
    */
-  std::vector<std::vector<double>> CreateGrid(const int n);
+  std::vector<std::vector<double>> CreateGrid();
 
   void ClearPathDisplay(const std::vector<Node>& path);
   std::vector<Node> GetNewPath();

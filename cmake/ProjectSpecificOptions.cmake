@@ -10,15 +10,9 @@ cmake_dependent_option( RUN_TESTS "Build and run tests" OFF "NOT BUILD_INDIVIDUA
 # default OFF, change by user input if and only if condition allows (BUILD_INDIVIDUAL=OFF)
 cmake_dependent_option( CHECK_COVERAGE "Run code coverage check" OFF "RUN_TESTS" OFF)
 # default OFF, change by user input if and only if condition allows (RUN_TESTS=ON)
-cmake_dependent_option( DYNAMIC_ALGOS "Build and run algorithms with obstacle detection in real time (D* Lite)" ON  "NOT RUN_TESTS" OFF)
-# default OFF, change by user input if and only if condition allows (RUN_TESTS=OFF)
 cmake_dependent_option( CUSTOM_DEBUG_HELPER_FUNCION "Build custom debug helper functions" OFF "NOT RUN_TESTS" OFF)
 # default OFF, change by user input if and only if condition allows (RUN_TESTS=OFF)
 
 if(CUSTOM_DEBUG_HELPER_FUNCION)
   add_definitions(-DCUSTOM_DEBUG_HELPER_FUNCION)
 endif(CUSTOM_DEBUG_HELPER_FUNCION)
-
-if(DYNAMIC_ALGOS)
-  add_definitions(-DDYNAMIC_ALGOS)
-endif(DYNAMIC_ALGOS)
