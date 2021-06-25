@@ -8,6 +8,20 @@ TEST(PathPlanningTest, EmptyGrid) {
                      { 0 , 0 , 0 },
                      { 0 , 0 , 0 }
                    };
+  int n = grid.size();
+
+  Node start(0,0,0,0,0,0);
+  start.id_ = start.x_ * n + start.y_;
+  start.pid_ = start.x_ * n + start.y_;
+
+  Node goal(n-1,n-1,0,0,0,0);
+  goal.id_ = goal.x_ * n +   goal.y_;
+  start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
+
+  //Make sure start and goal are not obstacles and their ids are correctly assigned.
+  grid[start.x_][start.y_] = 0;
+  grid[goal.x_][goal.y_] = 0;
+
   ASSERT_EQ(4, run_test(grid, "dijkstra"));
   ASSERT_EQ(4, run_test(grid, "a_star"));
   ASSERT_EQ(4, run_test(grid, "jump_point_search"));

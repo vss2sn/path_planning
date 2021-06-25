@@ -9,6 +9,7 @@
 
 #include <gtest/gtest.h>
 
+#include "path_planning/planner.hpp"
 #include "path_planning/a_star.hpp"
 #include "path_planning/ant_colony.hpp"
 #include "path_planning/d_star_lite.hpp"
@@ -19,77 +20,161 @@
 #include "path_planning/rrt.hpp"
 #include "path_planning/rrt_star.hpp"
 
-double run_test(std::vector<std::vector<int>>& grid, const std::string& algo){
-  PrintGrid(grid);
-  int n = grid.size();
-  Node start(0,0,0,0,0,0);
-  start.id_ = start.x_ * n + start.y_;
-  start.pid_ = start.x_ * n + start.y_;
-  Node goal(n-1,n-1,0,0,0,0);
-  goal.id_ = goal.x_ * n +   goal.y_;
-  start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
-  //Make sure start and goal are not obstacles and their ids are correctly assigned.
-  grid[start.x_][start.y_] = 0;
-  grid[goal.x_][goal.y_] = 0;
+#include <iostream>
 
-  std::vector<Node> path_vector;
+// TODO:
+// Create iterators for enums
+// Create a file with grids
+// Create a factory function for a vector of grids
+// Create a factory functions for PlannerEnum
+// Create a factory functions for PlannerEnum baserd on enums
+// Create a paramterized test fixture that can take a vector of grids and PlannerEnum
+// takes in a PlannerEnum
+// the test fixture should be able to run the PlannerEnum for multiple start
+// and goal points
 
-  if(algo =="dijkstra"){
-    Dijkstra dijkstra(grid);
-    const auto [path_found, path] = dijkstra.Plan(start, goal);
-    path_vector = path;
-  }
-  else if(algo == "a_star"){
-    AStar a_star(grid);
-    const auto [path_found, path] = a_star.Plan(start, goal);
-    path_vector = path;
-  }
-  else if(algo == "jump_point_search"){
-    JumpPointSearch jump_point_search(grid);
-    const auto [path_found, path] = jump_point_search.Plan(start, goal);
-    path_vector = path;
-  }
-  else if(algo == "lpa_star"){
-    LPAStar lpa_star(grid);
-    const auto [path_found, path] = lpa_star.Plan(start, goal);
-    path_vector = path;
-  }
-  else if(algo=="rrt"){
-    RRT rrt(grid);
-    const auto [path_found, path] = rrt.Plan(start, goal);
-    path_vector = path;
-  }
-  else if(algo=="rrtstar"){
-    RRTStar rrt_star(grid);
-    const auto [path_found, path] = rrt_star.Plan(start, goal);
-    path_vector = path;
-  }
-  else if(algo == "d_star_lite"){
-    DStarLite d_star_lite(grid);
-    const auto [path_found, path] = d_star_lite.Plan(start, goal);
-    path_vector = path;
-  }
-  else if(algo == "ant_colony"){
-    AntColony ant_colony(grid);
-    const auto [path_found, path] = ant_colony.Plan(start, goal);
-    path_vector = path;
-  }
-  else if(algo == "genetic_algorithm"){
-    GeneticAlgorithm genetic_algorithm(grid);
-    const auto [path_found, path] = genetic_algorithm.Plan(start, goal);
-    path_vector = path;
-  }
+enum class PlannerEnum {
+  DIJKSTRA,
+  A_STAR,
+  D_STAR_LITE,
+  LPA_STAR,
+  RRT_STAR,
+  ANT_COLONY,
+  GENETIC,
+  RRT,
 
-  if(path_vector.empty()) {
-    return -1;
-  }
+  First = DIJKSTRA,
+  Last = RRT
+};
 
-  for(const auto& p : path_vector) {
-    if(CompareCoordinates(p, goal)) {
-      return p.cost_;
+enum class OptimalPlannerEnum {
+  DIJKSTRA,
+  A_STAR,
+  D_STAR_LITE,
+  LPA_STAR,
+
+  First = DIJKSTRA,
+  Last = LPA_STAR
+};
+
+enum class AsymtoticallyOptimalPlannerEnum {
+  RRT_STAR,
+
+  First = RRT_STAR,
+  Last = RRT_STAR
+};
+
+enum class HeuristicPlannerEnum {
+  ANT_COLONY,
+  GENETIC,
+
+  First = ANT_COLONY,
+  Last = GENETIC
+};
+
+enum class SubOptimalPlannerEnum {
+  RRT,
+
+  First = RRT,
+  Last = RRT
+};
+
+
+template< typename T >
+class Enum {
+public:
+  class Iterator {
+    public:
+      Iterator(const int value) :
+         m_value(value) { }
+
+      T operator*() const {
+         return static_cast<T>(m_value);
+      }
+
+      void operator++() {
+         ++m_value;
+      }
+
+      bool operator != (const Iterator rhs) const {
+         return m_value != rhs.m_value;
+      }
+    private:
+      int m_value;
+  };
+};
+
+template< typename T >
+typename Enum<T>::Iterator begin(Enum<T>) {
+  return typename Enum<T>::Iterator(static_cast<int>(T::First));
+}
+
+template< typename T >
+typename Enum<T>::Iterator end(Enum<T>) {
+  return typename Enum<T>::Iterator(static_cast<int>(T::Last) + 1);
+}
+
+std::unique_ptr<Planner> PlannerFactory(PlannerEnum planner_enum, const std::vector<std::vector<int>>& grid) {
+  if (planner_enum == PlannerEnum::DIJKSTRA) {
+    return std::make_unique<Dijkstra>(grid);
+  } else if (planner_enum == PlannerEnum::A_STAR) {
+    return std::make_unique<AStar>(grid);
+  } else if (planner_enum == PlannerEnum::D_STAR_LITE) {
+    return std::make_unique<DStarLite>(grid);
+  } else if (planner_enum == PlannerEnum::LPA_STAR) {
+    return std::make_unique<LPAStar>(grid);
+  } else if (planner_enum == PlannerEnum::RRT) {
+    return std::make_unique<RRT>(grid);
+  } else if (planner_enum == PlannerEnum::RRT_STAR) {
+    return std::make_unique<RRTStar>(grid);
+  } else if (planner_enum == PlannerEnum::ANT_COLONY) {
+    return std::make_unique<AntColony>(grid);
+  } else if (planner_enum == PlannerEnum::GENETIC) {
+    return std::make_unique<GeneticAlgorithm>(grid);
+  }
+  std::cout << "Invalid planner. Using Dijkstra." << '\n';
+  return std::make_unique<Dijkstra>(grid);
+}
+
+std::vector<PlannerEnum> getOptimalPlannerEnums() {
+  return std::vector<PlannerEnum> {
+    PlannerEnum::DIJKSTRA,
+    PlannerEnum::A_STAR,
+    PlannerEnum::D_STAR_LITE,
+    PlannerEnum::LPA_STAR
+  };
+}
+
+std::vector<PlannerEnum> getAsymtoticallyOptimalPlannerEnums() {
+  return std::vector<PlannerEnum> {
+    PlannerEnum::RRT_STAR
+  };
+}
+
+std::vector<PlannerEnum> getHeuristicPlannerEnums() {
+  return std::vector<PlannerEnum> {
+    PlannerEnum::ANT_COLONY,
+    PlannerEnum::GENETIC
+  };
+}
+
+std::vector<PlannerEnum> getSubOptimalPlannerEnums() {
+  return std::vector<PlannerEnum>{
+    PlannerEnum::RRT
+  };
+}
+
+
+std::tuple<bool, double> run_test(Planner* planner, const Node& start, const Node& goal) {
+  const auto [path_found, path] = planner->Plan(start, goal);
+  if(path_found) {
+    for(const auto& p : path) {
+      if(CompareCoordinates(p, goal)) {
+        return {path_found, p.cost_};
+      }
     }
   }
-  return -1;
+  return {path_found, 0};
 }
 
 #endif  // TEST_UTILS
