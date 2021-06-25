@@ -182,11 +182,12 @@ void PrintCost(const std::vector<std::vector<int>>& grid,
                const std::vector<Node>& point_list);
 
 /**
- * @brief Creates a random grid of a given size
- * @param grid Modify this grid
- * @return void
- */
+* @brief Creates a random grid of a given size
+* @param grid Modify this grid
+* @return void
+*/
 void MakeGrid(std::vector<std::vector<int>>& grid);
+
 /**
  * @brief Prints the grid passed, highlighting the path taken, when the vector
  * is the path taken in order

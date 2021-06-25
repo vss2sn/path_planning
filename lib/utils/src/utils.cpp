@@ -102,6 +102,7 @@ void MakeGrid(std::vector<std::vector<int>>& grid) {
 
 void PrintPath(const std::vector<Node>& path_vector, const Node& start,
                const Node& goal, std::vector<std::vector<int>>& grid) {
+#ifdef CUSTOM_DEBUG_HELPER_FUNCION
   if (path_vector.empty()) {
     std::cout << "No path exists" << '\n';
     PrintGrid(grid);
@@ -129,10 +130,12 @@ void PrintPath(const std::vector<Node>& path_vector, const Node& start,
   }
   grid[start.x_][start.y_] = 3;
   PrintGrid(grid);
+#endif  // CUSTOM_DEBUG_HELPER_FUNCION
 }
 
 void PrintCost(const std::vector<std::vector<int>>& grid,
                const std::vector<Node>& point_list) {
+#ifdef CUSTOM_DEBUG_HELPER_FUNCION
   int n = grid.size();
   std::vector<Node>::const_iterator it_v;
   for (int i = 0; i < n; i++) {
@@ -149,11 +152,13 @@ void PrintCost(const std::vector<std::vector<int>>& grid,
     }
     std::cout << '\n' << '\n';
   }
+  #endif  // CUSTOM_DEBUG_HELPER_FUNCION
 }
 
 void PrintPathInOrder(const std::vector<Node>& path_vector,
                       const Node& /*start*/, const Node& goal,
                       std::vector<std::vector<int>>& grid) {
+#ifdef CUSTOM_DEBUG_HELPER_FUNCION
   if (path_vector.empty()) {
     std::cout << "Path not found" << '\n';
     PrintGrid(grid);
@@ -171,7 +176,9 @@ void PrintPathInOrder(const std::vector<Node>& path_vector,
   path_vector[0].PrintStatus();
   grid[path_vector[0].x_][path_vector[0].y_] = 3;
   PrintGrid(grid);
+#endif  // CUSTOM_DEBUG_HELPER_FUNCION
 }
+
 
 void LazyPQ::clear() {
   s.clear();
