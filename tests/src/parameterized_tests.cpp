@@ -198,7 +198,6 @@ class SubOptimalPathFound :
 };
 
 TEST_P (SubOptimalPathFound, SubOptimalPlanners) {
-  constexpr double margin_of_error = 0.00001;
   const auto expected_value = std::get<0>(std::get<0>(GetParam()));
   auto grid = std::get<1>(std::get<0>(GetParam()));
   const auto planner_enum = std::get<1>(GetParam());

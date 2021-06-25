@@ -9,6 +9,7 @@
 
 #include <gtest/gtest.h>
 
+#include "utils/utils.hpp"
 #include "path_planning/planner.hpp"
 #include "path_planning/a_star.hpp"
 #include "path_planning/ant_colony.hpp"
@@ -101,7 +102,7 @@ std::vector<PlannerEnum> getAllPlannerEnums() {
     PlannerEnum::GENETIC,
     PlannerEnum::RRT
   };
-};
+}
 
 std::vector<PlannerEnum> getOptimalPlannerEnums() {
   return std::vector<PlannerEnum> {

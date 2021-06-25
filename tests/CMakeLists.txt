@@ -7,12 +7,6 @@ else(GTest_FOUND)  # Using GTEST as submodule
   include(cmake/gtest.cmake)
 endif(GTest_FOUND)
 
-if(CHECK_COVERAGE)
-  LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
-  include(CodeCoverage)
-  APPEND_COVERAGE_COMPILER_FLAGS()
-endif(CHECK_COVERAGE)
-
 add_definitions(-DRUN_TESTS)
 
 function(add_test_file TEST_SOURCE)
@@ -27,14 +21,17 @@ function(add_test_file TEST_SOURCE)
   )
   target_sources(${test_output_file} PRIVATE ${TEST_SOURCE})
   target_include_directories(${test_output_file} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-  target_link_libraries( ${test_output_file} PRIVATE ${GTEST_LIBRARIES} pthread utils algos gtest)
+  target_link_libraries( ${test_output_file}
+    PRIVATE
+      ${GTEST_LIBRARIES}
+      pthread
+      utils
+      algos
+      gtest
+      project_options
+      project_warnings
+    )
   add_test(${test_output_file} ${test_output_file})
 endfunction()
-
-# add_test_file(${CMAKE_CURRENT_SOURCE_DIR}/src/empty_grid_test.cpp )
-# add_test_file(${CMAKE_CURRENT_SOURCE_DIR}/src/no_path_exists_test.cpp )
-# add_test_file(${CMAKE_CURRENT_SOURCE_DIR}/src/path_exists_1_test.cpp )
-# add_test_file(${CMAKE_CURRENT_SOURCE_DIR}/src/path_exists_2_test.cpp )
-# add_test_file(${CMAKE_CURRENT_SOURCE_DIR}/src/randomly_generated_grid_test.cpp )
 
 add_test_file(${CMAKE_CURRENT_SOURCE_DIR}/src/parameterized_tests.cpp )
