@@ -20,19 +20,6 @@
 #include "path_planning/rrt.hpp"
 #include "path_planning/rrt_star.hpp"
 
-#include <iostream>
-
-// TODO:
-// Create iterators for enums
-// Create a file with grids
-// Create a factory function for a vector of grids
-// Create a factory functions for PlannerEnum
-// Create a factory functions for PlannerEnum baserd on enums
-// Create a paramterized test fixture that can take a vector of grids and PlannerEnum
-// takes in a PlannerEnum
-// the test fixture should be able to run the PlannerEnum for multiple start
-// and goal points
-
 enum class PlannerEnum {
   DIJKSTRA,
   A_STAR,
@@ -47,40 +34,7 @@ enum class PlannerEnum {
   Last = RRT
 };
 
-enum class OptimalPlannerEnum {
-  DIJKSTRA,
-  A_STAR,
-  D_STAR_LITE,
-  LPA_STAR,
-
-  First = DIJKSTRA,
-  Last = LPA_STAR
-};
-
-enum class AsymtoticallyOptimalPlannerEnum {
-  RRT_STAR,
-
-  First = RRT_STAR,
-  Last = RRT_STAR
-};
-
-enum class HeuristicPlannerEnum {
-  ANT_COLONY,
-  GENETIC,
-
-  First = ANT_COLONY,
-  Last = GENETIC
-};
-
-enum class SubOptimalPlannerEnum {
-  RRT,
-
-  First = RRT,
-  Last = RRT
-};
-
-
-template< typename T >
+template<typename T>
 class Enum {
 public:
   class Iterator {
@@ -136,6 +90,19 @@ std::unique_ptr<Planner> PlannerFactory(PlannerEnum planner_enum, const std::vec
   return std::make_unique<Dijkstra>(grid);
 }
 
+std::vector<PlannerEnum> getAllPlannerEnums() {
+  return std::vector<PlannerEnum> {
+    PlannerEnum::DIJKSTRA,
+    PlannerEnum::A_STAR,
+    PlannerEnum::D_STAR_LITE,
+    PlannerEnum::LPA_STAR,
+    PlannerEnum::RRT_STAR,
+    PlannerEnum::ANT_COLONY,
+    PlannerEnum::GENETIC,
+    PlannerEnum::RRT
+  };
+};
+
 std::vector<PlannerEnum> getOptimalPlannerEnums() {
   return std::vector<PlannerEnum> {
     PlannerEnum::DIJKSTRA,
@@ -163,7 +130,6 @@ std::vector<PlannerEnum> getSubOptimalPlannerEnums() {
     PlannerEnum::RRT
   };
 }
-
 
 std::tuple<bool, double> run_test(Planner* planner, const Node& start, const Node& goal) {
   const auto [path_found, path] = planner->Plan(start, goal);
