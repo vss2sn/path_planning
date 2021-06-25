@@ -7,6 +7,7 @@
 #ifndef PLANNER_HPP
 #define PLANNER_HPP
 
+#include <iostream>
 #include <tuple>
 #include <unordered_map>
 #include <vector>
@@ -75,7 +76,12 @@ class Planner {
 
   virtual void SetDynamicObstacles(const bool create_random_obstacles = false,
                            const std::unordered_map<int, std::vector<Node>>&
-                               time_discovered_obstacles = {}) {} ;
+                               time_discovered_obstacles = {}) {
+    std::cout << "Please implement this function for the planner" << '\n';
+    std::cout << "Value attempted to be set: " << '\n';
+    std::cout << "Create random obstacles: " << create_random_obstacles << '\n';
+    std::cout << "Number of time discovered obstacles: " << time_discovered_obstacles.size() << '\n';
+  } ;
 
  protected:
   std::vector<std::vector<int>> grid_ = {};

@@ -16,7 +16,7 @@
 #include <tuple>
 
 #ifdef CUSTOM_DEBUG_HELPER_FUNCION
-void AntColony::PrintAntPath(const Ant& ant) const {
+void AntColony::PrintAntPath(Ant& ant) const {
   for (size_t k = 1; k < ant.path_.size(); k++)
     ant.path_[k].pid_ = ant.path_[k - 1].id_;
   ant.path_.back().id_ = ant.path_.back().x_ * n_ + ant.path_.back().y_;

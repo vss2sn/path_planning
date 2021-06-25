@@ -72,7 +72,7 @@ class AntColony : public Planner {
    * function in utils.cpp. It can be used to print incomplete paths as well, as
    * long as the end point and start point are specified.
    */
-  void PrintAntPath(const Ant& ant) const;
+  void PrintAntPath(Ant& ant) const;
 
   /**
    * @brief Removes loops in path

@@ -139,12 +139,16 @@ std::vector<Node> GeneticAlgorithm::ReturnLastPath() const {
       f_vals.begin(), std::min_element(f_vals.begin(), f_vals.end()));
   std::vector<Node> node_path;
   node_path.push_back(start_);
+  node_path.back().pid_ = node_path.back().id_;
   Node current = start_;
   for (const auto &motion : truepaths_[best_path_index]) {
     current = current + motion;
     current.pid_ = node_path.back().id_;
     current.id_ = n_ * current.x_ + current.y_;
     node_path.push_back(current);
+    if (CompareCoordinates(current, goal_)) {
+      break;
+    }
   }
   return node_path;
 }
