@@ -36,7 +36,6 @@
 - [Notes on tests](#notes_on_tests)
 - [Notes on implementations](#notes_on_implementations)
 - [TODOs](#todos)
-- [Consider](#consider)
 
 <a name="notes"></a>
 #### Notes ####
@@ -48,40 +47,24 @@
 1. To run each algorithm independently, set `BUILD_INDIVIDUAL` to `ON` (Executables created: `dijkstra`, `a_star`, etc). If you want to run all of them on the same grid, set `BUILD_INDIVIDUAL` to `OFF` (Executable created: `main`).
 2. To run tests, set `BUILD_INDIVIDUAL` to `OFF` and RUN_TESTS to `ON`.
 3. Set `CHECK_COVERAGE` to check code coverage.
-4. Set `DYNAMIC_ALGOS` to build the dynamic run of LPA* (D* Lite now always runs live)
-5. Set `CUSTOM_DEBUG_HELPER_FUNCION` to build functions that are used primarily for debugging (excluded from code coverage)
+4. Set `CUSTOM_DEBUG_HELPER_FUNCION` to build functions that are used primarily for debugging (excluded from code coverage)
 
 <a name="notes_on_tests"></a>
 #### Notes on test ####
 1. Unit test framework set up to set algorithms under different grids. This section uses Google Test.
 2. CMake option RUN_TESTS allows building tests when set when `BUILD_INDIVIDUAL` is set `OFF`.
-3. The tests do not currently cover the live run of the LPA* algorithm, and the variant of d* where new obstacles are generated, reducing the code coverage value.
-4. Given the random nature of RRT, no set has been set up for it yet.
-5. Files named grid#.cpp are specific grids to check for correctness under certain conditions. gridr.cpp generates a random grid and checks whether Dijkstra, A\* and D\* Lite (without new obstacles) generate the same cost from start to end.
-6. Due to the nature of Ant Colony Optimization and accounting for the hyper parameters, the tests are run with a 20% margin above the optimal solution. Similarly for Genetic Algorithm.
-7. The test function for genetic algorithm has been modified to ensure correct functioning.
+3. Due to the nature of Ant Colony Optimization and accounting for the hyper parameters, the tests are run with a 20% margin above the optimal solution. Similarly for Genetic Algorithm.
 
 <a name="notes_on_implementations"></a>
 #### Notes on implementations ####
 1. RRT stops as soon as goal is found. It is connects new points to the nearest point, not accounting for total cost to reach that point. In contrast RRT\* chooses to connect to a new node to the node that allows the new node to have the minimum cost. RRT\* also rewires the preexisting nodes to the new node if that path allows for a lower cost for the preexisting node.
-2. Acceptable motions can be modified in the GetMotion function in utils.cpp.
-3. A\* and D\* Lite use Manhattan distance (L1) as their heuristic (change to L2 if adding diagonal moves to the GetMotion function). D* Lite also uses the same in its C function.
-4. D* Lite can be run live with random obstacle creation using the RunDStarLite function. For the live run of D* Lite, obstacles are detected on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid. D* Lite is implemented based on Sven Koenig's & Maxim Likhachev's paper. It is also possible to specify the time step time step at which an obstacle will be discovered, irrespective of the current position.
-5. To specify your own grid, set n to number of rows, created the 2D vector, setting 1 for obstacles and 0 elsewhere, and comment out the MakeGrid function.
-6. The LPA* algorithm is implemented to run `max_iter_` number of times with default value `n`. Obstacles are created on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid, at a random point along the path. It can be run with `max_iter_` set to `0` if continuous replanning is to be disabled.
-7. The genetic algorithm has an option `shorten_chromosome`, which allows the shortening of the chromosome (path length) based on the length of the path found that reaches the goal. This reduces computation time and pushes the solution towards the shortest path.
+2. Acceptable motions can be modified in the `GetMotion()` function in utils.cpp.
+3. A\* and D\* Lite use Manhattan distance (L1) as their heuristic (change to L2 if adding diagonal moves to the `GetMotion` function). D* Lite also uses the same in its C function.
+4. LPA\* and D\* Lite can be run live with random obstacle creation using the RunDStarLite function. For the live run of D\* Lite, obstacles are detected on the current path of the bot with a probability  of 1/n, n being the number of rows/columns in the grid. D* Lite is implemented based on Sven Koenig's & Maxim Likhachev's paper. It is also possible to specify the time step time step at which an obstacle will be discovered, irrespective of the current position.
+5. To specify your own grid, set n to number of rows, created the 2D vector, setting 1 for obstacles and 0 elsewhere.
+6. The genetic algorithm has an option `shorten_chromosome`, which allows the shortening of the chromosome (path length) based on the length of the path found that reaches the goal. This reduces computation time and pushes the solution towards the shortest path.
 
 <a name="todos"></a>
 #### TODOs ####
-1. Alterations for moving node variables into private namespace.
-2. Prune merged branches.
-3. Add test of probabilistic completeness for RRT.
-4. Formalize pseudocode and add references for ACO.
-5. Add documentation for jump point search.
-6. Refactor (i.e. modernize)
-
-<a name="consider"></a>
-#### Consider ####
-1. Adding namespace to each header file.
-2. Inheriting node class into each file that requires a modified node (such as A* with heuristic cost, etc).
-3. Passing in motion primitives
+1. Add references
+2. Add algorithm explanations
