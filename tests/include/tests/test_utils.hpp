@@ -132,6 +132,14 @@ std::vector<PlannerEnum> getSubOptimalPlannerEnums() {
   };
 }
 
+std::vector<PlannerEnum> getDynamicPlannerEnums() {
+  return std::vector<PlannerEnum>{
+    PlannerEnum::LPA_STAR,
+    PlannerEnum::D_STAR_LITE,
+  };
+}
+
+
 std::tuple<bool, double> run_test(Planner* planner, const Node& start, const Node& goal) {
   const auto [path_found, path] = planner->Plan(start, goal);
   if(path_found) {

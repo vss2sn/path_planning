@@ -40,7 +40,7 @@ class DStarLite : public Planner {
    */
   void SetDynamicObstacles(const bool create_random_obstacles = false,
                            const std::unordered_map<int, std::vector<Node>>&
-                               time_discovered_obstacles = {});
+                               time_discovered_obstacles = {}) override;
 
   /**
    * @brief D* Lite algorithm implementation

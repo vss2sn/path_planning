@@ -51,6 +51,14 @@ Grid no_path_grid {
   { 0 , 0 , 0 , 0 , 0, 0 }
 } ;
 
+Grid dynamic_grid {
+ { 0 , 0 , 0 , 0 , 0 , 0 },
+ { 0 , 0 , 0 , 0 , 0 , 0 },
+ { 0 , 0 , 0 , 0 , 0 , 0 },
+ { 0 , 0 , 0 , 0 , 0 , 0 },
+ { 0 , 0 , 0 , 0 , 0 , 0 },
+ { 0 , 0 , 0 , 0 , 0 , 0 }
+};
 
 /****************************************************/
 /* Tests for all planners where goal is reached */
@@ -232,6 +240,56 @@ INSTANTIATE_TEST_SUITE_P(
   )
 );
 
+/****************************************************/
+/* Tests for dynamic planners where goal is reached */
+/****************************************************/
+
+class DynamicPathFound :
+    public testing::TestWithParam<std::tuple<
+      std::tuple<double, Grid>,
+      PlannerEnum,
+      bool,
+      std::unordered_map<int, std::vector<Node>>
+      >> {
+};
+
+TEST_P (DynamicPathFound, SubOptimalPlanners) {
+  const auto expected_value = std::get<0>(std::get<0>(GetParam()));
+  auto grid = std::get<1>(std::get<0>(GetParam()));
+  const auto planner_enum = std::get<1>(GetParam());
+
+  auto planner = PlannerFactory(planner_enum, grid);
+  planner->SetDynamicObstacles(std::get<2>(GetParam()), std::get<3>(GetParam()));
+  int n = grid.size();
+  Node start(0, 0, 0, 0, 0, 0);
+  start.id_ = start.x_ * n + start.y_;
+  start.pid_ = start.x_ * n + start.y_;
+  Node goal(n-1, n-1, 0, 0, 0, 0);
+  goal.id_ = goal.x_ * n +   goal.y_;
+  start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
+  grid[start.x_][start.y_] = 0;
+  grid[goal.x_][goal.y_] = 0;
+
+  const auto [path_found, path_cost] = run_test(planner.get(), start, goal);
+  ASSERT_EQ(true, path_found);
+  ASSERT_EQ(expected_value, path_cost);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+  DynamicPlannersPathFound,
+  DynamicPathFound,
+  ::testing::Combine (
+    ::testing::Values (std::tuple<double, Grid>{20, dynamic_grid}),
+    ::testing::ValuesIn (getDynamicPlannerEnums()),
+    ::testing::Values (false),
+    ::testing::Values (
+      std::unordered_map<int, std::vector<Node>>{
+        {1, {Node(0, 2), Node(1, 2), Node(2, 2), Node(3, 2), Node(4, 2)}},
+        {2, {Node(1, 4), Node(2, 4), Node(3, 4), Node(4, 4), Node(5, 4)}}
+      }
+    )
+  )
+);
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);

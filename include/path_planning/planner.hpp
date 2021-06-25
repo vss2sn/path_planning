@@ -8,6 +8,7 @@
 #define PLANNER_HPP
 
 #include <tuple>
+#include <unordered_map>
 #include <vector>
 
 #include "utils/utils.hpp"
@@ -71,6 +72,10 @@ class Planner {
    */
   virtual std::tuple<bool, std::vector<Node>> Plan(const Node& start,
                                                    const Node& goal) = 0;
+
+  virtual void SetDynamicObstacles(const bool create_random_obstacles = false,
+                           const std::unordered_map<int, std::vector<Node>>&
+                               time_discovered_obstacles = {}) {} ;
 
  protected:
   std::vector<std::vector<int>> grid_ = {};
