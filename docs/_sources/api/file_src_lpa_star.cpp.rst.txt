@@ -46,15 +46,13 @@ Includes
 
 - ``chrono``
 
-- ``iomanip``
-
-- ``iostream``
+- ``cmath``
 
 - ``path_planning/lpa_star.hpp`` (:ref:`file_include_path_planning_lpa_star.hpp`)
 
-- ``random``
-
 - ``thread``
+
+- ``tuple``
 
 
 
@@ -65,5 +63,5 @@ Variables
 ---------
 
 
-- :ref:`exhale_variable_lpa__star_8cpp_1ac5de1508be41d2871871f512d90d2ec3`
+- :ref:`exhale_variable_lpa__star_8cpp_1a07126d3308228406671bd7e8d57f1d5a`
 

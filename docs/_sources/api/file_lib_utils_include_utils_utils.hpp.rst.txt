@@ -66,6 +66,8 @@ Included By
 
 - :ref:`file_include_path_planning_lpa_star.hpp`
 
+- :ref:`file_include_path_planning_planner.hpp`
+
 - :ref:`file_include_path_planning_rrt.hpp`
 
 - :ref:`file_include_path_planning_rrt_star.hpp`
@@ -79,11 +81,33 @@ Classes
 -------
 
 
+- :ref:`exhale_struct_structcompare__coordinates`
+
 - :ref:`exhale_struct_structcompare__cost`
+
+- :ref:`exhale_struct_structCompareNodeKeyPairCoordinates`
+
+- :ref:`exhale_struct_structCompareNodeKeyPairCoordinatesAndKeys`
+
+- :ref:`exhale_struct_structCompareNodeKeyPairKeys`
+
+- :ref:`exhale_struct_structKey`
+
+- :ref:`exhale_struct_structNodeKeyPair`
+
+- :ref:`exhale_struct_structpair__hash`
+
+- :ref:`exhale_class_classLazyPQ`
 
 - :ref:`exhale_class_classNode`
 
+- :ref:`exhale_class_classNodeIdAsHash`
+
+- :ref:`exhale_class_classstd_1_1greater_3_01NodeKeyPair_01_4`
+
 - :ref:`exhale_class_classstd_1_1hash_3_01Node_01_4`
+
+- :ref:`exhale_class_classstd_1_1hash_3_01NodeKeyPair_01_4`
 
 
 Functions

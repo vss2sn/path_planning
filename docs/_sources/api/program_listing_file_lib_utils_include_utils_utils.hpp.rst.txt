@@ -35,13 +35,14 @@ Program Listing for File utils.hpp
     public:
      int x_;
      int y_;
-     int id_;
-     int pid_;
      double cost_;
      double h_cost_;
+     int id_;
+     int pid_;
    
      Node(const int x = 0, const int y = 0, const double cost = 0,
-          const double h_cost = 0, const int id = 0, const int pid = 0);
+          const double h_cost = 0, const int id = 0, const int pid = 0) :
+          x_(x), y_(y), cost_(cost), h_cost_(h_cost), id_(id), pid_(pid) {}
    
      void PrintStatus() const;
    
@@ -55,12 +56,26 @@ Program Listing for File utils.hpp
    template<>
    class std::hash<Node> {
    public:
+   
      size_t operator () (const Node& n) const {
        return std::hash<int>()(n.x_) ^ std::hash<int>()(n.y_);
      }
    };
    
+   class NodeIdAsHash {
+   public:
+   
+     size_t operator () (const Node& n) const {
+       return n.id_;
+     }
+   };
+   
+   
    struct compare_cost {
+     bool operator()(const Node& p1, const Node& p2) const;
+   };
+   
+   struct compare_coordinates {
      bool operator()(const Node& p1, const Node& p2) const;
    };
    
@@ -73,6 +88,7 @@ Program Listing for File utils.hpp
                   const std::vector<Node>& point_list);
    
    void MakeGrid(std::vector<std::vector<int>>& grid);
+   
    void PrintPathInOrder(const std::vector<Node>& path_vector, const Node& start,
                          const Node& goal, std::vector<std::vector<int>>& grid);
    
@@ -119,5 +135,95 @@ Program Listing for File utils.hpp
      std::cout << '\n';
    }
    
+   struct pair_hash {
+     template <class T1, class T2>
+     std::size_t operator()(const std::pair<T1, T2>& pair) const {
+       return std::hash<T1>()(pair.first) ^ std::hash<T2>()(pair.second);
+     }
+   };
+   
+   struct Key {
+     double first;
+     double second;
+   
+     bool operator<(const Key& k) const {
+       return first < k.first || (first == k.first && second < k.second);
+     }
+   
+     bool operator>(const Key& k) const {
+       return first > k.first || (first == k.first && second > k.second);
+     }
+   
+     bool operator==(const Key& k) const {
+       return first == k.first && second == k.second;
+     }
+   
+     bool operator!=(const Key& k) const {
+       return !(first == k.first && second == k.second);
+     }
+   };
+   
+   struct NodeKeyPair {
+     Node node;
+     Key key;
+   };
+   
+   struct CompareNodeKeyPairKeys {
+     bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
+       return nkp1.key == nkp2.key;
+     }
+   };
+   
+   struct CompareNodeKeyPairCoordinates {
+     bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
+       return CompareCoordinates(nkp1.node, nkp2.node);
+     }
+   };
+   
+   struct CompareNodeKeyPairCoordinatesAndKeys {
+     bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
+       return CompareCoordinates(nkp1.node, nkp2.node) && nkp1.key == nkp2.key;
+     }
+   };
+   
+   template <>
+   class std::greater<NodeKeyPair> {
+    public:
+     bool operator()(const NodeKeyPair& nk1, const NodeKeyPair& nk2) const {
+       return nk1.key > nk2.key;
+     }
+   };
+   
+   template <>
+   class std::hash<NodeKeyPair> {
+    public:
+     size_t operator()(const NodeKeyPair& nkp) const {
+       return std::hash<Node>()(nkp.node);
+     }
+   };
+   
+   class LazyPQ {
+   public:
+   
+     void clear();
+   
+     void insert(const NodeKeyPair& t);
+   
+     void pop();
+   
+     const NodeKeyPair& top() const;
+   
+     size_t size() const;
+   
+     bool empty() const;
+   
+     bool isElementInStruct(const NodeKeyPair& t) const;
+   
+     void remove(const NodeKeyPair& t);
+   
+   private:
+     std::priority_queue<NodeKeyPair, std::vector<NodeKeyPair>, std::greater<NodeKeyPair>> pq;
+     std::unordered_set<NodeKeyPair, std::hash<NodeKeyPair>, CompareNodeKeyPairCoordinates> s; // Needs to just compare the coordinates and
+   };
    
    #endif  // UTILS_H

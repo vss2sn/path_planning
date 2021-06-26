@@ -1,0 +1,16 @@
+.. _exhale_struct_structcompare__coordinates:
+
+Struct compare_coordinates
+==========================
+
+- Defined in :ref:`file_lib_utils_include_utils_utils.hpp`
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: compare_coordinates
+   :members:
+   :protected-members:
+   :undoc-members:

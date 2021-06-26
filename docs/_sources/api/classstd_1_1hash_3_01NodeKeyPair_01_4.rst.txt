@@ -3,7 +3,7 @@
 Template Class hash< NodeKeyPair >
 ==================================
 
-- Defined in :ref:`file_include_path_planning_d_star_lite.hpp`
+- Defined in :ref:`file_lib_utils_include_utils_utils.hpp`
 
 
 Class Documentation

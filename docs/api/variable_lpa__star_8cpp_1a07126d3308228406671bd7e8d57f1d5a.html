@@ -1,0 +1,350 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Variable pause_time &mdash; Path Planning  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+        <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Variable precision_limit" href="variable_rrt_8cpp_1a7d1725bd185512383fce87a926e518bf.html" />
+    <link rel="prev" title="Variable pause_time" href="variable_d__star__lite_8cpp_1a07126d3308228406671bd7e8d57f1d5a.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Path Planning
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithms.html">Algorithms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#dijkstra">Dijkstra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#a">A*</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#lpa">LPA*:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#d-lite">D* Lite:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrt">RRT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#rrtstar">RRTStar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#ant-colony-optimization">Ant Colony Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms.html#genetic-algorithm">Genetic Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="namespace_std.html">Namespace std</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="structAnt.html">Struct Ant</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structcompare__coordinates.html">Struct compare_coordinates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structcompare__cost.html">Struct compare_cost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structCompareNodeKeyPairCoordinates.html">Struct CompareNodeKeyPairCoordinates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structCompareNodeKeyPairCoordinatesAndKeys.html">Struct CompareNodeKeyPairCoordinatesAndKeys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structCompareNodeKeyPairKeys.html">Struct CompareNodeKeyPairKeys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structKey.html">Struct Key</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structNodeKeyPair.html">Struct NodeKeyPair</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structpair__hash.html">Struct pair_hash</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAntColony.html">Class AntColony</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAStar.html">Class AStar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDijkstra.html">Class Dijkstra</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDStarLite.html">Class DStarLite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classGeneticAlgorithm.html">Class GeneticAlgorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classJumpPointSearch.html">Class JumpPointSearch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLazyPQ.html">Class LazyPQ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLPAStar.html">Class LPAStar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classNode.html">Class Node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classNodeIdAsHash.html">Class NodeIdAsHash</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classPlanner.html">Class Planner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRRT.html">Class RRT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRRTStar.html">Class RRTStar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classstd_1_1greater_3_01NodeKeyPair_01_4.html">Template Class greater&lt; NodeKeyPair &gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classstd_1_1hash_3_01Node_01_4.html">Template Class hash&lt; Node &gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classstd_1_1hash_3_01NodeKeyPair_01_4.html">Template Class hash&lt; NodeKeyPair &gt;</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a11e065987c86e2f9329fdc29629e5265.html">Function checkOutsideBoundary(const Node&amp;, const int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a11e065987c86e2f9329fdc29629e5265.html">Function checkOutsideBoundary(const Node&amp;, const int)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a48dbe0e3b6273a8ffb14d1adc77411db.html">Function CompareCoordinates(const Node&amp;, const Node&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a48dbe0e3b6273a8ffb14d1adc77411db.html">Function CompareCoordinates(const Node&amp;, const Node&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_main_8cpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.html">Function main</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1ad8afc8a6d98fae87fffe3ad0621eaf4b.html">Function MakeGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1ad8afc8a6d98fae87fffe3ad0621eaf4b.html">Function MakeGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a667f2f0837580a493eedc1e53baa45e0.html">Function PrintCost(const std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, const std::vector&lt;Node&gt;&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a667f2f0837580a493eedc1e53baa45e0.html">Function PrintCost(const std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, const std::vector&lt;Node&gt;&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a2aa1050b67b2ce09706bd0a96ce941d5.html">Template Function PrintGrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a9ecfa4541dd95cf3ae2e5300446abfec.html">Function PrintPath(const std::vector&lt;Node&gt;&amp;, const Node&amp;, const Node&amp;, std::vector&lt;std::vector&lt;int&gt;&gt;&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1aec7b281b1b2b9561e207883aa2512a6d.html">Function PrintPath(const std::vector&lt;Node&gt;&amp;, const Node&amp;, const Node&amp;, std::vector&lt;std::vector&lt;int&gt;&gt;&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1ad9c6ace1d22b2bc5ab9b803876478c3d.html">Function PrintPathInOrder(const std::vector&lt;Node&gt;&amp;, const Node&amp;, const Node&amp;, std::vector&lt;std::vector&lt;int&gt;&gt;&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a2fe92d436aed1da68157913148e98e51.html">Function PrintPathInOrder(const std::vector&lt;Node&gt;&amp;, const Node&amp;, const Node&amp;, std::vector&lt;std::vector&lt;int&gt;&gt;&amp;)</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#variables">Variables</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="variable_rrt_8cpp_1adf2d22e6604f79d3fb5290aa8e5d7ae1.html">Variable half_grid_unit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_rrt__star_8cpp_1adf2d22e6604f79d3fb5290aa8e5d7ae1.html">Variable half_grid_unit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_genetic__algorithm_8cpp_1a5a32ba657f745e5bbdbcf277a3ea364e.html">Variable inverted_probabilty_mutate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_d__star__lite_8cpp_1a07126d3308228406671bd7e8d57f1d5a.html">Variable pause_time</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Variable pause_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_rrt_8cpp_1a7d1725bd185512383fce87a926e518bf.html">Variable precision_limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_rrt__star_8cpp_1a7d1725bd185512383fce87a926e518bf.html">Variable precision_limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_genetic__algorithm_8cpp_1a1a90247d803bd7e8f511935381a4d74e.html">Variable random_range_max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_utils_8cpp_1a88ee0fdd1247f7aa11f62295483547a5.html">Variable spacing_for_grid</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#defines">Defines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a7b3b25cba33b07c303f3060fe41887f6.html">Define BLACK</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a79d10e672abb49ad63eeaa8aaef57c38.html">Define BLUE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ad243f93c16bc4c1d3e0a13b84421d760.html">Define CYAN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1acfbc006ea433ad708fdee3e82996e721.html">Define GREEN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a6f699060902f800f12aaae150f3a708e.html">Define MAGENTA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a8d23feea868a983c8c2b661e1e16972f.html">Define RED</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1ab702106cf3b3e96750b6845ded4e0299.html">Define RESET</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1a87b537f5fa5c109d3c05c13d6b18f382.html">Define WHITE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_utils_8hpp_1abf681265909adf3d3e8116c93c0ba179.html">Define YELLOW</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#directories">Directories</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dir_include.html">Directory include</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dir_include.html">Directory include</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dir_lib.html">Directory lib</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dir_main.html">Directory main</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dir_path_planning.html">Directory planning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dir_src.html">Directory src</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dir_src.html">Directory src</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dir_utils.html">Directory utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dir_utils.html">Directory utils</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#files">Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="file_src_a_star.cpp.html">File a_star.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_a_star.hpp.html">File a_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_ant_colony.cpp.html">File ant_colony.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_ant_colony.hpp.html">File ant_colony.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_d_star_lite.cpp.html">File d_star_lite.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_d_star_lite.hpp.html">File d_star_lite.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_dijkstra.cpp.html">File dijkstra.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_dijkstra.hpp.html">File dijkstra.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_genetic_algorithm.cpp.html">File genetic_algorithm.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_genetic_algorithm.hpp.html">File genetic_algorithm.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_jump_point_search.cpp.html">File jump_point_search.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_jump_point_search.hpp.html">File jump_point_search.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_lpa_star.cpp.html">File lpa_star.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_lpa_star.hpp.html">File lpa_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_main_main.cpp.html">File main.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_planner.hpp.html">File planner.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_README.md.html">File README.md</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_rrt.cpp.html">File rrt.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_rrt.hpp.html">File rrt.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_src_rrt_star.cpp.html">File rrt_star.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_rrt_star.hpp.html">File rrt_star.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_lib_utils_src_utils.cpp.html">File utils.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_lib_utils_include_utils_utils.hpp.html">File utils.hpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Path Planning</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="library_root.html">Library API</a> &raquo;</li>
+        
+      <li>Variable pause_time</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/variable_lpa__star_8cpp_1a07126d3308228406671bd7e8d57f1d5a.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="variable-pause-time">
+<span id="exhale-variable-lpa-star-8cpp-1a07126d3308228406671bd7e8d57f1d5a"></span><h1>Variable pause_time<a class="headerlink" href="#variable-pause-time" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Defined in <a class="reference internal" href="file_src_lpa_star.cpp.html#file-src-lpa-star-cpp"><span class="std std-ref">File lpa_star.cpp</span></a></li>
+</ul>
+<div class="section" id="variable-documentation">
+<h2>Variable Documentation<a class="headerlink" href="#variable-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">doxygenvariable: Cannot find variable “pause_time” in doxygen xml output for project “Path Planning” from directory: ./xml/</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="variable_rrt_8cpp_1a7d1725bd185512383fce87a926e518bf.html" class="btn btn-neutral float-right" title="Variable precision_limit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="variable_d__star__lite_8cpp_1a07126d3308228406671bd7e8d57f1d5a.html" class="btn btn-neutral float-left" title="Variable pause_time" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, vss2sn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

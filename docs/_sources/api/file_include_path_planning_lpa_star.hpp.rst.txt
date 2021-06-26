@@ -38,6 +38,16 @@ Includes
 --------
 
 
+- ``iostream``
+
+- ``path_planning/planner.hpp`` (:ref:`file_include_path_planning_planner.hpp`)
+
+- ``tuple``
+
+- ``unordered_map``
+
+- ``unordered_set``
+
 - ``utils/utils.hpp`` (:ref:`file_lib_utils_include_utils_utils.hpp`)
 
 

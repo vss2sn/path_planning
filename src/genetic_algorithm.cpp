@@ -364,8 +364,9 @@ int main() {
   constexpr int path_length_x_factor = 4;
 
   GeneticAlgorithm new_genetic_algorithm(grid);
-  new_genetic_algorithm.SetParams(generations, popsize, c, shorten_chromosome,
-    static_cast<int>(path_length_x_factor * start.h_cost_));
+  new_genetic_algorithm.SetParams(
+      generations, popsize, c, shorten_chromosome,
+      static_cast<int>(path_length_x_factor * start.h_cost_));
   const auto [path_found, path_vector] =
       new_genetic_algorithm.Plan(start, goal);
   PrintPathInOrder(path_vector, start, goal, grid);

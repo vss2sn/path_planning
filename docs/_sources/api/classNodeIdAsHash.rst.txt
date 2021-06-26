@@ -1,0 +1,16 @@
+.. _exhale_class_classNodeIdAsHash:
+
+Class NodeIdAsHash
+==================
+
+- Defined in :ref:`file_lib_utils_include_utils_utils.hpp`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: NodeIdAsHash
+   :members:
+   :protected-members:
+   :undoc-members:

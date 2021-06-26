@@ -39,7 +39,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Class RRTStar" href="classRRTStar.html" />
-    <link rel="prev" title="Class Node" href="classNode.html" /> 
+    <link rel="prev" title="Class Planner" href="classPlanner.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -106,6 +106,8 @@
 </ul>
 </li>
 <li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structAnt.html">Struct Ant</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structcompare__coordinates.html">Struct compare_coordinates</a></li>
 <li class="toctree-l4"><a class="reference internal" href="structcompare__cost.html">Struct compare_cost</a></li>
 <li class="toctree-l4"><a class="reference internal" href="structCompareNodeKeyPairCoordinates.html">Struct CompareNodeKeyPairCoordinates</a></li>
 <li class="toctree-l4"><a class="reference internal" href="structCompareNodeKeyPairCoordinatesAndKeys.html">Struct CompareNodeKeyPairCoordinatesAndKeys</a></li>
@@ -113,7 +115,6 @@
 <li class="toctree-l4"><a class="reference internal" href="structKey.html">Struct Key</a></li>
 <li class="toctree-l4"><a class="reference internal" href="structNodeKeyPair.html">Struct NodeKeyPair</a></li>
 <li class="toctree-l4"><a class="reference internal" href="structpair__hash.html">Struct pair_hash</a></li>
-<li class="toctree-l4"><a class="reference internal" href="classAnt.html">Class Ant</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classAntColony.html">Class AntColony</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classAStar.html">Class AStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classDijkstra.html">Class Dijkstra</a></li>
@@ -123,6 +124,8 @@
 <li class="toctree-l4"><a class="reference internal" href="classLazyPQ.html">Class LazyPQ</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classLPAStar.html">Class LPAStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classNode.html">Class Node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classNodeIdAsHash.html">Class NodeIdAsHash</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classPlanner.html">Class Planner</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Class RRT</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classRRTStar.html">Class RRTStar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="classstd_1_1greater_3_01NodeKeyPair_01_4.html">Template Class greater&lt; NodeKeyPair &gt;</a></li>
@@ -137,8 +140,7 @@
 <li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a48dbe0e3b6273a8ffb14d1adc77411db.html">Function CompareCoordinates(const Node&amp;, const Node&amp;)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion()</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1a3314a5898aaa777e954abfa9f3996d41.html">Function GetMotion()</a></li>
-<li class="toctree-l4"><a class="reference internal" href="function_main_8cpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.html">Function main()</a></li>
-<li class="toctree-l4"><a class="reference internal" href="function_main_8hpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.html">Function main()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_main_8cpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.html">Function main</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1ad8afc8a6d98fae87fffe3ad0621eaf4b.html">Function MakeGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_utils_8hpp_1ad8afc8a6d98fae87fffe3ad0621eaf4b.html">Function MakeGrid(std::vector&lt;std::vector&lt;int&gt;&gt;&amp;)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_utils_8cpp_1a667f2f0837580a493eedc1e53baa45e0.html">Function PrintCost(const std::vector&lt;std::vector&lt;int&gt;&gt;&amp;, const std::vector&lt;Node&gt;&amp;)</a></li>
@@ -154,12 +156,12 @@
 <li class="toctree-l4"><a class="reference internal" href="variable_rrt_8cpp_1adf2d22e6604f79d3fb5290aa8e5d7ae1.html">Variable half_grid_unit</a></li>
 <li class="toctree-l4"><a class="reference internal" href="variable_rrt__star_8cpp_1adf2d22e6604f79d3fb5290aa8e5d7ae1.html">Variable half_grid_unit</a></li>
 <li class="toctree-l4"><a class="reference internal" href="variable_genetic__algorithm_8cpp_1a5a32ba657f745e5bbdbcf277a3ea364e.html">Variable inverted_probabilty_mutate</a></li>
-<li class="toctree-l4"><a class="reference internal" href="variable_lpa__star_8cpp_1ac5de1508be41d2871871f512d90d2ec3.html">Variable obs_found_pause_time</a></li>
 <li class="toctree-l4"><a class="reference internal" href="variable_d__star__lite_8cpp_1a07126d3308228406671bd7e8d57f1d5a.html">Variable pause_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_lpa__star_8cpp_1a07126d3308228406671bd7e8d57f1d5a.html">Variable pause_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_rrt_8cpp_1a7d1725bd185512383fce87a926e518bf.html">Variable precision_limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_rrt__star_8cpp_1a7d1725bd185512383fce87a926e518bf.html">Variable precision_limit</a></li>
 <li class="toctree-l4"><a class="reference internal" href="variable_genetic__algorithm_8cpp_1a1a90247d803bd7e8f511935381a4d74e.html">Variable random_range_max</a></li>
 <li class="toctree-l4"><a class="reference internal" href="variable_utils_8cpp_1a88ee0fdd1247f7aa11f62295483547a5.html">Variable spacing_for_grid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="variable_rrt_8cpp_1aad6745e2cd8d6ee98bce35020d09cf49.html">Variable tol_l_limit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="variable_rrt__star_8cpp_1aad6745e2cd8d6ee98bce35020d09cf49.html">Variable tol_l_limit</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="library_root.html#defines">Defines</a><ul>
@@ -202,7 +204,7 @@
 <li class="toctree-l4"><a class="reference internal" href="file_src_lpa_star.cpp.html">File lpa_star.cpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_lpa_star.hpp.html">File lpa_star.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_main_main.cpp.html">File main.cpp</a></li>
-<li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_main.hpp.html">File main.hpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_planner.hpp.html">File planner.hpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_README.md.html">File README.md</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_src_rrt.cpp.html">File rrt.cpp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="file_include_path_planning_rrt.hpp.html">File rrt.hpp</a></li>
@@ -287,24 +289,33 @@
 <ul class="simple">
 <li>Defined in <a class="reference internal" href="file_include_path_planning_rrt.hpp.html#file-include-path-planning-rrt-hpp"><span class="std std-ref">File rrt.hpp</span></a></li>
 </ul>
+<div class="section" id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="base-type">
+<h3>Base Type<a class="headerlink" href="#base-type" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">Planner</span></code> (<a class="reference internal" href="classPlanner.html#exhale-class-classplanner"><span class="std std-ref">Class Planner</span></a>)</li>
+</ul>
+</div>
+</div>
 <div class="section" id="class-documentation">
 <h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="_CPPv33RRT">
-<span id="_CPPv23RRT"></span><span id="RRT"></span><span class="target" id="classRRT"></span><em class="property">class </em><code class="descname">RRT</code><a class="headerlink" href="#_CPPv33RRT" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Class for <a class="reference internal" href="#classRRT"><span class="std std-ref">RRT</span></a> objects. </p>
+<span id="_CPPv23RRT"></span><span id="RRT"></span><span class="target" id="classRRT"></span><em class="property">class </em><code class="descname">RRT</code> : <em class="property">public</em> <a class="reference internal" href="classPlanner.html#_CPPv37Planner" title="Planner">Planner</a><a class="headerlink" href="#_CPPv33RRT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Class for objects that plan using the <a class="reference internal" href="#classRRT"><span class="std std-ref">RRT</span></a> algorithm. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="function">
-<dt id="_CPPv3NK3RRT16FindNearestPointER4Node">
-<span id="_CPPv2NK3RRT16FindNearestPointER4Node"></span><span id="RRT::FindNearestPoint__NodeRC"></span><span class="target" id="classRRT_1a8a75fd1dd568d8b20014c099441c33f5"></span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <code class="descname">FindNearestPoint</code><span class="sig-paren">(</span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>new_node</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK3RRT16FindNearestPointER4Node" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Find the nearest node that has been seen by the algorithm. This does not consider cost to reach the node. </p>
+<dt id="_CPPv3N3RRT3RRTENSt6vectorINSt6vectorIiEEEE">
+<span id="_CPPv2N3RRT3RRTENSt6vectorINSt6vectorIiEEEE"></span><span id="RRT::RRT__std::vector:std::vector:i::"></span><span class="target" id="classRRT_1afebca4b6570300e000811af127502099"></span><code class="descname">RRT</code><span class="sig-paren">(</span>std::vector&lt;std::vector&lt;int&gt;&gt; <em>grid</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N3RRT3RRTENSt6vectorINSt6vectorIiEEEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructor. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>Nearest node </dd>
+<dd>no return value </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal notranslate"><span class="pre">new_node</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> to which the nearest node must be found </li>
+<li><code class="docutils literal notranslate"><span class="pre">grid</span></code>: the grid on which the planner is to plan </li>
 </ul>
 </dd>
 </dl>
@@ -312,84 +323,23 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3NK3RRT13CheckObstacleERK4NodeRK4Node">
-<span id="_CPPv2NK3RRT13CheckObstacleERK4NodeRK4Node"></span><span id="RRT::CheckObstacle__NodeCR.NodeCRC"></span><span class="target" id="classRRT_1ad2757ae5eeaf1ced4e4650e9a86b198d"></span>bool <code class="descname">CheckObstacle</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>n_1</em>, <em class="property">const</em> <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>n_2</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK3RRT13CheckObstacleERK4NodeRK4Node" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Check if there is any obstacle between the 2 nodes. As this planner is for grid maps, the obstacles are square. </p>
-<p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd>bool value of whether obstacle exists between nodes </dd>
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal notranslate"><span class="pre">n_1</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> 1 </li>
-<li><code class="docutils literal notranslate"><span class="pre">n_2</span></code>: <a class="reference internal" href="classNode.html#classNode"><span class="std std-ref">Node</span></a> 2 </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
+<dt id="_CPPv3N3RRT9SetParamsEKiKi">
+<span id="_CPPv2N3RRT9SetParamsEKiKi"></span><span id="RRT::SetParams__iC.iC"></span><span class="target" id="classRRT_1a30920217c110dd7a97898669d8d00546"></span>void <code class="descname">SetParams</code><span class="sig-paren">(</span><em class="property">const</em> int <em>threshold</em> = 2, <em class="property">const</em> int <em>max_iter_x_factor</em> = 20<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N3RRT9SetParamsEKiKi" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N3RRT3rrtERNSt6vectorINSt6vectorIiEEEERK4NodeRK4NodeKiKd">
-<span id="_CPPv2N3RRT3rrtERNSt6vectorINSt6vectorIiEEEERK4NodeRK4NodeKiKd"></span><span id="RRT::rrt__std::vector:std::vector:i::R.NodeCR.NodeCR.iC.doubleC"></span><span class="target" id="classRRT_1af792e61dcae5d04c1e5ee54aae37963c"></span>std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt; <code class="descname">rrt</code><span class="sig-paren">(</span>std::vector&lt;std::vector&lt;int&gt;&gt; &amp;<em>grid</em>, <em class="property">const</em> <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>start_in</em>, <em class="property">const</em> <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>goal_in</em>, <em class="property">const</em> int <em>max_iter_x_factor</em> = 500, <em class="property">const</em> double <em>threshold_in</em> = std::numeric_limits&lt;double&gt;::infinity()<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N3RRT3rrtERNSt6vectorINSt6vectorIiEEEERK4NodeRK4NodeKiKd" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Main algorithm of <a class="reference internal" href="#classRRT"><span class="std std-ref">RRT</span></a>. </p>
+<dt id="_CPPv3N3RRT4PlanERK4NodeRK4Node">
+<span id="_CPPv2N3RRT4PlanERK4NodeRK4Node"></span><span id="RRT::Plan__NodeCR.NodeCR"></span><span class="target" id="classRRT_1ae522718ce6e9abe8c9b63f592dd8effd"></span>std::tuple&lt;bool, std::vector&lt;<a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a>&gt;&gt; <code class="descname">Plan</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>start</em>, <em class="property">const</em> <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>goal</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N3RRT4PlanERK4NodeRK4Node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#classRRT"><span class="std std-ref">RRT</span></a> algorithm implementation. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>path vector of nodes </dd>
+<dd>tuple contatining a bool as to whether a path was found, and the path </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal notranslate"><span class="pre">grid</span></code>: Main grid </li>
-<li><code class="docutils literal notranslate"><span class="pre">start_in</span></code>: starting node </li>
-<li><code class="docutils literal notranslate"><span class="pre">goal_in</span></code>: goal node </li>
-<li><code class="docutils literal notranslate"><span class="pre">max_iter_x_factor</span></code>: Maximum number of allowable iterations before returning no path </li>
-<li><code class="docutils literal notranslate"><span class="pre">threshold_in</span></code>: Maximum distance per move </li>
+<li><code class="docutils literal notranslate"><span class="pre">start</span></code>: start node </li>
+<li><code class="docutils literal notranslate"><span class="pre">goal</span></code>: goal node </li>
 </ul>
 </dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv3N3RRT16CheckGoalVisibleERK4Node">
-<span id="_CPPv2N3RRT16CheckGoalVisibleERK4Node"></span><span id="RRT::CheckGoalVisible__NodeCR"></span><span class="target" id="classRRT_1ae1aa97536b65992cff63f1e1123c3950"></span>bool <code class="descname">CheckGoalVisible</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> &amp;<em>new_node</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N3RRT16CheckGoalVisibleERK4Node" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Check if goal is reachable from current node. </p>
-<p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd>bool value of whether goal is reachable from current node </dd>
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal notranslate"><span class="pre">new_node</span></code>: Current node </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv3N3RRT18CreateObstacleListERNSt6vectorINSt6vectorIiEEEE">
-<span id="_CPPv2N3RRT18CreateObstacleListERNSt6vectorINSt6vectorIiEEEE"></span><span id="RRT::CreateObstacleList__std::vector:std::vector:i::R"></span><span class="target" id="classRRT_1add6860164f381cf596cb9dc0d1bdc608"></span>void <code class="descname">CreateObstacleList</code><span class="sig-paren">(</span>std::vector&lt;std::vector&lt;int&gt;&gt; &amp;<em>grid</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N3RRT18CreateObstacleListERNSt6vectorINSt6vectorIiEEEE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Create the obstacle list from the input grid. </p>
-<p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd>void </dd>
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal notranslate"><span class="pre">grid</span></code>: input grid for algorithm </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-</div>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Public Static Functions</p>
-<dl class="function">
-<dt id="_CPPv3N3RRT18GenerateRandomNodeEKi">
-<span id="_CPPv2N3RRT18GenerateRandomNodeEKi"></span><span id="RRT::GenerateRandomNode__iC"></span><span class="target" id="classRRT_1a19513960f12c7f41d59e1913adc5d2bf"></span><a class="reference internal" href="classNode.html#_CPPv34Node" title="Node">Node</a> <code class="descname">GenerateRandomNode</code><span class="sig-paren">(</span><em class="property">const</em> int <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N3RRT18GenerateRandomNodeEKi" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Generates a random node. </p>
-<p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd>Generated node </dd>
 </dl>
 </p>
 </dd></dl>
@@ -411,7 +361,7 @@
         <a href="classRRTStar.html" class="btn btn-neutral float-right" title="Class RRTStar" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="classNode.html" class="btn btn-neutral float-left" title="Class Node" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="classPlanner.html" class="btn btn-neutral float-left" title="Class Planner" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

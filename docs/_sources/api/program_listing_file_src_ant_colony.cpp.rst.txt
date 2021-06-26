@@ -20,73 +20,72 @@ Program Listing for File ant_colony.cpp
    #include <iostream>
    #include <random>
    #include <thread>
-   
-   Ant::Ant(Node start, int id) {
-     this->id_ = id;
-     this->current_node_ = start;
-     this->previous_node_ = Node(-1, -1);
-   }
-   
-   AntColony::AntColony(const int n_ants, const double alpha, const double beta,
-                        const double evap_rate, const int iterations,
-                        const double Q) {
-     this->n_ants_ = n_ants;
-     this->alpha_ = alpha;
-     this->beta_ = beta;
-     this->evap_rate_ = evap_rate;
-     this->iterations_ = iterations;
-     this->ants_ = std::vector<Ant>(n_ants_);
-     this->Q_ = Q;
-   }
+   #include <tuple>
    
    #ifdef CUSTOM_DEBUG_HELPER_FUNCION
    void AntColony::PrintAntPath(Ant& ant) const {
      for (size_t k = 1; k < ant.path_.size(); k++)
        ant.path_[k].pid_ = ant.path_[k - 1].id_;
-     ant.path_.back().id_ = ant.path_.back().x_ * grid_size_ + ant.path_.back().y_;
+     ant.path_.back().id_ = ant.path_.back().x_ * n_ + ant.path_.back().y_;
      auto grid_2 = grid_;
      PrintPath(ant.path_, start_, ant.path_.back(), grid_2);
+   #ifndef RUN_TESTS
      std::this_thread::sleep_for(std::chrono::seconds(1));
+   #endif  // RUN_TESTS
    }
    #endif
    
    void AntColony::RemoveLoop(Ant& ant) {
      for (auto it = ant.path_.begin(); it != ant.path_.end(); ++it) {
        if (CompareCoordinates(*it, ant.current_node_)) {
-         ant.steps_ = ant.path_.end() - it;
+         ant.steps_ = std::distance(ant.path_.begin(), std::prev(it, 1));
          ant.path_.erase(it, ant.path_.end());
          break;
        }
      }
    }
    
-   std::vector<Node> AntColony::ant_colony(std::vector<std::vector<int>>& grid,
-                                           const Node& start, const Node& goal) {
-     this->grid_ = grid;
-     this->start_ = start;  // Make sure start has id
-     this->goal_ = goal;
-     grid_size_ = grid_.size();
-     Node c;
+   void AntColony::SetParams(const int n_ants, const double alpha,
+                             const double beta, const double evap_rate,
+                             const double Q, const int iterations) {
+     n_ants_ = n_ants;
+     alpha_ = alpha;
+     beta_ = beta;
+     evap_rate_ = evap_rate;
+     Q_ = Q;
+     iterations_ = iterations;
+   }
+   
+   std::tuple<bool, std::vector<Node>> AntColony::Plan(const Node& start,
+                                                       const Node& goal) {
+     grid_ = original_grid_;
+     start_ = start;  // Make sure start has id
+     goal_ = goal;
      motions_ = GetMotion();
-     for (int i = 0; i < grid_size_; i++) {
-       for (int j = 0; j < grid_size_; j++) {
-         for (auto& motion : motions_) {
-           c = Node(i, j) + motion;
-           if (c.x_ >= 0 && c.x_ < grid_size_ && c.y_ >= 0 && c.y_ < grid_size_) {
+     ants_ = std::vector<Ant>(n_ants_);
+   
+     for (int i = 0; i < n_; i++) {
+       for (int j = 0; j < n_; j++) {
+         const int cur_id = i * n_ + j;
+         const Node cur_node = Node(i, j);
+         for (const auto& motion : motions_) {
+           const Node c = cur_node + motion;
+           if (!checkOutsideBoundary(c, n_)) {
              pheromone_edges_.insert(
-                 {std::make_pair(i * grid_size_ + j, c.x_ * grid_size_ + c.y_),
-                  1.0});
+                 {std::make_pair(cur_id, c.x_ * n_ + c.y_), 1.0});
            }
          }
        }
      }
-     this->max_steps_ = static_cast<int>(
-         std::pow(grid_size_, 2) / 2 + grid_size_);  // heuristically set max steps
+   
+     // heuristically set max steps
+     const int max_steps = n_ * n_ / 2 + n_;
    
      std::random_device device;
      std::mt19937 engine(device());
-     std::vector<Node>
-         last_best_path;  // saves best path of last iteration. Not over all.
+   
+     // saves best path of last iteration. Not over all.
+     std::vector<Node> last_best_path;
      Node possible_position;
    
      for (int i = 0; i < iterations_; i++) {
@@ -94,29 +93,33 @@ Program Listing for File ant_colony.cpp
          // Can assign a thread to each ant if parallel required
          Ant ant(start_, j);
          while (!CompareCoordinates(ant.current_node_, goal_) &&
-                ant.steps_ < max_steps_) {
+                ant.steps_ < max_steps) {
            ant.path_.push_back(ant.current_node_);
    
            // Get next position
            std::vector<Node> possible_positions;
            std::vector<double> possible_probabilities;
            double prob_sum = 0;
-           int n_obs = 0;
            for (const auto& m : motions_) {
              possible_position = ant.current_node_ + m;
              possible_position.id_ =
-                 possible_position.x_ * grid_size_ + possible_position.y_;
+                 possible_position.x_ * n_ + possible_position.y_;
    
-             if (checkOutsideBoundary(possible_position, grid_size_) ||
-                 CompareCoordinates(possible_position, ant.previous_node_) ||
+             if (checkOutsideBoundary(possible_position, n_)) {
+               continue;
+             }
+   
+             if (CompareCoordinates(possible_position, ant.previous_node_) ||
                  grid_[possible_position.x_][possible_position.y_] == 1) {
                continue;
              }
+   
              if (CompareCoordinates(possible_position, goal_)) {
                ant.path_.push_back(goal_);
                ant.found_goal_ = true;
                break;
              }
+   
              possible_positions.push_back(possible_position);
              double new_prob =
                  std::pow(pheromone_edges_[std::make_pair(possible_position.id_,
@@ -131,8 +134,11 @@ Program Listing for File ant_colony.cpp
              prob_sum += new_prob;
            }
            if (prob_sum == 0 || ant.found_goal_) {
-             break;  // Ant in a cul-de-sac
+             // Ant in a cul-de-sac or
+             // no next node (ie start surrounded by obstacles)
+             break;
            }
+   
            std::for_each(possible_probabilities.begin(),
                          possible_probabilities.end(),
                          [&](double& p) { p /= prob_sum; });
@@ -145,8 +151,10 @@ Program Listing for File ant_colony.cpp
            // TODO(vss): add check to count number of loops removed and stop if
            // going into inf. Should be only 1? use hash of visited?
            RemoveLoop(ant);
+   
            ant.steps_++;
          }
+   
          ants_[j] = ant;
        }
    
@@ -155,7 +163,7 @@ Program Listing for File ant_colony.cpp
          pheromone_edge.second *= (1 - evap_rate_);
        }
    
-       int bpl = INT_MAX;
+       int bpl = std::numeric_limits<int>::max();
        std::vector<Node> bp;
    
        // Pheromone update based on successful ants
@@ -170,13 +178,18 @@ Program Listing for File ant_colony.cpp
    
            // c = cost / reward. Reward here, increased pheromone
            double c = Q_ / static_cast<double>(ant.path_.size() - 1);
-           for (size_t i = 1; i < ant.path_.size(); i++) {
+   
+           // start_.PrintStatus();
+           // goal_.PrintStatus();
+           for (size_t i_ant = 1; i_ant < ant.path_.size(); i_ant++) {
              // Assuming ant can tell which way the food was based on
              // how the phermones detereorate. Good for path planning as
              // prevents moving in the opposite direction to path and
              // improves convergence
+             // std::cout << ant.path_[i_ant].id_ << ' ' <<  ant.path_[i_ant -
+             // 1].id_ << '\n';
              auto it = pheromone_edges_.find(
-                 std::make_pair(ant.path_[i].id_, ant.path_[i - 1].id_));
+                 std::make_pair(ant.path_[i_ant].id_, ant.path_[i_ant - 1].id_));
              it->second += c;
            }
          }
@@ -184,26 +197,27 @@ Program Listing for File ant_colony.cpp
        if (i + 1 == iterations_) {
          last_best_path = bp;
        }
+   
      }  // for every iteration loop ends here
+   
      if (last_best_path.empty()) {
-       last_best_path.clear();
-       Node no_path_node(-1, -1, -1, -1, -1, -1);
-       last_best_path.push_back(no_path_node);
-       return last_best_path;
+       return {false, {}};
      }
      for (size_t i = 1; i < last_best_path.size(); i++) {
        last_best_path[i].pid_ = last_best_path[i - 1].id_;
      }
-     // last_best_path.back().id_ =
-     //     last_best_path.back().x_ * grid_size_ + last_best_path.back().y_;
-     return last_best_path;
+   
+     for (const auto& node : last_best_path) {
+       node.PrintStatus();
+     }
+     return {true, last_best_path};
    }
    
    #ifdef BUILD_INDIVIDUAL
    
    int main() {
-     int n = 11;
-     std::vector<std::vector<int>> grid(n, std::vector<int>(n));
+     constexpr int n = 11;
+     std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
      MakeGrid(grid);
    
      std::random_device rd;   // obtain a random number from hardware
@@ -217,21 +231,24 @@ Program Listing for File ant_colony.cpp
      start.pid_ = start.x_ * n + start.y_;
      goal.id_ = goal.x_ * n + goal.y_;
      start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
+   
      // Make sure start and goal are not obstacles and their ids are correctly
      // assigned.
-     grid[start.x_][start.y_] = 5;
-     grid[goal.x_][goal.y_] = 5;
-     PrintGrid(grid);
-     start.PrintStatus();
-     goal.PrintStatus();
      grid[start.x_][start.y_] = 0;
      grid[goal.x_][goal.y_] = 0;
+   
+     start.PrintStatus();
+     goal.PrintStatus();
+   
+     PrintGrid(grid);
    
      // Normally as beta increases the solution becomes greedier. However, as the
      // heuristic is < 1 here, reducing beta increases the value placed on the
      // heuristic
-     AntColony new_ant_colony(10, 1, 0.2, 0.5, 50, 10.0);
-     std::vector<Node> path_vector = new_ant_colony.ant_colony(grid, start, goal);
+   
+     AntColony new_ant_colony(grid);
+     // new_ant_colony.SetParams(10, 1, 0.2, 0.5, 10, 50);
+     const auto [found_path, path_vector] = new_ant_colony.Plan(start, goal);
      PrintPath(path_vector, start, goal, grid);
      return 0;
    }

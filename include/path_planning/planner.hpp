@@ -74,14 +74,27 @@ class Planner {
   virtual std::tuple<bool, std::vector<Node>> Plan(const Node& start,
                                                    const Node& goal) = 0;
 
-  virtual void SetDynamicObstacles(const bool create_random_obstacles = false,
-                           const std::unordered_map<int, std::vector<Node>>&
-                               time_discovered_obstacles = {}) {
+  /**
+   * @brief Sets the time discovered obstacles and the option that allows
+            the creation of random obstacles
+   * @param create_random_obstacles should random obstacles be created during
+   *        execution
+   * @param time_discovered_obstacles obstacles to be discovered at specific
+   *        times
+   * @return void
+   * @details Set separately from the plan function to allow this to persist
+              between calls to Plan()
+   */
+  virtual void SetDynamicObstacles(
+      const bool create_random_obstacles = false,
+      const std::unordered_map<int, std::vector<Node>>&
+          time_discovered_obstacles = {}) {
     std::cout << "Please implement this function for the planner" << '\n';
     std::cout << "Value attempted to be set: " << '\n';
     std::cout << "Create random obstacles: " << create_random_obstacles << '\n';
-    std::cout << "Number of time discovered obstacles: " << time_discovered_obstacles.size() << '\n';
-  } ;
+    std::cout << "Number of time discovered obstacles: "
+              << time_discovered_obstacles.size() << '\n';
+  };
 
  protected:
   std::vector<std::vector<int>> grid_ = {};

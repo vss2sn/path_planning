@@ -35,6 +35,9 @@ enum class PlannerEnum {
   Last = RRT
 };
 
+/**
+* @brief Class to allow iteration over enum classes
+*/
 template<typename T>
 class Enum {
 public:
@@ -69,87 +72,55 @@ typename Enum<T>::Iterator end(Enum<T>) {
   return typename Enum<T>::Iterator(static_cast<int>(T::Last) + 1);
 }
 
-std::unique_ptr<Planner> PlannerFactory(PlannerEnum planner_enum, const std::vector<std::vector<int>>& grid) {
-  if (planner_enum == PlannerEnum::DIJKSTRA) {
-    return std::make_unique<Dijkstra>(grid);
-  } else if (planner_enum == PlannerEnum::A_STAR) {
-    return std::make_unique<AStar>(grid);
-  } else if (planner_enum == PlannerEnum::D_STAR_LITE) {
-    return std::make_unique<DStarLite>(grid);
-  } else if (planner_enum == PlannerEnum::LPA_STAR) {
-    return std::make_unique<LPAStar>(grid);
-  } else if (planner_enum == PlannerEnum::RRT) {
-    return std::make_unique<RRT>(grid);
-  } else if (planner_enum == PlannerEnum::RRT_STAR) {
-    return std::make_unique<RRTStar>(grid);
-  } else if (planner_enum == PlannerEnum::ANT_COLONY) {
-    return std::make_unique<AntColony>(grid);
-  } else if (planner_enum == PlannerEnum::GENETIC) {
-    return std::make_unique<GeneticAlgorithm>(grid);
-  }
-  std::cout << "Invalid planner. Using Dijkstra." << '\n';
-  return std::make_unique<Dijkstra>(grid);
-}
+/**
+* @brief creates a planner based on the enum passed in
+* @return unique_ptr to the planner instance created
+*/
+std::unique_ptr<Planner> PlannerFactory(PlannerEnum planner_enum, const std::vector<std::vector<int>>& grid);
 
-std::vector<PlannerEnum> getAllPlannerEnums() {
-  return std::vector<PlannerEnum> {
-    PlannerEnum::DIJKSTRA,
-    PlannerEnum::A_STAR,
-    PlannerEnum::D_STAR_LITE,
-    PlannerEnum::LPA_STAR,
-    PlannerEnum::RRT_STAR,
-    PlannerEnum::ANT_COLONY,
-    PlannerEnum::GENETIC,
-    PlannerEnum::RRT
-  };
-}
+/**
+* @brief creates and returns a vector of all planners listed in PlannerEnum
+* @return vector of all planners listed in PlannerEnum
+*/
+std::vector<PlannerEnum> getAllPlannerEnums();
 
-std::vector<PlannerEnum> getOptimalPlannerEnums() {
-  return std::vector<PlannerEnum> {
-    PlannerEnum::DIJKSTRA,
-    PlannerEnum::A_STAR,
-    PlannerEnum::D_STAR_LITE,
-    PlannerEnum::LPA_STAR
-  };
-}
+/**
+* @brief creates and returns a vector of all optimal planners listed in PlannerEnum
+* @return vector of all optimal planners listed in PlannerEnum
+*/
+std::vector<PlannerEnum> getOptimalPlannerEnums();
 
-std::vector<PlannerEnum> getAsymtoticallyOptimalPlannerEnums() {
-  return std::vector<PlannerEnum> {
-    PlannerEnum::RRT_STAR
-  };
-}
+/**
+* @brief creates and returns a vector of all asymtotically optimal planners listed in PlannerEnum
+* @return vector of all asymtotically optimal planners listed in PlannerEnum
+*/
+std::vector<PlannerEnum> getAsymtoticallyOptimalPlannerEnums();
 
-std::vector<PlannerEnum> getHeuristicPlannerEnums() {
-  return std::vector<PlannerEnum> {
-    PlannerEnum::ANT_COLONY,
-    PlannerEnum::GENETIC
-  };
-}
+/**
+* @brief creates and returns a vector of all heuristic planners listed in PlannerEnum
+* @return vector of all heuristic planners listed in PlannerEnum
+*/
+std::vector<PlannerEnum> getHeuristicPlannerEnums();
 
-std::vector<PlannerEnum> getSubOptimalPlannerEnums() {
-  return std::vector<PlannerEnum>{
-    PlannerEnum::RRT
-  };
-}
+/**
+* @brief creates and returns a vector of all sub-optimal planners listed in PlannerEnum
+* @return vector of all sub-optimal planners listed in PlannerEnum
+*/
+std::vector<PlannerEnum> getSubOptimalPlannerEnums();
 
-std::vector<PlannerEnum> getDynamicPlannerEnums() {
-  return std::vector<PlannerEnum>{
-    PlannerEnum::LPA_STAR,
-    PlannerEnum::D_STAR_LITE,
-  };
-}
+/**
+* @brief creates and returns a vector of all dynamic planners listed in PlannerEnum
+* @return vector of all dynamic planners listed in PlannerEnum
+*/
+std::vector<PlannerEnum> getDynamicPlannerEnums();
 
-
-std::tuple<bool, double> run_test(Planner* planner, const Node& start, const Node& goal) {
-  const auto [path_found, path] = planner->Plan(start, goal);
-  if(path_found) {
-    for(const auto& p : path) {
-      if(CompareCoordinates(p, goal)) {
-        return {path_found, p.cost_};
-      }
-    }
-  }
-  return {path_found, 0};
-}
+/**
+* @brief runs the test
+* @param planner planner used to create the plan
+* @param start start node
+* @param goal goal node
+* @return true when a path is found and the cost of the path
+*/
+std::tuple<bool, double> run_test(Planner* planner, const Node& start, const Node& goal);
 
 #endif  // TEST_UTILS

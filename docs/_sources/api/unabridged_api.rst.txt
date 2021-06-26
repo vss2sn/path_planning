@@ -19,6 +19,16 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   structAnt.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   structcompare__coordinates.rst
+
+.. toctree::
+   :maxdepth: 5
+
    structcompare__cost.rst
 
 .. toctree::
@@ -50,11 +60,6 @@ Classes and Structs
    :maxdepth: 5
 
    structpair__hash.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   classAnt.rst
 
 .. toctree::
    :maxdepth: 5
@@ -100,6 +105,16 @@ Classes and Structs
    :maxdepth: 5
 
    classNode.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   classNodeIdAsHash.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   classPlanner.rst
 
 .. toctree::
    :maxdepth: 5
@@ -168,11 +183,6 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_main_8hpp_1ae66f6b31b5ad750f1fe042a706a4e3d4.rst
-
-.. toctree::
-   :maxdepth: 5
-
    function_utils_8cpp_1ad8afc8a6d98fae87fffe3ad0621eaf4b.rst
 
 .. toctree::
@@ -237,12 +247,22 @@ Variables
 .. toctree::
    :maxdepth: 5
 
-   variable_lpa__star_8cpp_1ac5de1508be41d2871871f512d90d2ec3.rst
+   variable_d__star__lite_8cpp_1a07126d3308228406671bd7e8d57f1d5a.rst
 
 .. toctree::
    :maxdepth: 5
 
-   variable_d__star__lite_8cpp_1a07126d3308228406671bd7e8d57f1d5a.rst
+   variable_lpa__star_8cpp_1a07126d3308228406671bd7e8d57f1d5a.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   variable_rrt_8cpp_1a7d1725bd185512383fce87a926e518bf.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   variable_rrt__star_8cpp_1a7d1725bd185512383fce87a926e518bf.rst
 
 .. toctree::
    :maxdepth: 5
@@ -253,16 +273,6 @@ Variables
    :maxdepth: 5
 
    variable_utils_8cpp_1a88ee0fdd1247f7aa11f62295483547a5.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_rrt_8cpp_1aad6745e2cd8d6ee98bce35020d09cf49.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_rrt__star_8cpp_1aad6745e2cd8d6ee98bce35020d09cf49.rst
 
 Defines
 *******
@@ -444,7 +454,7 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_include_path_planning_main.hpp.rst
+   file_include_path_planning_planner.hpp.rst
 
 .. toctree::
    :maxdepth: 5

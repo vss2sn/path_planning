@@ -16,20 +16,21 @@ Program Listing for File a_star.hpp
    
    #include <queue>
    
+   #include "path_planning/planner.hpp"
    #include "utils/utils.hpp"
    
-   class AStar {
+   class AStar : public Planner {
     public:
-     std::vector<Node> a_star(std::vector<std::vector<int>>& grid,
-                              const Node& start_in, const Node& goal_in);
+     explicit AStar(std::vector<std::vector<int>> grid)
+         : Planner(std::move(grid)) {}
    
-     void InsertionSort(std::vector<Node>& v) const;
+     std::tuple<bool, std::vector<Node>> Plan(const Node& start,
+                                              const Node& goal) override;
    
     private:
-     std::priority_queue<Node, std::vector<Node>, compare_cost> open_list_;
-     std::vector<Node> closed_list_;
-     Node start_, goal_;
-     int n;
+     std::vector<Node> ConvertClosedListToPath(
+         std::unordered_set<Node, NodeIdAsHash, compare_coordinates>& closed_list,
+         const Node& start, const Node& goal);
    };
    
    #endif  // A_STAR_H

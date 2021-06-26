@@ -42,11 +42,15 @@ Includes
 --------
 
 
+- ``algorithm`` (:ref:`file_src_genetic_algorithm.cpp`)
+
 - ``cmath``
 
 - ``path_planning/rrt.hpp`` (:ref:`file_include_path_planning_rrt.hpp`)
 
 - ``random``
+
+- ``vector``
 
 
 
@@ -59,5 +63,5 @@ Variables
 
 - :ref:`exhale_variable_rrt_8cpp_1adf2d22e6604f79d3fb5290aa8e5d7ae1`
 
-- :ref:`exhale_variable_rrt_8cpp_1aad6745e2cd8d6ee98bce35020d09cf49`
+- :ref:`exhale_variable_rrt_8cpp_1a7d1725bd185512383fce87a926e518bf`
 

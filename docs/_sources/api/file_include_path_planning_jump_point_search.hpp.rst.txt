@@ -38,6 +38,8 @@ Includes
 --------
 
 
+- ``path_planning/planner.hpp`` (:ref:`file_include_path_planning_planner.hpp`)
+
 - ``queue``
 
 - ``unordered_set``

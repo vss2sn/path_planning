@@ -42,7 +42,15 @@ Includes
 --------
 
 
+- ``cmath``
+
 - ``path_planning/dijkstra.hpp`` (:ref:`file_include_path_planning_dijkstra.hpp`)
+
+- ``queue``
+
+- ``unordered_set``
+
+- ``vector``
 
 
 

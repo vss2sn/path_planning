@@ -1,0 +1,33 @@
+.. _exhale_class_classPlanner:
+
+Class Planner
+=============
+
+- Defined in :ref:`file_include_path_planning_planner.hpp`
+
+
+Inheritance Relationships
+-------------------------
+
+Derived Types
+*************
+
+- ``public AntColony`` (:ref:`exhale_class_classAntColony`)
+- ``public AStar`` (:ref:`exhale_class_classAStar`)
+- ``public Dijkstra`` (:ref:`exhale_class_classDijkstra`)
+- ``public DStarLite`` (:ref:`exhale_class_classDStarLite`)
+- ``public GeneticAlgorithm`` (:ref:`exhale_class_classGeneticAlgorithm`)
+- ``public JumpPointSearch`` (:ref:`exhale_class_classJumpPointSearch`)
+- ``public LPAStar`` (:ref:`exhale_class_classLPAStar`)
+- ``public RRT`` (:ref:`exhale_class_classRRT`)
+- ``public RRTStar`` (:ref:`exhale_class_classRRTStar`)
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: Planner
+   :members:
+   :protected-members:
+   :undoc-members:

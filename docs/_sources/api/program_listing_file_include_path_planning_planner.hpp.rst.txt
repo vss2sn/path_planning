@@ -1,0 +1,57 @@
+
+.. _program_listing_file_include_path_planning_planner.hpp:
+
+Program Listing for File planner.hpp
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_include_path_planning_planner.hpp>` (``include/path_planning/planner.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef PLANNER_HPP
+   #define PLANNER_HPP
+   
+   #include <iostream>
+   #include <tuple>
+   #include <unordered_map>
+   #include <vector>
+   
+   #include "utils/utils.hpp"
+   
+   class Planner {
+    public:
+     Planner(std::vector<std::vector<int>> grid)
+         : original_grid_(std::move(grid)), n_(original_grid_.size()){};
+   
+     Planner(const Planner&) = default;
+   
+     Planner(Planner&&) = default;
+   
+     Planner& operator=(const Planner&) = default;
+   
+     Planner& operator=(Planner&&) = default;
+   
+     virtual ~Planner() = default;
+   
+     virtual std::tuple<bool, std::vector<Node>> Plan(const Node& start,
+                                                      const Node& goal) = 0;
+   
+     virtual void SetDynamicObstacles(const bool create_random_obstacles = false,
+                              const std::unordered_map<int, std::vector<Node>>&
+                                  time_discovered_obstacles = {}) {
+       std::cout << "Please implement this function for the planner" << '\n';
+       std::cout << "Value attempted to be set: " << '\n';
+       std::cout << "Create random obstacles: " << create_random_obstacles << '\n';
+       std::cout << "Number of time discovered obstacles: " << time_discovered_obstacles.size() << '\n';
+     } ;
+   
+    protected:
+     std::vector<std::vector<int>> grid_ = {};
+     const std::vector<std::vector<int>> original_grid_;
+     const int n_;
+   };
+   
+   #endif  // PLANNER_HPP

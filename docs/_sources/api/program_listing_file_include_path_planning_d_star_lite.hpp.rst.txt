@@ -18,99 +18,20 @@ Program Listing for File d_star_lite.hpp
    #include <unordered_map>
    #include <unordered_set>
    
+   #include "path_planning/planner.hpp"
    #include "utils/utils.hpp"
    
-   struct Key {
-     double first;
-     double second;
-   
-     bool operator<(const Key& k) const {
-       return first < k.first || (first == k.first && second < k.second);
-     }
-   
-     bool operator>(const Key& k) const {
-       return first > k.first || (first == k.first && second > k.second);
-     }
-   
-     bool operator==(const Key& k) const {
-       return first == k.first && second == k.second;
-     }
-   
-     bool operator!=(const Key& k) const {
-       return !(first == k.first && second == k.second);
-     }
-   };
-   
-   struct NodeKeyPair {
-     Node node;
-     Key key;
-   };
-   
-   struct CompareNodeKeyPairKeys {
-     bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
-       return nkp1.key == nkp2.key;
-     }
-   };
-   
-   struct CompareNodeKeyPairCoordinates {
-     bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
-       return CompareCoordinates(nkp1.node, nkp2.node);
-     }
-   };
-   
-   struct CompareNodeKeyPairCoordinatesAndKeys {
-     bool operator()(const NodeKeyPair& nkp1, const NodeKeyPair& nkp2) const {
-       return CompareCoordinates(nkp1.node, nkp2.node) && nkp1.key == nkp2.key;
-     }
-   };
-   
-   template <>
-   class std::greater<NodeKeyPair> {
+   class DStarLite : public Planner {
     public:
-     bool operator()(const NodeKeyPair& nk1, const NodeKeyPair& nk2) const {
-       return nk1.key > nk2.key;
-     }
-   };
+     explicit DStarLite(std::vector<std::vector<int>> grid)
+         : Planner(std::move(grid)) {}
    
-   template <>
-   class std::hash<NodeKeyPair> {
-    public:
-     size_t operator()(const NodeKeyPair& nkp) const {
-       return std::hash<Node>()(nkp.node);
-     }
-   };
+     void SetDynamicObstacles(const bool create_random_obstacles = false,
+                              const std::unordered_map<int, std::vector<Node>>&
+                                  time_discovered_obstacles = {}) override;
    
-   class LazyPQ {
-   public:
-   
-     void clear();
-   
-     void insert(const NodeKeyPair& t);
-   
-     void pop();
-   
-     const NodeKeyPair& top() const;
-   
-     size_t size() const;
-   
-     bool empty() const;
-   
-     bool isElementInStruct(const NodeKeyPair& t) const;
-   
-     void remove(const NodeKeyPair& t);
-   
-   private:
-     std::priority_queue<NodeKeyPair, std::vector<NodeKeyPair>, std::greater<NodeKeyPair>> pq;
-     std::unordered_set<NodeKeyPair, std::hash<NodeKeyPair>, CompareNodeKeyPairCoordinates> s; // Needs to just compare the coordinates and
-   };
-   
-   class DStarLite {
-    public:
-     std::vector<Node> Plan(const std::vector<std::vector<int>>& grid,
-                            const Node& start, const Node& goal,
-                            const bool create_random_obstacles = false,
-                            const std::unordered_map<int, std::vector<Node>>
-                                time_discovered_obstacles = {});
+     std::tuple<bool, std::vector<Node>> Plan(const Node& start,
+                                              const Node& goal) override;
    
     private:
      Key CalculateKey(const Node& s) const;
@@ -135,23 +56,20 @@ Program Listing for File d_star_lite.hpp
    
      bool IsObstacle(const Node& n) const;
    
-     double H(const Node& n1, const Node& n2) const;
+     static double H(const Node& n1, const Node& n2);
    
+     std::vector<std::vector<double>> CreateGrid();
    
-     std::vector<std::vector<double>> CreateGrid(const int n);
-   
-     std::vector<std::vector<int>> grid_;
      std::vector<std::vector<double>> rhs_;
      std::vector<std::vector<double>> g_;
-     std::unordered_map<int, std::vector<Node>> time_discovered_obstacles_;
-     std::vector<Node> motions_;
+     std::unordered_map<int, std::vector<Node>> time_discovered_obstacles_{};
+     std::vector<Node> motions_{};
      LazyPQ U_;
      Node start_, goal_, last_;
-     double k_m_;
-     Key k_old_;
-     int n_;
+     double k_m_ = 0;
+     Key k_old_{0, 0};
      int time_step_ = 0;
-     bool create_random_obstacles_;
+     bool create_random_obstacles_ = false;
    };
    
    #endif  // D_STAR_LITE_H

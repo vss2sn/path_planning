@@ -29,7 +29,6 @@ class RRT : public Planner {
 
   void SetParams(const int threshold = 2, const int max_iter_x_factor = 20);
 
-
   /**
    * @brief RRT algorithm implementation
    * @param start start node

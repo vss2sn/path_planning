@@ -1,0 +1,16 @@
+.. _exhale_struct_structAnt:
+
+Struct Ant
+==========
+
+- Defined in :ref:`file_include_path_planning_ant_colony.hpp`
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: Ant
+   :members:
+   :protected-members:
+   :undoc-members:

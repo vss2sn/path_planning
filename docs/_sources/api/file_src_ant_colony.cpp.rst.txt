@@ -9,7 +9,7 @@ File ant_colony.cpp
 .. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
-Contains the :ref:`exhale_class_classAnt` and :ref:`exhale_class_classAnt` Colony class. 
+Contains the :ref:`exhale_struct_structAnt` and :ref:`exhale_struct_structAnt` Colony class. 
 
 
 
@@ -57,6 +57,8 @@ Includes
 - ``random``
 
 - ``thread``
+
+- ``tuple``
 
 
 

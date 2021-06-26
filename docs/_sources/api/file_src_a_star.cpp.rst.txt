@@ -46,6 +46,12 @@ Includes
 
 - ``path_planning/a_star.hpp`` (:ref:`file_include_path_planning_a_star.hpp`)
 
+- ``queue``
+
+- ``unordered_set``
+
+- ``vector``
+
 
 
 

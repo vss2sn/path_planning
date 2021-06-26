@@ -14,61 +14,66 @@ Program Listing for File lpa_star.hpp
    #ifndef LPA_STAR_H
    #define LPA_STAR_H
    
+   #include <iostream>
+   #include <tuple>
+   #include <unordered_map>
+   #include <unordered_set>
+   
+   #include "path_planning/planner.hpp"
    #include "utils/utils.hpp"
    
-   class LPAStar {
+   class LPAStar : public Planner {
     public:
-     static void VectorInsertionSort(std::vector<Node>& v);
+     explicit LPAStar(std::vector<std::vector<int>> grid)
+         : Planner(std::move(grid)) {}
    
-     static double GetHeuristic(const Node& s1, const Node& s2);
+     void SetDynamicObstacles(const bool create_random_obstacles = false,
+                              const std::unordered_map<int, std::vector<Node>>&
+                                  time_discovered_obstacles = {}) override;
    
-     void PrintGRHS() const;
+     std::tuple<bool, std::vector<Node>> Plan(const Node& start,
+                                              const Node& goal) override;
    
-     std::pair<double, double> CalculateKey(const Node& s) const;
+    private:
+     Key CalculateKey(const Node& s) const;
    
      std::vector<Node> GetPred(const Node& u) const;
    
      std::vector<Node> GetSucc(const Node& u) const;
    
-     void InsertionSort();
+     std::vector<Node> GetNeighbours(const Node& u) const;
    
      double C(const Node& s1, const Node& s2) const;
    
-     void Init();
+     void Initialize();
    
      void UpdateVertex(const Node& u);
    
-     bool CompareKey(const std::pair<double, double>& pair_in,
-                     const Node& u) const;
+     bool CompareKey(const Key& p1, const Key& p2) const;
    
-     int ComputeShortestPath();
+     void ComputeShortestPath();
    
-     std::vector<Node> lpa_star(std::vector<std::vector<int>>& grid_in,
-                                const Node& start_in, const Node& goal_in,
-                                const int max_iter_in,
-                                const bool obs_creation = true);
+     std::vector<Node> DetectChanges();
    
-     std::vector<Node> Replan(const Node& u);
+     bool IsObstacle(const Node& n) const;
    
-     void SetObs(const Node& u);
+     static double H(const Node& n1, const Node& n2);
    
-     void GeneratePathVector();
+     std::vector<std::vector<double>> CreateGrid();
    
-     std::vector<Node> UpdateStart(const Node& start_in) const;
+     void ClearPathDisplay(const std::vector<Node>& path);
+     std::vector<Node> GetNewPath();
+     void UpdatePathDisplay(const std::vector<Node>& path);
    
-     void DisplayGrid() const;
-   
-     void RemovePathFromGrid(std::vector<std::vector<int>>& grid_in) const;
-   
-    private:
+     std::vector<std::vector<double>> rhs_;
+     std::vector<std::vector<double>> g_;
+     std::unordered_map<int, std::vector<Node>> time_discovered_obstacles_ = {};
+     std::vector<Node> motions_;
+     LazyPQ U_;
      Node start_, goal_;
-     std::vector<std::vector<std::pair<double, double>>> S_;
-     std::vector<std::pair<Node, std::pair<double, double>>> U_;
-     std::vector<Node> motions;
-     int n, iter_ = 0, max_iter_;
-     std::vector<Node> path_vector_;
-     std::pair<double, double> large_num;
-     std::vector<std::vector<int>> grid;
+     size_t time_step_ = 0;
+     size_t max_time_step_ = 10;
+     bool create_random_obstacles_ = false;
    };
    
    #endif  // LPA_STAR_H

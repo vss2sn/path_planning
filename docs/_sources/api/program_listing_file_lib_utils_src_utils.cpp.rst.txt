@@ -20,16 +20,6 @@ Program Listing for File utils.cpp
    // constants
    constexpr int spacing_for_grid = 10;
    
-   Node::Node(const int x, const int y, const double cost, const double h_cost,
-              const int id, const int pid) {
-     this->x_ = x;
-     this->y_ = y;
-     this->cost_ = cost;
-     this->h_cost_ = h_cost;
-     this->id_ = id;
-     this->pid_ = pid;
-   }
-   
    void Node::PrintStatus() const {
      std::cout << "--------------" << '\n'
                << "Node          :" << '\n'
@@ -76,6 +66,9 @@ Program Listing for File utils.cpp
             (p1.cost_ + p1.h_cost_ == p2.cost_ + p2.h_cost_ &&
              p1.h_cost_ >= p2.h_cost_);
    }
+   bool compare_coordinates::operator()(const Node& p1, const Node& p2)  const {
+     return p1.x_ == p2.x_ && p1.y_ == p2.y_;
+   }
    
    // Possible motions for dijkstra, A*, and similar algorithms.
    // Not using this for RRT & RRT* to allow random direction movements.
@@ -115,7 +108,8 @@ Program Listing for File utils.cpp
    
    void PrintPath(const std::vector<Node>& path_vector, const Node& start,
                   const Node& goal, std::vector<std::vector<int>>& grid) {
-     if (path_vector[0].id_ == -1) {
+   #ifdef CUSTOM_DEBUG_HELPER_FUNCION
+     if (path_vector.empty()) {
        std::cout << "No path exists" << '\n';
        PrintGrid(grid);
        return;
@@ -142,10 +136,12 @@ Program Listing for File utils.cpp
      }
      grid[start.x_][start.y_] = 3;
      PrintGrid(grid);
+   #endif  // CUSTOM_DEBUG_HELPER_FUNCION
    }
    
    void PrintCost(const std::vector<std::vector<int>>& grid,
                   const std::vector<Node>& point_list) {
+   #ifdef CUSTOM_DEBUG_HELPER_FUNCION
      int n = grid.size();
      std::vector<Node>::const_iterator it_v;
      for (int i = 0; i < n; i++) {
@@ -162,12 +158,14 @@ Program Listing for File utils.cpp
        }
        std::cout << '\n' << '\n';
      }
+     #endif  // CUSTOM_DEBUG_HELPER_FUNCION
    }
    
    void PrintPathInOrder(const std::vector<Node>& path_vector,
                          const Node& /*start*/, const Node& goal,
                          std::vector<std::vector<int>>& grid) {
-     if (path_vector[0].id_ == -1) {
+   #ifdef CUSTOM_DEBUG_HELPER_FUNCION
+     if (path_vector.empty()) {
        std::cout << "Path not found" << '\n';
        PrintGrid(grid);
        return;
@@ -184,4 +182,86 @@ Program Listing for File utils.cpp
      path_vector[0].PrintStatus();
      grid[path_vector[0].x_][path_vector[0].y_] = 3;
      PrintGrid(grid);
+   #endif  // CUSTOM_DEBUG_HELPER_FUNCION
+   }
+   
+   
+   void LazyPQ::clear() {
+     s.clear();
+     while(!pq.empty()) {
+       pq.pop();
+     }
+   }
+   
+   void LazyPQ::insert(const NodeKeyPair& t) {
+     if(auto p = s.insert(t); !p.second) {
+       s.erase(t);
+       s.insert(t);
+     }
+     pq.push(t);
+   }
+   
+   void LazyPQ::pop() {
+     while(!pq.empty()) {
+       if (const auto it = s.find(pq.top()); it == s.end() ||
+           (it != s.end() && pq.top().key != it->key)) {
+         // Element been removed from set OR
+         // Element has been updated in set with new key, and inserted already into pq with new value
+         pq.pop();
+       } else if (it != s.end() && pq.top().key == it->key) {
+         // Found an elelment that is in set and priority queue
+         break;
+       }
+     }
+     if (s.empty()) {
+       return;
+     }
+     s.erase(pq.top());
+     pq.pop();
+     // The loop below allows top() to be const without making the
+     // std::priority_queue mutable
+     while(!pq.empty()) {
+       if (const auto it = s.find(pq.top()); it == s.end() ||
+           (it != s.end() && pq.top().key != it->key)) {
+         // Element been removed from set OR
+         // Element has been updated in set with new key, and inserted already into pq with new value
+         pq.pop();
+       } else if (it != s.end() && pq.top().key == it->key) {
+         // Found an elelment that is in set and priority queue
+         break;
+       }
+     }
+   }
+   
+   const NodeKeyPair& LazyPQ::top() const {
+     return pq.top();
+   }
+   
+   size_t LazyPQ::size() const {
+     return s.size();
+   }
+   
+   bool LazyPQ::empty() const {
+     return s.empty();
+   }
+   
+   bool LazyPQ::isElementInStruct(const NodeKeyPair& t) const {
+     return s.find(t) != s.end();
+   }
+   
+   void LazyPQ::remove(const NodeKeyPair& t) {
+     if (s.find(t) != s.end()) {
+       s.erase(t);
+     }
+     // Ensure top() is const
+     while(!pq.empty()) {
+       if (const auto it = s.find(pq.top()); it == s.end() ||
+           (it != s.end() && pq.top().key != it->key)) {
+         // Element been removed from set OR
+         // Element has been updated in set with new key, and inserted already into pq with new value
+         pq.pop();
+       } else if (it != s.end() && pq.top().key == it->key) { // Found an elelment that is in set and priority queue
+         break;
+       }
+     }
    }

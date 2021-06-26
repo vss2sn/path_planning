@@ -40,6 +40,8 @@ Includes
 
 - ``iostream``
 
+- ``path_planning/planner.hpp`` (:ref:`file_include_path_planning_planner.hpp`)
+
 - ``unordered_map``
 
 - ``unordered_set``
@@ -63,21 +65,5 @@ Classes
 -------
 
 
-- :ref:`exhale_struct_structCompareNodeKeyPairCoordinates`
-
-- :ref:`exhale_struct_structCompareNodeKeyPairCoordinatesAndKeys`
-
-- :ref:`exhale_struct_structCompareNodeKeyPairKeys`
-
-- :ref:`exhale_struct_structKey`
-
-- :ref:`exhale_struct_structNodeKeyPair`
-
 - :ref:`exhale_class_classDStarLite`
-
-- :ref:`exhale_class_classLazyPQ`
-
-- :ref:`exhale_class_classstd_1_1greater_3_01NodeKeyPair_01_4`
-
-- :ref:`exhale_class_classstd_1_1hash_3_01NodeKeyPair_01_4`
 

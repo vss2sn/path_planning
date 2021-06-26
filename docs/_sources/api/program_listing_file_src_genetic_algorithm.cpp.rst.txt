@@ -22,64 +22,63 @@ Program Listing for File genetic_algorithm.cpp
    constexpr int random_range_max = 100;
    constexpr int inverted_probabilty_mutate = 10;
    
-   GeneticAlgorithm::GeneticAlgorithm(const int generations, const int popsize,
-                                      const float c, const bool shorten_chromosome)
-       : generations_(generations),
-         popsize_(popsize),
-         c_(c),
-         generation_(0),
-         shorten_chromosome_(shorten_chromosome),
-         motions_(GetMotion()) {}
+   void GeneticAlgorithm::SetParams(const int generations, const int popsize,
+                                    const double c, const bool shorten_chromosome,
+                                    const int path_length) {
+     generations_ = generations;
+     popsize_ = popsize;
+     c_ = c;
+     shorten_chromosome_ = shorten_chromosome;
+     path_length_ = path_length;
+   }
    
-   std::vector<Node> GeneticAlgorithm::genetic_algorithm(
-       std::vector<std::vector<int>> &grid, const Node &start, const Node &goal,
-       int path_length) {
-     this->grid_ = grid;
-     this->start_ = start;
-     this->goal_ = goal;
-     this->path_length_ = path_length;
-     n_ = grid_.size();
+   std::tuple<bool, std::vector<Node>> GeneticAlgorithm::Plan(const Node &start,
+                                                              const Node &goal) {
+     int generation = 0;
+     start_ = start;
+     goal_ = goal;
+     grid_ = original_grid_;
+     motions_ = GetMotion();
    
      // Create initial chromosome
-     std::vector<Node> path = GenerateSimplePath();
-     paths_.push_back(path);
+     std::vector<Node> initial_path = GenerateSimplePath();
+     paths_.push_back(initial_path);
    
      // Check first path to goal
-     if (CheckPath(path)) {
-       truepaths_.push_back(path);
+     if (CheckPath(initial_path)) {
+       truepaths_.push_back(initial_path);
      }
    
-     // apply algorithm
      // Allow while loop to continue beyond path found to find optimum path
-     // while(found_ == false && generation_ <=generations_){
-     while (generation_ <= generations_) {
-       // std::cout << "Generation: "<< generation_ << '\n';
-       int paths_size = paths_.size();
+     while (generation <= generations_) {
+       size_t paths_size = paths_.size();
        std::vector<int> f_vals(paths_size);
        std::transform(
            paths_.begin(), paths_.end(), f_vals.begin(),
            [&](const std::vector<Node> &path) { return CalculateFitness(path); });
+   
        f_val = *std::min_element(f_vals.begin(), f_vals.end());
-   
        std::vector<std::vector<Node>> new_paths_;
-       for (int i = 0; i < paths_size; ++i) {
-         // c provides a margin of error from best path
-         if (f_vals[i] <= static_cast<int>(static_cast<double>(f_val * c_))) {
-           if (shorten_chromosome_) {
-             new_paths_.emplace_back(std::vector<Node>(
-                 paths_[i].begin(), paths_[i].begin() + path_length_));
    
+       for (int i = 0; i < paths_.size(); ++i) {
+         // c provides a margin of error from best path
+         if (f_vals[i] <= f_val * c_) {
+           if (shorten_chromosome_) {
+             const int len = std::min(paths_[i].size(), path_length_);
+             new_paths_.emplace_back(std::vector<Node>(
+                 paths_[i].begin(), std::next(paths_[i].begin(), len)));
            } else {
              new_paths_.push_back(paths_[i]);
            }
          }
        }
    
-       if (new_paths_.size() > 0) {
+       if (!new_paths_.empty()) {
          std::swap(paths_, new_paths_);
        }
-       if (static_cast<int>(paths_.size()) < popsize_) {
-         while (static_cast<int>(paths_.size()) < popsize_) {
+   
+       if (paths_.size() < popsize_) {
+         while (paths_.size() < popsize_) {
            if (rand() % inverted_probabilty_mutate == 0) {
              paths_.emplace_back(Mutate());
            } else {
@@ -92,7 +91,7 @@ Program Listing for File genetic_algorithm.cpp
    
        // TODO(vss): Consider dynamically modifying path length to move towards
        // optimality
-       for (auto &path_seen : paths_) {
+       for (const auto &path_seen : paths_) {
          int tmp_length = std::numeric_limits<int>::max();
          if (CheckPath(path_seen)) {
            found_ = true;
@@ -103,7 +102,7 @@ Program Listing for File genetic_algorithm.cpp
            }
            if (shorten_chromosome_) {
              auto tmp = start_;
-             if (static_cast<int>(path_seen.size()) < tmp_length) {
+             if (path_seen.size() < tmp_length) {
                tmp_length = path_seen.size();
              }
              if (CompareCoordinates(tmp, goal_)) {
@@ -121,39 +120,44 @@ Program Listing for File genetic_algorithm.cpp
          }
          // PrintChromosome(path_seen);
        }
-       generation_++;
+       generation++;
      }
-     std::cout << "True paths: " << truepaths_.size() << '\n';
+   
+     // std::cout << "True paths: " << truepaths_.size() << '\n';
      // if(!truepaths_.empty())std::cout << "True paths: " << '\n';
      // for(int i=0;i<truepaths_.size();i++) PrintPathOfChromosome(truepaths_[i]);
-     return ReturnLastPath();
+   
+     const auto node_path = ReturnLastPath();
+     return {!node_path.empty(), node_path};
    }
    
    std::vector<Node> GeneticAlgorithm::ReturnLastPath() const {
-     std::vector<Node> v;
      if (truepaths_.empty()) {
-       v.emplace_back(Node(-1, -1, -1, -1, -1, -1));
-       return v;
+       return {};
      }
    
-     int best_cost = std::numeric_limits<int>::max();
      std::vector<int> f_vals(truepaths_.size());
      std::transform(truepaths_.begin(), truepaths_.end(), f_vals.begin(),
                     f_vals.begin(),
-                    [&](const std::vector<Node> &path, int /* f_vals_v */) {
+                    [&](const std::vector<Node> &path, const int /* f_vals_v */) {
                       return CalculateFitness(path);
                     });
-     int best_path_index = std::distance(
+     const int best_path_index = std::distance(
          f_vals.begin(), std::min_element(f_vals.begin(), f_vals.end()));
-     v.push_back(start_);
+     std::vector<Node> node_path;
+     node_path.push_back(start_);
+     node_path.back().pid_ = node_path.back().id_;
      Node current = start_;
      for (const auto &motion : truepaths_[best_path_index]) {
        current = current + motion;
-       current.pid_ = current.id_;
+       current.pid_ = node_path.back().id_;
        current.id_ = n_ * current.x_ + current.y_;
-       v.push_back(current);
+       node_path.push_back(current);
+       if (CompareCoordinates(current, goal_)) {
+         break;
+       }
      }
-     return v;
+     return node_path;
    }
    
    #ifdef CUSTOM_DEBUG_HELPER_FUNCION
@@ -273,20 +277,19 @@ Program Listing for File genetic_algorithm.cpp
      int p1 = static_cast<int>(rand() % paths_.size());
      int p2 = static_cast<int>(rand() % paths_.size());
    
-     const int len =
-         std::max(static_cast<int>(std::max(paths_[p1].size(), paths_[p2].size())),
-                  path_length_);
+     const size_t len =
+         std::max(std::max(paths_[p1].size(), paths_[p2].size()), path_length_);
      std::vector<Node> child;
      child.reserve(len);
    
      Node current = start_;
-     Node motion = motions_[static_cast<int>(rand() % motions_.size())];
    
      int index = 0;
      int attempt_count = 0;
    
      while (index < len) {
        int random_int = rand() % random_range_max;
+       Node motion;
        if (random_int < random_range_max / 4 && paths_[p1].size() > index) {
          motion = paths_[p1][index];
        } else if (random_int < random_range_max / 2 && paths_[p2].size() > index) {
@@ -323,8 +326,10 @@ Program Listing for File genetic_algorithm.cpp
        if (CompareCoordinates(current, goal_)) {
          return true;
        }
-       if (checkOutsideBoundary(current, n_) ||
-           grid_[current.x_][current.y_] == 1) {
+       if (checkOutsideBoundary(current, n_)) {
+         return false;
+       }
+       if (grid_[current.x_][current.y_] == 1) {
          return false;
        }
      }
@@ -333,8 +338,7 @@ Program Listing for File genetic_algorithm.cpp
    
    #ifdef BUILD_INDIVIDUAL
    int main() {
-     int n = 10;
-   
+     constexpr int n = 11;
      std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
      MakeGrid(grid);
    
@@ -344,22 +348,33 @@ Program Listing for File genetic_algorithm.cpp
    
      Node start(distr(eng), distr(eng), 0, 0, 0, 0);
      Node goal(distr(eng), distr(eng), 0, 0, 0, 0);
-     // Node start(0,0,0,0,0,0);
-     // Node goal(n-1,n-1,0,0,0,0);
    
      start.id_ = start.x_ * n + start.y_;
      start.pid_ = start.x_ * n + start.y_;
      goal.id_ = goal.x_ * n + goal.y_;
      start.h_cost_ = abs(start.x_ - goal.x_) + abs(start.y_ - goal.y_);
+   
      // Make sure start and goal are not obstacles and their ids are correctly
      // assigned.
      grid[start.x_][start.y_] = 0;
      grid[goal.x_][goal.y_] = 0;
+   
+     start.PrintStatus();
+     goal.PrintStatus();
+   
      PrintGrid(grid);
-     std::vector<Node> path_vector;
-     GeneticAlgorithm new_genetic_algorithm;
-     path_vector = new_genetic_algorithm.genetic_algorithm(grid, start, goal,
-                                                           4 * start.h_cost_);
+   
+     constexpr int generations = 10000;
+     constexpr int popsize = 30;
+     constexpr double c = 1.05;
+     constexpr bool shorten_chromosome = true;
+     constexpr int path_length_x_factor = 4;
+   
+     GeneticAlgorithm new_genetic_algorithm(grid);
+     new_genetic_algorithm.SetParams(generations, popsize, c, shorten_chromosome,
+       static_cast<int>(path_length_x_factor * start.h_cost_));
+     const auto [path_found, path_vector] =
+         new_genetic_algorithm.Plan(start, goal);
      PrintPathInOrder(path_vector, start, goal, grid);
    }
    #endif  // BUILD_INDIVIDUAL

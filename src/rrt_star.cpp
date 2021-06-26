@@ -62,8 +62,7 @@ bool RRTStar::IsAnyObstacleInPath(const Node& n_1, const Node& n_2) const {
                   (n_1.x_ <= obs_node.x_ && obs_node.x_ <= n_2.x_));
         });
   }
-  const double slope =
-      static_cast<double>(n_2.x_ - n_1.x_) / (n_2.y_ - n_1.y_);
+  const double slope = static_cast<double>(n_2.x_ - n_1.x_) / (n_2.y_ - n_1.y_);
   const double c = n_2.x_ - slope * n_2.y_;
 
   // TODO: Cache this
@@ -242,7 +241,6 @@ void RRTStar::SetParams(const int threshold, const int max_iter_x_factor) {
   threshold_ = threshold;
   max_iter_x_factor_ = max_iter_x_factor;
 }
-
 
 #ifdef BUILD_INDIVIDUAL
 int main() {

@@ -38,6 +38,10 @@ Includes
 --------
 
 
+- ``path_planning/planner.hpp`` (:ref:`file_include_path_planning_planner.hpp`)
+
+- ``tuple``
+
 - ``unordered_map``
 
 - ``utils/utils.hpp`` (:ref:`file_lib_utils_include_utils_utils.hpp`)
@@ -59,9 +63,7 @@ Classes
 -------
 
 
-- :ref:`exhale_struct_structpair__hash`
-
-- :ref:`exhale_class_classAnt`
+- :ref:`exhale_struct_structAnt`
 
 - :ref:`exhale_class_classAntColony`
 

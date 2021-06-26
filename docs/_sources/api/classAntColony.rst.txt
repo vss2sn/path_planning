@@ -6,6 +6,15 @@ Class AntColony
 - Defined in :ref:`file_include_path_planning_ant_colony.hpp`
 
 
+Inheritance Relationships
+-------------------------
+
+Base Type
+*********
+
+- ``public Planner`` (:ref:`exhale_class_classPlanner`)
+
+
 Class Documentation
 -------------------
 
