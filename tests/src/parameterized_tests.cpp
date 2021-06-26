@@ -1,6 +1,8 @@
 #include <cmath>
 
 #include "tests/test_utils.hpp"
+
+#include <random>
 #include <tuple>
 
 using Grid = std::vector<std::vector<int>>;
@@ -288,6 +290,56 @@ INSTANTIATE_TEST_SUITE_P(
         {2, {Node(1, 4), Node(2, 4), Node(3, 4), Node(4, 4), Node(5, 4)}}
       }
     )
+  )
+);
+
+/***************************/
+/* Tests with unknown grid */
+/***************************/
+class RandomGridOptimalPlanner:
+    public testing::TestWithParam<std::tuple<PlannerEnum, PlannerEnum>> {
+};
+
+TEST_P (RandomGridOptimalPlanner, OptimalPlanners) {
+  constexpr int n = 11;
+  std::vector<std::vector<int>> grid(n, std::vector<int>(n, 0));
+  MakeGrid(grid);
+
+  std::random_device rd;   // obtain a random number from hardware
+  std::mt19937 eng(rd());  // seed the generator
+  std::uniform_int_distribution<int> distr(0, n - 1);  // define the range
+
+  Node start(distr(eng), distr(eng), 0, 0, 0, 0);
+  Node goal(distr(eng), distr(eng), 0, 0, 0, 0);
+
+  start.id_ = start.x_ * n + start.y_;
+  start.pid_ = start.x_ * n + start.y_;
+  goal.id_ = goal.x_ * n + goal.y_;
+
+  // Make sure start and goal are not obstacles and their ids are correctly
+  // assigned.
+  grid[start.x_][start.y_] = 0;
+  grid[goal.x_][goal.y_] = 0;
+
+  start.PrintStatus();
+  goal.PrintStatus();
+
+  PrintGrid(grid);
+
+  const auto [path_found_1, path_cost_1] = run_test(PlannerFactory(std::get<0>(GetParam()), grid).get(), start, goal);
+  const auto [path_found_2, path_cost_2] = run_test(PlannerFactory(std::get<1>(GetParam()), grid).get(), start, goal);
+  ASSERT_EQ(path_found_1, path_found_2);
+  if (path_found_1) {
+    ASSERT_EQ(path_cost_1, path_cost_2);
+  }
+}
+
+INSTANTIATE_TEST_SUITE_P(
+  RandomGridOptimalPlanner,
+  RandomGridOptimalPlanner,
+  ::testing::Combine(
+    ::testing::ValuesIn(getOptimalPlannerEnums()),
+    ::testing::ValuesIn(getOptimalPlannerEnums())
   )
 );
 
