@@ -64,8 +64,9 @@ Program Listing for File README.md
    <a name="notes_on_tests"></a>
    #### Notes on test ####
    1. Unit test framework set up to set algorithms under different grids. This section uses Google Test.
-   2. CMake option RUN_TESTS allows building tests when set when `BUILD_INDIVIDUAL` is set `OFF`.
+   2. CMake option `RUN_TESTS` allows building tests when set when `BUILD_INDIVIDUAL` is set `OFF`.
    3. Due to the nature of Ant Colony Optimization and accounting for the hyper parameters, the tests are run with a 20% margin above the optimal solution. Similarly for Genetic Algorithm.
+   4. As RRT is not optimal, the test for RRT simply checks for the existence of a path
    
    <a name="notes_on_implementations"></a>
    #### Notes on implementations ####

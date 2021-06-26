@@ -28,7 +28,6 @@ Program Listing for File rrt.hpp
    
      void SetParams(const int threshold = 2, const int max_iter_x_factor = 20);
    
-   
      std::tuple<bool, std::vector<Node>> Plan(const Node& start,
                                               const Node& goal) override;
    

@@ -69,8 +69,7 @@ Program Listing for File rrt_star.cpp
                      (n_1.x_ <= obs_node.x_ && obs_node.x_ <= n_2.x_));
            });
      }
-     const double slope =
-         static_cast<double>(n_2.x_ - n_1.x_) / (n_2.y_ - n_1.y_);
+     const double slope = static_cast<double>(n_2.x_ - n_1.x_) / (n_2.y_ - n_1.y_);
      const double c = n_2.x_ - slope * n_2.y_;
    
      // TODO: Cache this
@@ -249,7 +248,6 @@ Program Listing for File rrt_star.cpp
      threshold_ = threshold;
      max_iter_x_factor_ = max_iter_x_factor;
    }
-   
    
    #ifdef BUILD_INDIVIDUAL
    int main() {

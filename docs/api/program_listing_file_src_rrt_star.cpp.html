@@ -347,8 +347,7 @@
                   <span class="p">(</span><span class="n">n_1</span><span class="p">.</span><span class="n">x_</span> <span class="o">&lt;=</span> <span class="n">obs_node</span><span class="p">.</span><span class="n">x_</span> <span class="o">&amp;&amp;</span> <span class="n">obs_node</span><span class="p">.</span><span class="n">x_</span> <span class="o">&lt;=</span> <span class="n">n_2</span><span class="p">.</span><span class="n">x_</span><span class="p">));</span>
         <span class="p">});</span>
   <span class="p">}</span>
-  <span class="k">const</span> <span class="kt">double</span> <span class="n">slope</span> <span class="o">=</span>
-      <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n_2</span><span class="p">.</span><span class="n">x_</span> <span class="o">-</span> <span class="n">n_1</span><span class="p">.</span><span class="n">x_</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_2</span><span class="p">.</span><span class="n">y_</span> <span class="o">-</span> <span class="n">n_1</span><span class="p">.</span><span class="n">y_</span><span class="p">);</span>
+  <span class="k">const</span> <span class="kt">double</span> <span class="n">slope</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n_2</span><span class="p">.</span><span class="n">x_</span> <span class="o">-</span> <span class="n">n_1</span><span class="p">.</span><span class="n">x_</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_2</span><span class="p">.</span><span class="n">y_</span> <span class="o">-</span> <span class="n">n_1</span><span class="p">.</span><span class="n">y_</span><span class="p">);</span>
   <span class="k">const</span> <span class="kt">double</span> <span class="n">c</span> <span class="o">=</span> <span class="n">n_2</span><span class="p">.</span><span class="n">x_</span> <span class="o">-</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">n_2</span><span class="p">.</span><span class="n">y_</span><span class="p">;</span>
 
   <span class="c1">// TODO: Cache this</span>
@@ -527,7 +526,6 @@
   <span class="n">threshold_</span> <span class="o">=</span> <span class="n">threshold</span><span class="p">;</span>
   <span class="n">max_iter_x_factor_</span> <span class="o">=</span> <span class="n">max_iter_x_factor</span><span class="p">;</span>
 <span class="p">}</span>
-
 
 <span class="cp">#ifdef BUILD_INDIVIDUAL</span>
 <span class="kt">int</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>

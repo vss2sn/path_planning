@@ -351,8 +351,9 @@
 <h3>Notes on test<a class="headerlink" href="#notes-on-test" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li>Unit test framework set up to set algorithms under different grids. This section uses Google Test.</li>
-<li>CMake option RUN_TESTS allows building tests when set when <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> is set <code class="docutils literal notranslate"><span class="pre">OFF</span></code>.</li>
+<li>CMake option <code class="docutils literal notranslate"><span class="pre">RUN_TESTS</span></code> allows building tests when set when <code class="docutils literal notranslate"><span class="pre">BUILD_INDIVIDUAL</span></code> is set <code class="docutils literal notranslate"><span class="pre">OFF</span></code>.</li>
 <li>Due to the nature of Ant Colony Optimization and accounting for the hyper parameters, the tests are run with a 20% margin above the optimal solution. Similarly for Genetic Algorithm.</li>
+<li>As RRT is not optimal, the test for RRT simply checks for the existence of a path</li>
 </ol>
 <p><span class="raw-html-m2r"><a name="notes_on_implementations"></a></span></p>
 </div>
