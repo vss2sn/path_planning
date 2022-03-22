@@ -29,6 +29,9 @@ std::tuple<bool, std::vector<Node>> AStar::Plan(const Node& start,
     Node current = open_list.top();
     open_list.pop();
     current.id_ = current.x_ * n_ + current.y_;
+    if (closed_list.find(current) != closed_list.end()) {
+      continue;
+    }
     if (CompareCoordinates(current, goal)) {
       closed_list.insert(current);
       grid_[current.x_][current.y_] = 2;
@@ -37,6 +40,9 @@ std::tuple<bool, std::vector<Node>> AStar::Plan(const Node& start,
     grid_[current.x_][current.y_] = 2;  // Point opened
     for (const auto& m : motion) {
       Node new_point = current + m;
+      if (closed_list.find(new_point) != closed_list.end()) {
+        continue;
+      }
       new_point.id_ = n_ * new_point.x_ + new_point.y_;
       new_point.pid_ = current.id_;
       new_point.h_cost_ =
