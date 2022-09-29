@@ -8,6 +8,7 @@
 #define UTILS_H
 
 #include <iostream>
+#include <limits>
 #include <queue>
 #include <unordered_set>
 #include <vector>
@@ -240,7 +241,7 @@ void PrintGrid(const std::vector<std::vector<T>>& grid) {
         std::cout << GREEN << ele << RESET << " , ";
       } else if (ele == 4) {
         std::cout << YELLOW << ele << RESET << " , ";
-      } else if( ele == std::numeric_limits<double>::max()) {
+      } else if( ele == std::numeric_limits<T>::max()) {
         std::cout << CYAN << "I" << RESET << " , ";
       } else {
         std::cout << ele << " , ";
